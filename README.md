@@ -10,7 +10,7 @@
   <a href="https://github.com/junkerderprovinz/smokesignal/actions/workflows/lint.yml"><img src="https://img.shields.io/github/actions/workflow/status/junkerderprovinz/smokesignal/lint.yml?branch=main&label=Lint&style=for-the-badge&logo=githubactions&logoColor=white" alt="Lint" height="36"></a>&nbsp;
   <a href="https://unraid.net"><img src="https://img.shields.io/badge/Unraid-Plugin-f15a2c?style=for-the-badge&logo=unraid&logoColor=white" alt="Unraid Plugin" height="36"></a>&nbsp;
   <a href="https://github.com/junkerderprovinz/smokesignal/releases"><img src="https://img.shields.io/github/v/release/junkerderprovinz/smokesignal?style=for-the-badge&logo=github&logoColor=white&label=Release" alt="Release" height="36"></a>&nbsp;
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License" height="36"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-blue?style=for-the-badge&logo=gnu&logoColor=white" alt="License: AGPL-3.0" height="36"></a>
 </p>
 
 <p align="center">
@@ -35,6 +35,7 @@ SmokeSignal reads the live host state and gives you a single verdict — <b>GO /
 5. [Install](#5-install)
 6. [Development](#6-development)
 7. [Support this project](#7-support-this-project)
+8. [License](#8-license)
 
 <br>
 
@@ -137,3 +138,13 @@ Assets (icon, banner) are generated with
 
 If SmokeSignal saved you a bad reboot, you can
 [buy me a coffee](https://buymeacoffee.com/junkerderprovinz). Thanks!
+
+<br>
+
+## 8. License
+
+**Copyright (C) 2026 Junker der Provinz.**
+
+SmokeSignal is free software under the **GNU Affero General Public License v3.0** (AGPL-3.0); see [LICENSE](LICENSE). You may run, study, share and modify it. If you distribute it, or run a modified version as a network service, you must release your source under the same AGPL-3.0 terms and keep the existing copyright and attribution notices intact.
+
+**Name and branding are not licensed.** The AGPL covers the source code only. "SmokeSignal", its logo and its branding remain reserved: a fork or derivative must use its own distinct name and branding, and may not present itself as SmokeSignal. This keeps it unambiguous which project is the original.
