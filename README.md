@@ -34,8 +34,8 @@ SmokeSignal reads the live host state and gives you a single verdict — <b>GO /
 4. [How it works](#4-how-it-works)
 5. [Install](#5-install)
 6. [Development](#6-development)
-7. [Support this project](#7-support-this-project)
-8. [License](#8-license)
+7. [License](#7-license)
+8. [Support this project](#8-support-this-project)
 
 <br>
 
@@ -134,17 +134,22 @@ Assets (icon, banner) are generated with
 
 <br>
 
-## 7. Support this project
-
-If SmokeSignal saved you a bad reboot, you can
-[buy me a coffee](https://buymeacoffee.com/junkerderprovinz). Thanks!
-
-<br>
-
-## 8. License
+## 7. License
 
 **Copyright (C) 2026 Junker der Provinz.**
 
 SmokeSignal is free software under the **GNU Affero General Public License v3.0** (AGPL-3.0); see [LICENSE](LICENSE). You may run, study, share and modify it. If you distribute it, or run a modified version as a network service, you must release your source under the same AGPL-3.0 terms and keep the existing copyright and attribution notices intact.
 
 **Name and branding are not licensed.** The AGPL covers the source code only. "SmokeSignal", its logo and its branding remain reserved: a fork or derivative must use its own distinct name and branding, and may not present itself as SmokeSignal. This keeps it unambiguous which project is the original.
+
+<br>
+
+## 8. Support this project
+
+If SmokeSignal saved you a bad reboot, consider buying me a coffee. Thanks!
+
+<p align="center">
+  <a href="https://buymeacoffee.com/junkerderprovinz">
+    <img src="https://raw.githubusercontent.com/junkerderprovinz/smokesignal/main/.github/assets/button-buy-me-a-coffee.svg" alt="Buy me a coffee" width="220">
+  </a>
+</p>
