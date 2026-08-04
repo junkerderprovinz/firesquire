@@ -35,7 +35,7 @@ const here = (p) => new URL(p, import.meta.url);
 const NAME = 'SmokeSignal';
 const CLAIM = 'Catches the smoke before the reboot catches fire.';
 const W = 1600, H = 500;
-const LH = 300, LW = 300;          // logo (square)
+const LH = 400, LW = 400;          // logo (square)
 // House banner standard: name 132 / claim 44, logo-to-text gap 70, name-to-claim gap 8.
 const nameSize = 132, claimSize = 44, gap = 70, lineGap = 8;
 const PLUGIN = '../../src/usr/local/emhttp/plugins/smokesignal/';
