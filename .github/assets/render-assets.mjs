@@ -35,13 +35,14 @@ const here = (p) => new URL(p, import.meta.url);
 const NAME = 'SmokeSignal';
 const CLAIM = 'Catches the smoke before the reboot catches fire.';
 const W = 1600, H = 500;
-const LH = 470, LW = 470;          // logo (square) — large
-const nameSize = 140, claimSize = 38, gap = 56, lineGap = 20;
+const LH = 300, LW = 300;          // logo (square)
+// House banner standard: name 132 / claim 44, logo-to-text gap 70, name-to-claim gap 8.
+const nameSize = 132, claimSize = 44, gap = 70, lineGap = 8;
 const PLUGIN = '../../src/usr/local/emhttp/plugins/smokesignal/';
 // Each theme embeds the logo variant that reads on its background (no recolour).
 const THEMES = [
-  { suffix: '', bg: '#ffffff', name: '#242626', claim: '#5a5d5e', logo: 'smokesignal-dunkel.svg' },
-  { suffix: '-dark', bg: '#0d1117', name: '#ffffff', claim: '#9aa4ad', logo: 'smokesignal-hell.svg' },
+  { suffix: '', bg: '#ffffff', name: '#1f2328', claim: '#5a5d5e', logo: 'smokesignal-dunkel.svg' },
+  { suffix: '-dark', bg: '#0d1117', name: '#e6edf3', claim: '#9aa4ad', logo: 'smokesignal-hell.svg' },
 ];
 // -----------------------------------------------------------------------------
 
@@ -89,7 +90,7 @@ const claimFont = await getFont('SmokeSignal-Lato-Regular.ttf',
 const nameW = bree.getAdvanceWidth(NAME, nameSize);
 const claimW = claimFont.getAdvanceWidth(CLAIM, claimSize);
 const groupW = LW + gap + Math.max(nameW, claimW);
-const startX = (W - groupW) / 2;
+const startX = 165; // left-anchored (house banner standard)
 const LX = startX, LY = (H - LH) / 2;
 const textX = startX + LW + gap;
 
