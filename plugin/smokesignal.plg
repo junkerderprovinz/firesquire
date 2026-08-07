@@ -27,6 +27,12 @@
 </ICON>
 
   <CHANGES>
+## 1.5.0
+- The check-result window now uses Unraid's own font instead of a fixed one, so it
+  matches the rest of the WebGUI. Its progress bar follows your accent colour when
+  CannonadeCommand is installed (amber otherwise). The verdict and status colours
+  (green, amber, red) are unchanged.
+
 ## 1.4.0
 - The check-result window now shows a live progress bar while the engine runs,
   with the current stage and a percentage, instead of a static "Running checks"
