@@ -159,16 +159,16 @@
     st.textContent =
       '#ss-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:flex-start;justify-content:center}' +
       "#ss-modal .ss-pan{margin-top:4vh;width:min(800px,94vw);max-height:88vh;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.55)}" +
-      "#ss-modal .ss-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;font-weight:700;font-family:'Segoe UI',Arial,sans-serif}" +
+      "#ss-modal .ss-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;font-weight:700}" +
       '#ss-modal .ss-htitle{display:flex;align-items:center;gap:10px}' +
       '#ss-modal .ss-logo{height:26px;width:26px;flex:0 0 auto}' +
       '#ss-modal .ss-x{cursor:pointer;font-size:22px;line-height:1;opacity:.75}#ss-modal .ss-x:hover{opacity:1}' +
       '#ss-modal .ss-body{overflow:auto}' +
-      "#ss-modal .ss-prog{padding:44px 30px;font-family:'Segoe UI',Arial,sans-serif}" +
+      "#ss-modal .ss-prog{padding:44px 30px}" +
       '#ss-modal .ss-prog-lab{display:flex;justify-content:space-between;gap:12px;font-size:14px;margin:0 0 14px}' +
       '#ss-modal .ss-prog-pct{opacity:.7;font-variant-numeric:tabular-nums}' +
       '#ss-modal .ss-prog-track{height:10px;border-radius:6px;overflow:hidden;background:rgba(128,128,128,.22)}' +
-      '#ss-modal .ss-prog-fill{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#e0a72e,#d5851c);transition:width .35s ease}' +
+      '#ss-modal .ss-prog-fill{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--cc-accent,#e0a72e),var(--cc-accent,#d5851c));transition:width .35s ease}' +
       '#ss-modal .ss-prog-fill.ss-indet{width:38%;transition:none;animation:ss-indet 1.1s ease-in-out infinite}' +
       '@keyframes ss-indet{0%{margin-left:-38%}100%{margin-left:100%}}';
     document.head.appendChild(st);
@@ -197,7 +197,7 @@
     var scol = {pass:'#1a9e4b', warn:'#c98a00', fail:'#d23b3f', info:'#8a8a8a'};
     var sico = {pass:'✓', warn:'!', fail:'✗', info:'i'};
 
-    var h = '<div style="font-family:\'Segoe UI\',Arial,sans-serif;font-size:14px;background:'+c.bg+';color:'+c.fg+';padding:18px 22px">';
+    var h = '<div style="font-size:14px;background:'+c.bg+';color:'+c.fg+';padding:18px 22px">';
     h += '<div style="display:flex;align-items:center;gap:14px;border-radius:10px;padding:16px 20px;background:'+c.panel+';border-left:8px solid '+vcol+'">';
     h += '<div style="font-size:30px;font-weight:800;letter-spacing:1px;color:'+vcol+'">'+esc(ssT('v_'+data.verdict) || data.verdict)+'</div>';
     h += '<div><div>SmokeSignal &mdash; '+esc(ssT('hc'))+'</div><div style="color:'+c.muted+';font-size:12px">'+esc(ssT('subtitle'))+(data.generated?' &middot; '+esc(data.generated):'')+'</div></div></div>';
@@ -225,7 +225,7 @@
   }
 
   function errHTML(){
-    return '<div style="padding:26px;font-family:\'Segoe UI\',Arial,sans-serif;color:#d23b3f">'+esc(ssT('err'))+'</div>';
+    return '<div style="padding:26px;color:#d23b3f">'+esc(ssT('err'))+'</div>';
   }
 
   // Stream the engine's progress markers, driving the bar, then hand the final
