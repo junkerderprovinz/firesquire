@@ -28,38 +28,21 @@
 
   <CHANGES>
 ## 2.0.0
-- The check-result window now uses Unraid's own font instead of a fixed one, so it
-  matches the rest of the WebGUI. Its progress bar follows your accent colour when
-  CannonadeCommand is installed (amber otherwise). The verdict and status colours
-  (green, amber, red) are unchanged.
-- The check-result window now shows a live progress bar while the engine runs,
-  with the current stage and a percentage, instead of a static "Running checks"
-  line. It reflects real progress (each check, plus per-disk during the slower
-  SMART scan) by streaming from the engine; if streaming is unavailable it falls
-  back to an animated bar, so the report always appears.
-- The report and the Tools page now follow the language configured in the Unraid
-  UI across all 26 supported languages (previously English and German only), the
-  same way ShipLog does. Right-to-left languages (Arabic, Hebrew) are laid out
-  accordingly, and any string not yet translated falls back to English.
-- Click a problem finding in the check-result window to jump straight to the
-  relevant Unraid page: syslog and disk/IO findings open the System Log viewer,
-  array / parity / mover / space / flash / SMART findings open Main, running VMs
-  open the VMs tab, risky mounts / missing binds / a stuck image open Docker, and
-  a stopped dockerd or libvirt opens its Settings page. Only warning and error
-  findings are linked (a healthy check has nothing to jump to).
-- The report-window logo cache-buster is bumped so existing installs pick up the
-  new v1.2.0 flame-in-diamond logo in the modal header.
+✨ **Added**
 - New three-variant SmokeSignal logo (flame-in-diamond): the Plugins-tab tile, menu icon
   and report window now use a flip-compatible double-ring variant that reads on every
   Unraid theme; the README banner, store icon and support thread follow the new design
   (light + dark).
+
+🎨 **Design**
+- The check-result window now uses Unraid's own font instead of a fixed one, so it
+  matches the rest of the WebGUI. Its progress bar follows your accent colour when
+  CannonadeCommand is installed (amber otherwise). The verdict and status colours
+  (green, amber, red) are unchanged.
+- The report-window logo cache-buster is bumped so existing installs pick up the
+  new v1.2.0 flame-in-diamond logo in the modal header.
 - The plugin author shows as "Junker der Provinz"; the install/uninstall ceremony prints
   the house ASCII banner ("SmokeSignal ist ready!" after an install, "Bye!" on removal).
-- CRITICAL uninstall fix (the same bug found in CannonadeCommander and ShipLog): the
-  removal was a bare `&lt;REMOVE&gt;` tag Unraid never runs, so uninstalling left the files,
-  the package and the cached flash .txz behind. Removal is now a proper
-  `&lt;FILE Run="/bin/bash" Method="remove"&gt;` block ending in `exit 0` that removes the
-  package and wipes the files (SmokeSignal is stateless  -  no daemon, no user data).
 - Branded ASCII startup banner. Running the engine from the Unraid console prints the
   "Junker der Provinz" house banner as its report header (human-readable report only; the
   WebGUI JSON is untouched).
@@ -67,26 +50,45 @@
   ownership, LF-normalised text, banner embedded from .github/assets/banner-raw.txt. The
   release workflow builds and publishes the .txz on a v* tag.
 
-- First stable release (SemVer, matching the container repos): the pre-reboot health check
-  with a single GO / CAUTION / NO-GO verdict  -  advisory only, it reads the host state and
-  never changes anything.
-- Checks: array + disk assignments and health, degraded/missing parity (CAUTION vs NO-GO),
-  syslog disk/IO errors, SMART early-warning, plus the Main-tab button next to Reboot.
+⚡ **Improved**
+- The check-result window now shows a live progress bar while the engine runs,
+  with the current stage and a percentage, instead of a static "Running checks"
+  line. It reflects real progress (each check, plus per-disk during the slower
+  SMART scan) by streaming from the engine; if streaming is unavailable it falls
+  back to an animated bar, so the report always appears.
+- Click a problem finding in the check-result window to jump straight to the
+  relevant Unraid page: syslog and disk/IO findings open the System Log viewer,
+  array / parity / mover / space / flash / SMART findings open Main, running VMs
+  open the VMs tab, risky mounts / missing binds / a stuck image open Docker, and
+  a stopped dockerd or libvirt opens its Settings page. Only warning and error
+  findings are linked (a healthy check has nothing to jump to).
+
+🐛 **Fixed**
+- CRITICAL uninstall fix (the same bug found in CannonadeCommander and ShipLog): the
+  removal was a bare `&lt;REMOVE&gt;` tag Unraid never runs, so uninstalling left the files,
+  the package and the cached flash .txz behind. Removal is now a proper
+  `&lt;FILE Run="/bin/bash" Method="remove"&gt;` block ending in `exit 0` that removes the
+  package and wipes the files (SmokeSignal is stateless  -  no daemon, no user data).
+
+🌐 **Translations**
+- The report and the Tools page now follow the language configured in the Unraid
+  UI across all 26 supported languages (previously English and German only), the
+  same way ShipLog does. Right-to-left languages (Arabic, Hebrew) are laid out
+  accordingly, and any string not yet translated falls back to English.
+
+## 1.0.0
+🎨 **Design**
 - Localised to the configured Unraid language (German + English, English fallback); the
   report window follows the Unraid light/dark theme.
 - Flame-in-hazard-diamond logo across the Plugins tab, menu icon and report window; banner
   in Bree Serif + Lato.
 
-## 1.0.0
+⚡ **Improved**
 - First stable release (SemVer, matching the container repos): the pre-reboot health check
   with a single GO / CAUTION / NO-GO verdict  -  advisory only, it reads the host state and
   never changes anything.
 - Checks: array + disk assignments and health, degraded/missing parity (CAUTION vs NO-GO),
   syslog disk/IO errors, SMART early-warning, plus the Main-tab button next to Reboot.
-- Localised to the configured Unraid language (German + English, English fallback); the
-  report window follows the Unraid light/dark theme.
-- Flame-in-hazard-diamond logo across the Plugins tab, menu icon and report window; banner
-  in Bree Serif + Lato.
   </CHANGES>
 
   <!-- Download the package from the GitHub release -->
