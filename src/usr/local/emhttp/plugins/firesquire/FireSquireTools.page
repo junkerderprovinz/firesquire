@@ -1,0 +1,7 @@
+Menu="Utilities"
+Title="FireSquire"
+Icon="firesquire.png"
+---
+<div id="ss-tools" style="max-width:780px;line-height:1.55"></div>
+<?php include '/usr/local/emhttp/plugins/firesquire/include/fs_i18n.php'; ?>
+<script src="/plugins/firesquire/firesquire.js?v=<?=@filemtime('/usr/local/emhttp/plugins/firesquire/firesquire.js')?>"></script>

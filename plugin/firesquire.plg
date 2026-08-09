@@ -1,0 +1,163 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "firesquire">
+<!ENTITY pkg       "firesquire">
+<!ENTITY author    "Junker der Provinz">
+<!ENTITY version   "1.0.0">
+<!ENTITY launch    "Main">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
+<!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
+<!ENTITY pkgURL    "https://github.com/junkerderprovinz/firesquire/releases/download/v&version;/&pkg;-&version;.txz">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
+<!ENTITY plgPath   "/boot/config/plugins/&pkg;">
+]>
+
+<PLUGIN name="&name;"
+        author="&author;"
+        version="&version;"
+        launch="&launch;"
+        pluginURL="&pluginURL;"
+        min="6.10.0"
+        support="https://github.com/junkerderprovinz/firesquire/issues">
+
+<!-- Plugins-tab logo via the ICON element + local path (name-independent, the
+     FanCtrlPlus convention). -->
+<ICON>
+/usr/local/emhttp/plugins/&pkg;/images/&pkg;.png
+</ICON>
+
+  <CHANGES>
+## 1.0.0
+✨ **Added**
+- **FireSquire launches — the new name for what was SmokeSignal.** Same pre-reboot
+  GO / CAUTION / NO-GO advisory, same read-only engine, new medieval-flavored name to
+  match the rest of the house. A squire tending the beacon before the reboot, instead of
+  a smoke signal. If you still have SmokeSignal installed: uninstall it, this is its
+  direct successor with identical functionality. See the full SmokeSignal history below
+  for everything this plugin already did before the rename.
+
+---
+### Formerly SmokeSignal
+The entries below are historical — from when this plugin was named SmokeSignal.
+
+## 2.0.1
+🌐 **Translations**
+- **This plugin has been renamed to FireSquire.** Same pre-reboot GO / CAUTION / NO-GO
+  advisory, same engine, new medieval-flavored name to match the rest of the house. This
+  is the final release under the SmokeSignal name — it will not receive further updates.
+  Please uninstall SmokeSignal and install FireSquire instead:
+  https://github.com/junkerderprovinz/firesquire
+
+## 2.0.0
+✨ **Added**
+- New three-variant SmokeSignal logo (flame-in-diamond): the Plugins-tab tile, menu icon
+  and report window now use a flip-compatible double-ring variant that reads on every
+  Unraid theme; the README banner, store icon and support thread follow the new design
+  (light + dark).
+
+🎨 **Design**
+- The check-result window now uses Unraid's own font instead of a fixed one, so it
+  matches the rest of the WebGUI. Its progress bar follows your accent colour when
+  CannonadeCommand is installed (amber otherwise). The verdict and status colours
+  (green, amber, red) are unchanged.
+- The report-window logo cache-buster is bumped so existing installs pick up the
+  new v1.2.0 flame-in-diamond logo in the modal header.
+- The plugin author shows as "Junker der Provinz"; the install/uninstall ceremony prints
+  the house ASCII banner ("SmokeSignal ist ready!" after an install, "Bye!" on removal).
+- Branded ASCII startup banner. Running the engine from the Unraid console prints the
+  "Junker der Provinz" house banner as its report header (human-readable report only; the
+  WebGUI JSON is untouched).
+- Reproducible packaging via plugin/pkg_build.sh (identical locally and on CI): root:root
+  ownership, LF-normalised text, banner embedded from .github/assets/banner-raw.txt. The
+  release workflow builds and publishes the .txz on a v* tag.
+
+⚡ **Improved**
+- The check-result window now shows a live progress bar while the engine runs,
+  with the current stage and a percentage, instead of a static "Running checks"
+  line. It reflects real progress (each check, plus per-disk during the slower
+  SMART scan) by streaming from the engine; if streaming is unavailable it falls
+  back to an animated bar, so the report always appears.
+- Click a problem finding in the check-result window to jump straight to the
+  relevant Unraid page: syslog and disk/IO findings open the System Log viewer,
+  array / parity / mover / space / flash / SMART findings open Main, running VMs
+  open the VMs tab, risky mounts / missing binds / a stuck image open Docker, and
+  a stopped dockerd or libvirt opens its Settings page. Only warning and error
+  findings are linked (a healthy check has nothing to jump to).
+
+🐛 **Fixed**
+- CRITICAL uninstall fix (the same bug found in CannonadeCommander and ShipLog): the
+  removal was a bare `&lt;REMOVE&gt;` tag Unraid never runs, so uninstalling left the files,
+  the package and the cached flash .txz behind. Removal is now a proper
+  `&lt;FILE Run="/bin/bash" Method="remove"&gt;` block ending in `exit 0` that removes the
+  package and wipes the files (SmokeSignal is stateless  -  no daemon, no user data).
+
+🌐 **Translations**
+- The report and the Tools page now follow the language configured in the Unraid
+  UI across all 26 supported languages (previously English and German only), the
+  same way ShipLog does. Right-to-left languages (Arabic, Hebrew) are laid out
+  accordingly, and any string not yet translated falls back to English.
+
+## 1.0.0
+🎨 **Design**
+- Localised to the configured Unraid language (German + English, English fallback); the
+  report window follows the Unraid light/dark theme.
+- Flame-in-hazard-diamond logo across the Plugins tab, menu icon and report window; banner
+  in Bree Serif + Lato.
+
+⚡ **Improved**
+- First stable release (SemVer, matching the container repos): the pre-reboot health check
+  with a single GO / CAUTION / NO-GO verdict  -  advisory only, it reads the host state and
+  never changes anything.
+- Checks: array + disk assignments and health, degraded/missing parity (CAUTION vs NO-GO),
+  syslog disk/IO errors, SMART early-warning, plus the Main-tab button next to Reboot.
+  </CHANGES>
+
+  <!-- Download the package from the GitHub release -->
+  <FILE Name="&plgPath;/&pkg;-&version;.txz">
+    <URL>&pkgURL;</URL>
+  </FILE>
+
+  <!-- Install -->
+  <FILE Run="/bin/bash">
+    <INLINE>
+      echo "Installing FireSquire &version; ..."
+      # installpkg overwrites same-path files but does NOT delete files that were
+      # removed between versions (the .txz name carries the version, so each is a
+      # "new" package). Wipe any previous FireSquire package + the plugin dir
+      # first, so stale files (e.g. an old .page) never linger.
+      for p in /var/log/packages/&pkg;*; do
+        if [ -e "$p" ]; then removepkg "$(basename "$p")" 2>/dev/null; fi
+      done
+      rm -rf "&emhttp;"
+      installpkg "&plgPath;/&pkg;-&version;.txz"
+      # Enforce the exec bit on the engine (NTFS/CI builds can drop it)
+      chmod +x "&emhttp;/&pkg;-check.sh" 2>/dev/null
+      echo ""
+      cat "&emhttp;/banner.txt" 2>/dev/null
+      echo ""
+      echo "FireSquire ist ready!"
+    </INLINE>
+  </FILE>
+
+  <!-- Remove. MUST be a <FILE ... Method="remove"> block: Unraid's plugin manager
+       only runs <FILE> elements, so a bare <REMOVE> tag is silently IGNORED and the
+       cleanup never runs. MUST end with exit 0, or Unraid leaves the .plg on the
+       flash and it reinstalls on boot. Stateless on-demand check: no daemon, no
+       user data - just drop the exact package + files. -->
+  <FILE Run="/bin/bash" Method="remove">
+    <INLINE>
+      # goodbye ceremony FIRST, while the files still exist
+      cat "&emhttp;/banner.txt" 2>/dev/null
+      echo ""
+      echo "Bye!"
+      echo ""
+      pkg=$(ls /var/log/packages/ 2>/dev/null | grep -E "^&pkg;(-[^-]+-[^-]+-[^-]+)?$" | head -n1)
+      if [ -n "$pkg" ]; then removepkg "$pkg" 2>/dev/null; fi
+      removepkg "&pkg;" 2>/dev/null
+      rm -rf "&emhttp;"
+      rm -rf "&plgPath;"
+      exit 0
+    </INLINE>
+  </FILE>
+
+</PLUGIN>

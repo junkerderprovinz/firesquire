@@ -1,0 +1,7 @@
+Menu="Main"
+Title="FireSquire"
+Icon="firesquire.png"
+---
+<div id="ss-frag" style="display:none"></div>
+<?php include '/usr/local/emhttp/plugins/firesquire/include/fs_i18n.php'; ?>
+<script src="/plugins/firesquire/firesquire.js?v=<?=@filemtime('/usr/local/emhttp/plugins/firesquire/firesquire.js')?>"></script>
