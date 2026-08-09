@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.0.0">
+<!ENTITY version   "3.0.0">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -27,7 +27,7 @@
 </ICON>
 
   <CHANGES>
-## 1.0.0
+## 3.0.0
 ✨ **Added**
 - **FireSquire launches — the new name for what was SmokeSignal.** Same pre-reboot
   GO / CAUTION / NO-GO advisory, same read-only engine, new medieval-flavored name to
