@@ -3,7 +3,7 @@
 <!ENTITY name      "smokesignal">
 <!ENTITY pkg       "smokesignal">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "2.0.0">
+<!ENTITY version   "2.0.1">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/smokesignal/main">
 <!ENTITY pluginURL "&gitURL;/plugin/smokesignal.plg">
@@ -27,6 +27,14 @@
 </ICON>
 
   <CHANGES>
+## 2.0.1
+🌐 **Translations**
+- **This plugin has been renamed to FireSquire.** Same pre-reboot GO / CAUTION / NO-GO
+  advisory, same engine, new medieval-flavored name to match the rest of the house. This
+  is the final release under the SmokeSignal name — it will not receive further updates.
+  Please uninstall SmokeSignal and install FireSquire instead:
+  https://github.com/junkerderprovinz/firesquire
+
 ## 2.0.0
 ✨ **Added**
 - New three-variant SmokeSignal logo (flame-in-diamond): the Plugins-tab tile, menu icon
