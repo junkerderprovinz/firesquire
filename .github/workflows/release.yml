@@ -1,15 +1,15 @@
 name: Release
 
-# Cuts a SmokeSignal plugin release from a v* tag. CI is the single source of
+# Cuts a FireSquire plugin release from a v* tag. CI is the single source of
 # truth for the package and for what main advertises: build -> publish the
 # GitHub release (asset goes live) -> confirm it is reachable -> ONLY THEN flip
-# <!ENTITY version> in plugin/smokesignal.plg on main. main never advertises a
+# <!ENTITY version> in plugin/firesquire.plg on main. main never advertises a
 # version whose release asset is not live yet; a failure before the flip leaves
 # main on the previous version (zero user impact, re-run the tag to heal).
 #
 # This .plg has no <SHA256> field, so only the version entity is flipped.
 #
-# MAINTAINER FLOW: add a "## X.Y.Z" block to plugin/smokesignal.plg <CHANGES>
+# MAINTAINER FLOW: add a "## X.Y.Z" block to plugin/firesquire.plg <CHANGES>
 # and `git tag vX.Y.Z` on main. You do NOT need to bump <!ENTITY version> by
 # hand — CI flips it after the asset is live.
 #
@@ -25,7 +25,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: smokesignal-release
+  group: firesquire-release
   cancel-in-progress: false
 
 env:
@@ -55,7 +55,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
         with:
-          name: smokesignal-txz
+          name: firesquire-txz
           path: plugin/out/*
 
       # ---- tag-only from here ----
@@ -64,9 +64,9 @@ jobs:
         run: |
           ver="${{ steps.v.outputs.version }}"
           awk -v v="## $ver" '$0==v{grab=1;next} grab&&/^## /{exit} grab{print}' \
-            plugin/smokesignal.plg > release-notes.md
+            plugin/firesquire.plg > release-notes.md
           if [ ! -s release-notes.md ]; then
-            echo "::error::no '## $ver' block in plugin/smokesignal.plg <CHANGES> — add it before tagging"
+            echo "::error::no '## $ver' block in plugin/firesquire.plg <CHANGES> — add it before tagging"
             exit 1
           fi
           echo "---- release notes ----"; cat release-notes.md
@@ -85,7 +85,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           ver="${{ steps.v.outputs.version }}"
-          url="https://github.com/${GITHUB_REPOSITORY}/releases/download/v${ver}/smokesignal-${ver}.txz"
+          url="https://github.com/${GITHUB_REPOSITORY}/releases/download/v${ver}/firesquire-${ver}.txz"
           for i in $(seq 1 10); do
             code=$(curl -fsSL -o /dev/null -w '%{http_code}' -I "$url" || true)
             [ "$code" = "200" ] && { echo "asset live: $url"; exit 0; }
@@ -93,19 +93,19 @@ jobs:
           done
           echo "::error::release asset not reachable: $url"; exit 1
 
-      - name: Flip version in smokesignal.plg on main (final step)
+      - name: Flip version in firesquire.plg on main (final step)
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           ver="${{ steps.v.outputs.version }}"
-          sed -i -E "s#(<!ENTITY version[[:space:]]+\")[^\"]*(\">)#\1${ver}\2#" plugin/smokesignal.plg
-          grep -qE "<!ENTITY version[[:space:]]+\"${ver}\">" plugin/smokesignal.plg \
-            || { echo "::error::version not written into smokesignal.plg"; exit 1; }
+          sed -i -E "s#(<!ENTITY version[[:space:]]+\")[^\"]*(\">)#\1${ver}\2#" plugin/firesquire.plg
+          grep -qE "<!ENTITY version[[:space:]]+\"${ver}\">" plugin/firesquire.plg \
+            || { echo "::error::version not written into firesquire.plg"; exit 1; }
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- plugin/smokesignal.plg; then
-            echo "smokesignal.plg already current — nothing to commit"
+          if git diff --quiet -- plugin/firesquire.plg; then
+            echo "firesquire.plg already current — nothing to commit"
           else
-            git add plugin/smokesignal.plg
+            git add plugin/firesquire.plg
             git commit -m "ci: release v${ver} — pin version [skip ci]"
             git pull --rebase origin main
             git push origin HEAD:main

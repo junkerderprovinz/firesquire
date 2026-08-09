@@ -1,16 +1,16 @@
 /**
- * Generates SmokeSignal assets from the three logo masters in this folder:
- *   smokesignal-dunkel.svg  (dark ring)   -> light surfaces
- *   smokesignal-hell.svg    (white ring)   -> dark surfaces
- *   smokesignal-unraid.svg  (double ring)  -> the Unraid plugin tile (reads on any theme)
+ * Generates FireSquire assets from the three logo masters in this folder:
+ *   firesquire-dunkel.svg  (dark ring)   -> light surfaces
+ *   firesquire-hell.svg    (white ring)   -> dark surfaces
+ *   firesquire-unraid.svg  (double ring)  -> the Unraid plugin tile (reads on any theme)
  *   logo.svg = a copy of the dunkel master (kept for README/CA references).
  *
  * Outputs:
  *   icon.png             : CA icon — dunkel logo on a WHITE 512 tile (stands out on the dark CA page)
- *   banner.png/.svg      : white 1600x500, dunkel logo + "SmokeSignal" (Bree Serif) + claim (Lato)  [README light]
+ *   banner.png/.svg      : white 1600x500, dunkel logo + "FireSquire" (Bree Serif) + claim (Lato)  [README light]
  *   banner-dark.png/.svg : dark 1600x500, hell logo + wordmark                                       [README <picture> dark]
  *   banner-logo.png/.svg : white 1600x500, dunkel logo only, NO text                                 [support thread]
- *   ../../src/.../smokesignal/{images,icons}/smokesignal.png + smokesignal.png (root):
+ *   ../../src/.../firesquire/{images,icons}/firesquire.png + firesquire.png (root):
  *                          the unraid (flip-compatible) variant, transparent 512  [Plugins tile + menu icon + modal]
  *
  * viewBox-agnostic: every embed reads the master's OWN viewBox (the masters differ:
@@ -32,17 +32,17 @@ const opentype = require(`${gRoot}/opentype.js`);
 const here = (p) => new URL(p, import.meta.url);
 
 // ---- content + styling ------------------------------------------------------
-const NAME = 'SmokeSignal';
-const CLAIM = 'Catches the smoke before the reboot catches fire.';
+const NAME = 'FireSquire';
+const CLAIM = 'Reads the beacon before your reboot catches fire.';
 const W = 1600, H = 500;
 const LH = 400, LW = 400;          // logo (square)
 // House banner standard: name 132 / claim 44, logo-to-text gap 70, name-to-claim gap 8.
 const nameSize = 132, claimSize = 44, gap = 70, lineGap = 8;
-const PLUGIN = '../../src/usr/local/emhttp/plugins/smokesignal/';
+const PLUGIN = '../../src/usr/local/emhttp/plugins/firesquire/';
 // Each theme embeds the logo variant that reads on its background (no recolour).
 const THEMES = [
-  { suffix: '', bg: '#ffffff', name: '#1f2328', claim: '#5a5d5e', logo: 'smokesignal-dunkel.svg' },
-  { suffix: '-dark', bg: '#0d1117', name: '#e6edf3', claim: '#9aa4ad', logo: 'smokesignal-hell.svg' },
+  { suffix: '', bg: '#ffffff', name: '#1f2328', claim: '#5a5d5e', logo: 'firesquire-dunkel.svg' },
+  { suffix: '-dark', bg: '#0d1117', name: '#e6edf3', claim: '#9aa4ad', logo: 'firesquire-hell.svg' },
 ];
 // -----------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ const png = (svg, size, bg) =>
   new Resvg(Buffer.from(svg), { fitTo: { mode: 'width', value: size }, background: bg || 'rgba(0,0,0,0)' }).render().asPng();
 
 // ---- 1) CA icon: dunkel logo on a WHITE tile -------------------------------
-const dunkelRaw = readFileSync(here('./smokesignal-dunkel.svg'), 'utf8').replace(/<\?xml[^>]*\?>\s*/, '');
+const dunkelRaw = readFileSync(here('./firesquire-dunkel.svg'), 'utf8').replace(/<\?xml[^>]*\?>\s*/, '');
 const dvb = (dunkelRaw.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/) || [, '1000', '1000']);
 const iconSvg = dunkelRaw.replace(/(<svg\b[^>]*>)/, `$1<rect width="${dvb[1]}" height="${dvb[2]}" fill="#ffffff"/>`);
 writeFileSync(here('./icon.png'), png(iconSvg, 512, '#ffffff'));
@@ -76,15 +76,15 @@ writeFileSync(here('./icon.png'), png(iconSvg, 512, '#ffffff'));
 // ---- 2) plugin tile PNGs: the flip-compatible unraid variant, transparent --
 // Backs .plg <ICON> (images/), the .page Icon= menu icon (icons/), and the
 // check-result modal <img> (root). Reads on every Unraid theme from one PNG.
-const tile = png(readFileSync(here('./smokesignal-unraid.svg'), 'utf8'), 512);
-for (const rel of ['smokesignal.png', 'images/smokesignal.png', 'icons/smokesignal.png']) {
+const tile = png(readFileSync(here('./firesquire-unraid.svg'), 'utf8'), 512);
+for (const rel of ['firesquire.png', 'images/firesquire.png', 'icons/firesquire.png']) {
   writeFileSync(here(PLUGIN + rel), tile);
 }
 
 // ---- 3) banners (Bree Serif name + Lato claim, text rendered to paths) -----
-const bree = await getFont('SmokeSignal-BreeSerif-Regular.ttf',
+const bree = await getFont('FireSquire-BreeSerif-Regular.ttf',
   'https://github.com/google/fonts/raw/main/ofl/breeserif/BreeSerif-Regular.ttf');
-const claimFont = await getFont('SmokeSignal-Lato-Regular.ttf',
+const claimFont = await getFont('FireSquire-Lato-Regular.ttf',
   'https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf');
 
 const nameW = bree.getAdvanceWidth(NAME, nameSize);
@@ -101,15 +101,27 @@ const blockH = nameAsc + nameDesc + lineGap + claimAsc;
 const nameBaseline = H / 2 - blockH / 2 + nameAsc;
 const claimBaseline = nameBaseline + nameDesc + lineGap + claimAsc;
 
-const namePath = bree.getPath(NAME, textX, nameBaseline, nameSize).toPathData(2);
-const claimPath = claimFont.getPath(CLAIM, textX, claimBaseline, claimSize).toPathData(2);
+// opentype.js's bezier flattening can emit a NaN in a glyph's curve data at some
+// specific ABSOLUTE x position (reproduced: Bree Serif's "e" is clean at x=0 but
+// NaN once its cumulative advance lands past ~x=450 at this size — a float-
+// precision edge case inside the library, unrelated to which text precedes it).
+// Fix: always compute the path at LOCAL origin x=0 (verified NaN-free), then
+// shift it into place with an SVG transform instead of feeding opentype.js the
+// "poisoned" absolute coordinate.
+const namePath = bree.getPath(NAME, 0, nameBaseline, nameSize).toPathData(2);
+const claimPath = claimFont.getPath(CLAIM, 0, claimBaseline, claimSize).toPathData(2);
+if (namePath.includes('NaN') || claimPath.includes('NaN')) {
+  throw new Error('NaN in glyph path even at local origin x=0 — needs a fresh look');
+}
 
 for (const t of THEMES) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="${t.bg}"/>
   ${embedLogo(t.logo, LX, LY, LW, LH)}
-  <path d="${namePath}" fill="${t.name}"/>
-  <path d="${claimPath}" fill="${t.claim}"/>
+  <g transform="translate(${textX},0)">
+    <path d="${namePath}" fill="${t.name}"/>
+    <path d="${claimPath}" fill="${t.claim}"/>
+  </g>
 </svg>
 `;
   writeFileSync(here(`./banner${t.suffix}.svg`), svg);
@@ -120,7 +132,7 @@ for (const t of THEMES) {
 const logoLX = (W - LW) / 2, logoLY = (H - LH) / 2;
 const logoOnly = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="#ffffff"/>
-  ${embedLogo('smokesignal-dunkel.svg', logoLX, logoLY, LW, LH)}
+  ${embedLogo('firesquire-dunkel.svg', logoLX, logoLY, LW, LH)}
 </svg>
 `;
 writeFileSync(here('./banner-logo.svg'), logoOnly);

@@ -1,17 +1,17 @@
 #!/bin/bash
-# Build the SmokeSignal Unraid plugin package (.txz) from src/. Portable (uses
+# Build the FireSquire Unraid plugin package (.txz) from src/. Portable (uses
 # tar, not Slackware makepkg) so it runs identically on GitHub CI and locally.
 #
 #   plugin/pkg_build.sh [VERSION]      # VERSION defaults to today (YYYY.MM.DD)
 #
-# Output: plugin/out/smokesignal-<version>.txz (+ .md5, + .sha256). The release
+# Output: plugin/out/firesquire-<version>.txz (+ .md5, + .sha256). The release
 # workflow attaches the .txz (+ .md5) to the GitHub release "v<version>".
 set -euo pipefail
 
 VERSION="${1:-$(date +%Y.%m.%d)}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/src"
-EMHTTP_REL="usr/local/emhttp/plugins/smokesignal"
+EMHTTP_REL="usr/local/emhttp/plugins/firesquire"
 OUT="$ROOT/plugin/out"
 PKGROOT="$(mktemp -d)"
 trap 'rm -rf "$PKGROOT"' EXIT
@@ -21,11 +21,11 @@ cp -a "$SRC/." "$PKGROOT/"
 
 # Brand ASCII banner: copy the shared house banner into the package (CR-stripped),
 # the same way the container Dockerfiles do (see the vault ASCII Template).
-# smokesignal-check.sh prints it as the header of its human-readable report.
+# firesquire-check.sh prints it as the header of its human-readable report.
 echo "==> embedding brand banner"
 tr -d '\r' < "$ROOT/.github/assets/banner-raw.txt" > "$PKGROOT/$EMHTTP_REL/banner.txt"
 
-chmod +x "$PKGROOT/$EMHTTP_REL/smokesignal-check.sh"
+chmod +x "$PKGROOT/$EMHTTP_REL/firesquire-check.sh"
 
 # Normalise text files to LF. A CRLF .page breaks Unraid's PageBuilder (it splits
 # the header on a pure-LF "\n---\n"), and a trailing CR breaks shell shebangs.
@@ -36,7 +36,7 @@ find "$PKGROOT" -type f ! -name '*.png' -print0 \
   | while IFS= read -r -d '' f; do perl -i -pe 's/\r\n/\n/g; s/\r$//' "$f"; done
 
 mkdir -p "$OUT"
-TXZ="$OUT/smokesignal-$VERSION.txz"
+TXZ="$OUT/firesquire-$VERSION.txz"
 echo "==> packaging -> $TXZ"
 # --force-local: a Windows output path like "D:/..." has a colon that GNU tar
 # would otherwise read as a remote host[:path]. Harmless on Linux/CI.
