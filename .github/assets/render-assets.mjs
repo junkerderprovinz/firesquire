@@ -22,6 +22,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 
@@ -67,18 +68,22 @@ function embedLogo(file, x, y, w, h) {
 const png = (svg, size, bg) =>
   new Resvg(Buffer.from(svg), { fitTo: { mode: 'width', value: size }, background: bg || 'rgba(0,0,0,0)' }).render().asPng();
 
-// ---- 1) CA icon: dunkel logo on a WHITE tile -------------------------------
-// Corners rounded on the tile itself (rx/ry) — CA's own CSS only rounds
-// transparent-background icons on the Black theme, so a solid edge-to-edge
-// tile must bring its own rounding. Radius = Krusader's house ratio (~13.5%).
+// ---- 1) CA icon: dunkel logo, white ONLY inside the dark diamond frame -----
+// The diamond frame is a hollow path (no separate inner fill) — its "white"
+// interior only exists because of this rect behind it. A flat rect would
+// leave the 4 corners OUTSIDE the diamond opaque white too (square-looking
+// tile). Flood-fill the border-connected white to transparent afterwards so
+// only the disk enclosed by the frame stays opaque (jdp, 2026-08-10: "nur
+// innerhalb des schwarzen Rahmens einen weißen Hintergrund").
 const dunkelRaw = readFileSync(here('./firesquire-dunkel.svg'), 'utf8').replace(/<\?xml[^>]*\?>\s*/, '');
 const dvb = (dunkelRaw.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/) || [, '1000', '1000']);
-const iconRadius = (parseFloat(dvb[1]) * 0.135).toFixed(1);
-const iconSvg = dunkelRaw.replace(/(<svg\b[^>]*>)/, `$1<rect width="${dvb[1]}" height="${dvb[2]}" rx="${iconRadius}" ry="${iconRadius}" fill="#ffffff"/>`);
-// No canvas-level background here (would paint solid white behind the rounded
-// rect's own transparent corners, defeating the rounding) — the <rect> above
-// is the only fill; the canvas itself must stay transparent.
-writeFileSync(here('./icon.png'), png(iconSvg, 512));
+const iconSvg = dunkelRaw.replace(/(<svg\b[^>]*>)/, `$1<rect width="${dvb[1]}" height="${dvb[2]}" fill="#ffffff"/>`);
+// No canvas-level background here — the <rect> above is the only fill; the
+// canvas itself must stay transparent so the flood fill below has an outer
+// boundary to work from.
+const iconPngPath = here('./icon.png');
+writeFileSync(iconPngPath, png(iconSvg, 512));
+execSync(`python3 "${fileURLToPath(here('./flood-transparent.py'))}" "${fileURLToPath(iconPngPath)}"`);
 
 // ---- 2) plugin tile PNGs: the flip-compatible unraid variant, transparent --
 // Backs .plg <ICON> (images/), the .page Icon= menu icon (icons/), and the
