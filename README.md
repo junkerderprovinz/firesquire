@@ -18,8 +18,6 @@ An Unraid plugin that answers one question before you reboot: <b>will the box co
 FireSquire reads the live host state and gives you a single verdict — <b>GO / CAUTION / NO-GO</b> — with the exact findings, so you never reboot into a known landmine. Advisory only: it reads, it never touches anything.
 </p>
 
-<p align="center"><em>Formerly named SmokeSignal — same plugin, renamed to match the house.</em></p>
-
 <p align="center">
   <a href="https://buymeacoffee.com/junkerderprovinz">
     <img src="https://raw.githubusercontent.com/junkerderprovinz/firesquire/main/.github/assets/button-buy-me-a-coffee.svg" alt="Buy me a coffee" width="220">
