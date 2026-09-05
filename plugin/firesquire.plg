@@ -10,6 +10,7 @@
 <!ENTITY pkgURL    "https://github.com/junkerderprovinz/firesquire/releases/download/v&version;/&pkg;-&version;.txz">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
+<!ENTITY sha256 "3fbf0664ae784be53ceef79e107e7622e7bc8a7be81ea6e3fd040edfb2360a4d">
 ]>
 
 <PLUGIN name="&name;"
@@ -115,6 +116,7 @@ The entries below are historical — from when this plugin was named SmokeSignal
   <!-- Download the package from the GitHub release -->
   <FILE Name="&plgPath;/&pkg;-&version;.txz">
     <URL>&pkgURL;</URL>
+    <SHA256>&sha256;</SHA256>
   </FILE>
 
   <!-- Install -->
