@@ -23,6 +23,10 @@ One knight's job: I build it, keep it running, work through the issues and add w
 </p>
 
 <p align="center">
+If it has earned a place on your computer or server, a donation covers what it costs: the domain, the server, and the evenings that go into it. It also makes this knight's heart beat a little faster. Three ways below, whichever suits you.
+</p>
+
+<p align="center">
   <a href="https://buymeacoffee.com/junkerderprovinz"><img src="https://raw.githubusercontent.com/junkerderprovinz/junkerderprovinz/main/donate/buttons/button-buy-me-a-coffee-live.svg" alt="Buy me a coffee" width="160"></a>
   &nbsp;
   <a href="https://paypal.me/hallelujadesign"><img src="https://raw.githubusercontent.com/junkerderprovinz/junkerderprovinz/main/donate/buttons/button-paypal-live.svg" alt="PayPal" width="160"></a>
@@ -153,6 +157,8 @@ FireSquire is free software under the **GNU Affero General Public License v3.0**
 ## 8. Support this project
 
 Questions? Check the [support thread](https://forums.unraid.net/topic/199508-support-junkerderprovinz-firesquire/). Bugs, ideas or feature requests? Please [open a GitHub issue](https://github.com/junkerderprovinz/firesquire/issues).
+
+One knight's job: I build it, keep it running, work through the issues and add what people ask for, until nothing is missing. No accounts, no telemetry, no ads. No trial, no tier, no asterisk. Nothing readable ever leaves your own walls.
 
 If it has earned a place on your computer or server, a donation covers what it costs: the domain, the server, and the evenings that go into it. It also makes this knight's heart beat a little faster. Three ways below, whichever suits you.
 
