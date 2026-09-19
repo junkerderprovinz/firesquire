@@ -1,13 +1,13 @@
 #!/bin/bash
 #
-# firesquire-check.sh -- FireSquire engine for Unraid
+# FireSquire engine for Unraid.
 #
 # Advisory only. Inspects the live host and reports an overall verdict:
-#   GO       -- nothing found that should block a reboot
-#   CAUTION  -- non-fatal issues you should know about before rebooting
-#   NO-GO    -- conditions likely to make the reboot come back dirty
+#   GO       nothing found that should block a reboot
+#   CAUTION  non-fatal issues you should know about before rebooting
+#   NO-GO    conditions likely to make the reboot come back dirty
 #
-# It NEVER changes the system. Run it before a planned reboot.
+# It never changes the system. Run it before a planned reboot.
 #
 # Usage:
 #   firesquire-check.sh            human-readable report (English, colour on TTY)
@@ -28,9 +28,9 @@ for _a in "$@"; do
   esac
 done
 
-# Emit a progress marker (percent 0..100 + an i18n stage key) -- ONLY in
-# --progress mode, so the streaming WebGUI endpoint can drive a real progress
-# bar. Never printed in a normal --json run, so that JSON stays clean.
+# Emit a progress marker (percent 0..100 + an i18n stage key) in --progress mode
+# only, so the streaming WebGUI endpoint can drive a real progress bar. A normal
+# --json run never prints it, so that JSON stays clean.
 fspush() { [ "$PROGRESS" -eq 1 ] && printf '@@FSP %s %s\n' "$1" "$2"; }
 
 WORST=0          # 0 GO, 1 CAUTION, 2 NO-GO
@@ -88,17 +88,15 @@ add() {
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
-# =============================================================================
-#  CRITICAL  (a FAIL here means NO-GO)
-# =============================================================================
+# Critical checks: a fail here means NO-GO.
 
-# ---- Array state + every device assignment ----------------------------------
+# Array state and every device assignment.
 MDCMD=/usr/local/sbin/mdcmd
 DISKSINI=/var/local/emhttp/disks.ini
 
-# Collect assigned slots whose status is not OK. Only slots that ACTUALLY have a
-# disk assigned (non-empty id) count -- an empty/never-used slot (e.g. an unused
-# second parity) reports as not-present and must NOT be flagged. Parity issues are
+# Collect assigned slots whose status is not OK. Only slots that actually have a
+# disk assigned (non-empty id) count: an empty or never-used slot (e.g. an unused
+# second parity) reports as not-present and is not flagged. Parity issues are
 # split out: a degraded parity is a caution, the array still boots.
 fspush 3 p_array
 DISKS_READ=0; bad_data=""; bad_parity=""
@@ -131,42 +129,42 @@ if [ -x "$MDCMD" ]; then
     add critical array_state fail array_not_started "${mdState:-unknown}" "Array is not started (state=${mdState:-unknown})."
   elif [ "$DISKS_READ" -eq 1 ]; then
     if [ -n "$bad_data" ]; then
-      add critical array_state fail array_bad_devices "$bad_data" "Array not clean -- unhealthy data disk(s): $bad_data"
+      add critical array_state fail array_bad_devices "$bad_data" "Array not clean, unhealthy data disk(s): $bad_data"
     else
       add critical array_state pass array_ok "" "Array started and healthy; all data disk assignments OK."
     fi
   elif [ "$nDis" -ne 0 ] || [ "$nInv" -ne 0 ] || [ "$nMis" -ne 0 ]; then
-    add critical array_state fail array_counts "${mdState}|$nDis|$nInv|$nMis" "Array not clean: state=${mdState} -- disabled=$nDis invalid=$nInv missing=$nMis"
+    add critical array_state fail array_counts "${mdState}|$nDis|$nInv|$nMis" "Array not clean: state=${mdState}, disabled=$nDis invalid=$nInv missing=$nMis"
   else
     add critical array_state pass array_ok "" "Array started and healthy; all device assignments OK."
   fi
-  [ -n "$bad_parity" ] && add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity -- array still boots, parity protection reduced."
+  [ -n "$bad_parity" ] && add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity; array still boots, parity protection reduced."
 
   mdResync="$(md mdResync)"; mdResync=${mdResync:-0}
   mdAction="$(md mdResyncAction)"
   if [ "$mdResync" != "0" ]; then
-    add critical array_op fail array_op_running "${mdAction:-sync}" "Array operation in progress (${mdAction:-sync}) -- let it finish before rebooting."
+    add critical array_op fail array_op_running "${mdAction:-sync}" "Array operation in progress (${mdAction:-sync}); let it finish before rebooting."
   else
     add critical array_op pass array_op_ok "" "No parity/sync/rebuild/clear in progress."
   fi
 elif [ -n "$bad_data" ]; then
-  add critical array_state fail array_bad_devices "$bad_data" "Array not clean -- unhealthy data disk(s): $bad_data"
-  [ -n "$bad_parity" ] && add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity -- array still boots, parity protection reduced."
+  add critical array_state fail array_bad_devices "$bad_data" "Array not clean, unhealthy data disk(s): $bad_data"
+  [ -n "$bad_parity" ] && add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity; array still boots, parity protection reduced."
 elif [ -n "$bad_parity" ]; then
-  add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity -- array still boots, parity protection reduced."
+  add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity; array still boots, parity protection reduced."
 else
-  add critical array_state info array_unknown "" "mdcmd not found -- cannot determine array state."
+  add critical array_state info array_unknown "" "mdcmd not found, cannot determine array state."
 fi
 
-# ---- Mover -------------------------------------------------------------------
+# Mover.
 fspush 14 p_mover
 if pgrep -f '/usr/local/sbin/mover' >/dev/null 2>&1 || pgrep -x move >/dev/null 2>&1; then
-  add critical mover fail mover_running "" "Mover is running -- wait for it to finish before rebooting."
+  add critical mover fail mover_running "" "Mover is running; wait for it to finish before rebooting."
 else
   add critical mover pass mover_ok "" "Mover is not running."
 fi
 
-# ---- Containers mounting a host runtime dir (the libvirt-mount-race class) ---
+# Containers mounting a host runtime dir (the libvirt-mount-race class).
 fspush 20 p_mounts
 if have docker && docker info >/dev/null 2>&1; then
   risky=""
@@ -187,10 +185,10 @@ if have docker && docker info >/dev/null 2>&1; then
     add critical risky_mount pass risky_mount_ok "" "No container mounts a host runtime directory (besides docker.sock)."
   fi
 else
-  add critical risky_mount info risky_mount_skip "" "Docker not available -- skipped container mount scan."
+  add critical risky_mount info risky_mount_skip "" "Docker not available, skipped container mount scan."
 fi
 
-# ---- Stuck docker.img / libvirt.img loops -----------------------------------
+# Stuck docker.img / libvirt.img loops.
 fspush 27 p_loops
 if have losetup; then
   LOOP="$(losetup -a 2>/dev/null)"
@@ -209,10 +207,10 @@ if have losetup; then
     add critical stuck_loop pass stuck_loop_ok "" "docker.img / libvirt.img loop state looks clean."
   fi
 else
-  add critical stuck_loop info stuck_loop_skip "" "losetup not found -- skipped loop-device check."
+  add critical stuck_loop info stuck_loop_skip "" "losetup not found, skipped loop-device check."
 fi
 
-# ---- Flash (USB boot) -------------------------------------------------------
+# Flash (USB boot).
 fspush 32 p_flash
 if mountpoint -q /boot; then
   tf="/boot/.firesquire_write_test.$$"
@@ -220,17 +218,15 @@ if mountpoint -q /boot; then
     rm -f "$tf" 2>/dev/null
     add critical flash pass flash_ok "" "Flash /boot is mounted and writable."
   else
-    add critical flash fail flash_ro "" "Flash /boot is mounted but NOT writable (possible FAT corruption) -- config won't persist."
+    add critical flash fail flash_ro "" "Flash /boot is mounted but NOT writable (possible FAT corruption); config won't persist."
   fi
 else
   add critical flash fail flash_unmounted "" "Flash /boot is not mounted."
 fi
 
-# =============================================================================
-#  WARNING  (a WARN here means CAUTION)
-# =============================================================================
+# Warning checks: a warn here means CAUTION.
 
-# ---- Crashes since last boot ------------------------------------------------
+# Crashes since last boot.
 fspush 38 p_crashes
 SYSLOG=/var/log/syslog
 if [ -r "$SYSLOG" ]; then
@@ -255,10 +251,10 @@ if [ -r "$SYSLOG" ]; then
     add warning iodisk pass io_ok "" "No disk/IO errors in syslog since boot."
   fi
 else
-  add warning syslog info syslog_skip "" "syslog not readable -- skipped crash scan."
+  add warning syslog info syslog_skip "" "syslog not readable, skipped crash scan."
 fi
 
-# ---- Free space -------------------------------------------------------------
+# Free space.
 fspush 48 p_space
 chk_space() {
   local path="$1" label="$2" thr="$3" use
@@ -276,18 +272,18 @@ chk_space /var/log         varlog 75
 chk_space /var/lib/docker  docker 85
 [ -d /mnt/cache ] && chk_space /mnt/cache cache 90
 
-# ---- VMs running ------------------------------------------------------------
+# VMs running.
 fspush 54 p_vms
 if have virsh; then
   running="$(virsh list --state-running --name 2>/dev/null | grep -c .)"
   if [ "${running:-0}" -gt 0 ]; then
-    add warning vms warn vms_running "$running" "$running VM(s) running -- shut them down gracefully before rebooting."
+    add warning vms warn vms_running "$running" "$running VM(s) running; shut them down gracefully before rebooting."
   else
     add warning vms pass vms_ok "" "No VMs running."
   fi
 fi
 
-# ---- Core services ----------------------------------------------------------
+# Core services.
 fspush 60 p_services
 if mountpoint -q /var/lib/docker; then
   if pgrep -x dockerd >/dev/null 2>&1; then
@@ -309,7 +305,7 @@ else
   add warning svc_emhttp warn svc_emhttp_down "" "emhttpd (WebGUI) is not running."
 fi
 
-# ---- Container bind sources exist ------------------------------------------
+# Container bind sources exist.
 fspush 66 p_binds
 if have docker && docker info >/dev/null 2>&1; then
   missing=""
@@ -329,7 +325,7 @@ if have docker && docker info >/dev/null 2>&1; then
   fi
 fi
 
-# ---- SMART health (deep: smartctl -H) --------------------------------------
+# SMART health (deep: smartctl -H).
 fspush 72 p_smart
 if have smartctl; then
   devs=""
@@ -371,7 +367,7 @@ if have smartctl; then
   done
   bad="${bad//|/ }"; attrwarn="${attrwarn//|/ }"; attrwarn="${attrwarn# }"
   if [ -n "$bad" ]; then
-    add warning smart warn smart_failing "$bad" "SMART health FAILING on:$bad -- investigate before rebooting."
+    add warning smart warn smart_failing "$bad" "SMART health FAILING on:$bad; investigate before rebooting."
   elif [ "$checked" -gt 0 ]; then
     add warning smart pass smart_ok "$checked" "SMART health PASSED on $checked disk(s)."
   else
@@ -379,12 +375,10 @@ if have smartctl; then
   fi
   [ -n "$attrwarn" ] && add warning smart_attr warn smart_attr "$attrwarn" "SMART attribute warnings: $attrwarn"
 else
-  add warning smart info smart_skip "" "smartctl not found -- skipped SMART check."
+  add warning smart info smart_skip "" "smartctl not found, skipped SMART check."
 fi
 
-# =============================================================================
-#  INFO
-# =============================================================================
+# Info.
 fspush 97 p_info
 up="$(uptime -p 2>/dev/null | sed 's/^up //')"
 [ -n "$up" ] && add info uptime info info_uptime "$up" "Uptime: $up"
@@ -393,9 +387,6 @@ add info kernel info info_kernel "$kr" "Kernel: $kr"
 ver="$(cut -d'"' -f2 /etc/unraid-version 2>/dev/null)"
 [ -n "$ver" ] && add info unraid info info_unraid "$ver" "Unraid version: $ver"
 
-# =============================================================================
-#  Verdict + output
-# =============================================================================
 case "$WORST" in
   0) VERDICT="GO";      VCOLOR=32 ;;
   1) VERDICT="CAUTION"; VCOLOR=33 ;;

@@ -1,6 +1,6 @@
 <?php
-/* FireSquire -- streams the engine's progress markers, then the final JSON, so
- * the WebGUI can show a real progress bar. Each line is one of:
+/* Streams the engine's progress markers, then the final JSON, so the WebGUI
+ * can show a real progress bar. Each line is one of:
  *   @@FSP <pct> <stagekey>     progress marker (0..100 + i18n label key)
  *   {...}                      the final report JSON (last line)
  * The frontend (firesquire.js) reads this incrementally; if streaming is not
@@ -14,7 +14,7 @@ while (ob_get_level() > 0) { @ob_end_flush(); }
 
 $ENGINE = '/usr/local/emhttp/plugins/firesquire/firesquire-check.sh';
 // stdbuf -oL forces line buffering so progress markers flush as they are printed
-// (absent stdbuf, the engine still runs -- the bar just fills in fewer steps).
+// (without stdbuf the engine still runs, the bar just fills in fewer steps).
 $sb     = trim((string) @shell_exec('command -v stdbuf'));
 $prefix = ($sb !== '') ? 'stdbuf -oL ' : '';
 $cmd    = $prefix . 'bash ' . escapeshellarg($ENGINE) . ' --json --progress 2>/dev/null';

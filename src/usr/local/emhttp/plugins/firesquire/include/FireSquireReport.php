@@ -1,6 +1,6 @@
 <?php
-/* FireSquire -- runs the engine and returns its JSON. The WebGUI (firesquire.js)
- * localises and renders it. Fixed engine path, no user input. */
+/* Runs the engine and returns its JSON. The WebGUI (firesquire.js) localises
+ * and renders it. Fixed engine path, no user input. */
 header('Content-Type: application/json');
 $ENGINE = '/usr/local/emhttp/plugins/firesquire/firesquire-check.sh';
 $raw = shell_exec('bash ' . escapeshellarg($ENGINE) . ' --json 2>/dev/null');

@@ -1,15 +1,15 @@
-/* FireSquire -- shared WebGUI helper (Main + Tools pages).
+/* Shared WebGUI helper for the Main and Tools pages.
  * Renders a theme-matched, localised report in its own modal, with a live
  * progress bar while the engine runs.
  *
- * Language: follows the configured Unraid UI language for ALL locales. The page
+ * Language: follows the configured Unraid UI language for every locale. The page
  * (fs_i18n.php, included by FireSquire.page / FireSquireTools.page) reads
- * $_SESSION['locale', merges lang/en.json + lang/<code>.json, and injects the
+ * $_SESSION['locale'], merges lang/en.json + lang/<code>.json, and injects the
  * active dict as window.fireSquireI18n. The inline English table below is only
  * a last-resort fallback if that injection is ever missing. */
 (function(){
 
-  /* ---------------- English fallback (source of lang/en.json) ---------------- */
+  /* English fallback, the source of lang/en.json. */
   var FS_EN = {
     title: 'FireSquire — Pre-Reboot Check',
     hc: 'pre-reboot health check',
@@ -117,9 +117,9 @@
   var REPORT_URL = '/plugins/firesquire/include/FireSquireReport.php';
   var STREAM_URL = '/plugins/firesquire/include/FireSquireStream.php';
 
-  /* ---------------- clickable findings -> the relevant Unraid page ----------- */
-  // Unraid has NO URL param to jump to a specific syslog line, so syslog/IO
-  // findings land on the full syslog viewer (/Tools/Syslog).
+  // Clickable findings lead to the relevant Unraid page. Unraid has no URL param
+  // to jump to a specific syslog line, so syslog/IO findings land on the full
+  // syslog viewer (/Tools/Syslog).
   function fsLink(key){
     switch (key) {
       case 'syslog_crashes':
@@ -152,7 +152,6 @@
     }
   }
 
-  /* ---------------- modal ---------------------------------------------------- */
   if (!document.getElementById('ss-modal-css')) {
     var st = document.createElement('style');
     st.id = 'ss-modal-css';
@@ -229,7 +228,7 @@
   }
 
   // Stream the engine's progress markers, driving the bar, then hand the final
-  // JSON to onResult. On ANY streaming failure, call onFail (which falls back to
+  // JSON to onResult. On any streaming failure, call onFail (which falls back to
   // the plain blocking request), so the report always appears.
   function streamRun(setBar, onResult, onFail){
     var got = false;
