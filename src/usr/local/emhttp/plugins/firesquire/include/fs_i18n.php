@@ -1,6 +1,6 @@
 <?php
-/* FireSquire -- inject the active Unraid UI language into the page, so
- * firesquire.js renders in the user's configured language for ALL locales.
+/* Injects the active Unraid UI language into the page, so firesquire.js
+ * renders in the user's configured language for every locale.
  * Reads $_SESSION['locale'] (Unraid's configured language), loads lang/en.json
  * as the base and merges lang/<code>.json over it, then exposes the result as
  * window.fireSquireI18n. Included by FireSquire.page + FireSquireTools.page.

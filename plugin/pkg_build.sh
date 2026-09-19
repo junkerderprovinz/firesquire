@@ -20,8 +20,8 @@ echo "==> assembling package tree"
 cp -a "$SRC/." "$PKGROOT/"
 
 # Brand ASCII banner: copy the shared house banner into the package (CR-stripped),
-# the same way the container Dockerfiles do (see the vault ASCII Template).
-# firesquire-check.sh prints it as the header of its human-readable report.
+# the same way the container Dockerfiles do. firesquire-check.sh prints it as the
+# header of its human-readable report.
 echo "==> embedding brand banner"
 tr -d '\r' < "$ROOT/.github/assets/banner-raw.txt" > "$PKGROOT/$EMHTTP_REL/banner.txt"
 
@@ -40,12 +40,12 @@ TXZ="$OUT/firesquire-$VERSION.txz"
 echo "==> packaging -> $TXZ"
 # --force-local: a Windows output path like "D:/..." has a colon that GNU tar
 # would otherwise read as a remote host[:path]. Harmless on Linux/CI.
-# --owner/--group/--numeric-owner: force root:root on every entry INCLUDING
+# --owner/--group/--numeric-owner: force root:root on every entry including
 # "./", so upgradepkg (running as root) never applies the builder's uid to /.
 tar --force-local --owner=0 --group=0 --numeric-owner -C "$PKGROOT" -caf "$TXZ" .
 
 echo "==> checksums"
-# cd into $OUT so the checksum files carry a bare filename, not the build path —
+# cd into $OUT so the checksum files carry a bare filename, not the build path;
 # otherwise `md5sum -c` / `sha256sum -c` fail for anyone who downloads them.
 ( cd "$OUT" && b="$(basename "$TXZ")" && md5sum "$b" | tee "$b.md5" && sha256sum "$b" | tee "$b.sha256" )
 echo "done: $TXZ"

@@ -6,16 +6,16 @@
  *   logo.svg = a copy of the dunkel master (kept for README/CA references).
  *
  * Outputs:
- *   icon.png             : CA icon — dunkel logo on a WHITE 512 tile (stands out on the dark CA page)
+ *   icon.png             : CA icon, dunkel logo on a white 512 tile (stands out on the dark CA page)
  *   banner.png/.svg      : white 1600x500, dunkel logo + "FireSquire" (Bree Serif) + claim (Lato)  [README light]
  *   banner-dark.png/.svg : dark 1600x500, hell logo + wordmark                                       [README <picture> dark]
- *   banner-logo.png/.svg : white 1600x500, dunkel logo only, NO text                                 [support thread]
+ *   banner-logo.png/.svg : white 1600x500, dunkel logo only, no text                                 [support thread]
  *   ../../src/.../firesquire/{images,icons}/firesquire.png + firesquire.png (root):
  *                          the unraid (flip-compatible) variant, transparent 512  [Plugins tile + menu icon + modal]
  *
- * viewBox-agnostic: every embed reads the master's OWN viewBox (the masters differ:
+ * viewBox-agnostic: every embed reads the master's own viewBox (the masters differ:
  * dunkel/hell are 955.7x953.78, unraid is 1000x1000). Fonts (OFL) are fetched to the OS
- * temp dir at runtime, NOT committed. Deps (global): @resvg/resvg-js, opentype.js.
+ * temp dir at runtime, not committed. Deps (global): @resvg/resvg-js, opentype.js.
  *
  * Run: node .github/assets/render-assets.mjs
  */
@@ -32,7 +32,6 @@ const { Resvg } = require(`${gRoot}/@resvg/resvg-js`);
 const opentype = require(`${gRoot}/opentype.js`);
 const here = (p) => new URL(p, import.meta.url);
 
-// ---- content + styling ------------------------------------------------------
 const NAME = 'FireSquire';
 const CLAIM = 'Reads the beacon before your reboot catches fire.';
 const W = 1600, H = 500;
@@ -45,7 +44,6 @@ const THEMES = [
   { suffix: '', bg: '#ffffff', name: '#1f2328', claim: '#5a5d5e', logo: 'firesquire-dunkel.svg' },
   { suffix: '-dark', bg: '#0d1117', name: '#e6edf3', claim: '#9aa4ad', logo: 'firesquire-hell.svg' },
 ];
-// -----------------------------------------------------------------------------
 
 async function getFont(file, url) {
   const p = join(tmpdir(), file);
@@ -58,7 +56,7 @@ async function getFont(file, url) {
 }
 
 // Embed a master verbatim at (x,y,w,h): drop the XML decl, reposition its <svg>,
-// preserving the master's OWN viewBox (never hardcode it).
+// preserving the master's own viewBox (never hardcode it).
 function embedLogo(file, x, y, w, h) {
   const raw = readFileSync(here('./' + file), 'utf8').replace(/<\?xml[^>]*\?>\s*/, '');
   const vb = (raw.match(/viewBox="([^"]+)"/) || [, '0 0 1000 1000'])[1];
@@ -68,24 +66,23 @@ function embedLogo(file, x, y, w, h) {
 const png = (svg, size, bg) =>
   new Resvg(Buffer.from(svg), { fitTo: { mode: 'width', value: size }, background: bg || 'rgba(0,0,0,0)' }).render().asPng();
 
-// ---- 1) CA icon: dunkel logo, white ONLY inside the dark diamond frame -----
-// The diamond frame is a hollow path (no separate inner fill) — its "white"
+// 1) CA icon: dunkel logo, white only inside the dark diamond frame.
+// The diamond frame is a hollow path (no separate inner fill), so its white
 // interior only exists because of this rect behind it. A flat rect would
-// leave the 4 corners OUTSIDE the diamond opaque white too (square-looking
-// tile). Flood-fill the border-connected white to transparent afterwards so
-// only the disk enclosed by the frame stays opaque (jdp, 2026-08-10: "nur
-// innerhalb des schwarzen Rahmens einen weißen Hintergrund").
+// leave the 4 corners outside the diamond opaque white too (a square-looking
+// tile), so the border-connected white is flood-filled to transparent
+// afterwards and only the disk enclosed by the frame stays opaque.
 const dunkelRaw = readFileSync(here('./firesquire-dunkel.svg'), 'utf8').replace(/<\?xml[^>]*\?>\s*/, '');
 const dvb = (dunkelRaw.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/) || [, '1000', '1000']);
 const iconSvg = dunkelRaw.replace(/(<svg\b[^>]*>)/, `$1<rect width="${dvb[1]}" height="${dvb[2]}" fill="#ffffff"/>`);
-// No canvas-level background here — the <rect> above is the only fill; the
+// No canvas-level background here: the <rect> above is the only fill; the
 // canvas itself must stay transparent so the flood fill below has an outer
 // boundary to work from.
 const iconPngPath = here('./icon.png');
 writeFileSync(iconPngPath, png(iconSvg, 512));
 execSync(`python3 "${fileURLToPath(here('./flood-transparent.py'))}" "${fileURLToPath(iconPngPath)}"`);
 
-// ---- 2) plugin tile PNGs: the flip-compatible unraid variant, transparent --
+// 2) Plugin tile PNGs: the flip-compatible unraid variant, transparent.
 // Backs .plg <ICON> (images/), the .page Icon= menu icon (icons/), and the
 // check-result modal <img> (root). Reads on every Unraid theme from one PNG.
 const tile = png(readFileSync(here('./firesquire-unraid.svg'), 'utf8'), 512);
@@ -93,7 +90,7 @@ for (const rel of ['firesquire.png', 'images/firesquire.png', 'icons/firesquire.
   writeFileSync(here(PLUGIN + rel), tile);
 }
 
-// ---- 3) banners (Bree Serif name + Lato claim, text rendered to paths) -----
+// 3) Banners (Bree Serif name + Lato claim, text rendered to paths).
 const bree = await getFont('FireSquire-BreeSerif-Regular.ttf',
   'https://github.com/google/fonts/raw/main/ofl/breeserif/BreeSerif-Regular.ttf');
 const claimFont = await getFont('FireSquire-Lato-Regular.ttf',
@@ -114,16 +111,14 @@ const nameBaseline = H / 2 - blockH / 2 + nameAsc;
 const claimBaseline = nameBaseline + nameDesc + lineGap + claimAsc;
 
 // opentype.js's bezier flattening can emit a NaN in a glyph's curve data at some
-// specific ABSOLUTE x position (reproduced: Bree Serif's "e" is clean at x=0 but
-// NaN once its cumulative advance lands past ~x=450 at this size — a float-
-// precision edge case inside the library, unrelated to which text precedes it).
-// Fix: always compute the path at LOCAL origin x=0 (verified NaN-free), then
-// shift it into place with an SVG transform instead of feeding opentype.js the
-// "poisoned" absolute coordinate.
+// absolute x positions (Bree Serif's "e" is clean at x=0 but NaN once its
+// cumulative advance lands past ~x=450 at this size, a float-precision edge case
+// inside the library). So the path is computed at local origin x=0 and shifted
+// into place with an SVG transform.
 const namePath = bree.getPath(NAME, 0, nameBaseline, nameSize).toPathData(2);
 const claimPath = claimFont.getPath(CLAIM, 0, claimBaseline, claimSize).toPathData(2);
 if (namePath.includes('NaN') || claimPath.includes('NaN')) {
-  throw new Error('NaN in glyph path even at local origin x=0 — needs a fresh look');
+  throw new Error('NaN in glyph path even at local origin x=0');
 }
 
 for (const t of THEMES) {
@@ -140,7 +135,7 @@ for (const t of THEMES) {
   writeFileSync(here(`./banner${t.suffix}.png`), png(svg, W, t.bg));
 }
 
-// ---- 4) text-free support-thread banner: dunkel logo centred, NO text ------
+// 4) Text-free support-thread banner: dunkel logo centred, no text.
 const logoLX = (W - LW) / 2, logoLY = (H - LH) / 2;
 const logoOnly = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="#ffffff"/>
