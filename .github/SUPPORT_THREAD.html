@@ -30,7 +30,7 @@
 </head>
 <body>
 
-<h1>FireSquire – know your Unraid will reboot clean, before you reboot</h1>
+<h1>FireSquire: know your Unraid will reboot clean, before you reboot</h1>
 <p class="subtitle">Reads the beacon before your reboot catches fire.</p>
 
 <p align="center">
@@ -48,31 +48,31 @@
 </p>
 
 <h2>What is this?</h2>
-<p>A reboot is never 100% guaranteed — but a large class of "it didn't come back right"
+<p>A reboot is never 100% guaranteed, but a large class of "it didn't come back right"
 is <strong>predictable from the current state of the running system</strong>. FireSquire
 inspects that state <strong>before</strong> you reboot and gives you one honest verdict:
 <strong>GO / CAUTION / NO-GO</strong>, with the exact findings.</p>
-<p>It is <strong>advisory only</strong>: it reads the host and reports — it never stops,
+<p>It is <strong>advisory only</strong>: it reads the host and reports. It never stops,
 mounts, unmounts or changes anything (acting on the host is exactly what tends to cause
 reboot trouble in the first place). The plugin adds a <strong>FireSquire button next to
-Reboot</strong> on the Main tab. Click, read the verdict, then reboot with confidence.</p>
+Reboot</strong> on the Main tab. Click, read the verdict, then reboot.</p>
 
 <h2>Highlights</h2>
 <ul>
-  <li><strong>Critical (NO-GO)</strong> — array started &amp; every device assignment OK (no disabled/invalid/missing disk); no parity/sync/rebuild/clear or mover running; no container mounting a host runtime dir (the bind class that can take libvirt/docker down on reboot); no stuck <code>docker.img</code>/<code>libvirt.img</code> loop; flash writable</li>
-  <li><strong>Caution</strong> — crashes since boot in the syslog, <strong>disk/IO errors</strong> (failing disk or loose cable), low free space, running VMs, a stopped core service, missing container bind sources, and <strong>SMART health</strong> (status + attributes: reallocated/pending/uncorrectable sectors, UDMA CRC, temperature)</li>
-  <li><strong>Advisory only</strong> — reads and reports, never changes the host</li>
-  <li><strong>Follows your Unraid theme &amp; language</strong> — light/dark, all 26 supported languages (English fallback)</li>
-  <li><strong>No dependencies</strong> — a small Bash engine querying the tools Unraid already ships; no daemon, nothing to configure</li>
+  <li><strong>Critical (NO-GO)</strong>: array started &amp; every device assignment OK (no disabled/invalid/missing disk); no parity/sync/rebuild/clear or mover running; no container mounting a host runtime dir (the bind class that can take libvirt/docker down on reboot); no stuck <code>docker.img</code>/<code>libvirt.img</code> loop; flash writable</li>
+  <li><strong>Caution</strong>: crashes since boot in the syslog, <strong>disk/IO errors</strong> (failing disk or loose cable), low free space, running VMs, a stopped core service, missing container bind sources, and <strong>SMART health</strong> (status + attributes: reallocated/pending/uncorrectable sectors, UDMA CRC, temperature)</li>
+  <li><strong>Advisory only</strong>: reads and reports, never changes the host</li>
+  <li><strong>Follows your Unraid theme &amp; language</strong>: light/dark, all 26 supported languages (English fallback)</li>
+  <li><strong>No dependencies</strong>: a small Bash engine querying the tools Unraid already ships; no daemon, nothing to configure</li>
 </ul>
-<p><em>Honest limit:</em> it is an early warning, not an oracle — genuine hardware, BIOS or
+<p><em>Honest limit:</em> it is an early warning, not an oracle. Genuine hardware, BIOS or
 timing failures during boot cannot be seen from a running system. What it covers reliably is
 the state-detectable class.</p>
 
 <h2>Requirements</h2>
 <ul>
   <li>Unraid 6.10+</li>
-  <li>Nothing else — install from the Apps tab (or the <code>.plg</code> URL) and the button appears on the Main tab</li>
+  <li>Nothing else: install from the Apps tab (or the <code>.plg</code> URL) and the button appears on the Main tab</li>
 </ul>
 
 <h2>Posting a bug report</h2>
@@ -95,7 +95,7 @@ engine stands on the tools Unraid already ships (<code>mdcmd</code>, <code>smart
 
 <hr>
 
-<p class="footnote">Self-hosted, AGPL-3.0-licensed — you run it, you own your data and the responsibility.</p>
+<p class="footnote">Self-hosted, AGPL-3.0-licensed: you run it, you own your data and the responsibility.</p>
 
 </body>
 </html>

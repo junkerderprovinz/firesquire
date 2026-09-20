@@ -15,7 +15,7 @@
 
 <p align="center">
 An Unraid plugin that answers one question before you reboot: <b>will the box come back up clean?</b><br>
-FireSquire reads the live host state and gives you a single verdict — <b>GO / CAUTION / NO-GO</b> — with the exact findings, so you never reboot into a known landmine. Advisory only: it reads, it never touches anything.
+FireSquire reads the live host state and gives you a single verdict (<b>GO / CAUTION / NO-GO</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads, it never touches anything.
 </p>
 
 <p align="center">
@@ -54,13 +54,13 @@ If it has earned a place on your server or computer, toss a coin to your knight:
 
 A reboot is never 100% guaranteed, but a large class of "it didn't come back right" is **predictable from the current live state**. FireSquire inspects that state before you reboot and gives you a single, honest verdict:
 
-- **GO** — nothing found that should block a reboot
-- **CAUTION** — non-fatal issues you should know about first
-- **NO-GO** — conditions likely to make the reboot come back dirty
+- **GO**: nothing found that should block a reboot
+- **CAUTION**: non-fatal issues you should know about first
+- **NO-GO**: conditions likely to make the reboot come back dirty
 
-It is **advisory only**. It reads the system and reports. It never stops, mounts, unmounts, or changes anything — because acting on the host is exactly what tends to cause reboot trouble in the first place.
+It is **advisory only**. It reads the system and reports. It never stops, mounts, unmounts, or changes anything, because acting on the host is exactly what tends to cause reboot trouble in the first place.
 
-The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, plus a **Settings → User Utilities → FireSquire** page with a short description. Click it and a **live progress bar** shows each check as it runs; then read the verdict and reboot with confidence. Each problem finding is a **click-through link** straight to the page where you fix it — syslog and disk/IO findings open the System Log viewer, array/parity/SMART/space findings open Main, running VMs open the VMs tab, and so on. The report follows your Unraid light/dark theme and **the language configured in the Unraid UI** (all 26 supported languages, English fallback).
+The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, plus a **Settings → User Utilities → FireSquire** page with a short description. Click it and a **live progress bar** shows each check as it runs, then read the verdict and reboot. Each problem finding is a **click-through link** straight to the page where you fix it: syslog and disk/IO findings open the System Log viewer, array/parity/SMART/space findings open Main, running VMs open the VMs tab, and so on. The report follows your Unraid light/dark theme and **the language configured in the Unraid UI** (all 26 supported languages, English fallback).
 
 <br>
 
@@ -68,29 +68,29 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, pl
 
 <p align="center">
   <img src=".github/assets/screenshots/report.png" alt="FireSquire pre-reboot report with a CAUTION verdict" width="58%">
-  <br><em>The pre-reboot report: a single GO / CAUTION / NO-GO verdict with the exact checks behind it. Advisory only — it never changes anything.</em>
+  <br><em>The pre-reboot report: a single GO / CAUTION / NO-GO verdict with the exact checks behind it. Advisory only: it never changes anything.</em>
 </p>
 
 <br>
 
 <p align="center">
   <img src=".github/assets/screenshots/main-button.png" alt="FireSquire button next to Reboot on the Main tab" width="90%">
-  <br><em>One click from the Main tab — the FireSquire button sits right next to Reboot.</em>
+  <br><em>One click from the Main tab: the FireSquire button sits right next to Reboot.</em>
 </p>
 
 <br>
 
 ## 3. What it checks
 
-**Critical — a failure here means NO-GO**
+**Critical: a failure here means NO-GO**
 
 - Array started and clean (no disabled / invalid / missing disks)
 - No parity check / sync / rebuild / clear in progress, mover not running
-- No container mounting a host runtime directory (`/var/run`, `/run`, `/var/run/libvirt`, … — `docker.sock` excepted) — the bind class that can take libvirt/docker down on reboot
+- No container mounting a host runtime directory (`/var/run`, `/run`, `/var/run/libvirt`, …, with `docker.sock` excepted), the bind class that can take libvirt/docker down on reboot
 - No stuck `docker.img` / `libvirt.img` loop (attached-but-not-mounted, or a loop backing a deleted file)
 - Flash `/boot` mounted and writable
 
-**Caution — worth knowing before you reboot**
+**Caution: worth knowing before you reboot**
 
 - Crashes since last boot in the syslog (segfault, general-protection-fault, OOM, kernel panic, call traces)
 - Low free space on `/`, `/var/log` (both RAM), `docker.img`, cache
@@ -99,7 +99,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, pl
 - Container bind sources under `/mnt` that no longer exist
 - SMART health (`smartctl -H`) on every disk
 
-**Info** — uptime, kernel, Unraid version.
+**Info**: uptime, kernel, Unraid version.
 
 ### Honest limits
 
@@ -109,7 +109,7 @@ This is an early-warning check, not an oracle. Genuine hardware, BIOS or timing 
 
 ## 4. How it works
 
-A single Bash engine (`firesquire-check.sh`) runs the checks by querying the tools Unraid already ships — `mdcmd`, `losetup`, `docker`, `smartctl`, `df`, `pgrep`. No daemon, no dependencies. It prints a human-readable report on a console, or machine-readable JSON for the WebGUI:
+A single Bash engine (`firesquire-check.sh`) runs the checks by querying the tools Unraid already ships: `mdcmd`, `losetup`, `docker`, `smartctl`, `df`, `pgrep`. No daemon, no dependencies. It prints a human-readable report on a console, or machine-readable JSON for the WebGUI:
 
 ```bash
 firesquire-check.sh          # human-readable report
@@ -124,7 +124,7 @@ The WebGUI layer is a small PHP page (`FireSquireReport.php`) that runs the engi
 
 ## 5. Install
 
-**Community Apps** *(planned)* — search for **FireSquire** in the Apps tab.
+**Community Apps** *(planned)*: search for **FireSquire** in the Apps tab.
 
 **By URL (today):** Unraid → **Plugins** → **Install Plugin**, paste:
 
@@ -138,7 +138,7 @@ https://raw.githubusercontent.com/junkerderprovinz/firesquire/main/plugin/firesq
 
 The plugin files live under [`src/`](src/) mirroring the on-disk layout
 (`/usr/local/emhttp/plugins/firesquire/`). The release `.txz` is built by CI on
-a tagged push (`v*`) — built on Linux so executable bits are preserved.
+a tagged push (`v*`), built on Linux so executable bits are preserved.
 
 Assets (icon, banner) are generated with
 [`.github/assets/render-assets.mjs`](.github/assets/render-assets.mjs).
