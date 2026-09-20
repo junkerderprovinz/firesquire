@@ -11,18 +11,18 @@
 
   /* English fallback, the source of lang/en.json. */
   var FS_EN = {
-    title: 'FireSquire — Pre-Reboot Check',
+    title: 'FireSquire: Pre-Reboot Check',
     hc: 'pre-reboot health check',
     running: 'Running checks…',
     subtitle: 'Advisory only · nothing was changed',
     v_GO: 'GO', v_CAUTION: 'CAUTION', 'v_NO-GO': 'NO-GO',
     tier_critical: 'Critical', tier_warning: 'Caution', tier_info: 'Info',
     err: 'Could not run the check engine.',
-    foot: 'FireSquire reads the current state and predicts the common reboot landmines (pinned mounts, stuck loops, unclean array, in-flight operations, a crash-looping box). It is an early warning, not a guarantee — genuine hardware, BIOS or timing failures during boot cannot be seen from a running system.',
-    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict — GO / CAUTION / NO-GO — with the exact findings. It is advisory only: it reads the host and reports, it never changes anything.',
+    foot: 'FireSquire reads the current state and predicts the common reboot landmines (pinned mounts, stuck loops, unclean array, in-flight operations, a crash-looping box). It is an early warning, not a guarantee. Genuine hardware, BIOS or timing failures during boot cannot be seen from a running system.',
+    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (GO / CAUTION / NO-GO) with the exact findings. It is advisory only: it reads the host and reports, it never changes anything.',
     tools_intro: 'It looks for the reboot landmines that are detectable from the running system:',
     tools_li: [
-      'Array started & clean — every device assignment OK (no disabled/invalid/missing disk)',
+      'Array started & clean: every device assignment OK (no disabled/invalid/missing disk)',
       'No parity/sync/rebuild/clear or mover in progress',
       'No container mounting a host runtime dir, no stuck docker.img/libvirt.img loop',
       'Flash writable, free space, recent crashes, running VMs, services, SMART health'
@@ -44,32 +44,32 @@
     p_info: 'Collecting system info…',
     p_done: 'Done',
     array_ok: 'Array started and healthy; all device assignments OK.',
-    array_bad_devices: 'Array not clean — unhealthy data disk(s): {0}',
-    array_counts: 'Array not clean: state={0} — disabled={1} invalid={2} missing={3}',
+    array_bad_devices: 'Array not clean, unhealthy data disk(s): {0}',
+    array_counts: 'Array not clean: state={0}, disabled={1} invalid={2} missing={3}',
     array_not_started: 'Array is not started (state={0}).',
-    array_parity_degraded: 'Parity disk disabled/missing: {0} — the array still boots, but parity protection is reduced.',
-    array_op_running: 'Array operation in progress ({0}) — let it finish before rebooting.',
+    array_parity_degraded: 'Parity disk disabled/missing: {0}. The array still boots, but parity protection is reduced.',
+    array_op_running: 'Array operation in progress ({0}). Let it finish before rebooting.',
     array_op_ok: 'No parity/sync/rebuild/clear in progress.',
-    array_unknown: 'mdcmd not found — cannot determine array state.',
-    mover_running: 'Mover is running — wait for it to finish before rebooting.',
+    array_unknown: 'mdcmd not found, cannot determine array state.',
+    mover_running: 'Mover is running. Wait for it to finish before rebooting.',
     mover_ok: 'Mover is not running.',
     risky_mount_found: 'Container(s) mount a host runtime dir (can break libvirt/docker on reboot):{0}',
     risky_mount_ok: 'No container mounts a host runtime directory (besides docker.sock).',
-    risky_mount_skip: 'Docker not available — skipped container mount scan.',
+    risky_mount_skip: 'Docker not available, skipped container mount scan.',
     stuck_loop_found: 'Stuck image/loop state{0}.',
     stuck_loop_ok: 'docker.img / libvirt.img loop state looks clean.',
-    stuck_loop_skip: 'losetup not found — skipped loop-device check.',
+    stuck_loop_skip: 'losetup not found, skipped loop-device check.',
     flash_ok: 'Flash /boot is mounted and writable.',
-    flash_ro: 'Flash /boot is mounted but NOT writable (possible FAT corruption) — config won’t persist.',
+    flash_ro: 'Flash /boot is mounted but NOT writable (possible FAT corruption). Config won’t persist.',
     flash_unmounted: 'Flash /boot is not mounted.',
     syslog_crashes: '{0} crash/instability line(s) in syslog since boot. Latest: {1}',
     syslog_ok: 'No crashes/OOM/segfaults in syslog since boot.',
-    syslog_skip: 'syslog not readable — skipped crash scan.',
+    syslog_skip: 'syslog not readable, skipped crash scan.',
     io_errors: '{0} disk/IO error line(s) in syslog since boot. Latest: {1}',
     io_ok: 'No disk/IO errors in syslog since boot.',
     space_full: '{0} is {1}% full (>={2}%).',
     space_ok: '{0} at {1}% used.',
-    vms_running: '{0} VM(s) running — shut them down gracefully before rebooting.',
+    vms_running: '{0} VM(s) running. Shut them down gracefully before rebooting.',
     vms_ok: 'No VMs running.',
     svc_docker_ok: 'dockerd running.',
     svc_docker_down: 'Docker storage mounted but dockerd is not running.',
@@ -79,10 +79,10 @@
     svc_emhttp_down: 'emhttpd (WebGUI) is not running.',
     binds_missing: 'Container bind source(s) missing (won’t start cleanly after reboot):{0}',
     binds_ok: 'All container bind sources under /mnt exist.',
-    smart_failing: 'SMART health FAILING on:{0} — investigate before rebooting.',
+    smart_failing: 'SMART health FAILING on:{0}. Investigate before rebooting.',
     smart_ok: 'SMART health PASSED on {0} disk(s).',
     smart_none: 'No disks found for SMART check.',
-    smart_skip: 'smartctl not found — skipped SMART check.',
+    smart_skip: 'smartctl not found, skipped SMART check.',
     smart_attr: 'SMART attribute warnings:{0}',
     info_uptime: 'Uptime: {0}', info_kernel: 'Kernel: {0}', info_unraid: 'Unraid version: {0}'
   };
@@ -199,7 +199,7 @@
     var h = '<div style="font-size:14px;background:'+c.bg+';color:'+c.fg+';padding:18px 22px">';
     h += '<div style="display:flex;align-items:center;gap:14px;border-radius:10px;padding:16px 20px;background:'+c.panel+';border-left:8px solid '+vcol+'">';
     h += '<div style="font-size:30px;font-weight:800;letter-spacing:1px;color:'+vcol+'">'+esc(fsT('v_'+data.verdict) || data.verdict)+'</div>';
-    h += '<div><div>FireSquire &mdash; '+esc(fsT('hc'))+'</div><div style="color:'+c.muted+';font-size:12px">'+esc(fsT('subtitle'))+(data.generated?' &middot; '+esc(data.generated):'')+'</div></div></div>';
+    h += '<div><div>FireSquire: '+esc(fsT('hc'))+'</div><div style="color:'+c.muted+';font-size:12px">'+esc(fsT('subtitle'))+(data.generated?' &middot; '+esc(data.generated):'')+'</div></div></div>';
 
     var checks = data.checks || [];
     [['critical','tier_critical'],['warning','tier_warning'],['info','tier_info']].forEach(function(tt){
