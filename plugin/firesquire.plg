@@ -19,7 +19,7 @@
         launch="&launch;"
         pluginURL="&pluginURL;"
         min="6.10.0"
-        support="https://github.com/junkerderprovinz/firesquire/issues">
+        support="https://forums.unraid.net/topic/199508-support-junkerderprovinz-firesquire/">
 
 <!-- Plugins-tab logo via the ICON element + local path (name-independent, the
      FanCtrlPlus convention). -->
