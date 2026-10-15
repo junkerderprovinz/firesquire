@@ -35,6 +35,10 @@
   it leaves no empty tile behind. The Plugins-tab description had been promising it
   all along; now it's true again.
 
+🎨 **Design**
+- The report and the Tools page read more smoothly in all 26 languages, and the text
+  report from the command line opens with the new knight banner.
+
 ## 3.0.0
 ✨ **Added**
 - **FireSquire launches**, a new medieval-flavored name to match the rest of the house.
