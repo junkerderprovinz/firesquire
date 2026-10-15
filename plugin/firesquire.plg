@@ -28,6 +28,13 @@
 </ICON>
 
   <CHANGES>
+## 3.0.1
+✨ **Added**
+- The flame is back on the Dashboard. A FireSquire icon sits next to Reboot in the
+  server tile, so you can run the check right where you reboot, and unlike the old one
+  it leaves no empty tile behind. The Plugins-tab description had been promising it
+  all along; now it's true again.
+
 ## 3.0.0
 ✨ **Added**
 - **FireSquire launches**, a new medieval-flavored name to match the rest of the house.

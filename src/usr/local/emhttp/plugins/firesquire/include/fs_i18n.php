@@ -3,7 +3,7 @@
  * renders in the user's configured language for every locale.
  * Reads $_SESSION['locale'] (Unraid's configured language), loads lang/en.json
  * as the base and merges lang/<code>.json over it, then exposes the result as
- * window.fireSquireI18n. Included by FireSquire.page + FireSquireTools.page.
+ * window.fireSquireI18n. Included by FireSquireButtons.page.
  * Emits nothing but a <script>; defines no functions (safe on any Unraid page). */
 if (!defined('FS_I18N_EMITTED')) {
   define('FS_I18N_EMITTED', 1);
