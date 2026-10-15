@@ -1,9 +1,9 @@
-/* Shared WebGUI helper for the Main and Tools pages.
- * Renders a theme-matched, localised report in its own modal, with a live
- * progress bar while the engine runs.
+/* WebGUI helper, loaded on every page by FireSquireButtons.page. Adds the entry
+ * points on Main, Dashboard and Tools and renders a theme-matched, localised
+ * report in its own modal, with a live progress bar while the engine runs.
  *
- * Language: follows the configured Unraid UI language for every locale. The page
- * (fs_i18n.php, included by FireSquire.page / FireSquireTools.page) reads
+ * Language: follows the configured Unraid UI language for every locale.
+ * fs_i18n.php (included by FireSquireButtons.page) reads
  * $_SESSION['locale'], merges lang/en.json + lang/<code>.json, and injects the
  * active dict as window.fireSquireI18n. The inline English table below is only
  * a last-resort fallback if that injection is ever missing. */
@@ -332,7 +332,18 @@
     // Tools page: render the localised description + button
     try { fillTools(); } catch(e) {}
 
-    // Main tab: compact FireSquire button next to Reboot
+    // Dashboard: flame icon in the server tile's control row, next to Reboot
+    try {
+      var dashReboot = $('.tile-ctrl [onclick^="Reboot("]').first();
+      if (dashReboot.length && !$('#ss-dash-icon').length) {
+        var icon = $('<span id="ss-dash-icon" class="fa fa-fw fa-fire hand" title="FireSquire"></span>');
+        icon.on('click', run);
+        dashReboot.before(icon);
+      }
+    } catch(e) {}
+
+    // Main tab: compact FireSquire button next to Reboot. The script runs on
+    // every page, so only look for Reboot where our Main section exists.
     try {
       var reboot = $('input[type=button], button, a').filter(function(){
         var v  = ($(this).val() || $(this).text() || '').trim().toLowerCase();
@@ -340,7 +351,7 @@
         return v === 'neu starten' || v === 'reboot'
             || oc.indexOf('reboot(') > -1 || oc.indexOf("'reboot'") > -1 || oc.indexOf('"reboot"') > -1;
       }).first();
-      if (reboot.length && !$('#ss-reboot-btn').length) {
+      if (reboot.length && document.getElementById('ss-frag') && !$('#ss-reboot-btn').length) {
         var b = $('<input type="button" id="ss-reboot-btn" value="FireSquire" style="margin-left:8px;cursor:pointer">');
         b.on('click', run);
         reboot.after(b);

@@ -1,0 +1,11 @@
+Menu="Buttons"
+Title="FireSquire"
+Icon="firesquire.png"
+Link="fs-loader-hook"
+---
+<?php
+/* Buttons pages are evaluated in the head of every WebGUI page, which is the only way to reach
+   the Dashboard without a tile of our own. Link="fs-loader-hook" renders a bare div, no icon. */
+include '/usr/local/emhttp/plugins/firesquire/include/fs_i18n.php';
+?>
+<script src="/plugins/firesquire/firesquire.js?v=<?=@filemtime('/usr/local/emhttp/plugins/firesquire/firesquire.js')?>"></script>

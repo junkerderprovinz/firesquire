@@ -60,7 +60,7 @@ A reboot is never 100% guaranteed, but a large class of "it didn't come back rig
 
 It is **advisory only**. It reads the system and reports. It never stops, mounts, unmounts, or changes anything, because acting on the host is exactly what tends to cause reboot trouble in the first place.
 
-The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, plus a **Settings → User Utilities → FireSquire** page with a short description. Click it and a **live progress bar** shows each check as it runs, then read the verdict and reboot. Each problem finding is a **click-through link** straight to the page where you fix it: syslog and disk/IO findings open the System Log viewer, array/parity/SMART/space findings open Main, running VMs open the VMs tab, and so on. The report follows your Unraid light/dark theme and **the language configured in the Unraid UI** (all 26 supported languages, English fallback).
+The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a flame icon next to *Reboot* in the server tile on the **Dashboard**, and a **Settings → User Utilities → FireSquire** page with a short description. Click any of them and a **live progress bar** shows each check as it runs, then read the verdict and reboot. Each problem finding is a **click-through link** straight to the page where you fix it: syslog and disk/IO findings open the System Log viewer, array/parity/SMART/space findings open Main, running VMs open the VMs tab, and so on. The report follows your Unraid light/dark theme and **the language configured in the Unraid UI** (all 26 supported languages, English fallback).
 
 <br>
 
