@@ -1,28 +1,24 @@
 /**
- * Generates FireSquire assets from the three logo masters in this folder:
- *   firesquire-dunkel.svg  (dark ring)   -> light surfaces
- *   firesquire-hell.svg    (white ring)   -> dark surfaces
- *   firesquire-unraid.svg  (double ring)  -> the Unraid plugin tile (reads on any theme)
- *   logo.svg = a copy of the dunkel master (kept for README/CA references).
+ * Generates FireSquire assets from the logo master firesquire.svg, which reads on
+ * light and dark grounds alike. firesquire-app.svg is the same logo on the house
+ * app tile, used for the card in unraid-apps. logo.svg is a copy of the master.
  *
  * Outputs:
- *   icon.png             : CA icon, dunkel logo on a white 512 tile (stands out on the dark CA page)
- *   banner.png/.svg      : white 1600x500, dunkel logo + "FireSquire" (Bree Serif) + claim (Lato)  [README light]
- *   banner-dark.png/.svg : dark 1600x500, hell logo + wordmark                                       [README <picture> dark]
- *   banner-logo.png/.svg : white 1600x500, dunkel logo only, no text                                 [support thread]
+ *   icon.png             : CA icon, the logo on a transparent 512 square
+ *   banner.png/.svg      : white 1600x500, logo + "FireSquire" (Bree Serif) + claim (Lato)  [README light]
+ *   banner-dark.png/.svg : dark 1600x500, logo + wordmark                                   [README <picture> dark]
+ *   banner-logo.png/.svg : white 1600x500, logo only, no text                               [support thread]
  *   ../../src/.../firesquire/{images,icons}/firesquire.png + firesquire.png (root):
- *                          the unraid (flip-compatible) variant, transparent 512  [Plugins tile + menu icon + modal]
+ *                          the CA icon again                                                [Plugins tile + menu icon + modal]
  *
- * viewBox-agnostic: every embed reads the master's own viewBox (the masters differ:
- * dunkel/hell are 955.7x953.78, unraid is 1000x1000). Fonts (OFL) are fetched to the OS
- * temp dir at runtime, not committed. Deps (global): @resvg/resvg-js, opentype.js.
+ * Every embed reads the master's own viewBox. Fonts (OFL) are fetched to the OS temp
+ * dir at runtime, not committed. Deps (global): @resvg/resvg-js, opentype.js.
  *
  * Run: node .github/assets/render-assets.mjs
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 
@@ -37,12 +33,12 @@ const CLAIM = 'Reads the beacon before your reboot catches fire.';
 const W = 1600, H = 500;
 const LH = 400, LW = 400;          // logo (square)
 // House banner standard: name 132 / claim 44, logo-to-text gap 70, name-to-claim gap 8.
-const nameSize = 132, claimSize = 44, gap = 70, lineGap = 8;
+const nameSize = 132, gap = 70, lineGap = 8;
 const PLUGIN = '../../src/usr/local/emhttp/plugins/firesquire/';
-// Each theme embeds the logo variant that reads on its background (no recolour).
+const LOGO = 'firesquire.svg';
 const THEMES = [
-  { suffix: '', bg: '#ffffff', name: '#1f2328', claim: '#5a5d5e', logo: 'firesquire-dunkel.svg' },
-  { suffix: '-dark', bg: '#0d1117', name: '#e6edf3', claim: '#9aa4ad', logo: 'firesquire-hell.svg' },
+  { suffix: '', bg: '#ffffff', name: '#1f2328', claim: '#5a5d5e' },
+  { suffix: '-dark', bg: '#0d1117', name: '#e6edf3', claim: '#9aa4ad' },
 ];
 
 async function getFont(file, url) {
@@ -66,42 +62,30 @@ function embedLogo(file, x, y, w, h) {
 const png = (svg, size, bg) =>
   new Resvg(Buffer.from(svg), { fitTo: { mode: 'width', value: size }, background: bg || 'rgba(0,0,0,0)' }).render().asPng();
 
-// 1) CA icon: dunkel logo, white only inside the dark diamond frame.
-// The diamond frame is a hollow path (no separate inner fill), so its white
-// interior only exists because of this rect behind it. A flat rect would
-// leave the 4 corners outside the diamond opaque white too (a square-looking
-// tile), so the border-connected white is flood-filled to transparent
-// afterwards and only the disk enclosed by the frame stays opaque.
-const dunkelRaw = readFileSync(here('./firesquire-dunkel.svg'), 'utf8').replace(/<\?xml[^>]*\?>\s*/, '');
-const dvb = (dunkelRaw.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/) || [, '1000', '1000']);
-const iconSvg = dunkelRaw.replace(/(<svg\b[^>]*>)/, `$1<rect width="${dvb[1]}" height="${dvb[2]}" fill="#ffffff"/>`);
-// No canvas-level background here: the <rect> above is the only fill; the
-// canvas itself must stay transparent so the flood fill below has an outer
-// boundary to work from.
-const iconPngPath = here('./icon.png');
-writeFileSync(iconPngPath, png(iconSvg, 512));
-execSync(`python3 "${fileURLToPath(here('./flood-transparent.py'))}" "${fileURLToPath(iconPngPath)}"`);
-
-// 2) Plugin tile PNGs: the flip-compatible unraid variant, transparent.
-// Backs .plg <ICON> (images/), the .page Icon= menu icon (icons/), and the
-// check-result modal <img> (root). Reads on every Unraid theme from one PNG.
-const tile = png(readFileSync(here('./firesquire-unraid.svg'), 'utf8'), 512);
+// 1) CA icon and plugin tile: the logo centred on a transparent square.
+// The tile backs .plg <ICON> (images/), the .page Icon= menu icon (icons/) and
+// the check-result modal <img> (root).
+const S = 512;
+const icon = png(`<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
+  ${embedLogo(LOGO, 0, 0, S, S)}
+</svg>`, S);
+writeFileSync(here('./icon.png'), icon);
 for (const rel of ['firesquire.png', 'images/firesquire.png', 'icons/firesquire.png']) {
-  writeFileSync(here(PLUGIN + rel), tile);
+  writeFileSync(here(PLUGIN + rel), icon);
 }
 
-// 3) Banners (Bree Serif name + Lato claim, text rendered to paths).
+// 2) Banners (Bree Serif name + Lato claim, text rendered to paths).
 const bree = await getFont('FireSquire-BreeSerif-Regular.ttf',
   'https://github.com/google/fonts/raw/main/ofl/breeserif/BreeSerif-Regular.ttf');
 const claimFont = await getFont('FireSquire-Lato-Regular.ttf',
   'https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf');
 
-const nameW = bree.getAdvanceWidth(NAME, nameSize);
-const claimW = claimFont.getAdvanceWidth(CLAIM, claimSize);
-const groupW = LW + gap + Math.max(nameW, claimW);
 const startX = 165; // left-anchored (house banner standard)
 const LX = startX, LY = (H - LH) / 2;
 const textX = startX + LW + gap;
+// A claim wider than the room left of the right margin shrinks instead of running off the edge.
+const rightMargin = 120;
+const claimSize = Math.min(44, 44 * (W - textX - rightMargin) / claimFont.getAdvanceWidth(CLAIM, 44));
 
 const nameAsc = bree.ascender * (nameSize / bree.unitsPerEm);
 const nameDesc = -bree.descender * (nameSize / bree.unitsPerEm);
@@ -124,7 +108,7 @@ if (namePath.includes('NaN') || claimPath.includes('NaN')) {
 for (const t of THEMES) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="${t.bg}"/>
-  ${embedLogo(t.logo, LX, LY, LW, LH)}
+  ${embedLogo(LOGO, LX, LY, LW, LH)}
   <g transform="translate(${textX},0)">
     <path d="${namePath}" fill="${t.name}"/>
     <path d="${claimPath}" fill="${t.claim}"/>
@@ -135,11 +119,11 @@ for (const t of THEMES) {
   writeFileSync(here(`./banner${t.suffix}.png`), png(svg, W, t.bg));
 }
 
-// 4) Text-free support-thread banner: dunkel logo centred, no text.
+// 3) Text-free support-thread banner: the logo centred, no text.
 const logoLX = (W - LW) / 2, logoLY = (H - LH) / 2;
 const logoOnly = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="#ffffff"/>
-  ${embedLogo('firesquire-dunkel.svg', logoLX, logoLY, LW, LH)}
+  ${embedLogo(LOGO, logoLX, logoLY, LW, LH)}
 </svg>
 `;
 writeFileSync(here('./banner-logo.svg'), logoOnly);
