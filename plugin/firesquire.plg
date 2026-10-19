@@ -10,7 +10,7 @@
 <!ENTITY pkgURL    "https://github.com/junkerderprovinz/firesquire/releases/download/v&version;/&pkg;-&version;.txz">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
-<!ENTITY sha256 "1011b310b8c57c8deecd8dc345fab272e92461edb178815aeeba3e1a66811272">
+<!ENTITY sha256 "baeecd8588aedecfd737d79786403c981e72b81bf0a7f01162c6e51af9bd95f5">
 ]>
 
 <PLUGIN name="&name;"
