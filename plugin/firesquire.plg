@@ -38,6 +38,8 @@
 🎨 **Design**
 - The report and the Tools page read more smoothly in all 26 languages, and the text
   report from the command line opens with the new knight banner.
+- New logo. The flames sit in a grey diamond that reads on light and dark themes alike,
+  on the Plugins tab, in the menu and in the report window.
 
 ## 3.0.0
 ✨ **Added**
