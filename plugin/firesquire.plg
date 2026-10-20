@@ -28,6 +28,11 @@
 </ICON>
 
   <CHANGES>
+## 3.0.2
+🎨 **Design**
+- A small logo touch-up: the outer ring is a shade darker on its right side. You'll see it
+  on the Plugins tab, in the menu and in the report window.
+
 ## 3.0.1
 ✨ **Added**
 - The flame is back on the Dashboard. A FireSquire icon sits next to Reboot in the
