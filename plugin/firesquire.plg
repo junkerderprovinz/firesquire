@@ -3,14 +3,14 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "3.0.1">
+<!ENTITY version   "3.0.2">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
 <!ENTITY pkgURL    "https://github.com/junkerderprovinz/firesquire/releases/download/v&version;/&pkg;-&version;.txz">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
-<!ENTITY sha256 "baeecd8588aedecfd737d79786403c981e72b81bf0a7f01162c6e51af9bd95f5">
+<!ENTITY sha256 "c85a4ee3c55ec30160fd39d7c4318b283011c0a76bdfbb84475d22d39d5c8a5d">
 ]>
 
 <PLUGIN name="&name;"
