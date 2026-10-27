@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Újraindítás előtti ellenőrzés",
   "hc": "újraindítás előtti állapotellenőrzés",
+  "sub": "Újraindítás előtti állapotellenőrzés: egy ítélet (GO / CAUTION / NO-GO) az újraindítás előtt.",
   "running": "Ellenőrzés folyamatban…",
   "subtitle": "Csak tájékoztató · semmi nem változott",
   "v_GO": "GO",

@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: uudelleenkäynnistystä edeltävä tarkistus",
   "hc": "uudelleenkäynnistystä edeltävä kuntotarkistus",
+  "sub": "Uudelleenkäynnistystä edeltävä kuntotarkistus: yksi tuomio (GO / CAUTION / NO-GO) ennen uudelleenkäynnistystä.",
   "running": "Suoritetaan tarkistuksia…",
   "subtitle": "Vain suositus · mitään ei muutettu",
   "v_GO": "GO",

@@ -2,4 +2,30 @@ Menu="Utilities"
 Title="FireSquire"
 Icon="firesquire.png"
 ---
+<style>
+/* The plugin's logo and name over the page, drawn alike on TowerTorch's and ShipLog's settings
+   pages: in Unraid's colours on their own, in TowerTorch's when it themes the page. */
+.fs-hero { display: flex; align-items: center; gap: 20px; min-width: 0; margin: 4px 0 16px; }
+.fs-hero-tile {
+  flex: none; display: flex; align-items: center; justify-content: center; box-sizing: border-box;
+  width: 88px; height: 88px; padding: 10px; border-radius: 4px; background: rgba(128, 128, 128, .18);
+}
+.fs-hero-tile img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.fs-hero-text { min-width: 0; }
+#ss-tools .fs-hero-name { margin: 0; font-family: inherit; font-size: 32px; font-weight: 700; line-height: 1.15; letter-spacing: normal; text-transform: none; color: inherit; }
+#ss-tools .fs-hero-sub { margin: 4px 0 0; color: var(--alt-text-color, #8d8d8d); font-size: 13px; line-height: 1.45; text-align: start; }
+html.cc-tools-on .fs-hero-tile { border-radius: var(--cc-radius-control, 12px); }
+html.cc-tools-on #ss-tools .fs-hero-name { color: var(--cc-text, #e6e6e6); }
+html.cc-tools-on #ss-tools .fs-hero-sub { color: var(--cc-text-dim, #8a8a8a); }
+@media (max-width: 1023px) {
+  .fs-hero-tile { width: 72px; height: 72px; padding: 8px; }
+  #ss-tools .fs-hero-name { font-size: 26px; }
+}
+/* TowerTorch styles Unraid's title strip with !important, which only an
+   important rule in a layer outranks. The header names the page, so the strip
+   would say it twice. */
+@layer firesquire-settings {
+  .content:has(> #ss-tools) > div.title { display: none !important; }
+}
+</style>
 <div id="ss-tools" style="max-width:780px;line-height:1.55"></div>
