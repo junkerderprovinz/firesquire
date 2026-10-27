@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Controllo pre-riavvio",
   "hc": "controllo di integrità pre-riavvio",
+  "sub": "Controllo di integrità pre-riavvio: un verdetto (GO / CAUTION / NO-GO) prima di riavviare.",
   "running": "Esecuzione dei controlli…",
   "subtitle": "Solo consultivo · nulla è stato modificato",
   "v_GO": "GO",

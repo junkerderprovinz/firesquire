@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Kiểm tra trước khi khởi động lại",
   "hc": "kiểm tra tình trạng trước khi khởi động lại",
+  "sub": "Kiểm tra tình trạng trước khi khởi động lại: một kết luận (GO / CAUTION / NO-GO) trước khi khởi động lại.",
   "running": "Đang chạy kiểm tra…",
   "subtitle": "Chỉ mang tính tư vấn · không có gì bị thay đổi",
   "v_GO": "GO",

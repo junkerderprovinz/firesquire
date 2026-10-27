@@ -1,6 +1,7 @@
 {
   "title": "FireSquire : Contrôle avant redémarrage",
   "hc": "contrôle d'intégrité avant redémarrage",
+  "sub": "Contrôle d'intégrité avant redémarrage : un verdict (GO / CAUTION / NO-GO) avant de redémarrer.",
   "running": "Vérifications en cours…",
   "subtitle": "Simple avertissement · rien n'a été modifié",
   "v_GO": "GO",

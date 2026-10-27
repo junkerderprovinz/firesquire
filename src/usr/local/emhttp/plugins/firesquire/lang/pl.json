@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: kontrola przed restartem",
   "hc": "kontrola stanu przed restartem",
+  "sub": "Kontrola stanu przed restartem: jeden werdykt (GO / CAUTION / NO-GO) przed restartem.",
   "running": "Sprawdzanie…",
   "subtitle": "Tylko informacyjnie · nic nie zostało zmienione",
   "v_GO": "GO",

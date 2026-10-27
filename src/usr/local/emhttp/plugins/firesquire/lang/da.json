@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Tjek før genstart",
   "hc": "helbredstjek før genstart",
+  "sub": "Helbredstjek før genstart: én dom (GO / CAUTION / NO-GO), før du genstarter.",
   "running": "Kører tjek…",
   "subtitle": "Kun vejledende · intet blev ændret",
   "v_GO": "GO",

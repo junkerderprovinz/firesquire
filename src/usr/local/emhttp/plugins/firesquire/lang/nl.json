@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Pre-Reboot-Check",
   "hc": "pre-reboot-gezondheidscheck",
+  "sub": "Pre-reboot-gezondheidscheck: één oordeel (GO / CAUTION / NO-GO) voordat je herstart.",
   "running": "Bezig met controleren…",
   "subtitle": "Alleen advies · er is niets gewijzigd",
   "v_GO": "GO",

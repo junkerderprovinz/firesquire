@@ -13,6 +13,7 @@
   var FS_EN = {
     title: 'FireSquire: Pre-Reboot Check',
     hc: 'pre-reboot health check',
+    sub: 'Pre-reboot health check: one GO / CAUTION / NO-GO verdict before you reboot.',
     running: 'Running checks…',
     subtitle: 'Advisory only · nothing was changed',
     v_GO: 'GO', v_CAUTION: 'CAUTION', 'v_NO-GO': 'NO-GO',
@@ -319,7 +320,9 @@
     if (!el) return;
     if (FS_RTL) el.dir = 'rtl';
     var li = fsT('tools_li'); if (!li || !li.length) li = FS_EN.tools_li;
-    var h = '<p style="margin:6px 0 14px">'+esc(fsT('tools_lead'))+'</p>';
+    var h = '<div class="fs-hero"><span class="fs-hero-tile"><img src="/plugins/firesquire/images/firesquire.png" alt=""></span>' +
+      '<div class="fs-hero-text"><h1 class="fs-hero-name">FireSquire</h1><p class="fs-hero-sub">'+esc(fsT('sub'))+'</p></div></div>';
+    h += '<p style="margin:12px 0 14px">'+esc(fsT('tools_lead'))+'</p>';
     h += '<p>'+esc(fsT('tools_intro'))+'</p><ul style="margin:6px 0 16px 18px">';
     li.forEach(function(x){ h += '<li>'+esc(x)+'</li>'; });
     h += '</ul><input type="button" style="cursor:pointer" value="'+esc(fsT('tools_btn'))+'">';
@@ -329,7 +332,7 @@
   }
 
   $(function(){
-    // Tools page: render the localised description + button
+    // Tools page: the header, the localised description and the button
     try { fillTools(); } catch(e) {}
 
     // Dashboard: flame icon in the server tile's control row, next to Reboot

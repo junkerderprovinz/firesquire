@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Yeniden Başlatma Öncesi Kontrol",
   "hc": "yeniden başlatma öncesi sağlık kontrolü",
+  "sub": "Yeniden başlatma öncesi sağlık kontrolü: yeniden başlatmadan önce tek bir karar (GO / CAUTION / NO-GO).",
   "running": "Kontrol ediliyor…",
   "subtitle": "Yalnızca bilgilendirme · hiçbir şey değiştirilmedi",
   "v_GO": "GO",

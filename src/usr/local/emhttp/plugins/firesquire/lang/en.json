@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Pre-Reboot Check",
   "hc": "pre-reboot health check",
+  "sub": "Pre-reboot health check: one GO / CAUTION / NO-GO verdict before you reboot.",
   "running": "Running checks…",
   "subtitle": "Advisory only · nothing was changed",
   "v_GO": "GO",

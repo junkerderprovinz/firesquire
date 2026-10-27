@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Verificare înainte de repornire",
   "hc": "verificare de sănătate înainte de repornire",
+  "sub": "Verificare de sănătate înainte de repornire: un verdict (GO / CAUTION / NO-GO) înainte să repornești.",
   "running": "Se rulează verificările…",
   "subtitle": "Doar informativ · nu s-a modificat nimic",
   "v_GO": "GO",

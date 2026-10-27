@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: kontrola před restartem",
   "hc": "kontrola stavu před restartem",
+  "sub": "Kontrola stavu před restartem: jeden verdikt (GO / CAUTION / NO-GO) ještě před restartem.",
   "running": "Probíhá kontrola…",
   "subtitle": "Pouze informativní · nic nebylo změněno",
   "v_GO": "GO",

@@ -1,6 +1,7 @@
 {
   "title": "FireSquire: Sjekk før omstart",
   "hc": "helsesjekk før omstart",
+  "sub": "Helsesjekk før omstart: én dom (GO / CAUTION / NO-GO) før du starter på nytt.",
   "running": "Kjører sjekker…",
   "subtitle": "Kun veiledende · ingenting ble endret",
   "v_GO": "GO",
