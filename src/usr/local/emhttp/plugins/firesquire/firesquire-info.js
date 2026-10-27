@@ -54,7 +54,7 @@
     { id: "sol", symbol: "SOL", name: "Solana", tile: ["#9945ff", "#ffffff"], networks: [SOLANA] },
     { id: "sui", symbol: "SUI", name: "Sui", tile: ["#4da2ff", "#ffffff"], networks: [{ id: "sui", name: "Sui", address: SUI }] },
     // Exchanges often ask for a destination tag; this account does not need one.
-    { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
+    { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], rest: "var(--fs-coin-xrp)", networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
   ];
 
   function t(k) { return L[k] == null ? k : String(L[k]); }
@@ -539,6 +539,7 @@
           b.title = c.name;
           b.style.setProperty("--fs-tile", c.tile[0]);
           b.style.setProperty("--fs-tile-ink", c.tile[1]);
+          b.style.setProperty("--fs-coin", c.rest || c.tile[0]);
           var m = el("span", "fs-coin-mark");
           m.appendChild(coinMark(c.id));
           b.appendChild(m);
