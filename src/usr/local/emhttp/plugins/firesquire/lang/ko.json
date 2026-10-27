@@ -1,7 +1,6 @@
 {
   "title": "FireSquire: 재부팅 전 점검",
   "hc": "재부팅 전 상태 점검",
-  "sub": "재부팅 전 상태 점검: 재부팅하기 전에 GO / CAUTION / NO-GO 판정 하나를 내립니다.",
   "running": "점검 실행 중…",
   "subtitle": "안내용일 뿐 · 변경된 것은 없습니다",
   "v_GO": "GO",

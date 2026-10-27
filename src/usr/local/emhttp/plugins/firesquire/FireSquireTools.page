@@ -3,29 +3,68 @@ Title="FireSquire"
 Icon="firesquire.png"
 ---
 <style>
-/* The plugin's logo and name over the page, drawn alike on TowerTorch's and ShipLog's settings
-   pages: in Unraid's colours on their own, in TowerTorch's when it themes the page. */
-.fs-hero { display: flex; align-items: center; gap: 20px; min-width: 0; margin: 4px 0 16px; }
-.fs-hero-tile {
-  flex: none; display: flex; align-items: center; justify-content: center; box-sizing: border-box;
-  width: 88px; height: 88px; padding: 10px; border-radius: 4px; background: rgba(128, 128, 128, .18);
+/* The banner over the page, drawn alike on TowerTorch's and ShipLog's settings
+   pages: the logo and the name on a card surface, washed from the start with
+   the first colour and ringed at the end by all three, as wide as ShipLog's tab
+   column and cards together. Without TowerTorch the colours are Unraid's button
+   gradient; with it they are the accent, or three rainbow positions, resting
+   grey in the reactive mode until the pointer reaches it. */
+.fs-hero {
+  --fs-hero-a: #e22828;
+  --fs-hero-b: #ff8c2f;
+  --fs-hero-c: #ff8c2f;
+  --fs-hero-ground: var(--mild-background-color, rgba(128, 128, 128, .08));
+  --fs-hero-dir: 100deg;
+  --fs-hero-wash: 26%;
+  --fs-hero-ring: 22%;
+  position: relative; isolation: isolate; overflow: hidden; box-sizing: border-box;
+  display: flex; align-items: center; gap: 24px;
+  max-width: 1148px; height: 136px; margin: 4px 0 16px; padding: 0 32px;
+  border-radius: 4px;
+  background:
+    linear-gradient(var(--fs-hero-dir), color-mix(in srgb, var(--fs-hero-a) var(--fs-hero-wash), transparent), color-mix(in srgb, var(--fs-hero-a) calc(var(--fs-hero-wash) / 3), transparent) 42%, transparent 72%),
+    var(--fs-hero-ground);
 }
-.fs-hero-tile img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.fs-hero-text { min-width: 0; }
-#ss-tools .fs-hero-name { margin: 0; font-family: inherit; font-size: 32px; font-weight: 700; line-height: 1.15; letter-spacing: normal; text-transform: none; color: inherit; }
-#ss-tools .fs-hero-sub { margin: 4px 0 0; color: var(--alt-text-color, #8d8d8d); font-size: 13px; line-height: 1.45; text-align: start; }
-html.cc-tools-on .fs-hero-tile { border-radius: var(--cc-radius-control, 12px); }
-html.cc-tools-on #ss-tools .fs-hero-name { color: var(--cc-text, #e6e6e6); }
-html.cc-tools-on #ss-tools .fs-hero-sub { color: var(--cc-text-dim, #8a8a8a); }
+.fs-hero:dir(rtl) { --fs-hero-dir: 260deg; }
+/* A light colour washed over a white ground needs more of itself to show. */
+html:is(.Theme--white, .Theme--azure) .fs-hero { --fs-hero-wash: 40%; --fs-hero-ring: 36%; }
+.fs-hero-mark {
+  position: absolute; z-index: -1; inset-inline-end: -72px; top: 50%; translate: 0 -50%;
+  width: 360px; height: 360px; fill: none; stroke-width: 18;
+}
+.fs-hero-mark circle:nth-child(1) { stroke: color-mix(in srgb, var(--fs-hero-c) calc(var(--fs-hero-ring) - 6%), transparent); }
+.fs-hero-mark circle:nth-child(2) { stroke: color-mix(in srgb, var(--fs-hero-b) var(--fs-hero-ring), transparent); }
+.fs-hero-mark circle:nth-child(3) { stroke: color-mix(in srgb, var(--fs-hero-a) calc(var(--fs-hero-ring) + 6%), transparent); }
+.fs-hero-logo { flex: none; display: block; width: 88px; height: 88px; object-fit: contain; }
+.fs-hero .fs-hero-name {
+  min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: inherit; font-size: 32px; font-weight: 700; line-height: 1.15; letter-spacing: normal; text-transform: none; color: inherit;
+}
+html.cc-tools-on .fs-hero {
+  --fs-hero-a: var(--fs-hero-1, var(--cc-accent, #FCC419));
+  --fs-hero-b: var(--fs-hero-2, var(--cc-accent, #FCC419));
+  --fs-hero-c: var(--fs-hero-3, var(--cc-accent, #FCC419));
+  --fs-hero-ground: var(--cc-fm-card, var(--cc-surface-2, #222));
+  border-radius: var(--cc-radius-card, 20px);
+  color: var(--cc-text, #e6e6e6);
+}
+html.cc-tools-on .fs-hero.fs-reactive:not(:hover) { --fs-hero-a: var(--cc-text-dim, #8a8a8a); --fs-hero-b: var(--cc-text-dim, #8a8a8a); --fs-hero-c: var(--cc-text-dim, #8a8a8a); }
 @media (max-width: 1023px) {
-  .fs-hero-tile { width: 72px; height: 72px; padding: 8px; }
-  #ss-tools .fs-hero-name { font-size: 26px; }
+  .fs-hero { gap: 16px; height: 104px; padding: 0 20px; }
+  .fs-hero-mark { inset-inline-end: -64px; width: 280px; height: 280px; }
+  .fs-hero-logo { width: 64px; height: 64px; }
+  .fs-hero .fs-hero-name { font-size: 26px; }
 }
 /* TowerTorch styles Unraid's title strip with !important, which only an
-   important rule in a layer outranks. The header names the page, so the strip
+   important rule in a layer outranks. The banner names the page, so the strip
    would say it twice. */
 @layer firesquire-settings {
   .content:has(> #ss-tools) > div.title { display: none !important; }
 }
 </style>
+<div class="fs-hero">
+  <svg class="fs-hero-mark" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><circle cx="200" cy="200" r="188"/><circle cx="200" cy="200" r="138"/><circle cx="200" cy="200" r="88"/></svg>
+  <img class="fs-hero-logo" src="/plugins/firesquire/images/firesquire.png" alt="">
+  <h1 class="fs-hero-name">FireSquire</h1>
+</div>
 <div id="ss-tools" style="max-width:780px;line-height:1.55"></div>
