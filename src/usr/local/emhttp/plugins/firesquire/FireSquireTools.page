@@ -68,3 +68,11 @@ html.cc-tools-on .fs-hero.fs-reactive:not(:hover) { --fs-hero-a: var(--cc-text-d
   <h1 class="fs-hero-name">FireSquire</h1>
 </div>
 <div id="ss-tools" style="max-width:780px;line-height:1.55"></div>
+<?php
+$fsVer = '';
+if (preg_match('/<!ENTITY\s+version\s+"([^"]+)"/', (string)@file_get_contents('/var/log/plugins/firesquire.plg'), $fsM)) $fsVer = $fsM[1];
+?>
+<link type="text/css" rel="stylesheet" href="<?autov('/plugins/firesquire/firesquire-info.css')?>">
+<div id="fs-info" data-fs-ver="<?=htmlspecialchars($fsVer, ENT_QUOTES)?>"></div>
+<script src="<?autov('/plugins/firesquire/firesquire-marks.js')?>"></script>
+<script src="<?autov('/plugins/firesquire/firesquire-info.js')?>"></script>
