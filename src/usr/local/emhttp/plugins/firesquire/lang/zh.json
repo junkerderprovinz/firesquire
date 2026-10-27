@@ -1,7 +1,6 @@
 {
   "title": "FireSquire：重启前检查",
   "hc": "重启前健康检查",
-  "sub": "重启前健康检查：重启之前给出一个结论（GO / CAUTION / NO-GO）。",
   "running": "正在检查…",
   "subtitle": "仅供参考 · 未做任何更改",
   "v_GO": "GO",

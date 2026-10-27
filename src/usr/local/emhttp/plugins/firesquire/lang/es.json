@@ -1,7 +1,6 @@
 {
   "title": "FireSquire: Comprobación previa al reinicio",
   "hc": "comprobación de estado previa al reinicio",
-  "sub": "Comprobación de estado previa al reinicio: un veredicto (GO / CAUTION / NO-GO) antes de reiniciar.",
   "running": "Ejecutando comprobaciones…",
   "subtitle": "Solo informativo · no se cambió nada",
   "v_GO": "GO",

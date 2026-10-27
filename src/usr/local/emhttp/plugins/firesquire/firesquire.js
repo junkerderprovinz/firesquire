@@ -13,7 +13,6 @@
   var FS_EN = {
     title: 'FireSquire: Pre-Reboot Check',
     hc: 'pre-reboot health check',
-    sub: 'Pre-reboot health check: one GO / CAUTION / NO-GO verdict before you reboot.',
     running: 'Running checks…',
     subtitle: 'Advisory only · nothing was changed',
     v_GO: 'GO', v_CAUTION: 'CAUTION', 'v_NO-GO': 'NO-GO',
@@ -315,14 +314,35 @@
   }
   window.firesquireRun = run;
 
+  /* The banner over the Tools page takes TowerTorch's colour mode when TowerTorch
+     themes the page: the first three rainbow positions, or the accent, resting
+     grey in the reactive mode. Without TowerTorch it keeps Unraid's colours. */
+  function paintBanner(){
+    var b = document.querySelector('.fs-hero');
+    if (!b) return;
+    if (FS_RTL) b.dir = 'rtl';
+    var html = document.documentElement;
+    function ls(k, d){ try { var v = localStorage.getItem(k); return v == null ? d : v; } catch(e) { return d; } }
+    function paint(){
+      var on = html.classList.contains('cc-tools-on') && ls('cc.theming', '1') !== '0';
+      var rb = on && ls('cc.rainbow', '0') === '1' && window.CCTheme && window.CCTheme.rbColor;
+      var accent = (getComputedStyle(html).getPropertyValue('--cc-accent') || '').trim() || '#FCC419';
+      b.classList.toggle('fs-reactive', on && ls('cc.rbmode', 'all') === 'active');
+      [1, 2, 3].forEach(function(n){
+        if (rb) b.style.setProperty('--fs-hero-' + n, window.CCTheme.rbColor(n - 1, accent)); else b.style.removeProperty('--fs-hero-' + n);
+      });
+    }
+    paint();
+    new MutationObserver(paint).observe(html, { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('storage', function(e){ if (!e.key || /^cc\./.test(e.key)) paint(); });
+  }
+
   function fillTools(){
     var el = document.getElementById('ss-tools');
     if (!el) return;
     if (FS_RTL) el.dir = 'rtl';
     var li = fsT('tools_li'); if (!li || !li.length) li = FS_EN.tools_li;
-    var h = '<div class="fs-hero"><span class="fs-hero-tile"><img src="/plugins/firesquire/images/firesquire.png" alt=""></span>' +
-      '<div class="fs-hero-text"><h1 class="fs-hero-name">FireSquire</h1><p class="fs-hero-sub">'+esc(fsT('sub'))+'</p></div></div>';
-    h += '<p style="margin:12px 0 14px">'+esc(fsT('tools_lead'))+'</p>';
+    var h = '<p style="margin:6px 0 14px">'+esc(fsT('tools_lead'))+'</p>';
     h += '<p>'+esc(fsT('tools_intro'))+'</p><ul style="margin:6px 0 16px 18px">';
     li.forEach(function(x){ h += '<li>'+esc(x)+'</li>'; });
     h += '</ul><input type="button" style="cursor:pointer" value="'+esc(fsT('tools_btn'))+'">';
@@ -332,7 +352,8 @@
   }
 
   $(function(){
-    // Tools page: the header, the localised description and the button
+    // Tools page: the banner's colours, the localised description and the button
+    try { paintBanner(); } catch(e) {}
     try { fillTools(); } catch(e) {}
 
     // Dashboard: flame icon in the server tile's control row, next to Reboot
