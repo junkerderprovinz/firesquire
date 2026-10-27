@@ -314,9 +314,9 @@
   }
   window.firesquireRun = run;
 
-  /* The banner over the Tools page takes TowerTorch's colour mode when TowerTorch
-     themes the page: the first three rainbow positions, or the accent, resting
-     grey in the reactive mode. Without TowerTorch it keeps Unraid's colours. */
+  /* The banner's silhouette takes TowerTorch's first rainbow position when
+     TowerTorch themes the page under the rainbow; otherwise the sheet gives it
+     the accent, or Unraid's colours without TowerTorch. */
   function paintBanner(){
     var b = document.querySelector('.fs-hero');
     if (!b) return;
@@ -327,10 +327,7 @@
       var on = html.classList.contains('cc-tools-on') && ls('cc.theming', '1') !== '0';
       var rb = on && ls('cc.rainbow', '0') === '1' && window.CCTheme && window.CCTheme.rbColor;
       var accent = (getComputedStyle(html).getPropertyValue('--cc-accent') || '').trim() || '#FCC419';
-      b.classList.toggle('fs-reactive', on && ls('cc.rbmode', 'all') === 'active');
-      [1, 2, 3].forEach(function(n){
-        if (rb) b.style.setProperty('--fs-hero-' + n, window.CCTheme.rbColor(n - 1, accent)); else b.style.removeProperty('--fs-hero-' + n);
-      });
+      if (rb) b.style.setProperty('--fs-hero-rb', window.CCTheme.rbColor(0, accent)); else b.style.removeProperty('--fs-hero-rb');
     }
     paint();
     new MutationObserver(paint).observe(html, { attributes: true, attributeFilter: ['class'] });
