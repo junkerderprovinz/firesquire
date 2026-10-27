@@ -28,6 +28,17 @@
 </ICON>
 
   <CHANGES>
+## 3.0.3
+✨ **Added**
+- Version, Help and About cards on the settings page, as on TowerTorch's and ShipLog's
+  Info tab.
+- The coffee, PayPal and crypto buttons open their windows in the page instead of a
+  new tab. Each coin's logo shows in its own colour.
+
+🎨 **Design**
+- The settings page opens with a banner across the page: FireSquire's logo, its name
+  and the claim.
+
 ## 3.0.2
 🎨 **Design**
 - A small logo touch-up: the outer ring is a shade darker on its right side. You'll see it
