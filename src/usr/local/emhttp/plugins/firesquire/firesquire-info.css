@@ -1,0 +1,259 @@
+/* FireSquire's Info cards and the windows its give buttons open.
+ *
+ * Without TowerTorch they follow Unraid: its theme colours and its buttons.
+ * With TowerTorch, which puts cc-tools-on on <html>, they take its tokens as
+ * ShipLog's settings page does. The windows live in <body>, outside the cards,
+ * so they carry the same tokens. */
+
+#fs-info, .fs-win, .fs-scrim {
+  --fs-card: var(--mild-background-color, rgba(128, 128, 128, .08));
+  --fs-ground: var(--background-color, #1c1b1b);
+  --fs-chip: color-mix(in srgb, currentColor 12%, transparent);
+  --fs-head: var(--hover-button-background, #e22828);
+  --fs-head-ink: var(--hover-button-text-color, #fff);
+  --fs-dim: var(--alt-text-color, #8d8d8d);
+  --fs-focus: var(--link-text-color, #486dba);
+  --fs-ok: #3fae6a;
+  --fs-err: #e05252;
+  --fs-warn: #ff832b;
+  --fs-dim-scrim: rgba(0, 0, 0, .6);
+  --fs-r-card: 4px;
+  --fs-r-ctl: 4px;
+  --fs-r-pill: 4px;
+  --fs-shadow: none;
+  --fs-win-shadow: 0 12px 48px rgba(0, 0, 0, .55);
+}
+html:is(.Theme--white, .Theme--azure) :is(#fs-info, .fs-win) { --fs-ok: #0e6027; --fs-err: #da1e28; --fs-warn: #ba4e00; }
+
+/* The cards stand under the description, as wide as the banner over it. */
+#fs-info {
+  box-sizing: border-box; max-width: 1148px; margin-top: 36px; padding: 11px 0 24px;
+  display: flex; flex-direction: column; gap: 40px;
+  font-size: 14px; line-height: 1.45;
+}
+#fs-info *, #fs-info *::before, #fs-info *::after { box-sizing: border-box; }
+.fs-card { position: relative; padding: 22px 18px 12px; border-radius: var(--fs-r-card); background: var(--fs-card); box-shadow: var(--fs-shadow); }
+#fs-info .fs-h {
+  position: absolute; top: 0; transform: translateY(-50%); z-index: 1;
+  display: inline-flex; align-items: center; max-width: calc(100% - 36px); min-height: 22px; margin: 0; padding: 0 12px;
+  border-radius: var(--fs-r-pill); background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink));
+  font-family: inherit; font-size: 12px; font-weight: 500; line-height: 1.2; letter-spacing: 1.2px; text-transform: uppercase;
+}
+.fs-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; min-height: 44px; padding: 6px 0; }
+.fs-prose { margin: 4px 0 8px; text-align: start; }
+.fs-ver { font-variant-numeric: tabular-nums lining-nums; }
+#fs-info a.fs-ver { margin: 0; }
+
+/* The README's buttons as TowerTorch draws them: the mark and the name at
+   rest, the brand's own colour and one sheen under the pointer. */
+#fs-info .fs-rbtn-rows { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 12px; }
+/* The give row is the loudest row on the card, so a line of space sets it
+   apart from the sentence above. */
+#fs-info .fs-rbtn-rows.fs-give { margin-top: 21px; }
+#fs-info .fs-rbtn-unit { position: relative; display: inline-flex; border-radius: var(--cc-radius-pill, 9999px); overflow: hidden; isolation: isolate; --fs-brand-coffee: #ffdd00; --fs-brand-paypal: #4fb5f0; --fs-brand-bitcoin: #f7931a; }
+#fs-info .fs-rbtn { position: relative; display: block; flex: none; width: 160px; height: 46.6px; padding: 0; background: var(--cc-surface-3, #2e2e2e); text-decoration: none; cursor: pointer; }
+#fs-info .fs-rbtn:hover { text-decoration: none; }
+#fs-info .fs-rbtn:focus-visible { outline: none !important; filter: none !important; box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--cc-accent, #FCC419) 45%, transparent) !important; }
+#fs-info .fs-rbtn-mark { position: absolute; top: 50%; left: 14px; width: 32px; height: 25px; translate: 0 -50%; display: flex; }
+#fs-info :is(.fs-rbtn-mark, .fs-rbtn-art) svg { display: block; width: 100%; height: 100%; }
+#fs-info .fs-rbtn-art { position: absolute; inset: 0; }
+#fs-info .fs-rbtn-text { position: absolute; top: 0; bottom: 0; left: 53px; right: 10px; display: flex; flex-direction: column; justify-content: center; line-height: 1.15; }
+#fs-info .fs-rbtn-name { max-width: 100%; overflow: hidden; white-space: nowrap; font-size: var(--cc-text-body, 14px); font-weight: 700; }
+#fs-info .fs-paypal-mark { color: var(--fs-brand-paypal); }
+#fs-info .fs-bitcoin-mark { color: var(--fs-brand-bitcoin); }
+#fs-info .fs-github-mark { color: #fff; }
+/* The forum button reaches FireSquire's author, so it wears the page's own colour. */
+#fs-info .fs-house-mark { color: var(--fs-hue, var(--fs-house)); }
+#fs-info .fs-tile-github { --fs-give: #181717; --fs-give-ink: #fff; }
+#fs-info .fs-tile-house { --fs-house: #ff8c2f; --fs-give: var(--fs-hue, var(--fs-house)); --fs-give-ink: var(--fs-hue-ink, #161616); }
+html.cc-tools-on #fs-info .fs-tile-house { --fs-house: var(--cc-accent, #FCC419); --fs-give-ink: var(--fs-hue-ink, var(--cc-accent-text, #161616)); }
+#fs-info .fs-tile-paypal { --fs-give: #003087; --fs-give-ink: #fff; }
+#fs-info .fs-tile-bitcoin { --fs-give: #f7931a; --fs-give-ink: #161616; }
+#fs-info .fs-tile-coffee { --fs-give: #ffdd00; --fs-give-ink: #0d0c22; }
+@media (hover: hover) {
+  #fs-info .fs-rbtn-unit:hover .fs-rbtn { background: var(--fs-give); --fs-mark-ink: var(--fs-give-ink); }
+  #fs-info .fs-rbtn-unit:hover .fs-rbtn-mark { color: var(--fs-give-ink); }
+}
+#fs-info .fs-rbtn-sheen { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+#fs-info .fs-rbtn-sheen::after { content: ""; position: absolute; top: -12px; bottom: -12px; left: -64px; width: 33px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .28) 45%, rgba(255, 255, 255, .28) 55%, transparent); transform: skewX(-16deg); }
+@keyframes fs-rbtn-sheen { to { left: calc(100% + 32px); } }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html:not([data-cc-motion="off"]) #fs-info .fs-rbtn-unit:hover .fs-rbtn-sheen::after { animation: fs-rbtn-sheen .7s linear; }
+}
+
+/* The windows. The scrim darkens and blurs the page; the window sits above
+   Unraid's own popovers, whose z-index reaches 999999. */
+.fs-scrim {
+  position: fixed; inset: 0; z-index: 1000000;
+  background: var(--fs-dim-scrim);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.fs-win {
+  position: fixed; z-index: 1000001; left: 50%; top: 50%; translate: -50% -50%;
+  box-sizing: border-box; display: flex; flex-direction: column;
+  width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 48px);
+  padding: 21px 0 16px; border-radius: var(--fs-r-card);
+  background: var(--fs-ground); color: var(--text-color, #f2f2f2); box-shadow: var(--fs-win-shadow);
+  font-size: 14px; line-height: 1.45; text-align: start;
+}
+.fs-win *, .fs-win *::before, .fs-win *::after { box-sizing: border-box; }
+.fs-win:focus { outline: none; }
+.fs-win [hidden] { display: none !important; }
+/* As tall as the screen allows less a margin: Buy Me a Coffee's payment step
+   runs to about 1200px, and every pixel here is scrolling a donor is spared. */
+.fs-win.fs-win-coffee { width: min(512px, calc(100vw - 32px)); height: calc(100vh - 112px); }
+.fs-win.fs-win-paypal { width: min(460px, calc(100vw - 32px)); }
+.fs-win .fs-win-title {
+  position: absolute; top: 0; inset-inline-start: 24px; transform: translateY(-50%);
+  display: inline-flex; align-items: center; max-width: calc(100% - 48px); min-height: 22px; margin: 0; padding: 0 12px;
+  border-radius: var(--fs-r-pill); background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink));
+  font-family: inherit; font-size: 12px; font-weight: 500; line-height: 1.2; letter-spacing: 1.2px; text-transform: uppercase;
+}
+.fs-win-body {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 14px; padding: 8px 20px 4px;
+}
+.fs-win-coffee .fs-win-body { overflow: hidden; }
+.fs-win .fs-win-text { margin: 0; text-align: start; }
+.fs-win .fs-win-sub { color: var(--fs-dim); }
+.fs-win-act { flex: none; display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px 0; }
+.fs-win-act > button { margin: 0; }
+
+.fs-frame { flex: 1 1 auto; min-height: 0; display: flex; padding: 8px; border-radius: var(--fs-r-card); background: var(--fs-card); }
+/* White behind the frame, so its first paint is not a dark hole; the widget is light either way. */
+.fs-frame iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; border-radius: var(--fs-r-ctl); background: #fff; }
+
+.fs-group { display: flex; flex-direction: column; gap: 6px; }
+.fs-group-lbl { color: var(--fs-dim); font-size: 12px; }
+.fs-seg { display: flex; gap: 4px; width: 100%; padding: 4px; border-radius: var(--fs-r-ctl); background: var(--fs-card); }
+.fs-win .fs-seg-opt {
+  flex: 1 1 0; min-width: 0; height: 32px; margin: 0; padding: 0 10px;
+  border: none; border-radius: var(--fs-r-ctl); box-shadow: none; background: transparent; color: inherit;
+  font-family: inherit; font-size: 13px; font-weight: 500; line-height: 1; letter-spacing: normal; text-transform: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.fs-win .fs-seg-opt:hover { background: var(--fs-chip); color: inherit; }
+.fs-win .fs-seg-opt[aria-checked="true"] { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+.fs-amounts { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.fs-win input.fs-amount { width: 144px; max-width: 100%; height: 32px; margin: 0; outline: 1px solid transparent; outline-offset: -1px; }
+.fs-win input.fs-amount.fs-amount-ok { outline-color: var(--fs-focus); }
+.fs-paypal { color-scheme: light; margin-top: 8px; }
+.fs-pp-state { margin: 0; color: var(--fs-dim); font-size: 12px; text-align: center; }
+.fs-pp-state:empty { display: none; }
+.fs-pp-state.fs-ok { color: var(--fs-ok); font-size: 14px; }
+.fs-pp-state.fs-err { color: var(--fs-err); font-size: 14px; }
+
+.fs-crypto { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px; border-radius: var(--fs-r-card); background: var(--fs-card); }
+/* The code's white plate takes the card radius; the quiet zone keeps the
+   rounded corners white by the standard. */
+.fs-qr { flex: none; width: 192px; height: 192px; padding: 12px; border-radius: var(--fs-r-card); background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+.fs-qr svg { display: block; width: 100%; height: 100%; }
+.fs-win .fs-addr {
+  width: 100%; margin: 0; text-align: center; overflow-wrap: anywhere; word-break: break-all;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12px; font-variant-numeric: tabular-nums;
+}
+.fs-nets { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.fs-win .fs-net {
+  min-width: 0; height: auto; margin: 0; padding: 4px 12px;
+  border: none; border-radius: var(--fs-r-pill); box-shadow: none; background: var(--fs-chip); color: var(--fs-dim);
+  font-family: inherit; font-size: 12px; font-weight: 500; line-height: 1.4; letter-spacing: normal; text-transform: none; cursor: pointer;
+}
+.fs-win .fs-net:hover { background: var(--fs-chip); color: inherit; }
+.fs-win .fs-net[aria-selected="true"] { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+.fs-win .fs-note { margin: 0; color: var(--fs-warn); font-size: 12px; text-align: center; }
+.fs-win .fs-copy { margin: 0; }
+.fs-copy-src { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; }
+
+/* The coins as square tiles, the mark half the tile. A tile lights up in its
+   coin's colour under the pointer; the picked one keeps the page's colour. */
+.fs-coins { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.fs-win .fs-coin {
+  aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  min-width: 0; height: auto; margin: 0; padding: 0 8px;
+  border: none; border-radius: var(--fs-r-ctl); box-shadow: none; background: var(--fs-card); color: var(--fs-dim);
+  font-family: inherit; font-size: 12px; font-weight: 500; line-height: 1.4; letter-spacing: normal; text-transform: none; cursor: pointer;
+}
+.fs-coin-mark { flex: none; display: flex; align-items: center; justify-content: center; height: 50%; }
+.fs-coin-mark svg { display: block; width: auto; height: 100%; }
+.fs-coin-tick { max-height: 1.4em; overflow: hidden; }
+.fs-win .fs-coin:is(:hover, :focus-visible):not([aria-selected="true"]) { background: var(--fs-tile); color: var(--fs-tile-ink); --fs-mark-ink: var(--fs-tile-ink); }
+.fs-win .fs-coin[aria-selected="true"] { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+/* The tiles follow TowerTorch's label mode: the ticker alone, the mark alone,
+   or the mark with the ticker opening under the pointer; a picked coin keeps
+   its word. */
+.fs-win[data-fs-labels="text"] .fs-coin-mark { display: none; }
+.fs-win[data-fs-labels="glyph"] .fs-coin-tick { display: none; }
+.fs-win[data-fs-labels="reactive"] .fs-coin:not([aria-selected="true"]):not(:hover):not(:focus-visible) .fs-coin-tick { max-height: 0; opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .fs-win[data-fs-labels="reactive"] .fs-coin-tick {
+    transition: max-height var(--cc-motion-label-dur, 160ms) var(--cc-motion-label-ease, ease-out), opacity var(--cc-motion-label-dur, 160ms) ease-out;
+  }
+}
+.fs-win :is(.fs-seg-opt, .fs-net, .fs-coin):focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
+
+/* A typed amount that is no amount, or a copy that failed, shakes once. */
+@keyframes fs-shake {
+  0%, 100% { transform: none; }
+  20%, 60% { transform: translateX(calc(var(--cc-motion-shake-dist, 4px) * -1)); }
+  40%, 80% { transform: translateX(var(--cc-motion-shake-dist, 4px)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fs-win .fs-shake { animation: fs-shake var(--cc-motion-shake-dur, 360ms) ease-in-out; }
+}
+
+/* With TowerTorch: its tokens, and windows that stay dark on every theme as
+   TowerTorch's own do. */
+html.cc-tools-on #fs-info {
+  --fs-card: var(--cc-fm-card, #222);
+  --fs-head: var(--cc-accent, #FCC419);
+  --fs-head-ink: var(--cc-accent-text, #161616);
+  --fs-dim: var(--cc-text-dim, #8a8a8a);
+  --fs-r-card: var(--cc-radius-card, 20px);
+  --fs-r-ctl: var(--cc-radius-control, 12px);
+  --fs-r-pill: var(--cc-radius-pill, 9999px);
+  --fs-shadow: var(--cc-elev-1, 0 1px 4px rgba(0, 0, 0, .35));
+  color: var(--cc-text, #e6e6e6);
+}
+html.cc-tools-on :is(.fs-win, .fs-scrim) {
+  --fs-ground: #1a1a1a;
+  --fs-card: #222;
+  --fs-chip: #2e2e2e;
+  --fs-head: var(--cc-accent, #FCC419);
+  --fs-head-ink: var(--cc-accent-text, #161616);
+  --fs-dim: #8a8a8a;
+  --fs-focus: var(--cc-accent, #FCC419);
+  --fs-ok: #6fdc8c;
+  --fs-err: #ff8389;
+  --fs-warn: #ff832b;
+  --fs-dim-scrim: var(--cc-backdrop-dim, rgba(0, 0, 0, .72));
+  --fs-r-card: var(--cc-radius-card, 20px);
+  --fs-r-ctl: var(--cc-radius-control, 12px);
+  --fs-r-pill: var(--cc-radius-pill, 9999px);
+  --fs-win-shadow: var(--cc-elev-3, 0 12px 30px rgba(0, 0, 0, .6));
+}
+html.cc-tools-on .fs-win { color: #e6e6e6; }
+/* TowerTorch's sheets dress the buttons and fields of the page, not of <body>,
+   so the window draws its own in the look of TowerTorch's windows. */
+html.cc-tools-on .fs-win button.fs-win-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 96px; min-height: 32px; height: auto; margin: 0; padding: 6px 14px;
+  border: none; border-radius: var(--fs-r-pill); box-shadow: none; background: #2e2e2e; color: #e6e6e6;
+  font-family: inherit; font-size: var(--cc-text-meta, 12px); font-weight: 600; line-height: 1.2; letter-spacing: normal; text-transform: none; cursor: pointer;
+}
+html.cc-tools-on .fs-win button.fs-win-btn:hover { background: var(--fs-head); color: var(--fs-head-ink); }
+html.cc-tools-on .fs-win input.fs-amount {
+  height: 32px; padding: 7px 10px; border: none; border-radius: var(--fs-r-ctl); box-shadow: none;
+  background: #2e2e2e; color: #e6e6e6; font-family: inherit; font-size: 13px;
+}
+html.cc-tools-on .fs-win input.fs-amount:focus { background: #383838; }
+html.cc-tools-on .fs-win input.fs-amount::placeholder { color: #a3a3a3; opacity: 1; }
+
+/* TowerTorch's sheets reach every link and focus ring on a settings page with
+   !important, and only an important rule in a layer outranks them: the README
+   buttons keep their ink against the accent TowerTorch gives every link. */
+@layer firesquire-settings {
+  #fs-info a.fs-rbtn { color: var(--cc-text, #e6e6e6) !important; filter: none !important; }
+  @media (hover: hover) {
+    #fs-info .fs-rbtn-unit:hover a.fs-rbtn { color: var(--fs-give-ink) !important; }
+  }
+}
