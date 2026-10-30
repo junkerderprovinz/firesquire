@@ -28,6 +28,33 @@
 </ICON>
 
   <CHANGES>
+## 3.1.0
+✨ **Added**
+- With TowerTorch installed, the report window has a Check again button at its foot. It
+  runs the check once more without closing the window.
+
+🎨 **Design**
+- With TowerTorch installed, FireSquire takes on TowerTorch's look: the report window,
+  the FireSquire button next to Reboot on the Main tab, the icon in the Dashboard's
+  server tile and Settings → User Utilities → FireSquire. Theme, motion, labels, colours
+  and corners follow TowerTorch's settings, and every button shows its icon.
+- In the report, FireSquire's logo stands right before GO, CAUTION or NO-GO, framed in
+  the verdict's colour. Findings are grouped by tier, and each problem gets a button that
+  opens the page where you can fix it. The note that FireSquire only advises sits behind
+  the (i) next to the title.
+- Settings → User Utilities → FireSquire opens with a card that lists what the check
+  looks at, with the details behind each (i). The Version card shows the version without
+  a "v", along with the GlimStone version and a Release notes button.
+- Without TowerTorch, the report window follows Unraid's light or dark theme instead of
+  fixed colours.
+
+⚡ **Improved**
+- The keyboard focus stays inside the report window while it is open. Escape closes it,
+  and the focus goes back to the button you opened it from.
+
+🌐 **Translations**
+- The new labels are translated into all 26 languages.
+
 ## 3.0.3
 ✨ **Added**
 - Version, Help and About cards on the settings page, as on TowerTorch's and ShipLog's
