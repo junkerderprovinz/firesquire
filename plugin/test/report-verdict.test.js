@@ -1,7 +1,8 @@
 // The report's title is a plain window title. FireSquire's logo heads the verdict instead, and its
 // own diamond frame takes the verdict's colour: neutral while the check runs, the state colour once
-// it has answered, and the colour of a failure when the engine could not run. The frame glows on
-// the motion engine's levels.
+// it has answered, and the colour of a failure when the engine could not run. When the answer
+// arrives the frame turns from grey into its colour and the logo pops once, on the motion engine's
+// levels. Nothing on the logo glows.
 const { read, ok, done, rules, grabFn } = require('./lib');
 
 const js = read('firesquire.js');
@@ -25,9 +26,15 @@ ok('the frame has no box behind it', !css.some((r) => /\.fs-v-logo\b/.test(r.sel
 const holder = css.find((r) => r.selector === 'html.cc-popups-on .fs-v-logo');
 ok('the logo takes the verdict colour', !!holder && /color:\s*var\(--fs-v\)/.test(holder.body));
 ok('the frame paths paint in it', css.some((r) => r.selector === '.fs-v-logo .fs-lf' && /fill:\s*currentColor/.test(r.body)));
-const glow = css.find((r) => /\.fs-v-logo svg/.test(r.selector) && /animation:\s*fs-glow var\(--fs-motion-glow-dur\)/.test(r.body));
-ok('the frame glows on the motion engine', !!glow && glow.at.some((a) => /no-preference/.test(a)));
-ok('the glow stops at off', css.some((r) => r.selector === 'html[data-cc-motion="off"] .fs-v-logo svg' && /animation:\s*none/.test(r.body)));
+const logoRules = css.filter((r) => /\.fs-v-logo\b/.test(r.selector));
+ok('nothing on the logo glows', !logoRules.some((r) => /(^|;)\s*(filter|box-shadow)\s*:|drop-shadow/.test(r.body)) && !/drop-shadow/.test(read('firesquire.css')));
+const gated = (re) => css.find((r) => /\.fs-v-logo/.test(r.selector) && re.test(r.body) && r.at.some((x) => /no-preference/.test(x)));
+const tint = gated(/animation:\s*fs-tint var\(--fs-motion-tint-dur\)/), pop = gated(/animation:\s*fs-pop var\(--fs-motion-pop-dur\)/);
+ok('the answer turns the frame from grey into its colour', !!tint && tint.selector.includes(':is(.fs-verdict, .fs-err)'));
+ok('and pops the logo once', !!pop && pop.selector.includes(':is(.fs-verdict, .fs-err)') && !/infinite/.test(pop.body));
+ok('the running frame stands still', !css.some((r) => /\.fs-prog[^,]*\.fs-v-logo/.test(r.selector) && /animation/.test(r.body)));
+ok('the colour starts from the running grey', read('firesquire.css').includes('@keyframes fs-tint { from { color: var(--fs-neutral); } }'));
+ok('the motion stops at off', css.some((r) => r.selector.includes('[data-cc-motion="off"]') && r.selector.includes('.fs-v-logo svg') && /animation:\s*none/.test(r.body)));
 ok('it shows only in the GlimStone look', css.some((r) => r.selector === '.fs-v-logo' && /display:\s*none/.test(r.body)));
 for (const st of ['go', 'caution', 'nogo', 'unknown']) ok(`the ${st} state names a colour`, css.some((r) => r.selector.split(',').map((x) => x.trim()).includes('.fs-v-' + st) && /--fs-v:/.test(r.body)));
 
