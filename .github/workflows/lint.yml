@@ -24,6 +24,10 @@ jobs:
           # fail the build on errors only; style warnings (e.g. SC2155) don't block
           shellcheck -S error src/usr/local/emhttp/plugins/firesquire/firesquire-check.sh
 
+      - name: Plugin checks
+        run: |
+          for t in plugin/test/*.test.js; do echo "== $t"; node "$t"; done
+
       - name: PHP lint
         run: |
           sudo apt-get install -y php-cli
