@@ -208,8 +208,7 @@
     if (FS_RTL) win.dir = 'rtl';
     var title = el('h2', 'fs-win-title');
     title.id = 'fs-win-title';
-    if (o.logo) { var mark = el('img', 'fs-win-mark'); mark.src = LOGO; mark.alt = ''; title.appendChild(mark); }
-    title.appendChild(document.createTextNode(o.title));
+    title.textContent = o.title;
     win.setAttribute('aria-labelledby', title.id);
     hue(title, 0);
     win.appendChild(title);
@@ -322,11 +321,15 @@
     return out;
   }
 
+  // FireSquire's logo heads the verdict in a frame of the verdict's colour, and in a
+  // neutral one while the check runs.
+  function logoHTML(){ return '<span class="fs-v-logo" aria-hidden="true"><img src="' + LOGO + '" alt=""></span>'; }
+
   function verdictHTML(data){
     var v = data.verdict, word = fsT('v_' + v) || v;
     var tip = fsT('subtitle') + '. ' + fsT('foot');
     var h = '<div class="fs-verdict ' + (VCLASS[v] || 'fs-v-unknown') + '">';
-    h += '<div class="fs-v-word">' + esc(word) + '</div>';
+    h += logoHTML() + '<div class="fs-v-word">' + esc(word) + '</div>';
     h += '<div class="fs-v-meta"><div class="fs-v-name">FireSquire: ' + esc(fsT('hc')) + '<span class="fs-v-info" data-info="' + esc(tip) + '"></span></div>';
     h += '<div class="fs-v-sub"><span class="fs-v-adv">' + esc(fsT('subtitle')) + (data.generated ? ' · ' : '') + '</span>' + (data.generated ? '<span class="fs-num">' + esc(data.generated) + '</span>' : '') + '</div></div></div>';
     return h;
@@ -370,12 +373,12 @@
   }
 
   function progressHTML(){
-    return '<div class="fs-prog"><div class="fs-prog-lab"><span class="fs-prog-txt">' + esc(fsT('running')) + '</span><span class="fs-prog-pct fs-num"></span></div>' +
+    return '<div class="fs-prog fs-v-unknown"><div class="fs-prog-lab">' + logoHTML() + '<span class="fs-prog-txt">' + esc(fsT('running')) + '</span><span class="fs-prog-pct fs-num"></span></div>' +
       '<div class="fs-prog-track"><div class="fs-prog-fill"></div></div></div>';
   }
 
   function errHTML(){
-    return '<div class="fs-err"><span class="fs-f-ic" aria-hidden="true">' + glyph('Warning') + '</span><div><p class="fs-err-text">' + esc(fsT('err')) +
+    return '<div class="fs-err fs-v-nogo">' + logoHTML() + '<div><p class="fs-err-text">' + esc(fsT('err')) +
       '</p><p class="fs-err-hint">' + esc(fsT('err_hint')) + '</p></div></div>';
   }
 
@@ -412,7 +415,7 @@
     var opener = e && e.currentTarget && e.currentTarget.focus ? e.currentTarget : document.activeElement;
     var abort = null, retry = null, act = null;
     openWindow({
-      cls: 'fs-win-report', title: fsT('title'), logo: true, head: true, opener: opener,
+      cls: 'fs-win-report', title: fsT('title'), head: true, opener: opener,
       onClose: function(){ if (abort) abort.abort(); },
       build: function(body, win, foot){ act = foot; start(body); }
     });

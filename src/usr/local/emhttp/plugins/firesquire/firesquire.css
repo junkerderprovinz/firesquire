@@ -188,7 +188,6 @@ html.cc-popups-on .fs-scrim { -webkit-backdrop-filter: var(--cc-backdrop-blur, b
   border-radius: var(--fs-r-pill); background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink));
   font-family: inherit; font-size: 12px; font-weight: 500; line-height: 1.2; letter-spacing: 1.2px; text-transform: uppercase;
 }
-.fs-win-mark { flex: none; width: 16px; height: 16px; object-fit: contain; }
 .fs-win-body {
   flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
   display: flex; flex-direction: column; gap: 14px; padding: 8px 20px 4px;
@@ -256,6 +255,7 @@ html.cc-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-fo
   background: var(--fs-card); box-shadow: inset 8px 0 0 var(--fs-v);
 }
 [dir="rtl"] .fs-verdict { box-shadow: inset -8px 0 0 var(--fs-v); }
+.fs-v-logo { display: none; }
 .fs-v-word { font-size: 30px; font-weight: 800; letter-spacing: 1px; line-height: 1.1; color: var(--fs-v); }
 .fs-v-meta { min-width: 0; }
 .fs-v-sub { color: var(--fs-dim); font-size: 12px; }
@@ -264,6 +264,15 @@ html.cc-popups-on .fs-v-caution { --fs-v: var(--cc-warn-ink, #ff832b); }
 html.cc-popups-on .fs-v-nogo { --fs-v: var(--cc-err-ink, #ff8389); }
 html.cc-popups-on .fs-verdict { flex-wrap: wrap; gap: 10px 16px; padding: 0 0 4px; border-radius: 0; background: none; box-shadow: none; }
 html.cc-popups-on .fs-v-word { font-size: 2.5rem; letter-spacing: .02em; line-height: 1; }
+/* The logo and the word read as one verdict: the logo stands in a frame drawn
+   in the verdict's colour, on the shape engine's control corners. */
+html.cc-popups-on .fs-v-logo {
+  display: inline-flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px;
+  border: 2px solid var(--fs-v); border-radius: var(--fs-r-ctl);
+  background: color-mix(in srgb, var(--fs-v) 12%, transparent);
+}
+html.cc-popups-on .fs-v-logo img { display: block; width: 34px; height: 34px; object-fit: contain; }
+html.cc-popups-on .fs-verdict .fs-v-logo { margin-inline-end: -4px; }
 html.cc-popups-on .fs-v-name { font-size: var(--cc-text-title, 16px); font-weight: 600; }
 html.cc-popups-on .fs-v-sub { font-size: var(--cc-text-subline, 13px); }
 html.cc-popups-on .fs-v-adv, html.cc-popups-on .fs-foot { display: none; }
@@ -331,17 +340,16 @@ html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="
   html[data-cc-motion="off"] .fs-prog-fill.fs-indet { animation: none; }
 }
 html.cc-popups-on .fs-prog { padding: 18px 0 22px; }
-html.cc-popups-on .fs-prog-lab { margin: 6px 0 12px; }
+html.cc-popups-on .fs-prog-lab { align-items: center; margin: 6px 0 14px; }
+html.cc-popups-on .fs-prog-txt { flex: 1 1 auto; min-width: 0; }
 html.cc-popups-on .fs-prog-pct { opacity: 1; color: var(--fs-dim); }
 html.cc-popups-on .fs-prog-track { height: 8px; border-radius: var(--fs-r-pill); background: var(--fs-card); }
 html.cc-popups-on .fs-prog-fill { background: var(--cc-rbaccent, var(--cc-accent, #FCC419)); }
 
 .fs-err { display: flex; gap: 12px; align-items: flex-start; padding: 8px 4px; color: var(--fs-nogo); }
-.fs-err .fs-f-ic, .fs-err-hint { display: none; }
+.fs-err-hint { display: none; }
 .fs-err p { margin: 0; }
-html.cc-popups-on .fs-err { padding: 6px 0 12px; color: inherit; }
-html.cc-popups-on .fs-err .fs-f-ic { --fs-st: var(--cc-err, #ff8389); display: inline-flex; flex-basis: 32px; width: 32px; height: 32px; border-radius: var(--fs-r-pill); color: var(--cc-err-fg, #161616); }
-html.cc-popups-on .fs-err .fs-f-ic svg { width: 16px; height: 16px; }
+html.cc-popups-on .fs-err { align-items: center; gap: 14px; padding: 6px 0 12px; color: inherit; }
 html.cc-popups-on .fs-err-text { font-weight: 600; }
 html.cc-popups-on .fs-err-hint { display: block; margin-top: 4px; color: var(--fs-dim); }
 
