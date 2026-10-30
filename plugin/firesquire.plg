@@ -32,8 +32,18 @@
 ✨ **Added**
 - With TowerTorch installed, the report window has a Check again button at its foot. It
   runs the check once more without closing the window.
+- The flame is back on the Dashboard. A FireSquire icon sits next to Reboot in the
+  server tile, so you can run the check right where you reboot, and it leaves no empty
+  tile behind.
+- Version, Help and About cards on the settings page, as on TowerTorch's and ShipLog's
+  Info tab. The Version card shows the version without a "v", along with the GlimStone
+  version and a Release notes button.
+- The coffee, PayPal and crypto buttons open their windows in the page instead of a
+  new tab. Each coin's logo shows in its own colour.
 
 🎨 **Design**
+- New logo. The flames sit in a grey diamond that reads on light and dark themes alike,
+  on the Plugins tab, in the menu and in the report window.
 - With TowerTorch installed, FireSquire takes on TowerTorch's look: the report window,
   the FireSquire button next to Reboot on the Main tab, the icon in the Dashboard's
   server tile and Settings → User Utilities → FireSquire. Theme, motion, labels, colours
@@ -42,47 +52,20 @@
   frame takes on the verdict's colour. Findings are grouped by tier, and each problem gets
   a button that opens the page where you can fix it. The note that FireSquire only advises
   sits behind the (i) next to the title.
-- Settings → User Utilities → FireSquire opens with a card that lists what the check
-  looks at, with the details behind each (i). The Version card shows the version without
-  a "v", along with the GlimStone version and a Release notes button.
+- Settings → User Utilities → FireSquire opens with a banner across the page:
+  FireSquire's logo, its name and the claim. Below it, a card lists what the check
+  looks at, with the details behind each (i).
 - Without TowerTorch, the report window follows Unraid's light or dark theme instead of
   fixed colours.
+- The text report from the command line opens with the new knight banner.
 
 ⚡ **Improved**
 - The keyboard focus stays inside the report window while it is open. Escape closes it,
   and the focus goes back to the button you opened it from.
 
 🌐 **Translations**
-- The new labels are translated into all 26 languages.
-
-## 3.0.3
-✨ **Added**
-- Version, Help and About cards on the settings page, as on TowerTorch's and ShipLog's
-  Info tab.
-- The coffee, PayPal and crypto buttons open their windows in the page instead of a
-  new tab. Each coin's logo shows in its own colour.
-
-🎨 **Design**
-- The settings page opens with a banner across the page: FireSquire's logo, its name
-  and the claim.
-
-## 3.0.2
-🎨 **Design**
-- A small logo touch-up: the outer ring is a shade darker on its right side. You'll see it
-  on the Plugins tab, in the menu and in the report window.
-
-## 3.0.1
-✨ **Added**
-- The flame is back on the Dashboard. A FireSquire icon sits next to Reboot in the
-  server tile, so you can run the check right where you reboot, and unlike the old one
-  it leaves no empty tile behind. The Plugins-tab description had been promising it
-  all along; now it's true again.
-
-🎨 **Design**
-- The report and the Tools page read more smoothly in all 26 languages, and the text
-  report from the command line opens with the new knight banner.
-- New logo. The flames sit in a grey diamond that reads on light and dark themes alike,
-  on the Plugins tab, in the menu and in the report window.
+- The report and the settings page read more smoothly in all 26 languages, and the new
+  labels are translated into all of them.
 
 ## 3.0.0
 ✨ **Added**
