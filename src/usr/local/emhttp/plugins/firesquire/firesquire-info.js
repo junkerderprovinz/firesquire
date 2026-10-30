@@ -1,17 +1,19 @@
-/* The Info cards under FireSquire's settings page, in GlimStone's order:
- * Version, Help and About. The give buttons open their windows inside the
- * page: Buy Me a Coffee's widget, PayPal's buttons under the house's own
- * controls, and the crypto window with an address and a QR code per network.
- * Nothing from a payment provider loads before its window opens. */
+/* FireSquire's settings page under the banner: what the check looks at, then
+ * the Info cards in GlimStone's order, Version, Help and About. The give
+ * buttons open their windows inside the page: Buy Me a Coffee's widget,
+ * PayPal's buttons under the house's own controls, and the crypto window with
+ * an address and a QR code per network. Nothing from a payment provider loads
+ * before its window opens. The windows and buttons come from firesquire.js. */
 (function () {
   var root = document.getElementById("fs-info");
-  if (!root) return;
+  var UI = window.fireSquireUI;
+  if (!root || !UI) return;
+  var tools = document.getElementById("ss-tools");
   var html = document.documentElement;
   var L = window.fireSquireI18n || {};
   var MARK = (window.fireSquireMarks || {}).brand || {};
   var COIN_MARK = (window.fireSquireMarks || {}).coin || {};
-  var lang = String(window.fireSquireLang || html.lang || "en").slice(0, 2).toLowerCase();
-  var rtl = lang === "ar" || lang === "he";
+  var rtl = UI.rtl;
 
   var REPO = "https://github.com/junkerderprovinz/firesquire";
   var FORUM = "https://forums.unraid.net/topic/199508-support-junkerderprovinz-firesquire/";
@@ -57,68 +59,51 @@
     { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], rest: "var(--fs-coin-xrp)", networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
   ];
 
-  function t(k) { return L[k] == null ? k : String(L[k]); }
-  function get(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }
-  function el(tag, cls, text) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-  function button(cls, text) { var b = el("button", cls, text); b.type = "button"; return b; }
+  var GLS_VER = "3.8.0";
+  var GLS_REPO = "https://github.com/junkerderprovinz/glimstone";
 
-  /* The colour engine, read from TowerTorch: the accent, and under the rainbow
-     one position per card heading and per picked option. Without TowerTorch
-     nothing is set and the cards keep Unraid's colours. */
-  function themed() { return html.classList.contains("cc-tools-on") && get("cc.theming", "1") !== "0"; }
-  function hue(node, i) {
-    var C = window.CCTheme;
-    var c = "";
-    if (i != null && themed() && get("cc.rainbow", "0") === "1" && C && C.rbColor) {
-      c = C.rbColor(i, (getComputedStyle(html).getPropertyValue("--cc-accent") || "").trim() || "#FCC419");
-    }
-    if (c) {
-      node.style.setProperty("--fs-hue", c);
-      node.style.setProperty("--fs-hue-ink", C.idealText ? C.idealText(c) : "#161616");
-    } else {
-      node.style.removeProperty("--fs-hue");
-      node.style.removeProperty("--fs-hue-ink");
-    }
-  }
-  // TowerTorch's label mode for the buttons it draws, which the coin tiles follow.
-  function labelMode() {
-    var m = themed() ? html.getAttribute("data-cc-labels-buttons") : "";
-    return ["text", "textGlyph", "glyph", "reactive"].indexOf(m) < 0 ? "textGlyph" : m;
-  }
+  function t(k) { return L[k] == null ? k : String(L[k]); }
+  var el = UI.el;
+  function button(cls, text) { var b = el("button", cls, text); b.type = "button"; return b; }
+  var hue = UI.hue;
 
   var seq = 0;
-  function card(title) {
+  function card(title, into) {
     var c = el("section", "fs-card"), h = el("h3", "fs-h"), s = el("span", null, title);
     s.id = "fs-h-" + (++seq);
     c.setAttribute("aria-labelledby", s.id);
     h.appendChild(s);
     c.appendChild(h);
-    root.appendChild(c);
+    (into || root).appendChild(c);
     return c;
   }
   function prose(c, text) { c.appendChild(el("p", "fs-prose", text)); }
-  // A version links to its release page; a build without a release shows its name alone.
-  function version(ver) {
-    var v = String(ver || "").replace(/^v/, "");
-    if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(v)) return el("span", "fs-ver", v || "?");
-    var a = el("a", "button fs-ver", "v" + v);
-    a.href = REPO + "/releases/tag/v" + v;
+  function row(c, label, tip) {
+    var r = el("div", "fs-row"), l = el("span", "fs-row-lbl", label), end = el("span", "fs-row-end");
+    if (tip) l.appendChild(UI.info(tip));
+    r.appendChild(l);
+    r.appendChild(end);
+    c.appendChild(r);
+    return end;
+  }
+  function blank(a) {
     a.target = "_blank";
     a.rel = "noopener noreferrer";
+    return a;
+  }
+  // A version shows without its "v" and links to its release; a build without a release shows its name alone.
+  function version(ver, repo) {
+    var v = String(ver || "").replace(/^v/, "");
+    if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(v)) return el("span", "fs-ver fs-num", v || "?");
+    var a = blank(el("a", "fs-ver fs-num", v));
+    a.href = repo + "/releases/tag/v" + v;
     return a;
   }
   // A button in the shape of the README's buttons. One with a window to open
   // keeps its address, so a middle click still reaches the hosted page.
   function rbtn(brand, name, href, open) {
-    var unit = el("span", "fs-rbtn-unit fs-tile-" + brand), a = el("a", "fs-rbtn");
+    var unit = el("span", "fs-rbtn-unit fs-tile-" + brand), a = blank(el("a", "fs-rbtn"));
     a.href = href;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
     a.setAttribute("aria-label", name);
     if (brand === "coffee") {
       var art = el("span", "fs-rbtn-art");
@@ -147,17 +132,63 @@
     return unit;
   }
   function rbtnRow(c, cls, units) {
-    var row = el("div", "fs-rbtn-rows" + (cls ? " " + cls : ""));
-    units.forEach(function (u) { row.appendChild(u); });
-    c.appendChild(row);
+    var r = el("div", "fs-rbtn-rows" + (cls ? " " + cls : ""));
+    units.forEach(function (u) { r.appendChild(u); });
+    c.appendChild(r);
+  }
+
+  /* The banner's silhouette takes the first rainbow position under the rainbow;
+     otherwise the sheet gives it the accent, or Unraid's colours without
+     TowerTorch. */
+  function paintBanner() {
+    var b = document.querySelector(".fs-hero");
+    if (!b) return;
+    if (rtl) b.dir = "rtl";
+    var C = window.CCTheme;
+    if (UI.themed() && get("cc.rainbow", "0") === "1" && C && C.rbColor) {
+      b.style.setProperty("--fs-hero-rb", C.rbColor(0, (getComputedStyle(html).getPropertyValue("--cc-accent") || "").trim() || "#FCC419"));
+    } else {
+      b.style.removeProperty("--fs-hero-rb");
+    }
+  }
+  function get(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }
+
+  /* What the check looks at. Unraid's own look keeps it as prose with a list;
+     GlimStone's makes it the first card, a row per group with the detail in
+     its bubble, and the page's one accent button at the end. */
+  function runButton(cls) {
+    var b = UI.button(cls, "Check", t("tools_btn"));
+    b.addEventListener("click", function (e) { window.firesquireRun(e); });
+    return b;
+  }
+  var li = L.tools_li && L.tools_li.length ? L.tools_li : [];
+  if (UI.themed()) {
+    if (tools) tools.hidden = true;
+    var cTools = card(t("tools_title"));
+    cTools.classList.add("fs-card-tools");
+    ["tools_g_array", "tools_g_ops", "tools_g_containers", "tools_g_host"].forEach(function (k, i) { row(cTools, t(k), li[i]); });
+    row(cTools, t("tools_note"), t("tools_lead")).appendChild(runButton("fs-acc fs-key"));
+  } else if (tools) {
+    if (rtl) tools.dir = "rtl";
+    tools.appendChild(el("p", "fs-tools-lead", t("tools_lead")));
+    tools.appendChild(el("p", null, t("tools_intro")));
+    var ul = el("ul", "fs-tools-list");
+    li.forEach(function (x) { ul.appendChild(el("li", null, x)); });
+    tools.appendChild(ul);
+    tools.appendChild(runButton());
   }
 
   if (rtl) root.dir = "rtl";
+  var ver = root.getAttribute("data-fs-ver");
   var cVer = card(t("ver_title"));
-  var vrow = el("div", "fs-row");
-  vrow.appendChild(el("span", null, "FireSquire"));
-  vrow.appendChild(version(root.getAttribute("data-fs-ver")));
-  cVer.appendChild(vrow);
+  row(cVer, "FireSquire").appendChild(version(ver, REPO));
+  // The GlimStone look names the design language it is drawn in, and the notes of this release.
+  if (UI.themed()) {
+    row(cVer, "GlimStone").appendChild(version(GLS_VER, GLS_REPO));
+    var notes = blank(UI.button(null, "Info", t("rel_notes"), "a"));
+    notes.href = REPO + (/^\d+\.\d+\.\d+/.test(String(ver).replace(/^v/, "")) ? "/releases/tag/v" + String(ver).replace(/^v/, "") : "/releases");
+    row(cVer, "").appendChild(notes);
+  }
 
   var cHelp = card(t("help_title"));
   prose(cHelp, t("help_body"));
@@ -174,74 +205,27 @@
   ]);
 
   function paint() {
+    paintBanner();
     Array.prototype.forEach.call(root.querySelectorAll(".fs-card"), function (c, i) { hue(c, i); });
   }
   paint();
   new MutationObserver(paint).observe(html, { attributes: true, attributeFilter: ["class"] });
   window.addEventListener("storage", function (e) { if (!e.key || /^cc\./.test(e.key)) paint(); });
 
-  /* A window: the title notched into its top edge, the appeal and the sentence
-     naming who takes the payment, the window's own content, and Close at the
-     end of the foot. Escape, the scrim and Close shut it, the focus stays
-     inside while it is open and goes back to the button that opened it. */
-  var FOCUSABLE = "a[href], button:not([disabled]), input:not([disabled]), select, textarea, iframe, [tabindex]";
-  var shown = null;
-  function openWindow(o) {
-    if (shown) shown.close();
-    var scrim = el("div", "fs-scrim");
-    var win = el("div", "fs-win " + o.cls);
-    win.setAttribute("role", "dialog");
-    win.setAttribute("aria-modal", "true");
-    win.setAttribute("data-fs-labels", labelMode());
-    win.tabIndex = -1;
-    if (rtl) win.dir = "rtl";
-    var title = el("h2", "fs-win-title", o.title);
-    title.id = "fs-win-title";
-    win.setAttribute("aria-labelledby", title.id);
-    hue(title, 0);
-    var body = el("div", "fs-win-body");
-    body.appendChild(el("p", "fs-win-text", t("give_appeal")));
-    body.appendChild(el("p", "fs-win-text fs-win-sub", o.intro));
-    var act = el("div", "fs-win-act"), close = button("fs-win-btn", t("give_close"));
-    act.appendChild(close);
-    win.appendChild(title);
-    win.appendChild(body);
-    win.appendChild(act);
-    document.body.appendChild(scrim);
-    document.body.appendChild(win);
-
-    function focusables() {
-      return Array.prototype.filter.call(win.querySelectorAll(FOCUSABLE), function (n) { return n.tabIndex >= 0 && n.getClientRects().length > 0; });
-    }
-    function onKey(e) {
-      if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); done(); return; }
-      if (e.key !== "Tab") return;
-      var f = focusables(), a = document.activeElement;
-      if (!f.length) { e.preventDefault(); win.focus(); return; }
-      var first = f[0], last = f[f.length - 1];
-      if (!win.contains(a)) { e.preventDefault(); (e.shiftKey ? last : first).focus(); }
-      else if (e.shiftKey && (a === first || a === win)) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
-    }
-    function done() {
-      if (!shown || shown.win !== win) return;
-      shown = null;
-      document.removeEventListener("keydown", onKey, true);
-      scrim.remove();
-      win.remove();
-      if (o.onClose) o.onClose();
-      if (o.opener && document.contains(o.opener)) o.opener.focus();
-    }
-    scrim.addEventListener("click", done);
-    close.addEventListener("click", done);
-    document.addEventListener("keydown", onKey, true);
-    shown = { win: win, close: done };
-    var into = o.build(body, win);
-    (into || win).focus();
+  /* A give window opens with the appeal and the sentence naming who takes the
+     payment, then its own content. */
+  function giveWindow(o) {
+    var build = o.build;
+    o.build = function (body, win) {
+      body.appendChild(el("p", "fs-win-text", t("give_appeal")));
+      body.appendChild(el("p", "fs-win-text fs-win-sub", o.intro));
+      return build(body, win);
+    };
+    UI.openWindow(o);
   }
 
   function openCoffee(opener) {
-    openWindow({
+    giveWindow({
       cls: "fs-win-coffee", title: "Buy Me a Coffee", intro: t("coffee_intro"), opener: opener,
       build: function (body) {
         var frame = el("div", "fs-frame"), f = el("iframe");
@@ -337,7 +321,7 @@
   function openPaypal(opener) {
     var freq = "once", preset = DEFAULT_AMOUNT, typed = "", buttons = null, run = 0;
     function amount() { return typed === "" ? preset : parseAmount(typed); }
-    openWindow({
+    giveWindow({
       cls: "fs-win-paypal", title: "PayPal", intro: t("paypal_intro"), opener: opener,
       onClose: function () { run++; if (buttons) buttons.close().catch(function () {}); },
       build: function (body) {
@@ -515,7 +499,7 @@
 
   function openCrypto(opener) {
     var coin = COINS[0], net = coin.networks[0], copiedTimer = 0;
-    openWindow({
+    giveWindow({
       cls: "fs-win-crypto", title: t("crypto_title"), intro: t("crypto_intro"), opener: opener,
       onClose: function () { clearTimeout(copiedTimer); },
       build: function (body, win) {
@@ -527,7 +511,7 @@
         nets.setAttribute("role", "listbox");
         nets.setAttribute("aria-label", t("crypto_networks"));
         var note = el("p", "fs-note");
-        var copy = button("fs-win-btn fs-copy", t("crypto_copy"));
+        var copy = UI.button("fs-win-btn fs-copy", "Copy", t("crypto_copy")), copyLabel = copy.querySelector(".fs-btn-l");
         [plate, addr, nets, note, copy].forEach(function (n) { well.appendChild(n); });
         var grid = el("div", "fs-coins");
         grid.setAttribute("role", "listbox");
@@ -554,15 +538,15 @@
 
         copy.addEventListener("click", function () {
           copyText(net.address, win).then(function () {
-            copy.textContent = t("crypto_copied");
+            copyLabel.textContent = t("crypto_copied");
             clearTimeout(copiedTimer);
-            copiedTimer = setTimeout(function () { copy.textContent = t("crypto_copy"); }, 1500);
+            copiedTimer = setTimeout(function () { copyLabel.textContent = t("crypto_copy"); }, 1500);
           }, function () { shake(copy); });
         });
 
         function show() {
           clearTimeout(copiedTimer);
-          copy.textContent = t("crypto_copy");
+          copyLabel.textContent = t("crypto_copy");
           // The address is never shortened: it is read back by eye before sending.
           addr.textContent = net.address;
           var shownFor = net.address;
