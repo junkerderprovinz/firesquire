@@ -7,7 +7,8 @@
 
 /* The motion engine's numbers for what TowerTorch has no dial for: the bar
    following the engine, a window coming in and how far it travels, one pass of
-   the bar that waits for an answer, and the sheen over a give button. A
+   the bar that waits for an answer, the sheen over a give button, and one beat
+   of the verdict logo's glow with how far it reaches. A
    system that asks for reduced motion never reads the levels; "off" picks the
    same still numbers by hand. */
 html {
@@ -16,6 +17,8 @@ html {
   --fs-motion-win-travel: 0px;
   --fs-motion-sweep-dur: 2.4s;
   --fs-motion-sheen-dur: 0s;
+  --fs-motion-glow-dur: 3s;
+  --fs-motion-glow-size: 0px;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -24,6 +27,8 @@ html {
     --fs-motion-win-travel: 10px;
     --fs-motion-sweep-dur: 1.1s;
     --fs-motion-sheen-dur: 800ms;
+    --fs-motion-glow-dur: 1.6s;
+    --fs-motion-glow-size: 8px;
   }
   html[data-cc-motion="subtle"] {
     --fs-motion-bar-dur: 240ms;
@@ -31,6 +36,8 @@ html {
     --fs-motion-win-travel: 0px;
     --fs-motion-sweep-dur: 1.6s;
     --fs-motion-sheen-dur: 1100ms;
+    --fs-motion-glow-dur: 2.8s;
+    --fs-motion-glow-size: 4px;
   }
   html[data-cc-motion="off"] {
     --fs-motion-bar-dur: 0s;
@@ -38,11 +45,14 @@ html {
     --fs-motion-win-travel: 0px;
     --fs-motion-sweep-dur: 2.4s;
     --fs-motion-sheen-dur: 0s;
+    --fs-motion-glow-dur: 3s;
+    --fs-motion-glow-size: 0px;
   }
 }
 @keyframes fs-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fs-win-in { from { opacity: 0; transform: translateY(var(--fs-motion-win-travel, 0px)); } to { opacity: 1; transform: none; } }
 @keyframes fs-sweep { from { left: -38%; } to { left: 100%; } }
+@keyframes fs-glow { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 var(--fs-motion-glow-size, 0px) currentColor); } }
 
 #fs-info, .fs-win, .fs-scrim {
   --fs-card: var(--mild-background-color, rgba(128, 128, 128, .08));
@@ -264,15 +274,19 @@ html.cc-popups-on .fs-v-caution { --fs-v: var(--cc-warn-ink, #ff832b); }
 html.cc-popups-on .fs-v-nogo { --fs-v: var(--cc-err-ink, #ff8389); }
 html.cc-popups-on .fs-verdict { flex-wrap: wrap; gap: 10px 16px; padding: 0 0 4px; border-radius: 0; background: none; box-shadow: none; }
 html.cc-popups-on .fs-v-word { font-size: 2.5rem; letter-spacing: .02em; line-height: 1; }
-/* The logo and the word read as one verdict: the logo stands in a frame drawn
-   in the verdict's colour, on the shape engine's control corners. */
-html.cc-popups-on .fs-v-logo {
-  display: inline-flex; align-items: center; justify-content: center; flex: none; width: 52px; height: 52px;
-  border: 2px solid var(--fs-v); border-radius: var(--fs-r-ctl);
-  background: color-mix(in srgb, var(--fs-v) 12%, transparent);
+/* The logo and the word read as one verdict: the logo's own diamond frame takes
+   the verdict's colour, its two tones kept as a darker and a lighter shade. */
+html.cc-popups-on .fs-v-logo { display: inline-flex; flex: none; width: 52px; height: 52px; color: var(--fs-v); }
+html.cc-popups-on .fs-v-logo svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.fs-v-logo .fs-lf { fill: currentColor; }
+.fs-v-logo .fs-lf-lit { fill: color-mix(in srgb, currentColor 55%, #fff); }
+/* The frame glows in its colour: on and on while the check runs, three times
+   when the answer arrives, then it rests. */
+@media (prefers-reduced-motion: no-preference) {
+  html.cc-popups-on .fs-v-logo svg { animation: fs-glow var(--fs-motion-glow-dur) ease-in-out 3; }
+  html.cc-popups-on .fs-prog .fs-v-logo svg { animation-iteration-count: infinite; }
+  html[data-cc-motion="off"] .fs-v-logo svg { animation: none; }
 }
-html.cc-popups-on .fs-v-logo img { display: block; width: 34px; height: 34px; object-fit: contain; }
-html.cc-popups-on .fs-verdict .fs-v-logo { margin-inline-end: -4px; }
 html.cc-popups-on .fs-v-name { font-size: var(--cc-text-title, 16px); font-weight: 600; }
 html.cc-popups-on .fs-v-sub { font-size: var(--cc-text-subline, 13px); }
 html.cc-popups-on .fs-v-adv, html.cc-popups-on .fs-foot { display: none; }
