@@ -1,12 +1,15 @@
 /* WebGUI helper, loaded on every page by FireSquireButtons.page. Adds the entry
- * points on Main, Dashboard and Tools and renders a theme-matched, localised
- * report in its own modal, with a live progress bar while the engine runs.
+ * points on Main and the Dashboard, runs the check in its own window with a live
+ * progress bar, and lends the settings page its windows and buttons through
+ * window.fireSquireUI.
  *
- * Language: follows the configured Unraid UI language for every locale.
- * fs_i18n.php (included by FireSquireButtons.page) reads
- * $_SESSION['locale'], merges lang/en.json + lang/<code>.json, and injects the
- * active dict as window.fireSquireI18n. The inline English table below is only
- * a last-resort fallback if that injection is ever missing. */
+ * Without TowerTorch everything follows Unraid's own look. With it, which puts
+ * cc-popups-on on <html> on every page, firesquire.css gives the window, the
+ * buttons and the report GlimStone's look from TowerTorch's tokens.
+ *
+ * Language: fs_i18n.php merges lang/en.json and lang/<code>.json for Unraid's
+ * configured language and injects it as window.fireSquireI18n. The English
+ * table below only answers when that injection is missing. */
 (function(){
 
   /* English fallback, the source of lang/en.json. */
@@ -18,6 +21,7 @@
     v_GO: 'GO', v_CAUTION: 'CAUTION', 'v_NO-GO': 'NO-GO',
     tier_critical: 'Critical', tier_warning: 'Caution', tier_info: 'Info',
     err: 'Could not run the check engine.',
+    err_hint: 'Try again in a moment. If it keeps failing, the syslog may say why.',
     foot: 'FireSquire reads the current state and predicts the common reboot landmines (pinned mounts, stuck loops, unclean array, in-flight operations, a crash-looping box). It is an early warning, not a guarantee. Genuine hardware, BIOS or timing failures during boot cannot be seen from a running system.',
     tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (GO / CAUTION / NO-GO) with the exact findings. It is advisory only: it reads the host and reports, it never changes anything.',
     tools_intro: 'It looks for the reboot landmines that are detectable from the running system:',
@@ -28,8 +32,16 @@
       'Flash writable, free space, recent crashes, running VMs, services, SMART health'
     ],
     tools_btn: 'Run pre-reboot check',
+    tools_title: 'Pre-reboot check',
+    tools_g_array: 'Array and disks',
+    tools_g_ops: 'Running operations',
+    tools_g_containers: 'Containers and images',
+    tools_g_host: 'Flash, space and services',
+    tools_note: 'Advisory only, it never changes anything',
     goto: 'Go to the source',
-    /* progress-bar stage labels (shown while the engine runs) */
+    retry: 'Check again',
+    rel_notes: 'Release notes',
+    give_close: 'Close',
     p_array: 'Checking array & disks…',
     p_mover: 'Checking mover…',
     p_mounts: 'Checking container mounts…',
@@ -87,10 +99,14 @@
     info_uptime: 'Uptime: {0}', info_kernel: 'Kernel: {0}', info_unraid: 'Unraid version: {0}'
   };
 
-  /* Active-language dict injected by fs_i18n.php (en base + <locale> overlay). */
   var FS_I18N = (window.fireSquireI18n && typeof window.fireSquireI18n === 'object') ? window.fireSquireI18n : {};
   var FS_LANGCODE = String(window.fireSquireLang || (document.documentElement.getAttribute('lang') || 'en')).slice(0, 2).toLowerCase();
   var FS_RTL = ['ar', 'he', 'fa', 'ur'].indexOf(FS_LANGCODE) >= 0;
+  var html = document.documentElement;
+  var GLYPHS = window.fireSquireGlyphs || {};
+  var LOGO = '/plugins/firesquire/images/firesquire.png';
+  var REPORT_URL = '/plugins/firesquire/include/FireSquireReport.php';
+  var STREAM_URL = '/plugins/firesquire/include/FireSquireStream.php';
 
   function fsT(key, args){
     var m = FS_I18N[key];
@@ -106,16 +122,153 @@
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch];
     });
   }
-  function fsDark(){
-    try {
-      var m = (getComputedStyle(document.body).backgroundColor || '').match(/\d+/g);
-      if (!m) return true;
-      return (0.299*+m[0] + 0.587*+m[1] + 0.114*+m[2]) < 128;
-    } catch(e){ return true; }
+  function get(k, d){ try { var v = localStorage.getItem(k); return v == null ? d : v; } catch(e){ return d; } }
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
   }
 
-  var REPORT_URL = '/plugins/firesquire/include/FireSquireReport.php';
-  var STREAM_URL = '/plugins/firesquire/include/FireSquireStream.php';
+  /* TowerTorch's colour engine: the accent, and under the rainbow one position
+     per heading and per picked option. Without TowerTorch nothing is set and
+     the page keeps Unraid's colours. */
+  function themed(){ return html.classList.contains('cc-popups-on') && get('cc.theming', '1') !== '0'; }
+  function hue(node, i){
+    var C = window.CCTheme, c = '';
+    if (i != null && themed() && get('cc.rainbow', '0') === '1' && C && C.rbColor) {
+      c = C.rbColor(i, (getComputedStyle(html).getPropertyValue('--cc-accent') || '').trim() || '#FCC419');
+    }
+    if (c) {
+      node.style.setProperty('--fs-hue', c);
+      node.style.setProperty('--fs-hue-ink', C.idealText ? C.idealText(c) : '#161616');
+    } else {
+      node.style.removeProperty('--fs-hue');
+      node.style.removeProperty('--fs-hue-ink');
+    }
+  }
+  // TowerTorch's label mode for the buttons it draws, which FireSquire's buttons follow.
+  function labelMode(){
+    var m = themed() ? html.getAttribute('data-cc-labels-buttons') : '';
+    return ['text', 'textGlyph', 'glyph', 'reactive'].indexOf(m) < 0 ? 'textGlyph' : m;
+  }
+  function glyph(name){
+    var g = GLYPHS[name];
+    return g ? '<svg viewBox="' + g[0] + '" fill="currentColor" aria-hidden="true" focusable="false">' + g[1] + '</svg>' : '';
+  }
+
+  /* A button wears its glyph and its words as two spans; the label mode decides
+     how much of them shows. The words stay in the accessible name in every mode,
+     and where only the glyph shows they become the button's bubble. */
+  function button(cls, name, label, tag){
+    var b = el(tag || 'button', 'fs-btn' + (cls ? ' ' + cls : ''));
+    if (b.tagName === 'BUTTON') b.type = 'button';
+    var g = el('span', 'fs-btn-g'), l = el('span', 'fs-btn-l', label);
+    g.innerHTML = glyph(name);
+    b.appendChild(g);
+    b.appendChild(l);
+    labelTip(b);
+    return b;
+  }
+  function labelTip(b){
+    var l = b.querySelector('.fs-btn-l');
+    if (labelMode() === 'glyph') { b.setAttribute('data-tip', l.textContent); b.fsTip = true; }
+    else if (b.fsTip) { b.removeAttribute('data-tip'); b.fsTip = false; }
+  }
+  function labelTips(){ Array.prototype.forEach.call(document.querySelectorAll('.fs-btn'), labelTip); }
+  new MutationObserver(labelTips).observe(html, { attributes: true, attributeFilter: ['class', 'data-cc-labels-buttons'] });
+
+  // The (i) of GlimStone's info bubble: the letter i set in a ring.
+  var INFO_SVG = '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="4.6" r="0.9" fill="currentColor"/><path d="M8 7v4.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+  function info(tip){
+    var s = el('span', 'fs-info');
+    s.innerHTML = INFO_SVG;
+    s.tabIndex = 0;
+    s.setAttribute('role', 'img');
+    s.setAttribute('aria-label', tip);
+    s.setAttribute('data-tip', tip);
+    return s;
+  }
+
+  /* A window: the title notched into its top edge, the content, and Close at
+     the end of the foot. A window opened with head: true shows Unraid's own
+     title bar with the logo and a close cross instead, until TowerTorch gives
+     it GlimStone's notch and foot. Escape, the scrim and Close shut it, the
+     focus stays inside while it is open and goes back to what opened it. */
+  var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, iframe, [tabindex]';
+  var shown = null;
+  function openWindow(o){
+    if (shown) shown.close();
+    var scrim = el('div', 'fs-scrim');
+    var win = el('div', 'fs-win ' + (o.cls || '') + (o.head ? ' fs-win-headed' : ''));
+    win.setAttribute('role', 'dialog');
+    win.setAttribute('aria-modal', 'true');
+    win.setAttribute('data-fs-labels', labelMode());
+    win.tabIndex = -1;
+    if (FS_RTL) win.dir = 'rtl';
+    var title = el('h2', 'fs-win-title');
+    title.id = 'fs-win-title';
+    if (o.logo) { var mark = el('img', 'fs-win-mark'); mark.src = LOGO; mark.alt = ''; title.appendChild(mark); }
+    title.appendChild(document.createTextNode(o.title));
+    win.setAttribute('aria-labelledby', title.id);
+    hue(title, 0);
+    win.appendChild(title);
+    if (o.head) {
+      var head = el('div', 'fs-win-head'), name = el('span', 'fs-win-name'), logo = el('img', 'fs-win-logo');
+      logo.src = LOGO; logo.alt = '';
+      name.appendChild(logo);
+      name.appendChild(el('span', null, o.title));
+      var x = el('button', 'fs-win-x', '×');
+      x.type = 'button';
+      x.setAttribute('aria-label', fsT('give_close'));
+      x.addEventListener('click', done);
+      head.appendChild(name);
+      head.appendChild(x);
+      win.appendChild(head);
+    }
+    var body = el('div', 'fs-win-body');
+    var act = el('div', 'fs-win-act'), close = button('fs-win-btn', 'Close', fsT('give_close'));
+    act.appendChild(close);
+    win.appendChild(body);
+    win.appendChild(act);
+    document.body.appendChild(scrim);
+    document.body.appendChild(win);
+
+    function focusables(){
+      return Array.prototype.filter.call(win.querySelectorAll(FOCUSABLE), function(n){ return n.tabIndex >= 0 && n.getClientRects().length > 0; });
+    }
+    function onKey(e){
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); done(); return; }
+      if (e.key !== 'Tab') return;
+      var f = focusables(), a = document.activeElement;
+      if (!f.length) { e.preventDefault(); win.focus(); return; }
+      var first = f[0], last = f[f.length - 1];
+      if (!win.contains(a)) { e.preventDefault(); (e.shiftKey ? last : first).focus(); }
+      else if (e.shiftKey && (a === first || a === win)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
+    }
+    function done(){
+      if (!shown || shown.win !== win) return;
+      shown = null;
+      document.removeEventListener('keydown', onKey, true);
+      scrim.remove();
+      win.remove();
+      if (o.onClose) o.onClose();
+      if (o.opener && document.contains(o.opener)) o.opener.focus();
+    }
+    scrim.addEventListener('click', done);
+    close.addEventListener('click', done);
+    document.addEventListener('keydown', onKey, true);
+    shown = { win: win, close: done };
+    var into = o.build(body, win, act);
+    (into || win).focus();
+    return shown;
+  }
+
+  window.fireSquireUI = {
+    t: fsT, el: el, rtl: FS_RTL, themed: themed, hue: hue, labelMode: labelMode, glyph: glyph,
+    button: button, info: info, openWindow: openWindow
+  };
 
   // Clickable findings lead to the relevant Unraid page. Unraid has no URL param
   // to jump to a specific syslog line, so syslog/IO findings land on the full
@@ -152,87 +305,86 @@
     }
   }
 
-  if (!document.getElementById('ss-modal-css')) {
-    var st = document.createElement('style');
-    st.id = 'ss-modal-css';
-    st.textContent =
-      '#ss-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:flex-start;justify-content:center}' +
-      "#ss-modal .ss-pan{margin-top:4vh;width:min(800px,94vw);max-height:88vh;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.55)}" +
-      "#ss-modal .ss-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;font-weight:700}" +
-      '#ss-modal .ss-htitle{display:flex;align-items:center;gap:10px}' +
-      '#ss-modal .ss-logo{height:26px;width:26px;flex:0 0 auto}' +
-      '#ss-modal .ss-x{cursor:pointer;font-size:22px;line-height:1;opacity:.75}#ss-modal .ss-x:hover{opacity:1}' +
-      '#ss-modal .ss-body{overflow:auto}' +
-      "#ss-modal .ss-prog{padding:44px 30px}" +
-      '#ss-modal .ss-prog-lab{display:flex;justify-content:space-between;gap:12px;font-size:14px;margin:0 0 14px}' +
-      '#ss-modal .ss-prog-pct{opacity:.7;font-variant-numeric:tabular-nums}' +
-      '#ss-modal .ss-prog-track{height:10px;border-radius:6px;overflow:hidden;background:rgba(128,128,128,.22)}' +
-      '#ss-modal .ss-prog-fill{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--cc-accent,#e0a72e),var(--cc-accent,#d5851c));transition:width .35s ease}' +
-      '#ss-modal .ss-prog-fill.ss-indet{width:38%;transition:none;animation:ss-indet 1.1s ease-in-out infinite}' +
-      '@keyframes ss-indet{0%{margin-left:-38%}100%{margin-left:100%}}';
-    document.head.appendChild(st);
+  var VCLASS = { GO: 'fs-v-go', CAUTION: 'fs-v-caution', 'NO-GO': 'fs-v-nogo' };
+  var STATUS = { pass: ['Check', '✓'], warn: ['Warning', '!'], fail: ['Close', '✗'], info: ['Info', 'i'] };
+  // The newest syslog line a finding quotes reads as the log it came from.
+  var QUOTES_LOG = { syslog_crashes: 1, io_errors: 1 };
+
+  function message(x){
+    var tpl = FS_I18N[x.key] != null ? FS_I18N[x.key] : FS_EN[x.key];
+    if (tpl == null) return esc(x.message || '');
+    var out = esc(tpl), args = x.args || [];
+    for (var i = 0; i < args.length; i++) {
+      var a = esc(args[i]);
+      if (QUOTES_LOG[x.key] && i === 1) a = '<code>' + a + '</code>';
+      out = out.split('{' + i + '}').join(a);
+    }
+    return out;
   }
 
-  function ensureModal(){
-    var mod = document.getElementById('ss-modal');
-    if (mod) return mod;
-    mod = document.createElement('div');
-    mod.id = 'ss-modal';
-    mod.innerHTML = '<div class="ss-pan"><div class="ss-head"><span class="ss-htitle"><img class="ss-logo" src="/plugins/firesquire/firesquire.png?v=4" alt=""><span class="fs-title"></span></span><span class="ss-x" title="Close">&times;</span></div><div class="ss-body"></div></div>';
-    document.body.appendChild(mod);
-    function close(){ mod.style.display = 'none'; }
-    mod.addEventListener('click', function(e){ if (e.target === mod) close(); });
-    mod.querySelector('.ss-x').addEventListener('click', close);
-    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
-    return mod;
-  }
-
-  function renderReport(data){
-    var dark = fsDark();
-    var c = dark
-      ? {bg:'#1c1c1c',panel:'#161616',fg:'#e8e8e8',muted:'#9a9a9a',line:'#2a2a2a'}
-      : {bg:'#f4f4f4',panel:'#ffffff',fg:'#1c1c1c',muted:'#5a5a5a',line:'#e2e2e2'};
-    var vmap = {GO:'#1a9e4b', CAUTION:'#c98a00', 'NO-GO':'#d23b3f'}, vcol = vmap[data.verdict] || '#888888';
-    var scol = {pass:'#1a9e4b', warn:'#c98a00', fail:'#d23b3f', info:'#8a8a8a'};
-    var sico = {pass:'✓', warn:'!', fail:'✗', info:'i'};
-
-    var h = '<div style="font-size:14px;background:'+c.bg+';color:'+c.fg+';padding:18px 22px">';
-    h += '<div style="display:flex;align-items:center;gap:14px;border-radius:10px;padding:16px 20px;background:'+c.panel+';border-left:8px solid '+vcol+'">';
-    h += '<div style="font-size:30px;font-weight:800;letter-spacing:1px;color:'+vcol+'">'+esc(fsT('v_'+data.verdict) || data.verdict)+'</div>';
-    h += '<div><div>FireSquire: '+esc(fsT('hc'))+'</div><div style="color:'+c.muted+';font-size:12px">'+esc(fsT('subtitle'))+(data.generated?' &middot; '+esc(data.generated):'')+'</div></div></div>';
-
-    var checks = data.checks || [];
-    [['critical','tier_critical'],['warning','tier_warning'],['info','tier_info']].forEach(function(tt){
-      var grp = checks.filter(function(x){ return (x.tier||'') === tt[0]; });
-      if (!grp.length) return;
-      h += '<h3 style="margin:22px 0 8px;color:'+c.muted+';font-size:13px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid '+c.line+';padding-bottom:6px">'+esc(fsT(tt[1]))+'</h3>';
-      grp.forEach(function(x){
-        var stt = x.status || 'info';
-        var msg = fsT(x.key, x.args); if (msg == null) msg = x.message || '';
-        // Only problem findings (warn/fail) get a click-through to the relevant page.
-        var link = (stt === 'warn' || stt === 'fail') ? fsLink(x.key) : null;
-        var cell = link
-          ? '<a href="'+esc(link)+'" title="'+esc(fsT('goto'))+'" style="color:inherit;text-decoration:underline;text-decoration-color:'+(scol[stt]||'#888')+';text-underline-offset:2px;cursor:pointer">'+esc(msg)+' <span style="opacity:.65">&#8599;</span></a>'
-          : esc(msg);
-        h += '<div style="display:flex;gap:10px;padding:7px 4px;border-bottom:1px solid '+c.line+'">';
-        h += '<div style="flex:0 0 22px;height:22px;width:22px;border-radius:50%;text-align:center;line-height:22px;font-weight:700;color:#fff;background:'+(scol[stt]||'#888')+'">'+(sico[stt]||'·')+'</div>';
-        h += '<div style="flex:1;word-break:break-word">'+cell+'</div></div>';
-      });
-    });
-    h += '<div style="margin-top:18px;color:'+c.muted+';font-size:11px;line-height:1.5">'+esc(fsT('foot'))+'</div></div>';
+  function verdictHTML(data){
+    var v = data.verdict, word = fsT('v_' + v) || v;
+    var tip = fsT('subtitle') + '. ' + fsT('foot');
+    var h = '<div class="fs-verdict ' + (VCLASS[v] || 'fs-v-unknown') + '">';
+    h += '<div class="fs-v-word">' + esc(word) + '</div>';
+    h += '<div class="fs-v-meta"><div class="fs-v-name">FireSquire: ' + esc(fsT('hc')) + '<span class="fs-v-info" data-info="' + esc(tip) + '"></span></div>';
+    h += '<div class="fs-v-sub"><span class="fs-v-adv">' + esc(fsT('subtitle')) + (data.generated ? ' · ' : '') + '</span>' + (data.generated ? '<span class="fs-num">' + esc(data.generated) + '</span>' : '') + '</div></div></div>';
     return h;
   }
 
+  function rowHTML(x, gs){
+    var st = STATUS[x.status] ? x.status : 'info';
+    var msg = message(x);
+    // Only problem findings (warn/fail) lead to the page that can fix them.
+    var link = (st === 'warn' || st === 'fail') ? fsLink(x.key) : null;
+    var text = link && !gs
+      ? '<a class="fs-f-link" href="' + esc(link) + '" title="' + esc(fsT('goto')) + '">' + msg + ' <span aria-hidden="true">&#8599;</span></a>'
+      : msg;
+    var h = '<div class="fs-f fs-st-' + st + '"><span class="fs-f-ic" aria-hidden="true"><span class="fs-f-g">' + glyph(STATUS[st][0]) + '</span><span class="fs-f-ch">' + STATUS[st][1] + '</span></span>';
+    h += '<div class="fs-f-text">' + text + '</div>';
+    if (link && gs) h += '<span class="fs-f-act" data-goto="' + esc(link) + '"></span>';
+    return h + '</div>';
+  }
+
+  function reportHTML(data){
+    var gs = themed(), checks = data.checks || [];
+    var h = verdictHTML(data);
+    [['critical', 'tier_critical'], ['warning', 'tier_warning'], ['info', 'tier_info']].forEach(function(tt){
+      var grp = checks.filter(function(x){ return (x.tier || '') === tt[0]; });
+      if (!grp.length) return;
+      h += '<section class="fs-tier"><h3 class="fs-tier-h">' + esc(fsT(tt[1])) + '</h3>';
+      grp.forEach(function(x){ h += rowHTML(x, gs); });
+      h += '</section>';
+    });
+    return h + '<p class="fs-foot">' + esc(fsT('foot')) + '</p>';
+  }
+
+  // The parts a string cannot carry: the (i) and the buttons that lead away.
+  function wireReport(body){
+    Array.prototype.forEach.call(body.querySelectorAll('.fs-v-info'), function(n){ n.replaceWith(info(n.getAttribute('data-info'))); });
+    Array.prototype.forEach.call(body.querySelectorAll('.fs-f-act'), function(n){
+      var a = button('fs-f-go', 'Forward', fsT('goto'), 'a');
+      a.href = n.getAttribute('data-goto');
+      n.appendChild(a);
+    });
+  }
+
+  function progressHTML(){
+    return '<div class="fs-prog"><div class="fs-prog-lab"><span class="fs-prog-txt">' + esc(fsT('running')) + '</span><span class="fs-prog-pct fs-num"></span></div>' +
+      '<div class="fs-prog-track"><div class="fs-prog-fill"></div></div></div>';
+  }
+
   function errHTML(){
-    return '<div style="padding:26px;color:#d23b3f">'+esc(fsT('err'))+'</div>';
+    return '<div class="fs-err"><span class="fs-f-ic" aria-hidden="true">' + glyph('Warning') + '</span><div><p class="fs-err-text">' + esc(fsT('err')) +
+      '</p><p class="fs-err-hint">' + esc(fsT('err_hint')) + '</p></div></div>';
   }
 
   // Stream the engine's progress markers, driving the bar, then hand the final
   // JSON to onResult. On any streaming failure, call onFail (which falls back to
   // the plain blocking request), so the report always appears.
-  function streamRun(setBar, onResult, onFail){
+  function streamRun(signal, setBar, onResult, onFail){
     var got = false;
-    fetch(STREAM_URL, {headers: {'Accept': 'text/event-stream'}, credentials: 'same-origin'}).then(function(resp){
+    fetch(STREAM_URL, {headers: {'Accept': 'text/event-stream'}, credentials: 'same-origin', signal: signal}).then(function(resp){
       if (!resp.ok || !resp.body || !resp.body.getReader) throw new Error('no stream');
       var reader = resp.body.getReader(), dec = new TextDecoder(), buf = '';
       function pump(){
@@ -253,118 +405,86 @@
         });
       }
       return pump();
-    }).catch(function(){ if (!got) onFail(); });
+    }).catch(function(){ if (!got && !signal.aborted) onFail(); });
   }
 
-  function run(){
-    var mod = ensureModal(), dark = fsDark();
-    var pan = mod.querySelector('.ss-pan'), head = mod.querySelector('.ss-head'), body = mod.querySelector('.ss-body');
-    mod.querySelector('.fs-title').textContent = fsT('title');
-    mod.style.background  = dark ? 'rgba(0,0,0,.6)' : 'rgba(0,0,0,.45)';
-    pan.style.background  = dark ? '#1c1c1c' : '#ffffff';
-    head.style.background = dark ? '#161616' : '#f0f0f0';
-    head.style.color      = dark ? '#e8e8e8' : '#1c1c1c';
-    head.style.borderBottom = '1px solid ' + (dark ? '#2a2a2a' : '#e2e2e2');
-    body.style.background = dark ? '#1c1c1c' : '#ffffff';
-    body.style.color      = dark ? '#e8e8e8' : '#1c1c1c';
-    body.dir = FS_RTL ? 'rtl' : 'ltr';
-    body.innerHTML =
-      '<div class="ss-prog"><div class="ss-prog-lab"><span class="ss-prog-txt">'+esc(fsT('running'))+'</span><span class="ss-prog-pct"></span></div>' +
-      '<div class="ss-prog-track"><div class="ss-prog-fill"></div></div></div>';
-    mod.style.display = 'flex';
+  function run(e){
+    var opener = e && e.currentTarget && e.currentTarget.focus ? e.currentTarget : document.activeElement;
+    var abort = null, retry = null, act = null;
+    openWindow({
+      cls: 'fs-win-report', title: fsT('title'), logo: true, head: true, opener: opener,
+      onClose: function(){ if (abort) abort.abort(); },
+      build: function(body, win, foot){ act = foot; start(body); }
+    });
 
-    var fill = body.querySelector('.ss-prog-fill');
-    var txt  = body.querySelector('.ss-prog-txt');
-    var pctEl = body.querySelector('.ss-prog-pct');
-    var done = false;
+    function start(body){
+      if (abort) abort.abort();
+      var ctl = new AbortController();
+      abort = ctl;
+      if (retry) { retry.remove(); retry = null; }
+      body.innerHTML = progressHTML();
+      var fill = body.querySelector('.fs-prog-fill');
+      var txt = body.querySelector('.fs-prog-txt');
+      var pctEl = body.querySelector('.fs-prog-pct');
+      var finished = false;
 
-    function setBar(pct, key){
-      if (!fill) return;
-      fill.classList.remove('ss-indet');
-      if (pct < 0) pct = 0; if (pct > 100) pct = 100;
-      fill.style.width = pct + '%';
-      var lab = key && fsT(key);
-      if (lab && txt) txt.textContent = lab;
-      if (pctEl) pctEl.textContent = Math.round(pct) + '%';
-    }
-    function indeterminate(){
-      if (fill) { fill.classList.add('ss-indet'); fill.style.width = ''; }
-      if (pctEl) pctEl.textContent = '';
-      if (txt) txt.textContent = fsT('running');
-    }
-    function onResult(data){
-      if (done) return; done = true;
-      body.innerHTML = renderReport(data);
-    }
-    function onErr(){
-      if (done) return; done = true;
-      body.innerHTML = errHTML();
-    }
-    function fallback(){
-      if (done) return;
-      indeterminate();
-      $.getJSON(REPORT_URL, onResult).fail(onErr);
-    }
+      function setBar(pct, key){
+        if (ctl !== abort) return;
+        fill.classList.remove('fs-indet');
+        pct = Math.max(0, Math.min(100, pct));
+        fill.style.width = pct + '%';
+        var lab = key && fsT(key);
+        if (lab) txt.textContent = lab;
+        pctEl.textContent = Math.round(pct) + '%';
+      }
+      function indeterminate(){
+        fill.classList.add('fs-indet');
+        fill.style.width = '';
+        pctEl.textContent = '';
+        txt.textContent = fsT('running');
+      }
+      function finish(markup){
+        if (finished || ctl !== abort) return;
+        finished = true;
+        body.innerHTML = markup;
+        wireReport(body);
+        retry = button('fs-win-btn', 'Retry', fsT('retry'));
+        retry.addEventListener('click', function(){ start(body); });
+        act.appendChild(retry);
+      }
+      function onResult(data){ finish(reportHTML(data)); }
+      function onErr(){ finish(errHTML()); }
+      function fallback(){
+        if (finished || ctl !== abort) return;
+        indeterminate();
+        $.getJSON(REPORT_URL, onResult).fail(onErr);
+      }
 
-    if (window.fetch && window.ReadableStream && window.TextDecoder) {
-      streamRun(setBar, onResult, fallback);
-    } else {
-      fallback();
+      if (window.fetch && window.ReadableStream && window.TextDecoder) {
+        streamRun(ctl.signal, setBar, onResult, fallback);
+      } else {
+        fallback();
+      }
     }
   }
   window.firesquireRun = run;
 
-  /* The banner's silhouette takes TowerTorch's first rainbow position when
-     TowerTorch themes the page under the rainbow; otherwise the sheet gives it
-     the accent, or Unraid's colours without TowerTorch. */
-  function paintBanner(){
-    var b = document.querySelector('.fs-hero');
-    if (!b) return;
-    if (FS_RTL) b.dir = 'rtl';
-    var html = document.documentElement;
-    function ls(k, d){ try { var v = localStorage.getItem(k); return v == null ? d : v; } catch(e) { return d; } }
-    function paint(){
-      var on = html.classList.contains('cc-tools-on') && ls('cc.theming', '1') !== '0';
-      var rb = on && ls('cc.rainbow', '0') === '1' && window.CCTheme && window.CCTheme.rbColor;
-      var accent = (getComputedStyle(html).getPropertyValue('--cc-accent') || '').trim() || '#FCC419';
-      if (rb) b.style.setProperty('--fs-hero-rb', window.CCTheme.rbColor(0, accent)); else b.style.removeProperty('--fs-hero-rb');
-    }
-    paint();
-    new MutationObserver(paint).observe(html, { attributes: true, attributeFilter: ['class'] });
-    window.addEventListener('storage', function(e){ if (!e.key || /^cc\./.test(e.key)) paint(); });
-  }
-
-  function fillTools(){
-    var el = document.getElementById('ss-tools');
-    if (!el) return;
-    if (FS_RTL) el.dir = 'rtl';
-    var li = fsT('tools_li'); if (!li || !li.length) li = FS_EN.tools_li;
-    var h = '<p style="margin:6px 0 14px">'+esc(fsT('tools_lead'))+'</p>';
-    h += '<p>'+esc(fsT('tools_intro'))+'</p><ul style="margin:6px 0 16px 18px">';
-    li.forEach(function(x){ h += '<li>'+esc(x)+'</li>'; });
-    h += '</ul><input type="button" style="cursor:pointer" value="'+esc(fsT('tools_btn'))+'">';
-    el.innerHTML = h;
-    var btn = el.querySelector('input[type=button]');
-    if (btn) btn.addEventListener('click', run);
-  }
-
   $(function(){
-    // Tools page: the banner's colours, the localised description and the button
-    try { paintBanner(); } catch(e) {}
-    try { fillTools(); } catch(e) {}
-
-    // Dashboard: flame icon in the server tile's control row, next to Reboot
+    // Dashboard: the check's icon in the server tile's control row, next to Reboot.
+    // Unraid's flame without TowerTorch, GlimStone's check glyph with it.
     try {
       var dashReboot = $('.tile-ctrl [onclick^="Reboot("]').first();
       if (dashReboot.length && !$('#ss-dash-icon').length) {
-        var icon = $('<span id="ss-dash-icon" class="fa fa-fw fa-fire hand" title="FireSquire"></span>');
+        var icon = $('<span id="ss-dash-icon" class="fa fa-fw fa-fire hand" role="button" tabindex="0" title="FireSquire"></span>');
+        icon.html('<span class="fs-dash-g">' + glyph('Check') + '</span>');
         icon.on('click', run);
+        icon.on('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); run(e); } });
         dashReboot.before(icon);
       }
     } catch(e) {}
 
-    // Main tab: compact FireSquire button next to Reboot. The script runs on
-    // every page, so only look for Reboot where our Main section exists.
+    // Main tab: FireSquire's button next to Reboot. The script runs on every
+    // page, so only look for Reboot where our Main section exists.
     try {
       var reboot = $('input[type=button], button, a').filter(function(){
         var v  = ($(this).val() || $(this).text() || '').trim().toLowerCase();
@@ -373,8 +493,9 @@
             || oc.indexOf('reboot(') > -1 || oc.indexOf("'reboot'") > -1 || oc.indexOf('"reboot"') > -1;
       }).first();
       if (reboot.length && document.getElementById('ss-frag') && !$('#ss-reboot-btn').length) {
-        var b = $('<input type="button" id="ss-reboot-btn" value="FireSquire" style="margin-left:8px;cursor:pointer">');
-        b.on('click', run);
+        var b = button('fs-main-btn', 'Check', 'FireSquire');
+        b.id = 'ss-reboot-btn';
+        b.addEventListener('click', run);
         reboot.after(b);
       }
     } catch(e) {}
