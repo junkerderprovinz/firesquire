@@ -39,7 +39,7 @@
   server tile and Settings → User Utilities → FireSquire. Theme, motion, labels, colours
   and corners follow TowerTorch's settings, and every button shows its icon.
 - In the report, FireSquire's logo stands right before GO, CAUTION or NO-GO, and its
-  frame glows in the verdict's colour. Findings are grouped by tier, and each problem gets
+  frame takes on the verdict's colour. Findings are grouped by tier, and each problem gets
   a button that opens the page where you can fix it. The note that FireSquire only advises
   sits behind the (i) next to the title.
 - Settings → User Utilities → FireSquire opens with a card that lists what the check
