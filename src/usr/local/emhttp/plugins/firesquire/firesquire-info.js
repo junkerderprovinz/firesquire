@@ -91,10 +91,15 @@
     a.rel = "noopener noreferrer";
     return a;
   }
+  // The release a version names, without its "v", or "" for a build without one.
+  function release(ver) {
+    var v = String(ver || "").replace(/^v/, "");
+    return /^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(v) ? v : "";
+  }
   // A version shows without its "v" and links to its release; a build without a release shows its name alone.
   function version(ver, repo) {
-    var v = String(ver || "").replace(/^v/, "");
-    if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(v)) return el("span", "fs-ver fs-num", v || "?");
+    var v = release(ver);
+    if (!v) return el("span", "fs-ver fs-num", String(ver || "").replace(/^v/, "") || "?");
     var a = blank(el("a", "fs-ver fs-num", v));
     a.href = repo + "/releases/tag/v" + v;
     return a;
@@ -186,7 +191,8 @@
   if (UI.themed()) {
     row(cVer, "GlimStone").appendChild(version(GLS_VER, GLS_REPO));
     var notes = blank(UI.button(null, "Info", t("rel_notes"), "a"));
-    notes.href = REPO + (/^\d+\.\d+\.\d+/.test(String(ver).replace(/^v/, "")) ? "/releases/tag/v" + String(ver).replace(/^v/, "") : "/releases");
+    var rel = release(ver);
+    notes.href = REPO + (rel ? "/releases/tag/v" + rel : "/releases");
     row(cVer, "").appendChild(notes);
   }
 
