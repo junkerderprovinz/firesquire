@@ -6,7 +6,7 @@ const { read, ok, done, grabFn } = require('./lib');
 const info = read('firesquire-info.js');
 const el = (tag, cls, text) => ({ tagName: tag.toUpperCase(), className: cls, textContent: text == null ? '' : String(text) });
 const blank = (a) => a;
-const version = new Function('el', 'blank', grabFn(info, 'version') + '\nreturn version;')(el, blank);
+const version = new Function('el', 'blank', grabFn(info, 'release') + '\n' + grabFn(info, 'version') + '\nreturn version;')(el, blank);
 
 console.log('\nA version reads without its v');
 const v = version('v3.0.3', 'R');
@@ -18,11 +18,13 @@ ok('a release candidate links to its own tag', version('3.1.0-rc1', 'R').href ==
 const dev = version('dev', 'R');
 ok('a build without a release has no link', dev.tagName === 'SPAN' && dev.textContent === 'dev');
 ok('an empty version shows a question mark', version('', 'R').textContent === '?');
+ok('a version with anything after the number gets no link', version('3.1.0"><img src=x>', 'R').tagName === 'SPAN');
 
 console.log('\nThe card under TowerTorch');
 ok('GlimStone is 3.8.0', /var GLS_VER = "3\.8\.0";/.test(info));
 ok('GlimStone links to its own repository', /version\(GLS_VER, GLS_REPO\)/.test(info) && /var GLS_REPO = "https:\/\/github\.com\/junkerderprovinz\/glimstone";/.test(info));
 ok('the release notes wear the information glyph', /UI\.button\(null, "Info", t\("rel_notes"\), "a"\)/.test(info));
+ok('the release notes link to the release the card links to', /var rel = release\(ver\);\s*notes\.href = REPO \+ \(rel \? "\/releases\/tag\/v" \+ rel : "\/releases"\);/.test(info));
 ok('no version anywhere is printed with a v', !/"v" \+ v\b|'v' \+ v\b/.test(info + read('firesquire.js')));
 
 done();
