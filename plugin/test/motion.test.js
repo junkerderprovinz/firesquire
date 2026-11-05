@@ -9,11 +9,11 @@ const css = rules(all);
 const NO_PREF = (r) => r.at.some((a) => /prefers-reduced-motion:\s*no-preference/.test(a));
 
 console.log('\nEvery level answers every dial');
-const blocks = css.filter((r) => /^html(\[data-cc-motion="(subtle|off)"\])?$/.test(r.selector) && /--fs-motion-/.test(r.body));
+const blocks = css.filter((r) => /^html(\[data-tt-motion="(subtle|off)"\])?$/.test(r.selector) && /--fs-motion-/.test(r.body));
 const dials = (r) => [...r.body.matchAll(/(--fs-motion-[\w-]+)\s*:/g)].map((m) => m[1]).sort().join(',');
 const still = blocks.find((r) => r.selector === 'html' && !NO_PREF(r));
 ok('the still numbers stand outside the gate', !!still);
-for (const sel of ['html', 'html[data-cc-motion="subtle"]', 'html[data-cc-motion="off"]']) {
+for (const sel of ['html', 'html[data-tt-motion="subtle"]', 'html[data-tt-motion="off"]']) {
   const b = blocks.find((r) => r.selector === sel && NO_PREF(r));
   ok(`${sel} sets every dial`, b && dials(b) === dials(still), b ? dials(b) : 'missing');
 }
@@ -24,7 +24,7 @@ const loose = moving.filter((r) => !NO_PREF(r));
 ok('every animation and transition is gated', loose.length === 0, loose.map((r) => r.selector).join(' | '));
 
 console.log('\nNo rule names a lively level');
-ok('nothing keys on wild', !/data-cc-motion="wild"/.test(all));
+ok('nothing keys on wild', !/data-tt-motion="wild"/.test(all));
 
 console.log('\nA transform keyframe rests at none');
 for (const [name, body] of Object.entries(keyframes(all))) {

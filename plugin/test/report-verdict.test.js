@@ -23,7 +23,7 @@ ok('the logo is drawn inline, not as a picture', /<svg viewBox=/.test(logo) && !
 ok('its four frame paths take the frame classes', (logo.match(/class="fs-lf(-lit)?"/g) || []).length === 4);
 ok('its six flames keep their own colours', (logo.match(/fill="#[0-9a-f]{6}"/gi) || []).length === 6);
 ok('the frame has no box behind it', !css.some((r) => /\.fs-v-logo\b/.test(r.selector) && /(^|;)\s*(background|border)(-[a-z]+)?\s*:/.test(r.body)));
-const holder = css.find((r) => r.selector === 'html.cc-popups-on .fs-v-logo');
+const holder = css.find((r) => r.selector === 'html.tt-popups-on .fs-v-logo');
 ok('the logo takes the verdict colour', !!holder && /color:\s*var\(--fs-v\)/.test(holder.body));
 ok('the frame paths paint in it', css.some((r) => r.selector === '.fs-v-logo .fs-lf' && /fill:\s*currentColor/.test(r.body)));
 const logoRules = css.filter((r) => /\.fs-v-logo\b/.test(r.selector));
@@ -34,7 +34,7 @@ ok('the answer turns the frame from grey into its colour', !!tint && tint.select
 ok('and pops the logo once', !!pop && pop.selector.includes(':is(.fs-verdict, .fs-err)') && !/infinite/.test(pop.body));
 ok('the running frame stands still', !css.some((r) => /\.fs-prog[^,]*\.fs-v-logo/.test(r.selector) && /animation/.test(r.body)));
 ok('the colour starts from the running grey', read('firesquire.css').includes('@keyframes fs-tint { from { color: var(--fs-neutral); } }'));
-ok('the motion stops at off', css.some((r) => r.selector.includes('[data-cc-motion="off"]') && r.selector.includes('.fs-v-logo svg') && /animation:\s*none/.test(r.body)));
+ok('the motion stops at off', css.some((r) => r.selector.includes('[data-tt-motion="off"]') && r.selector.includes('.fs-v-logo svg') && /animation:\s*none/.test(r.body)));
 ok('it shows only in the GlimStone look', css.some((r) => r.selector === '.fs-v-logo' && /display:\s*none/.test(r.body)));
 for (const st of ['go', 'caution', 'nogo', 'unknown']) ok(`the ${st} state names a colour`, css.some((r) => r.selector.split(',').map((x) => x.trim()).includes('.fs-v-' + st) && /--fs-v:/.test(r.body)));
 

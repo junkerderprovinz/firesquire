@@ -14,7 +14,7 @@ ok('the foot holds nothing but window buttons', foot.length > 0);
 
 console.log('\nTheir ground under TowerTorch');
 const own = css.filter((r) => /fs-win-btn/.test(r.selector));
-const filled = own.filter((r) => /cc-popups-on/.test(r.selector) && !/:hover/.test(r.selector) && /(^|;)\s*background(-color)?\s*:\s*(?!transparent|none)/.test(r.body));
+const filled = own.filter((r) => /tt-popups-on/.test(r.selector) && !/:hover/.test(r.selector) && /(^|;)\s*background(-color)?\s*:\s*(?!transparent|none)/.test(r.body));
 ok('a rule fills them', filled.length > 0);
 const cleared = own.filter((r) => /(^|;)\s*background(-color)?\s*:\s*([^;]+)/.test(r.body) && CLEAR.test(r.body.match(/background(?:-color)?\s*:\s*([^;]+)/)[1].trim()));
 ok('no rule clears the fill', cleared.length === 0, cleared.map((r) => r.selector).join(' | '));

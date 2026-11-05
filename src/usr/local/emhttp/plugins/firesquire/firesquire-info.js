@@ -149,9 +149,9 @@
     var b = document.querySelector(".fs-hero");
     if (!b) return;
     if (rtl) b.dir = "rtl";
-    var C = window.CCTheme;
-    if (UI.themed() && get("cc.rainbow", "0") === "1" && C && C.rbColor) {
-      b.style.setProperty("--fs-hero-rb", C.rbColor(0, (getComputedStyle(html).getPropertyValue("--cc-accent") || "").trim() || "#FCC419"));
+    var C = window.TTTheme;
+    if (UI.themed() && get("tt.rainbow", "0") === "1" && C && C.rbColor) {
+      b.style.setProperty("--fs-hero-rb", C.rbColor(0, (getComputedStyle(html).getPropertyValue("--tt-accent") || "").trim() || "#FCC419"));
     } else {
       b.style.removeProperty("--fs-hero-rb");
     }
@@ -216,7 +216,7 @@
   }
   paint();
   new MutationObserver(paint).observe(html, { attributes: true, attributeFilter: ["class"] });
-  window.addEventListener("storage", function (e) { if (!e.key || /^cc\./.test(e.key)) paint(); });
+  window.addEventListener("storage", function (e) { if (!e.key || /^tt\./.test(e.key)) paint(); });
 
   /* A give window opens with the appeal and the sentence naming who takes the
      payment, then its own content. */

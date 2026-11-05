@@ -86,7 +86,7 @@
 🎨 **Design**
 - The check-result window now uses Unraid's own font instead of a fixed one, so it
   matches the rest of the WebGUI. Its progress bar follows your accent colour when
-  CannonadeCommand is installed (amber otherwise). The verdict and status colours
+  TowerTorch is installed (amber otherwise). The verdict and status colours
   (green, amber, red) are unchanged.
 - The report-window logo cache-buster is bumped so existing installs pick up the
   new v1.2.0 flame-in-diamond logo in the modal header.
@@ -113,7 +113,7 @@
   findings are linked (a healthy check has nothing to jump to).
 
 🐛 **Fixed**
-- CRITICAL uninstall fix (the same bug found in CannonadeCommander and ShipLog): the
+- Critical uninstall fix (the same bug found in TowerTorch and ShipLog): the
   removal was a bare `&lt;REMOVE&gt;` tag Unraid never runs, so uninstalling left the files,
   the package and the cached flash .txz behind. Removal is now a proper
   `&lt;FILE Run="/bin/bash" Method="remove"&gt;` block ending in `exit 0` that removes the
