@@ -4,7 +4,7 @@
  * window.fireSquireUI.
  *
  * Without TowerTorch everything follows Unraid's own look. With it, which puts
- * cc-popups-on on <html> on every page, firesquire.css gives the window, the
+ * tt-popups-on on <html> on every page, firesquire.css gives the window, the
  * buttons and the report GlimStone's look from TowerTorch's tokens.
  *
  * Language: fs_i18n.php merges lang/en.json and lang/<code>.json for Unraid's
@@ -133,11 +133,11 @@
   /* TowerTorch's colour engine: the accent, and under the rainbow one position
      per heading and per picked option. Without TowerTorch nothing is set and
      the page keeps Unraid's colours. */
-  function themed(){ return html.classList.contains('cc-popups-on') && get('cc.theming', '1') !== '0'; }
+  function themed(){ return html.classList.contains('tt-popups-on') && get('tt.theming', '1') !== '0'; }
   function hue(node, i){
-    var C = window.CCTheme, c = '';
-    if (i != null && themed() && get('cc.rainbow', '0') === '1' && C && C.rbColor) {
-      c = C.rbColor(i, (getComputedStyle(html).getPropertyValue('--cc-accent') || '').trim() || '#FCC419');
+    var C = window.TTTheme, c = '';
+    if (i != null && themed() && get('tt.rainbow', '0') === '1' && C && C.rbColor) {
+      c = C.rbColor(i, (getComputedStyle(html).getPropertyValue('--tt-accent') || '').trim() || '#FCC419');
     }
     if (c) {
       node.style.setProperty('--fs-hue', c);
@@ -149,7 +149,7 @@
   }
   // TowerTorch's label mode for the buttons it draws, which FireSquire's buttons follow.
   function labelMode(){
-    var m = themed() ? html.getAttribute('data-cc-labels-buttons') : '';
+    var m = themed() ? html.getAttribute('data-tt-labels-buttons') : '';
     return ['text', 'textGlyph', 'glyph', 'reactive'].indexOf(m) < 0 ? 'textGlyph' : m;
   }
   function glyph(name){
@@ -176,7 +176,7 @@
     else if (b.fsTip) { b.removeAttribute('data-tip'); b.fsTip = false; }
   }
   function labelTips(){ Array.prototype.forEach.call(document.querySelectorAll('.fs-btn'), labelTip); }
-  new MutationObserver(labelTips).observe(html, { attributes: true, attributeFilter: ['class', 'data-cc-labels-buttons'] });
+  new MutationObserver(labelTips).observe(html, { attributes: true, attributeFilter: ['class', 'data-tt-labels-buttons'] });
 
   // The (i) of GlimStone's info bubble: the letter i set in a ring.
   var INFO_SVG = '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="4.6" r="0.9" fill="currentColor"/><path d="M8 7v4.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';

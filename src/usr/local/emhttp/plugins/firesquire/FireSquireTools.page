@@ -30,7 +30,7 @@ html:is(.Theme--white, .Theme--azure) .fs-hero { --fs-hero-sil: 30%; }
 }
 .fs-hero:is(:hover, :focus-within) .fs-hero-mark { background-color: color-mix(in srgb, var(--fs-hero-tint) var(--fs-hero-sil), transparent); }
 @media (prefers-reduced-motion: no-preference) {
-  .fs-hero-mark { transition: background-color var(--cc-motion-control-dur, 150ms); }
+  .fs-hero-mark { transition: background-color var(--tt-motion-control-dur, 150ms); }
 }
 .fs-hero-logo { flex: none; display: block; width: 88px; height: 88px; object-fit: contain; }
 /* The text stops short of the silhouette. */
@@ -41,14 +41,14 @@ html:is(.Theme--white, .Theme--azure) .fs-hero { --fs-hero-sil: 30%; }
 }
 .fs-hero .fs-hero-claim {
   margin: 4px 0 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-size: var(--cc-text-title, 16px); line-height: 1.45; text-align: start; color: var(--fs-hero-dim);
+  font-size: var(--tt-text-title, 16px); line-height: 1.45; text-align: start; color: var(--fs-hero-dim);
 }
-html.cc-popups-on .fs-hero {
-  --fs-hero-tint: var(--fs-hero-rb, var(--cc-accent, #FCC419));
-  --fs-hero-dim: var(--cc-text-dim, #8a8a8a);
-  border-radius: var(--cc-radius-card, 20px);
-  background: var(--cc-fm-card, var(--cc-surface-2, #222));
-  color: var(--cc-text, #e6e6e6);
+html.tt-popups-on .fs-hero {
+  --fs-hero-tint: var(--fs-hero-rb, var(--tt-accent, #FCC419));
+  --fs-hero-dim: var(--tt-text-dim, #8a8a8a);
+  border-radius: var(--tt-radius-card, 20px);
+  background: var(--tt-fm-card, var(--tt-surface-2, #222));
+  color: var(--tt-text, #e6e6e6);
 }
 @media (max-width: 1023px) {
   .fs-hero { gap: 16px; height: 104px; padding: 0 20px; }

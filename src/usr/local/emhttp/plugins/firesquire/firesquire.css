@@ -2,7 +2,7 @@
  *
  * Without TowerTorch they follow Unraid: its theme colours, its buttons and the
  * report window as Unraid draws a box. With TowerTorch, which puts
- * cc-popups-on on <html> on every page, the rules under that class give them
+ * tt-popups-on on <html> on every page, the rules under that class give them
  * GlimStone's look from TowerTorch's tokens, in its light and dark themes. */
 
 /* The motion engine's numbers for what TowerTorch has no dial for: the bar
@@ -32,7 +32,7 @@ html {
     --fs-motion-pop-dur: 380ms;
     --fs-motion-pop-scale: 1.12;
   }
-  html[data-cc-motion="subtle"] {
+  html[data-tt-motion="subtle"] {
     --fs-motion-bar-dur: 240ms;
     --fs-motion-win-dur: 150ms;
     --fs-motion-win-travel: 0px;
@@ -42,7 +42,7 @@ html {
     --fs-motion-pop-dur: 520ms;
     --fs-motion-pop-scale: 1.05;
   }
-  html[data-cc-motion="off"] {
+  html[data-tt-motion="off"] {
     --fs-motion-bar-dur: 0s;
     --fs-motion-win-dur: 0s;
     --fs-motion-win-travel: 0px;
@@ -91,36 +91,36 @@ html {
 html:is(.Theme--white, .Theme--azure) :is(#fs-info, .fs-win) { --fs-ok: #0e6027; --fs-err: #da1e28; --fs-warn: #ba4e00; --fs-coin-xrp: #23292f; }
 
 /* With TowerTorch: its tokens, which follow its light and dark themes. */
-html.cc-popups-on :is(#fs-info, .fs-win, .fs-scrim) {
-  --fs-card: var(--cc-fm-card, var(--cc-surface-2, #222));
-  --fs-ground: var(--cc-surface-window, #242424);
-  --fs-text: var(--cc-text, #e6e6e6);
-  --fs-head: var(--cc-accent, #FCC419);
-  --fs-head-ink: var(--cc-accent-text, #161616);
-  --fs-dim: var(--cc-text-dim, #8a8a8a);
-  --fs-focus: var(--cc-accent, #FCC419);
-  --fs-ok: var(--cc-ok-ink, #6fdc8c);
-  --fs-err: var(--cc-err-ink, #ff8389);
-  --fs-warn: var(--cc-warn-ink, #ff832b);
-  --fs-dim-scrim: var(--cc-backdrop-dim, rgba(0, 0, 0, .72));
-  --fs-r-card: var(--cc-radius-card, 20px);
-  --fs-r-ctl: var(--cc-radius-control, 12px);
-  --fs-r-pill: var(--cc-radius-pill, 9999px);
-  --fs-shadow: var(--cc-elev-1, 0 1px 4px rgba(0, 0, 0, .35));
-  --fs-win-shadow: var(--cc-elev-3, 0 12px 30px rgba(0, 0, 0, .6));
-  --fs-go: var(--cc-ok, #6fdc8c);
-  --fs-caution: var(--cc-warn, #ff832b);
-  --fs-nogo: var(--cc-err, #ff8389);
-  --fs-neutral: var(--cc-text-dim, #8a8a8a);
-  --fs-state-ink: var(--cc-ok-fg, #161616);
+html.tt-popups-on :is(#fs-info, .fs-win, .fs-scrim) {
+  --fs-card: var(--tt-fm-card, var(--tt-surface-2, #222));
+  --fs-ground: var(--tt-surface-window, #242424);
+  --fs-text: var(--tt-text, #e6e6e6);
+  --fs-head: var(--tt-accent, #FCC419);
+  --fs-head-ink: var(--tt-accent-text, #161616);
+  --fs-dim: var(--tt-text-dim, #8a8a8a);
+  --fs-focus: var(--tt-accent, #FCC419);
+  --fs-ok: var(--tt-ok-ink, #6fdc8c);
+  --fs-err: var(--tt-err-ink, #ff8389);
+  --fs-warn: var(--tt-warn-ink, #ff832b);
+  --fs-dim-scrim: var(--tt-backdrop-dim, rgba(0, 0, 0, .72));
+  --fs-r-card: var(--tt-radius-card, 20px);
+  --fs-r-ctl: var(--tt-radius-control, 12px);
+  --fs-r-pill: var(--tt-radius-pill, 9999px);
+  --fs-shadow: var(--tt-elev-1, 0 1px 4px rgba(0, 0, 0, .35));
+  --fs-win-shadow: var(--tt-elev-3, 0 12px 30px rgba(0, 0, 0, .6));
+  --fs-go: var(--tt-ok, #6fdc8c);
+  --fs-caution: var(--tt-warn, #ff832b);
+  --fs-nogo: var(--tt-err, #ff8389);
+  --fs-neutral: var(--tt-text-dim, #8a8a8a);
+  --fs-state-ink: var(--tt-ok-fg, #161616);
 }
 /* Inside a window two steps stand above its ground, each a share of the text
    colour: the second surface, and the fill of a button, clear enough on either
    that it reads as one. */
-html.cc-popups-on .fs-win {
-  --fs-card: color-mix(in srgb, var(--cc-text, #e6e6e6) 9%, var(--fs-ground));
-  --fs-chip: color-mix(in srgb, var(--cc-text, #e6e6e6) 20%, var(--fs-ground));
-  --fs-line: color-mix(in srgb, var(--cc-text, #e6e6e6) 7%, transparent);
+html.tt-popups-on .fs-win {
+  --fs-card: color-mix(in srgb, var(--tt-text, #e6e6e6) 9%, var(--fs-ground));
+  --fs-chip: color-mix(in srgb, var(--tt-text, #e6e6e6) 20%, var(--fs-ground));
+  --fs-line: color-mix(in srgb, var(--tt-text, #e6e6e6) 7%, transparent);
 }
 
 /* Buttons wear their glyph and their words as two spans. Unraid's buttons
@@ -128,17 +128,17 @@ html.cc-popups-on .fs-win {
    mode decides how much of the two shows. */
 .fs-btn-g { display: none; }
 .fs-btn-g svg { display: block; width: 1em; height: 1em; }
-html.cc-popups-on .fs-btn { display: inline-flex; align-items: center; justify-content: center; gap: .45em; text-decoration: none; }
-html.cc-popups-on[data-cc-labels-buttons] .fs-btn-g { display: inline-flex; flex: none; }
-html.cc-popups-on[data-cc-labels-buttons="text"] .fs-btn-g { display: none; }
-html.cc-popups-on .fs-btn-l { display: inline-block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="reactive"]) .fs-btn { gap: 0; }
-html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="reactive"]) .fs-btn-l { max-width: 0; opacity: 0; }
-html.cc-popups-on[data-cc-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-visible) { gap: .45em; }
-html.cc-popups-on[data-cc-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-visible) .fs-btn-l { max-width: 16em; opacity: 1; }
+html.tt-popups-on .fs-btn { display: inline-flex; align-items: center; justify-content: center; gap: .45em; text-decoration: none; }
+html.tt-popups-on[data-tt-labels-buttons] .fs-btn-g { display: inline-flex; flex: none; }
+html.tt-popups-on[data-tt-labels-buttons="text"] .fs-btn-g { display: none; }
+html.tt-popups-on .fs-btn-l { display: inline-block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) .fs-btn { gap: 0; }
+html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) .fs-btn-l { max-width: 0; opacity: 0; }
+html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-visible) { gap: .45em; }
+html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-visible) .fs-btn-l { max-width: 16em; opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
-  html.cc-popups-on[data-cc-labels-buttons="reactive"] .fs-btn-l {
-    transition: max-width var(--cc-motion-label-dur, 0s) var(--cc-motion-label-ease, ease-out), opacity calc(var(--cc-motion-label-dur, 0s) * .6) ease-out;
+  html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn-l {
+    transition: max-width var(--tt-motion-label-dur, 0s) var(--tt-motion-label-ease, ease-out), opacity calc(var(--tt-motion-label-dur, 0s) * .6) ease-out;
   }
 }
 
@@ -147,34 +147,34 @@ html.cc-popups-on[data-cc-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-v
    layer outranks: where the label mode hides the words, it is a square like
    its neighbours, and reactive opens it to their width. */
 #ss-reboot-btn { margin-inline-start: 8px; }
-html.cc-popups-on #ss-reboot-btn .fs-btn-g { font-size: 1rem; }
+html.tt-popups-on #ss-reboot-btn .fs-btn-g { font-size: 1rem; }
 /* A glyph alone fills half its square, as on the buttons beside it. */
-html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="reactive"]) #ss-reboot-btn .fs-btn-g { font-size: calc(var(--cc-lgb-h, 36px) / 2); }
-html.cc-popups-on[data-cc-labels-buttons="reactive"] #ss-reboot-btn:is(:hover, :focus-visible) .fs-btn-g { font-size: 1rem; }
+html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) #ss-reboot-btn .fs-btn-g { font-size: calc(var(--tt-lgb-h, 36px) / 2); }
+html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn:is(:hover, :focus-visible) .fs-btn-g { font-size: 1rem; }
 @layer firesquire-main {
-  html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="reactive"]) #ss-reboot-btn {
-    width: var(--cc-lgb-h, 36px) !important; min-width: 0 !important; max-width: none !important; padding: 0 !important;
+  html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) #ss-reboot-btn {
+    width: var(--tt-lgb-h, 36px) !important; min-width: 0 !important; max-width: none !important; padding: 0 !important;
   }
-  html.cc-popups-on[data-cc-labels-buttons="reactive"] #ss-reboot-btn:is(:hover, :focus-visible) { width: var(--cc-lgb-w, 200px) !important; }
+  html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn:is(:hover, :focus-visible) { width: var(--tt-lgb-w, 200px) !important; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  html.cc-popups-on[data-cc-labels-buttons="reactive"] #ss-reboot-btn { transition: width var(--cc-motion-label-dur, 0s) var(--cc-motion-label-ease, ease-out), filter .12s; }
+  html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn { transition: width var(--tt-motion-label-dur, 0s) var(--tt-motion-label-ease, ease-out), filter .12s; }
 }
 
 /* The Dashboard's icon: Unraid's flame, or GlimStone's check under TowerTorch. */
 #ss-dash-icon .fs-dash-g { display: none; }
-html.cc-popups-on #ss-dash-icon::before { content: none; }
-html.cc-popups-on #ss-dash-icon .fs-dash-g { display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
-html.cc-popups-on #ss-dash-icon .fs-dash-g svg { width: 14px; height: 14px; }
+html.tt-popups-on #ss-dash-icon::before { content: none; }
+html.tt-popups-on #ss-dash-icon .fs-dash-g { display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+html.tt-popups-on #ss-dash-icon .fs-dash-g svg { width: 14px; height: 14px; }
 
 /* GlimStone's (i): its words open in TowerTorch's bubble. */
 .fs-info { display: none; }
-html.cc-popups-on .fs-info {
+html.tt-popups-on .fs-info {
   display: inline-flex; align-items: center; justify-content: center; flex: none; width: 15px; height: 15px;
   margin-inline-start: 8px; vertical-align: -2px; border-radius: var(--fs-r-pill); color: var(--fs-dim); opacity: .8; cursor: help;
 }
-html.cc-popups-on .fs-info:is(:hover, :focus-visible) { opacity: 1; }
-html.cc-popups-on .fs-info svg { display: block; width: 15px; height: 15px; }
+html.tt-popups-on .fs-info:is(:hover, :focus-visible) { opacity: 1; }
+html.tt-popups-on .fs-info svg { display: block; width: 15px; height: 15px; }
 
 .fs-num { font-variant-numeric: tabular-nums lining-nums; }
 
@@ -185,7 +185,7 @@ html.cc-popups-on .fs-info svg { display: block; width: 15px; height: 15px; }
   background: var(--fs-dim-scrim);
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
-html.cc-popups-on .fs-scrim { -webkit-backdrop-filter: var(--cc-backdrop-blur, blur(6px)); backdrop-filter: var(--cc-backdrop-blur, blur(6px)); }
+html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, blur(6px)); backdrop-filter: var(--tt-backdrop-blur, blur(6px)); }
 .fs-win {
   position: fixed; z-index: 1000001; left: 50%; top: 50%; translate: -50% -50%;
   box-sizing: border-box; display: flex; flex-direction: column;
@@ -236,28 +236,28 @@ html.cc-popups-on .fs-scrim { -webkit-backdrop-filter: var(--cc-backdrop-blur, b
 
 /* GlimStone's window: the notched title, the foot with its buttons, the
    window coming in over the blurred page. */
-html.cc-popups-on .fs-win.fs-win-headed { padding: 21px 0 16px; overflow: visible; border-radius: var(--fs-r-card); }
-html.cc-popups-on .fs-win-headed .fs-win-head { display: none; }
-html.cc-popups-on .fs-win-headed .fs-win-title { display: inline-flex; }
-html.cc-popups-on .fs-win-headed .fs-win-act { display: flex; }
-html.cc-popups-on .fs-win-headed .fs-win-body { padding: 10px 22px 4px; }
+html.tt-popups-on .fs-win.fs-win-headed { padding: 21px 0 16px; overflow: visible; border-radius: var(--fs-r-card); }
+html.tt-popups-on .fs-win-headed .fs-win-head { display: none; }
+html.tt-popups-on .fs-win-headed .fs-win-title { display: inline-flex; }
+html.tt-popups-on .fs-win-headed .fs-win-act { display: flex; }
+html.tt-popups-on .fs-win-headed .fs-win-body { padding: 10px 22px 4px; }
 @media (prefers-reduced-motion: no-preference) {
-  html.cc-popups-on .fs-scrim { animation: fs-fade-in var(--fs-motion-win-dur) ease-out both; }
-  html.cc-popups-on .fs-win { animation: fs-win-in var(--fs-motion-win-dur) ease-out both; }
+  html.tt-popups-on .fs-scrim { animation: fs-fade-in var(--fs-motion-win-dur) ease-out both; }
+  html.tt-popups-on .fs-win { animation: fs-win-in var(--fs-motion-win-dur) ease-out both; }
 }
 /* Every answer in a window's foot is filled, so it reads as a button and not
    as a word. */
-html.cc-popups-on .fs-win button.fs-win-btn {
+html.tt-popups-on .fs-win button.fs-win-btn {
   min-width: 96px; min-height: 32px; height: auto; margin: 0; padding: 6px 14px;
   border: none; border-radius: var(--fs-r-pill); box-shadow: none; background: var(--fs-chip); color: var(--fs-text);
-  font-family: inherit; font-size: var(--cc-text-meta, 12px); font-weight: 600; line-height: 1.2; letter-spacing: normal; text-transform: none; cursor: pointer;
+  font-family: inherit; font-size: var(--tt-text-meta, 12px); font-weight: 600; line-height: 1.2; letter-spacing: normal; text-transform: none; cursor: pointer;
 }
-html.cc-popups-on .fs-win button.fs-win-btn:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
-html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="reactive"]) .fs-win button.fs-win-btn { min-width: 32px; padding: 6px 10px; }
+html.tt-popups-on .fs-win button.fs-win-btn:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) .fs-win button.fs-win-btn { min-width: 32px; padding: 6px 10px; }
 @media (prefers-reduced-motion: no-preference) {
-  html.cc-popups-on .fs-win button.fs-win-btn { transition: background-color var(--cc-motion-control-dur, 0s), color var(--cc-motion-control-dur, 0s); }
+  html.tt-popups-on .fs-win button.fs-win-btn { transition: background-color var(--tt-motion-control-dur, 0s), color var(--tt-motion-control-dur, 0s); }
 }
-html.cc-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
+html.tt-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
 
 /* The verdict. Unraid's look keeps the boxed word with its bar; GlimStone's
    lets the word in its state colour stand on its own. */
@@ -274,28 +274,28 @@ html.cc-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-fo
 .fs-v-word { font-size: 30px; font-weight: 800; letter-spacing: 1px; line-height: 1.1; color: var(--fs-v); }
 .fs-v-meta { min-width: 0; }
 .fs-v-sub { color: var(--fs-dim); font-size: 12px; }
-html.cc-popups-on .fs-v-go { --fs-v: var(--cc-ok-ink, #6fdc8c); }
-html.cc-popups-on .fs-v-caution { --fs-v: var(--cc-warn-ink, #ff832b); }
-html.cc-popups-on .fs-v-nogo { --fs-v: var(--cc-err-ink, #ff8389); }
-html.cc-popups-on .fs-verdict { flex-wrap: wrap; gap: 10px 16px; padding: 0 0 4px; border-radius: 0; background: none; box-shadow: none; }
-html.cc-popups-on .fs-v-word { font-size: 2.5rem; letter-spacing: .02em; line-height: 1; }
+html.tt-popups-on .fs-v-go { --fs-v: var(--tt-ok-ink, #6fdc8c); }
+html.tt-popups-on .fs-v-caution { --fs-v: var(--tt-warn-ink, #ff832b); }
+html.tt-popups-on .fs-v-nogo { --fs-v: var(--tt-err-ink, #ff8389); }
+html.tt-popups-on .fs-verdict { flex-wrap: wrap; gap: 10px 16px; padding: 0 0 4px; border-radius: 0; background: none; box-shadow: none; }
+html.tt-popups-on .fs-v-word { font-size: 2.5rem; letter-spacing: .02em; line-height: 1; }
 /* The logo and the word read as one verdict: the logo's own diamond frame takes
    the verdict's colour, its two tones kept as a darker and a lighter shade. */
-html.cc-popups-on .fs-v-logo { display: inline-flex; flex: none; width: 52px; height: 52px; color: var(--fs-v); }
-html.cc-popups-on .fs-v-logo svg { display: block; width: 100%; height: 100%; overflow: visible; }
+html.tt-popups-on .fs-v-logo { display: inline-flex; flex: none; width: 52px; height: 52px; color: var(--fs-v); }
+html.tt-popups-on .fs-v-logo svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .fs-v-logo .fs-lf { fill: currentColor; }
 .fs-v-logo .fs-lf-lit { fill: color-mix(in srgb, currentColor 55%, #fff); }
 /* While the check runs the grey frame stands still. When the answer arrives
    the frame turns from that grey into the verdict's colour and the logo pops
    once; without motion the colour just switches. */
 @media (prefers-reduced-motion: no-preference) {
-  html.cc-popups-on :is(.fs-verdict, .fs-err) .fs-v-logo { animation: fs-tint var(--fs-motion-tint-dur) ease-out; }
-  html.cc-popups-on :is(.fs-verdict, .fs-err) .fs-v-logo svg { animation: fs-pop var(--fs-motion-pop-dur) cubic-bezier(.34, 1.56, .64, 1); }
-  html.cc-popups-on[data-cc-motion="off"] :is(.fs-verdict, .fs-err) :is(.fs-v-logo, .fs-v-logo svg) { animation: none; }
+  html.tt-popups-on :is(.fs-verdict, .fs-err) .fs-v-logo { animation: fs-tint var(--fs-motion-tint-dur) ease-out; }
+  html.tt-popups-on :is(.fs-verdict, .fs-err) .fs-v-logo svg { animation: fs-pop var(--fs-motion-pop-dur) cubic-bezier(.34, 1.56, .64, 1); }
+  html.tt-popups-on[data-tt-motion="off"] :is(.fs-verdict, .fs-err) :is(.fs-v-logo, .fs-v-logo svg) { animation: none; }
 }
-html.cc-popups-on .fs-v-name { font-size: var(--cc-text-title, 16px); font-weight: 600; }
-html.cc-popups-on .fs-v-sub { font-size: var(--cc-text-subline, 13px); }
-html.cc-popups-on .fs-v-adv, html.cc-popups-on .fs-foot { display: none; }
+html.tt-popups-on .fs-v-name { font-size: var(--tt-text-title, 16px); font-weight: 600; }
+html.tt-popups-on .fs-v-sub { font-size: var(--tt-text-subline, 13px); }
+html.tt-popups-on .fs-v-adv, html.tt-popups-on .fs-foot { display: none; }
 
 .fs-tier-h {
   margin: 22px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--fs-line);
@@ -317,33 +317,33 @@ html.cc-popups-on .fs-v-adv, html.cc-popups-on .fs-foot { display: none; }
 .fs-f-link span { opacity: .65; }
 .fs-foot { margin: 18px 0 0; color: var(--fs-dim); font-size: 11px; line-height: 1.5; }
 
-html.cc-popups-on .fs-st-warn { --fs-st: var(--cc-warn, #ff832b); }
-html.cc-popups-on .fs-st-fail { --fs-st: var(--cc-err, #ff8389); }
-html.cc-popups-on .fs-st-warn .fs-f-ic { color: var(--cc-warn-fg, #161616); }
-html.cc-popups-on .fs-st-fail .fs-f-ic { color: var(--cc-err-fg, #161616); }
-html.cc-popups-on .fs-st-info .fs-f-ic { color: var(--fs-ground); }
-html.cc-popups-on .fs-tier { margin-top: 12px; padding: 12px 14px 4px; border-radius: var(--fs-r-card); background: var(--fs-card); }
-html.cc-popups-on .fs-tier-h { margin: 0 0 4px; padding: 0; border: 0; font-size: var(--cc-text-meta, 12px); font-weight: 600; letter-spacing: .14em; }
-html.cc-popups-on .fs-f { min-height: 40px; padding: 8px 0; border: 0; }
-html.cc-popups-on .fs-f + .fs-f { box-shadow: 0 -1px 0 var(--fs-line); }
-html.cc-popups-on .fs-f-ic { flex-basis: 24px; width: 24px; height: 24px; border-radius: var(--fs-r-pill); }
-html.cc-popups-on .fs-f-g { display: inline-flex; }
-html.cc-popups-on .fs-f-g svg { width: 12px; height: 12px; }
-html.cc-popups-on .fs-f-ch { display: none; }
+html.tt-popups-on .fs-st-warn { --fs-st: var(--tt-warn, #ff832b); }
+html.tt-popups-on .fs-st-fail { --fs-st: var(--tt-err, #ff8389); }
+html.tt-popups-on .fs-st-warn .fs-f-ic { color: var(--tt-warn-fg, #161616); }
+html.tt-popups-on .fs-st-fail .fs-f-ic { color: var(--tt-err-fg, #161616); }
+html.tt-popups-on .fs-st-info .fs-f-ic { color: var(--fs-ground); }
+html.tt-popups-on .fs-tier { margin-top: 12px; padding: 12px 14px 4px; border-radius: var(--fs-r-card); background: var(--fs-card); }
+html.tt-popups-on .fs-tier-h { margin: 0 0 4px; padding: 0; border: 0; font-size: var(--tt-text-meta, 12px); font-weight: 600; letter-spacing: .14em; }
+html.tt-popups-on .fs-f { min-height: 40px; padding: 8px 0; border: 0; }
+html.tt-popups-on .fs-f + .fs-f { box-shadow: 0 -1px 0 var(--fs-line); }
+html.tt-popups-on .fs-f-ic { flex-basis: 24px; width: 24px; height: 24px; border-radius: var(--fs-r-pill); }
+html.tt-popups-on .fs-f-g { display: inline-flex; }
+html.tt-popups-on .fs-f-g svg { width: 12px; height: 12px; }
+html.tt-popups-on .fs-f-ch { display: none; }
 /* The way to the page that can fix a finding shows on its row under the
    pointer or the focus, and always on a touch screen. */
 .fs-f-act { flex: none; opacity: 0; }
 .fs-f:is(:hover, :focus-within) .fs-f-act { opacity: 1; }
 @media (hover: none) { .fs-f-act { opacity: 1; } }
 @media (prefers-reduced-motion: no-preference) {
-  .fs-f-act { transition: opacity var(--cc-motion-control-dur, 0s); }
+  .fs-f-act { transition: opacity var(--tt-motion-control-dur, 0s); }
 }
-html.cc-popups-on .fs-win a.fs-f-go {
+html.tt-popups-on .fs-win a.fs-f-go {
   min-height: 28px; padding: 4px 12px; border-radius: var(--fs-r-pill); background: var(--fs-chip); color: var(--fs-text);
-  font-size: var(--cc-text-meta, 12px); font-weight: 600; white-space: nowrap;
+  font-size: var(--tt-text-meta, 12px); font-weight: 600; white-space: nowrap;
 }
-html.cc-popups-on .fs-win a.fs-f-go:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
-html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="reactive"]) .fs-win a.fs-f-go { min-width: 28px; padding: 4px 8px; }
+html.tt-popups-on .fs-win a.fs-f-go:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) .fs-win a.fs-f-go { min-width: 28px; padding: 4px 8px; }
 
 /* The bar changes all the time, so a change inside it stays inside it
    (GlimStone's .glim-meter). */
@@ -357,27 +357,27 @@ html.cc-popups-on:is([data-cc-labels-buttons="glyph"], [data-cc-labels-buttons="
 @media (prefers-reduced-motion: no-preference) {
   .fs-prog-fill { transition: width var(--fs-motion-bar-dur) ease; }
   .fs-prog-fill.fs-indet { transition: none; animation: fs-sweep var(--fs-motion-sweep-dur) ease-in-out infinite; }
-  html[data-cc-motion="off"] .fs-prog-fill.fs-indet { animation: none; }
+  html[data-tt-motion="off"] .fs-prog-fill.fs-indet { animation: none; }
 }
-html.cc-popups-on .fs-prog { padding: 18px 0 22px; }
-html.cc-popups-on .fs-prog-lab { align-items: center; margin: 6px 0 14px; }
-html.cc-popups-on .fs-prog-txt { flex: 1 1 auto; min-width: 0; }
-html.cc-popups-on .fs-prog-pct { opacity: 1; color: var(--fs-dim); }
-html.cc-popups-on .fs-prog-track { height: 8px; border-radius: var(--fs-r-pill); background: var(--fs-card); }
-html.cc-popups-on .fs-prog-fill { background: var(--cc-rbaccent, var(--cc-accent, #FCC419)); }
+html.tt-popups-on .fs-prog { padding: 18px 0 22px; }
+html.tt-popups-on .fs-prog-lab { align-items: center; margin: 6px 0 14px; }
+html.tt-popups-on .fs-prog-txt { flex: 1 1 auto; min-width: 0; }
+html.tt-popups-on .fs-prog-pct { opacity: 1; color: var(--fs-dim); }
+html.tt-popups-on .fs-prog-track { height: 8px; border-radius: var(--fs-r-pill); background: var(--fs-card); }
+html.tt-popups-on .fs-prog-fill { background: var(--tt-rbaccent, var(--tt-accent, #FCC419)); }
 
 .fs-err { display: flex; gap: 12px; align-items: flex-start; padding: 8px 4px; color: var(--fs-nogo); }
 .fs-err-hint { display: none; }
 .fs-err p { margin: 0; }
-html.cc-popups-on .fs-err { align-items: center; gap: 14px; padding: 6px 0 12px; color: inherit; }
-html.cc-popups-on .fs-err-text { font-weight: 600; }
-html.cc-popups-on .fs-err-hint { display: block; margin-top: 4px; color: var(--fs-dim); }
+html.tt-popups-on .fs-err { align-items: center; gap: 14px; padding: 6px 0 12px; color: inherit; }
+html.tt-popups-on .fs-err-text { font-weight: 600; }
+html.tt-popups-on .fs-err-hint { display: block; margin-top: 4px; color: var(--fs-dim); }
 
 @media (max-width: 640px) {
   .fs-win.fs-win-report { width: calc(100vw - 16px); }
-  html.cc-popups-on .fs-v-word { font-size: 2rem; }
+  html.tt-popups-on .fs-v-word { font-size: 2rem; }
   /* On a phone the way to a finding goes under its text, which keeps the row's width. */
-  html.cc-popups-on .fs-f { flex-wrap: wrap; }
-  html.cc-popups-on .fs-f-text { flex-basis: calc(100% - 34px); }
-  html.cc-popups-on .fs-f-act { margin-inline-start: 34px; }
+  html.tt-popups-on .fs-f { flex-wrap: wrap; }
+  html.tt-popups-on .fs-f-text { flex-basis: calc(100% - 34px); }
+  html.tt-popups-on .fs-f-act { margin-inline-start: 34px; }
 }
