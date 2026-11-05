@@ -28,6 +28,10 @@
 </ICON>
 
   <CHANGES>
+## 3.1.1
+⚡ **Improved**
+- **Ready for TowerTorch 1.4.1.** FireSquire follows TowerTorch's new internal names, so please update both together to keep the shared look.
+
 ## 3.1.0
 ✨ **Added**
 - With TowerTorch installed, the report window has a Check again button at its foot. It
