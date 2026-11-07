@@ -18,6 +18,24 @@ An Unraid plugin that answers one question before you reboot: <b>will the box co
 FireSquire reads the live host state and gives you a single verdict (<b>GO / CAUTION / NO-GO</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads, it never touches anything.
 </p>
 
+<br>
+
+<p><a id="table-of-contents" href="#table-of-contents"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/table-of-contents-dark.svg"><img src=".github/assets/sections/table-of-contents.svg" alt="Table of Contents" width="100%"></picture></a></p>
+
+1. [Support](#1-support)
+2. [What is this?](#2-what-is-this)
+3. [Screenshots](#3-screenshots)
+4. [What it checks](#4-what-it-checks)
+5. [How it works](#5-how-it-works)
+6. [Install](#6-install)
+7. [Development](#7-development)
+8. [License](#8-license)
+9. [How AI is used here](#9-how-ai-is-used-here)
+
+<br>
+
+<p><a id="1-support" href="#1-support"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/1-support-dark.svg"><img src=".github/assets/sections/1-support.svg" alt="1. Support" width="100%"></picture></a></p>
+
 <p align="center">
 A one-knight job: I build it, keep it running, work through the issues and add what people ask for, until nothing is missing. It is free, with no accounts, no telemetry, no ads and no paid tier. No asterisk anywhere. Nothing readable ever leaves your own walls. Forged on evenings and weekends, with heart and stubbornness.
 </p>
@@ -36,21 +54,7 @@ If it has earned a place on your server or computer, toss a coin to your knight:
 
 <br>
 
-## Table of Contents
-
-1. [What is this?](#1-what-is-this)
-2. [Screenshots](#2-screenshots)
-3. [What it checks](#3-what-it-checks)
-4. [How it works](#4-how-it-works)
-5. [Install](#5-install)
-6. [Development](#6-development)
-7. [License](#7-license)
-8. [How AI is used here](#8-how-ai-is-used-here)
-9. [Support this project](#9-support-this-project)
-
-<br>
-
-## 1. What is this?
+<p><a id="2-what-is-this" href="#2-what-is-this"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/2-what-is-this-dark.svg"><img src=".github/assets/sections/2-what-is-this.svg" alt="2. What is this?" width="100%"></picture></a></p>
 
 A reboot is never 100% guaranteed, but a large class of "it didn't come back right" is **predictable from the current live state**. FireSquire inspects that state before you reboot and gives you a single, honest verdict:
 
@@ -64,7 +68,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 <br>
 
-## 2. Screenshots
+<p><a id="3-screenshots" href="#3-screenshots"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/3-screenshots-dark.svg"><img src=".github/assets/sections/3-screenshots.svg" alt="3. Screenshots" width="100%"></picture></a></p>
 
 <p align="center">
   <img src=".github/assets/screenshots/report.png" alt="FireSquire pre-reboot report with a CAUTION verdict" width="58%">
@@ -80,7 +84,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 <br>
 
-## 3. What it checks
+<p><a id="4-what-it-checks" href="#4-what-it-checks"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/4-what-it-checks-dark.svg"><img src=".github/assets/sections/4-what-it-checks.svg" alt="4. What it checks" width="100%"></picture></a></p>
 
 **Critical: a failure here means NO-GO**
 
@@ -107,7 +111,7 @@ This is an early-warning check, not an oracle. Genuine hardware, BIOS or timing 
 
 <br>
 
-## 4. How it works
+<p><a id="5-how-it-works" href="#5-how-it-works"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/5-how-it-works-dark.svg"><img src=".github/assets/sections/5-how-it-works.svg" alt="5. How it works" width="100%"></picture></a></p>
 
 A single Bash engine (`firesquire-check.sh`) runs the checks by querying the tools Unraid already ships: `mdcmd`, `losetup`, `docker`, `smartctl`, `df`, `pgrep`. No daemon, no dependencies. It prints a human-readable report on a console, or machine-readable JSON for the WebGUI:
 
@@ -122,7 +126,7 @@ The WebGUI layer is a small PHP page (`FireSquireReport.php`) that runs the engi
 
 <br>
 
-## 5. Install
+<p><a id="6-install" href="#6-install"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/6-install-dark.svg"><img src=".github/assets/sections/6-install.svg" alt="6. Install" width="100%"></picture></a></p>
 
 **Community Apps** *(planned)*: search for **FireSquire** in the Apps tab.
 
@@ -134,7 +138,7 @@ https://raw.githubusercontent.com/junkerderprovinz/firesquire/main/plugin/firesq
 
 <br>
 
-## 6. Development
+<p><a id="7-development" href="#7-development"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/7-development-dark.svg"><img src=".github/assets/sections/7-development.svg" alt="7. Development" width="100%"></picture></a></p>
 
 The plugin files live under [`src/`](src/) mirroring the on-disk layout
 (`/usr/local/emhttp/plugins/firesquire/`). The release `.txz` is built by CI on
@@ -145,7 +149,7 @@ Assets (icon, banner) are generated with
 
 <br>
 
-## 7. License
+<p><a id="8-license" href="#8-license"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/8-license-dark.svg"><img src=".github/assets/sections/8-license.svg" alt="8. License" width="100%"></picture></a></p>
 
 **Copyright (C) 2026 Junker der Provinz.**
 
@@ -155,7 +159,7 @@ FireSquire is free software under the **GNU Affero General Public License v3.0**
 
 <br>
 
-## 8. How AI is used here
+<p><a id="9-how-ai-is-used-here" href="#9-how-ai-is-used-here"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/9-how-ai-is-used-here-dark.svg"><img src=".github/assets/sections/9-how-ai-is-used-here.svg" alt="9. How AI is used here" width="100%"></picture></a></p>
 
 One knight builds this, and AI is one of the tools I work with, the same way I work with an editor or a compiler. It helps me write code and documentation and it checks my work, and that saves me a good many evenings. It does not make the decisions, though. I read and understand everything before it ships, and if something here breaks, that is on me and not on the tool.
 
@@ -163,18 +167,4 @@ You do not have to take my word for it. The code is open and every release note 
 
 <br>
 
-## 9. Support this project
-
 Questions? Check the [support thread](https://forums.unraid.net/topic/199508-support-junkerderprovinz-firesquire/). Bugs, ideas or feature requests? Please [open a GitHub issue](https://github.com/junkerderprovinz/firesquire/issues).
-
-A one-knight job: I build it, keep it running, work through the issues and add what people ask for, until nothing is missing. It is free, with no accounts, no telemetry, no ads and no paid tier. No asterisk anywhere. Nothing readable ever leaves your own walls. Forged on evenings and weekends, with heart and stubbornness.
-
-If it has earned a place on your server or computer, toss a coin to your knight: it helps cover the costs and keeps the project alive. It also makes this knight's heart beat a little faster. Three ways below, whichever suits you.
-
-<p align="center">
-  <a href="https://buymeacoffee.com/junkerderprovinz"><img src="https://raw.githubusercontent.com/junkerderprovinz/junkerderprovinz/main/donate/buttons/give.svg#svgView(viewBox(0,0,841.9,245.3))" alt="Buy me a coffee" width="160" height="46.62"></a>
-  &nbsp;
-  <a href="https://www.paypal.com/donate/?hosted_button_id=76FVV52TKXTUS"><img src="https://raw.githubusercontent.com/junkerderprovinz/junkerderprovinz/main/donate/buttons/give.svg#svgView(viewBox(841.9,0,841.9,245.3))" alt="PayPal" width="160" height="46.62"></a>
-  &nbsp;
-  <a href="https://junkerderprovinz.github.io/junkerderprovinz/"><img src="https://raw.githubusercontent.com/junkerderprovinz/junkerderprovinz/main/donate/buttons/give.svg#svgView(viewBox(1683.8,0,841.9,245.3))" alt="Donate with crypto" width="160" height="46.62"></a>
-</p>
