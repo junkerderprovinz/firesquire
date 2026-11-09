@@ -15,7 +15,7 @@
 
 <p align="center">
 An Unraid plugin that answers one question before you reboot: <b>will the box come back up clean?</b><br>
-FireSquire reads the live host state and gives you a single verdict (<b>GO / CAUTION / NO-GO</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads, it never touches anything.
+FireSquire reads the live host state and gives you a single verdict (<b>GO / CAUTION / NO-GO</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads the host, and its one write is a test file on the flash that it deletes right away.
 </p>
 
 <br>
@@ -62,7 +62,7 @@ A reboot is never 100% guaranteed, but a large class of "it didn't come back rig
 - **CAUTION**: non-fatal issues you should know about first
 - **NO-GO**: conditions likely to make the reboot come back dirty
 
-It is **advisory only**. It reads the system and reports. It never stops, mounts, unmounts, or changes anything, because acting on the host is exactly what tends to cause reboot trouble in the first place.
+It is **advisory only**. It reads the system and reports. It never stops, mounts or unmounts anything, because acting on the host is exactly what tends to cause reboot trouble in the first place. The one thing it writes is the flash write test: an empty file on `/boot` that it deletes as soon as it has been created.
 
 The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a flame icon next to *Reboot* in the server tile on the **Dashboard**, and a **Settings → User Utilities → FireSquire** page with a short description. Click any of them and a **live progress bar** shows each check as it runs, then read the verdict and reboot. Each problem finding is a **click-through link** straight to the page where you fix it: syslog and disk/IO findings open the System Log viewer, array/parity/SMART/space findings open Main, running VMs open the VMs tab, and so on. The report follows your Unraid light/dark theme and **the language configured in the Unraid UI** (all 26 supported languages, English fallback).
 
@@ -72,7 +72,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 <p align="center">
   <img src=".github/assets/screenshots/report.png" alt="FireSquire pre-reboot report with a CAUTION verdict" width="58%">
-  <br><em>The pre-reboot report: a single GO / CAUTION / NO-GO verdict with the exact checks behind it. Advisory only: it never changes anything.</em>
+  <br><em>The pre-reboot report: a single GO / CAUTION / NO-GO verdict with the exact checks behind it. Advisory only: apart from a flash write test it removes at once, it changes nothing.</em>
 </p>
 
 <br>

@@ -40,15 +40,17 @@ is <strong>predictable from the current state of the running system</strong>. Fi
 inspects that state <strong>before</strong> you reboot and gives you one honest verdict:
 <strong>GO / CAUTION / NO-GO</strong>, with the exact findings.</p>
 <p>It is <strong>advisory only</strong>: it reads the host and reports. It never stops,
-mounts, unmounts or changes anything (acting on the host is exactly what tends to cause
-reboot trouble in the first place). The plugin adds a <strong>FireSquire button next to
+mounts or unmounts anything (acting on the host is exactly what tends to cause reboot
+trouble in the first place). The one thing it writes is a write test on the flash: an
+empty file on <code>/boot</code> that it deletes right away. The plugin adds a
+<strong>FireSquire button next to
 Reboot</strong> on the Main tab. Click, read the verdict, then reboot.</p>
 
 <h2>Highlights</h2>
 <ul>
   <li><strong>Critical (NO-GO)</strong>: array started &amp; every device assignment OK (no disabled/invalid/missing disk); no parity/sync/rebuild/clear or mover running; no container mounting a host runtime dir (the bind class that can take libvirt/docker down on reboot); no stuck <code>docker.img</code>/<code>libvirt.img</code> loop; flash writable</li>
   <li><strong>Caution</strong>: crashes since boot in the syslog, <strong>disk/IO errors</strong> (failing disk or loose cable), low free space, running VMs, a stopped core service, missing container bind sources, and <strong>SMART health</strong> (status + attributes: reallocated/pending/uncorrectable sectors, UDMA CRC, temperature)</li>
-  <li><strong>Advisory only</strong>: reads and reports, never changes the host</li>
+  <li><strong>Advisory only</strong>: reads and reports, and its only write is a flash test file it deletes at once</li>
   <li><strong>Follows your Unraid theme &amp; language</strong>: light/dark, all 26 supported languages (English fallback)</li>
   <li><strong>No dependencies</strong>: a small Bash engine querying the tools Unraid already ships; no daemon, nothing to configure</li>
 </ul>

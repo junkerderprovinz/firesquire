@@ -7,7 +7,8 @@
 #   CAUTION  non-fatal issues you should know about before rebooting
 #   NO-GO    conditions likely to make the reboot come back dirty
 #
-# It never changes the system. Run it before a planned reboot.
+# It changes nothing on the host apart from the flash write test, which creates
+# an empty file on /boot and deletes it at once. Run it before a planned reboot.
 #
 # Usage:
 #   firesquire-check.sh            human-readable report (English, colour on TTY)

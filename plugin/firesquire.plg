@@ -28,6 +28,10 @@
 </ICON>
 
   <CHANGES>
+## 3.1.2
+🐛 **Fixed**
+- **The texts say what the check writes.** FireSquire said it never changes anything, yet the flash check writes an empty test file to /boot and deletes it right away. The report, the settings page and the README say so now, in all 26 languages.
+
 ## 3.1.1
 ⚡ **Improved**
 - **Ready for TowerTorch 1.4.1.** FireSquire follows TowerTorch's new internal names, so please update both together to keep the shared look.
