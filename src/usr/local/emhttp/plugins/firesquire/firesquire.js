@@ -23,14 +23,15 @@
     err: 'Could not run the check engine.',
     err_hint: 'Try again in a moment. If it keeps failing, the syslog may say why.',
     foot: 'FireSquire reads the current state and predicts the common reboot landmines (pinned mounts, stuck loops, unclean array, in-flight operations, a crash-looping box). It is an early warning, not a guarantee. Genuine hardware, BIOS or timing failures during boot cannot be seen from a running system.',
-    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (GO / CAUTION / NO-GO) with the exact findings. It is advisory only: it reads the host and reports. It writes only an empty test file to the flash, to check that /boot is writable, and deletes it right away.',
+    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (GO / CAUTION / NO-GO) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.',
     tools_intro: 'It looks for the reboot landmines that are detectable from the running system:',
     tools_li: [
       'Array started & clean: every device assignment OK (no disabled/invalid/missing disk)',
       'No parity/sync/rebuild/clear or mover in progress',
       'No container mounting a host runtime dir, no stuck docker.img/libvirt.img loop',
       'Flash writable, free space, recent crashes, running VMs, services, SMART health',
-      'Apps in your fortress: work a reboot would cut short, and errors that need you'
+      'Apps in your fortress: work a reboot would cut short, and errors that need you',
+      'ZFS pools and devices, btrfs device errors and rising CRC counts, each with the disk\'s port'
     ],
     tools_btn: 'Run pre-reboot check',
     tools_title: 'Pre-reboot check',
@@ -39,7 +40,8 @@
     tools_g_containers: 'Containers and images',
     tools_g_host: 'Flash, space and services',
     tools_g_fortress: 'Your fortress',
-    tools_note: 'Advisory only, apart from a write test on the flash',
+    tools_g_health: 'Disk health',
+    tools_note: 'Advisory only, apart from a write test and the CRC counts on the flash',
     goto: 'Go to the source',
     retry: 'Check again',
     rel_notes: 'Release notes',
@@ -55,6 +57,7 @@
     p_services: 'Checking core services…',
     p_binds: 'Checking container binds…',
     p_fortress: 'Asking the fortress…',
+    p_pools: 'Checking ZFS and btrfs pools…',
     p_smart: 'Checking SMART health…',
     p_info: 'Collecting system info…',
     p_done: 'Done',
@@ -101,6 +104,16 @@
     fortress_ok: '{0} app(s) in your fortress answered. None is busy with work a reboot would cut short.',
     fortress_alone: 'No other app of your fortress is in reach right now.',
     fortress_skip: 'FireSquire could not reach the fortress and skipped its apps.',
+    zfs_degraded: 'ZFS pool {0} is {1}. Fix it before rebooting.',
+    zfs_dev_errors: 'ZFS pool {0}: {1} has {2} read, {3} write and {4} checksum errors.',
+    zfs_dev_state: 'ZFS pool {0}: {1} is {2}.',
+    zfs_ok: '{0} ZFS pool(s) online, no device errors.',
+    btrfs_dev_errors: 'btrfs on {0}: {1} reports errors ({2}).',
+    btrfs_ok: '{0} btrfs filesystem(s) without device errors.',
+    crc_found: '{0} has {1} CRC errors. That usually points to the cable or the port. FireSquire remembers the count and warns again if it rises.',
+    crc_rose: 'The CRC errors on {0} rose from {1} to {2} since the last check. Check or replace the cable on this port.',
+    scrutiny_link: 'Scrutiny keeps the SMART history of your disks. Open it to see when the counts started to rise.',
+    scrutiny_tip: 'Tip: Scrutiny from Community Apps keeps a SMART history of your disks, so you can see when a count started to rise.',
     smart_failing: 'SMART health FAILING on:{0}. Investigate before rebooting.',
     smart_ok: 'SMART health PASSED on {0} disk(s).',
     smart_none: 'No disks found for SMART check.',
@@ -308,11 +321,20 @@
       case 'space_full':
       case 'smart_failing':
       case 'smart_attr':
+      case 'zfs_degraded':
+      case 'zfs_dev_errors':
+      case 'zfs_dev_state':
+      case 'btrfs_dev_errors':
+      case 'crc_found':
+      case 'crc_rose':
         return '/Main';
       default:
         return null;   // svc_emhttp_down has no page (the WebGUI itself is down)
     }
   }
+
+  // ":8081/web" is a port on this server; the app behind it speaks plain http.
+  function ownLink(l){ return l.charAt(0) === ':' ? 'http://' + location.hostname + l : l; }
 
   var VCLASS = { GO: 'fs-v-go', CAUTION: 'fs-v-caution', 'NO-GO': 'fs-v-nogo' };
   var STATUS = { pass: ['Check', '✓'], warn: ['Warning', '!'], fail: ['Close', '✗'], info: ['Info', 'i'] };
@@ -352,10 +374,11 @@
   function rowHTML(x, gs){
     var st = STATUS[x.status] ? x.status : 'info';
     var msg = message(x);
-    // Only problem findings (warn/fail) lead to the page that can fix them.
-    var link = (st === 'warn' || st === 'fail') ? fsLink(x.key) : null;
+    // Problem findings lead to the page that can fix them. A finding with a
+    // link of its own, such as a port on this server, leads there.
+    var link = x.link ? ownLink(x.link) : (st === 'warn' || st === 'fail') ? fsLink(x.key) : null;
     var text = link && !gs
-      ? '<a class="fs-f-link" href="' + esc(link) + '" title="' + esc(fsT('goto')) + '">' + msg + ' <span aria-hidden="true">&#8599;</span></a>'
+      ? '<a class="fs-f-link" href="' + esc(link) + '"' + (/^http/.test(link) ? ' target="_blank" rel="noopener"' : '') + ' title="' + esc(fsT('goto')) + '">' + msg + ' <span aria-hidden="true">&#8599;</span></a>'
       : msg;
     var h = '<div class="fs-f fs-st-' + st + '"><span class="fs-f-ic" aria-hidden="true"><span class="fs-f-g">' + glyph(STATUS[st][0]) + '</span><span class="fs-f-ch">' + STATUS[st][1] + '</span></span>';
     h += '<div class="fs-f-text">' + text + '</div>';
@@ -382,6 +405,7 @@
     Array.prototype.forEach.call(body.querySelectorAll('.fs-f-act'), function(n){
       var a = button('fs-f-go', 'Forward', fsT('goto'), 'a');
       a.href = n.getAttribute('data-goto');
+      if (/^http/.test(n.getAttribute('data-goto'))) { a.target = '_blank'; a.rel = 'noopener'; }
       n.appendChild(a);
     });
   }

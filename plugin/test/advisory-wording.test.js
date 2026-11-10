@@ -1,5 +1,5 @@
-// The check writes one probe file to /boot and deletes it, so no text may claim that it never
-// changes anything, and the English texts name the flash write test instead.
+// The check writes one probe file to /boot and deletes it, and keeps the CRC count of every disk
+// there, so no text may claim that it never changes anything, and the English texts name both.
 const fs = require('fs');
 const path = require('path');
 const { DIR, read, ok, done } = require('./lib');
@@ -30,6 +30,15 @@ for (const k of ['subtitle', 'tools_lead', 'tools_note']) {
 }
 for (const name of ['firesquire-check.sh', 'plugin README.md', 'README.md', 'SUPPORT_THREAD.html']) {
   ok(`${name} mentions the flash write test`, /test file|write test/i.test(sources[name]));
+}
+
+console.log('\nThe texts name the CRC counts kept on the flash');
+ok('the engine keeps them there', /crc\.state/.test(read('firesquire-health.sh')));
+for (const k of ['tools_lead', 'tools_note']) {
+  ok(`${k} mentions the CRC counts`, /CRC/.test(en[k]), en[k]);
+}
+for (const name of ['plugin README.md', 'README.md', 'SUPPORT_THREAD.html']) {
+  ok(`${name} mentions the CRC counts on the flash`, /CRC (error )?counts?/i.test(sources[name]));
 }
 
 done();

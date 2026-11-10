@@ -18,7 +18,7 @@ for (const f of files) {
   const wrong = Object.keys(en).filter((k) => k in tr && holes(en[k]) !== holes(tr[k]));
   ok(`${f} has every key and no other`, !missing.length && !extra.length, missing.concat(extra).join(', '));
   ok(`${f} keeps the placeholders`, !wrong.length, wrong.join(', '));
-  ok(`${f} lists five check groups`, Array.isArray(tr.tools_li) && tr.tools_li.length === 5);
+  ok(`${f} lists six check groups`, Array.isArray(tr.tools_li) && tr.tools_li.length === 6);
 }
 
 console.log('\nThe scripts ask for strings that exist');
@@ -29,7 +29,10 @@ for (const [file, re] of [['firesquire.js', /fsT\('([\w-]+)'[,)]/g], ['firesquir
 const unknown = [...asked].filter((k) => !(k in en));
 ok('every asked key is in en.json', unknown.length === 0, unknown.join(', '));
 const js = read('firesquire.js');
-const fallback = ['err_hint', 'tools_title', 'tools_note', 'retry', 'rel_notes', 'tools_g_fortress', 'p_fortress', 'fortress_busy', 'fortress_busy_open', 'fortress_needs', 'fortress_unanswered', 'fortress_ok', 'fortress_alone', 'fortress_skip'].filter((k) => !js.includes('    ' + k + ': '));
+let parses = true;
+try { new (require('vm').Script)(js); } catch (e) { parses = e.message; }
+ok('the script with the English fallback parses', parses === true, parses);
+const fallback = ['err_hint', 'tools_title', 'tools_note', 'retry', 'rel_notes', 'tools_g_fortress', 'p_fortress', 'fortress_busy', 'fortress_busy_open', 'fortress_needs', 'fortress_unanswered', 'fortress_ok', 'fortress_alone', 'fortress_skip', 'tools_g_health', 'p_pools', 'zfs_degraded', 'zfs_dev_errors', 'zfs_dev_state', 'zfs_ok', 'btrfs_dev_errors', 'btrfs_ok', 'crc_found', 'crc_rose', 'scrutiny_link', 'scrutiny_tip'].filter((k) => !js.includes('    ' + k + ': '));
 ok('the English fallback carries the new strings', fallback.length === 0, fallback.join(', '));
 
 done();

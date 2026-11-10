@@ -15,7 +15,7 @@
 
 <p align="center">
 An Unraid plugin that answers one question before you reboot: <b>will the box come back up clean?</b><br>
-FireSquire reads the live host state and gives you a single verdict (<b>GO / CAUTION / NO-GO</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads the host, and its one write is a test file on the flash that it deletes right away.
+FireSquire reads the live host state and gives you a single verdict (<b>GO / CAUTION / NO-GO</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads the host. On the flash it writes a test file that it deletes right away, and it keeps the CRC error count of each disk there, so it notices when one rises.
 </p>
 
 <br>
@@ -62,7 +62,7 @@ A reboot is never 100% guaranteed, but a large class of "it didn't come back rig
 - **CAUTION**: non-fatal issues you should know about first
 - **NO-GO**: conditions likely to make the reboot come back dirty
 
-It is **advisory only**. It reads the system and reports. It never stops, mounts or unmounts anything, because acting on the host is exactly what tends to cause reboot trouble in the first place. The one thing it writes is the flash write test: an empty file on `/boot` that it deletes as soon as it has been created.
+It is **advisory only**. It reads the system and reports. It never stops, mounts or unmounts anything, because acting on the host is exactly what tends to cause reboot trouble in the first place. It writes two things to the flash. One is the flash write test, an empty file on `/boot` that it deletes as soon as it has been created. The other is `crc.state` in `/boot/config/plugins/firesquire`, with the CRC error count of each disk, so it can tell when one rises. It rewrites that file only when a count changes.
 
 The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a flame icon next to *Reboot* in the server tile on the **Dashboard**, and a **Settings → User Utilities → FireSquire** page with a short description. Click any of them and a **live progress bar** shows each check as it runs, then read the verdict and reboot. Each problem finding is a **click-through link** straight to the page where you fix it: syslog and disk/IO findings open the System Log viewer, array/parity/SMART/space findings open Main, running VMs open the VMs tab, and so on. The report follows your Unraid light/dark theme and **the language configured in the Unraid UI** (all 26 supported languages, English fallback).
 
@@ -72,7 +72,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 <p align="center">
   <img src=".github/assets/screenshots/report.png" alt="FireSquire pre-reboot report with a CAUTION verdict" width="58%">
-  <br><em>The pre-reboot report: a single GO / CAUTION / NO-GO verdict with the exact checks behind it. Advisory only: apart from a flash write test it removes at once, it changes nothing.</em>
+  <br><em>The pre-reboot report: a single GO / CAUTION / NO-GO verdict with the exact checks behind it. Advisory only: apart from a flash write test it removes at once and the CRC counts it keeps, it changes nothing.</em>
 </p>
 
 <br>
@@ -93,6 +93,8 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 - No container mounting a host runtime directory (`/var/run`, `/run`, `/var/run/libvirt`, …, with `docker.sock` excepted), the bind class that can take libvirt/docker down on reboot
 - No stuck `docker.img` / `libvirt.img` loop (attached-but-not-mounted, or a loop backing a deleted file)
 - Flash `/boot` mounted and writable
+- ZFS pools not degraded, faulted or unavailable, and no ZFS device with read, write or checksum errors
+- No btrfs device with errors in `btrfs device stats`
 
 **Caution: worth knowing before you reboot**
 
@@ -102,6 +104,9 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 - A core service down right now (dockerd / libvirtd / emhttpd)
 - Container bind sources under `/mnt` that no longer exist
 - SMART health (`smartctl -H`) on every disk
+- A UDMA CRC error count that rose since the last check, which usually means a bad cable or port
+
+Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, FireSquire links to Scrutiny if it runs on the server, or suggests it for the SMART history.
 
 **Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup, is NO-GO and names the app, the device, the task and its progress. An app that reports an error waiting for you is CAUTION. Without a fortress the group stays out of the report.
 

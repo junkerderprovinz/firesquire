@@ -1,0 +1,33 @@
+  pool: fast
+ state: ONLINE
+  scan: scrub repaired 0B in 00:01:12 with 0 errors on Sun Nov  8 03:00:01 2026
+config:
+
+	NAME         STATE     READ WRITE CKSUM
+	fast         ONLINE       0     0     0
+	  nvme0n1p1  ONLINE       0     0     0
+
+errors: No known data errors
+
+  pool: tank
+ state: DEGRADED
+status: One or more devices could not be used because the label is missing or
+	invalid.  Sufficient replicas exist for the pool to continue
+	functioning in a degraded state.
+action: Replace the device using 'zpool replace'.
+   see: https://openzfs.github.io/openzfs-docs/msg/ZFS-8000-4J
+  scan: scrub repaired 0B in 02:14:51 with 0 errors on Sun Nov  8 05:14:52 2026
+config:
+
+	NAME                                              STATE     READ WRITE CKSUM
+	tank                                              DEGRADED     0     0     0
+	  mirror-0                                        DEGRADED     0     0     0
+	    sdc1                                          ONLINE       0     0     3
+	    ata-WDC_WD40EFRX-68N32N0_WD-WCC7K1234567-part1  UNAVAIL      0     0     0  corrupted data
+	  mirror-1                                        ONLINE       0     0     0
+	    sdf1                                          ONLINE       0     0     0
+	    sdg1                                          ONLINE       0     0     0
+	spares
+	  sdh1                                            AVAIL
+
+errors: No known data errors

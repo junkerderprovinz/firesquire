@@ -1,0 +1,5 @@
+/dev/sde1 /mnt/cache btrfs rw,noatime,space_cache=v2 0 0
+/dev/sde1 /mnt/cache/appdata btrfs rw,noatime 0 0
+/dev/loop2 /var/lib/docker btrfs rw,noatime 0 0
+/dev/md1p1 /mnt/disk1 xfs rw,noatime 0 0
+proc /proc proc rw 0 0

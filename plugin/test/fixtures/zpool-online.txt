@@ -1,0 +1,22 @@
+  pool: fast
+ state: ONLINE
+config:
+
+	NAME         STATE     READ WRITE CKSUM
+	fast         ONLINE       0     0     0
+	  nvme0n1p1  ONLINE       0     0     0
+
+errors: No known data errors
+
+  pool: tank
+ state: ONLINE
+config:
+
+	NAME        STATE     READ WRITE CKSUM
+	tank        ONLINE       0     0     0
+	  raidz1-0  ONLINE       0     0     0
+	    sdc1    ONLINE       0     0     0
+	    sdd1    ONLINE       0     0     0
+	    sde1    ONLINE       0     0     0
+
+errors: No known data errors

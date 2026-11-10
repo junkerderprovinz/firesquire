@@ -1,0 +1,10 @@
+[/dev/sde1].write_io_errs    0
+[/dev/sde1].read_io_errs     0
+[/dev/sde1].flush_io_errs    0
+[/dev/sde1].corruption_errs  2
+[/dev/sde1].generation_errs  1
+[/dev/sdf1].write_io_errs    0
+[/dev/sdf1].read_io_errs     0
+[/dev/sdf1].flush_io_errs    0
+[/dev/sdf1].corruption_errs  0
+[/dev/sdf1].generation_errs  0

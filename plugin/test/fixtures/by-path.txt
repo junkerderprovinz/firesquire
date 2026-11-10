@@ -1,0 +1,8 @@
+pci-0000:00:17.0-ata-3 ../../sdc
+pci-0000:00:17.0-ata-3-part1 ../../sdc1
+pci-0000:00:17.0-ata-4 ../../sdd
+pci-0000:00:17.0-ata-4-part1 ../../sdd1
+pci-0000:00:17.0-ata-5 ../../sde
+pci-0000:03:00.0-sas-phy2-lun-0 ../../sdf
+pci-0000:01:00.0-nvme-1 ../../nvme0n1
+pci-0000:01:00.0-nvme-1-part1 ../../nvme0n1p1

@@ -51,9 +51,9 @@ json_escape() {
   printf '%s' "$s"
 }
 
-# add <tier> <id> <status> <key> <args(pipe-delimited)> <english-message>
+# add <tier> <id> <status> <key> <args(pipe-delimited)> <english-message> [link]
 add() {
-  local tier="$1" id="$2" status="$3" key="$4" args="$5" msg="$6"
+  local tier="$1" id="$2" status="$3" key="$4" args="$5" msg="$6" link="${7:-}"
   case "$status" in
     fail) [ "$WORST" -lt 2 ] && WORST=2 ;;
     warn) [ "$WORST" -lt 1 ] && WORST=1 ;;
@@ -70,7 +70,9 @@ add() {
     set +f; IFS="$oldifs"
   fi
 
-  local j="{\"tier\":\"$tier\",\"id\":\"$id\",\"status\":\"$status\",\"key\":\"$key\",\"args\":[$argsjson],\"message\":\"$(json_escape "$msg")\"}"
+  local j="{\"tier\":\"$tier\",\"id\":\"$id\",\"status\":\"$status\",\"key\":\"$key\",\"args\":[$argsjson],\"message\":\"$(json_escape "$msg")\""
+  [ -n "$link" ] && j="$j,\"link\":\"$(json_escape "$link")\""
+  j="$j}"
   if [ -z "$JSON_ITEMS" ]; then JSON_ITEMS="$j"; else JSON_ITEMS="$JSON_ITEMS,$j"; fi
 
   local mark
@@ -89,6 +91,8 @@ add() {
 }
 
 have() { command -v "$1" >/dev/null 2>&1; }
+
+. "$HERE/firesquire-health.sh"
 
 # Critical checks: a fail here means NO-GO.
 
@@ -344,6 +348,11 @@ if [ -x "$FORTRESS" ] && [ -f "$FORTRESS_DIR/fortress.json" ] && have php; then
   fi
 fi
 
+# ZFS pools and btrfs devices.
+fspush 70 p_pools
+health_zfs
+health_btrfs
+
 # SMART health (deep: smartctl -H).
 fspush 72 p_smart
 if have smartctl; then
@@ -371,31 +380,38 @@ if have smartctl; then
       bad="$bad $dev"
     fi
     # attribute-level early warning (SATA table; best-effort)
-    A="$(smartctl -A "$dev" 2>/dev/null)"
+    A="$(smartctl -i -A "$dev" 2>/dev/null)"
+    smart_crc_note "$d" "$A"
     araw() { printf '%s\n' "$A" | awk -v n="$1" '$2==n{v=$10} END{print v+0}'; }
     re="$(araw Reallocated_Sector_Ct)"; pe="$(araw Current_Pending_Sector)"
-    un="$(araw Offline_Uncorrectable)"; cr="$(araw UDMA_CRC_Error_Count)"
+    un="$(araw Offline_Uncorrectable)"
     tp="$(araw Temperature_Celsius)"; [ "${tp:-0}" -eq 0 ] 2>/dev/null && tp="$(araw Airflow_Temperature_Cel)"
     iss=""
     [ "${re:-0}" -gt 0 ] 2>/dev/null && iss="${iss}realloc=$re "
     [ "${pe:-0}" -gt 0 ] 2>/dev/null && iss="${iss}pending=$pe "
     [ "${un:-0}" -gt 0 ] 2>/dev/null && iss="${iss}uncorrectable=$un "
-    [ "${cr:-0}" -gt 0 ] 2>/dev/null && iss="${iss}crc=$cr "
     [ "${tp:-0}" -gt "$TEMP_MAX" ] 2>/dev/null && iss="${iss}temp=${tp}C "
     [ -n "$iss" ] && attrwarn="$attrwarn ${d}:${iss% }"
   done
   bad="${bad//|/ }"; attrwarn="${attrwarn//|/ }"; attrwarn="${attrwarn# }"
   if [ -n "$bad" ]; then
+    FS_DISK_TROUBLE=1
     add warning smart warn smart_failing "$bad" "SMART health FAILING on:$bad; investigate before rebooting."
   elif [ "$checked" -gt 0 ]; then
     add warning smart pass smart_ok "$checked" "SMART health PASSED on $checked disk(s)."
   else
     add warning smart info smart_none "" "No disks found for SMART check."
   fi
-  [ -n "$attrwarn" ] && add warning smart_attr warn smart_attr "$attrwarn" "SMART attribute warnings: $attrwarn"
+  if [ -n "$attrwarn" ]; then
+    FS_DISK_TROUBLE=1
+    add warning smart_attr warn smart_attr "$attrwarn" "SMART attribute warnings: $attrwarn"
+  fi
 else
   add warning smart info smart_skip "" "smartctl not found, skipped SMART check."
 fi
+
+crc_report
+health_hint
 
 # Info.
 fspush 97 p_info
