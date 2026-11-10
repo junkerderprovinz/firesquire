@@ -112,6 +112,8 @@ Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-00
 
 **Info**: uptime, kernel, Unraid version.
 
+**Notifications and a schedule**: on the settings page you can add channels for Unraid's own notifications, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks. FireSquire sends its verdict when a check ends in CAUTION or NO-GO, and once more when it is back to GO. A check without findings sends nothing. A daily or weekly schedule runs the check without a click. The channels are stored in `/boot/config/plugins/firesquire/notify.json`, and the secrets in them never reach the browser.
+
 ### Honest limits
 
 This is an early-warning check, not an oracle. Genuine hardware, BIOS or timing failures during boot cannot be seen from a running system. What it *does* cover reliably is the state-detectable class: pinned mounts, stuck loops, an unclean array, in-flight array operations, a low-on-RAM or crash-looping box.

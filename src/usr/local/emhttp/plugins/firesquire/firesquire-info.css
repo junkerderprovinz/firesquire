@@ -210,3 +210,16 @@ html.tt-popups-on #fs-info a.fs-ver {
   html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) #fs-info .fs-btn.fs-key { padding: 0 12px !important; }
 }
 html.tt-popups-on #fs-info .fs-key .fs-btn-g svg { width: 1rem; height: 1rem; }
+
+/* The notification channels and the schedule, filled in by firesquire-notify.js. */
+#fs-notify { display: contents; }
+.fs-ch { padding: 12px 0; border-top: 1px solid var(--fs-line); }
+.fs-ch-head, .fs-ch-act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.fs-ch-act { margin-top: 8px; }
+.fs-ch-fields { display: grid; grid-template-columns: minmax(120px, 200px) minmax(0, 1fr); gap: 6px 12px; align-items: center; margin: 10px 0 0; }
+.fs-ch-fields label { color: var(--fs-dim); }
+#fs-info .fs-in { max-width: 480px; margin: 0; }
+#fs-info .fs-ch-fields .fs-in { width: 100%; }
+#fs-info textarea.fs-in { min-height: 64px; font-family: monospace; }
+.fs-n-msg { color: var(--fs-dim); font-size: 12px; }
+@media (max-width: 600px) { .fs-ch-fields { grid-template-columns: minmax(0, 1fr); } }

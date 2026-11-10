@@ -94,6 +94,9 @@ have() { command -v "$1" >/dev/null 2>&1; }
 
 . "$HERE/firesquire-health.sh"
 
+# Apps write their texts, and FireSquire its messages, in the language Unraid shows.
+UI_LANG="$(sed -n 's/^locale="\{0,1\}\([a-z][a-z]\).*/\1/p' /boot/config/plugins/dynamix/dynamix.cfg 2>/dev/null | head -n1)"
+
 # Critical checks: a fail here means NO-GO.
 
 # Array state and every device assignment.
@@ -337,9 +340,7 @@ FORTRESS="${FIRESQUIRE_FORTRESS:-$HERE/fortress}"
 FORTRESS_DIR="${FIRESQUIRE_FORTRESS_DIR:-/boot/config/plugins/firesquire/fortress}"
 if [ -x "$FORTRESS" ] && [ -f "$FORTRESS_DIR/fortress.json" ] && have php; then
   fspush 68 p_fortress
-  # The apps write their needs in the language Unraid shows.
-  lang="$(sed -n 's/^locale="\{0,1\}\([a-z][a-z]\).*/\1/p' /boot/config/plugins/dynamix/dynamix.cfg 2>/dev/null | head -n1)"
-  if fortress_out="$("$FORTRESS" status -dir "$FORTRESS_DIR" -json ${lang:+-lang "$lang"} 2>/dev/null)"; then
+  if fortress_out="$("$FORTRESS" status -dir "$FORTRESS_DIR" -json ${UI_LANG:+-lang "$UI_LANG"} 2>/dev/null)"; then
     while IFS=$'\x1f' read -r f_tier f_status f_key f_args f_msg; do
       add "$f_tier" fortress "$f_status" "$f_key" "$f_args" "$f_msg"
     done < <(printf '%s' "$fortress_out" | php "$HERE/firesquire-fortress.php")
@@ -427,6 +428,19 @@ case "$WORST" in
   1) VERDICT="CAUTION"; VCOLOR=33 ;;
   2) VERDICT="NO-GO";   VCOLOR=31 ;;
 esac
+
+# A CAUTION or NO-GO goes to the channels on every run, the way back to GO
+# once. The helper retries for a while, so it sends in the background and the
+# report does not wait for it.
+NOTIFY="${FIRESQUIRE_NOTIFY:-$HERE/notify}"
+if [ -x "$NOTIFY" ] && [ -s "$FS_STATE/notify.json" ] && have php; then
+  last="$(cat "$FS_STATE/last.verdict" 2>/dev/null)"
+  event="$(printf '{"verdict":"%s","checks":[%s]}' "$VERDICT" "$JSON_ITEMS" | php "$HERE/firesquire-notify.php" "$last" "$UI_LANG" "$(hostname)")"
+  if [ -n "$event" ]; then
+    printf '%s\n' "$event" | nohup "$NOTIFY" send -channels "$FS_STATE/notify.json" -source FireSquire >/dev/null 2>&1 &
+  fi
+  if [ "$last" != "$VERDICT" ]; then printf '%s\n' "$VERDICT" > "$FS_STATE/last.verdict"; fi
+fi
 
 fspush 100 p_done
 if [ "$JSON" -eq 1 ]; then

@@ -185,6 +185,9 @@
 
   if (rtl) root.dir = "rtl";
   var ver = root.getAttribute("data-fs-ver");
+  // firesquire-notify.js fills in the notification and schedule cards here.
+  root.appendChild(el("div")).id = "fs-notify";
+
   var cVer = card(t("ver_title"));
   row(cVer, "FireSquire").appendChild(version(ver, REPO));
   // The GlimStone look names the design language it is drawn in, and the notes of this release.

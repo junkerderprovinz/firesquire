@@ -11,9 +11,10 @@
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
 <!ENTITY sha256 "20fd08c731bf4c24f5a0d3443d9dc35185f8f2ebaf1d6c2b409c88762901fa05">
-<!ENTITY fortressVer "vX.Y.Z">
-<!ENTITY fortressURL "https://github.com/junkerderprovinz/parleyport/releases/download/&fortressVer;/fortress-linux-amd64">
+<!ENTITY helperVer "vX.Y.Z">
+<!ENTITY helperURL "https://github.com/junkerderprovinz/parleyport/releases/download/&helperVer;">
 <!ENTITY fortressSHA "0000000000000000000000000000000000000000000000000000000000000000">
+<!ENTITY notifySHA "0000000000000000000000000000000000000000000000000000000000000000">
 ]>
 
 <PLUGIN name="&name;"
@@ -172,20 +173,26 @@
       installpkg "&plgPath;/&pkg;-&version;.txz"
       # Enforce the exec bit on the engine (NTFS/CI builds can drop it)
       chmod +x "&emhttp;/&pkg;-check.sh" 2>/dev/null
-      # The fortress helper from ParleyPort's release, kept on the flash for
-      # offline boots. Without it the fortress check stays out of the report,
-      # so a failed download never stops the install.
-      fortress="&plgPath;/fortress-&fortressVer;"
-      find "&plgPath;" -maxdepth 1 -name 'fortress-v*' ! -name "fortress-&fortressVer;" -delete 2>/dev/null
-      if [ ! -s "$fortress" ]; then
-        if curl -fsSL --max-time 60 -o "$fortress.part" "&fortressURL;" 2>/dev/null; then mv "$fortress.part" "$fortress"; fi
-      fi
-      if echo "&fortressSHA;  $fortress" | sha256sum -c --status 2>/dev/null; then
-        install -m 0755 "$fortress" "&emhttp;/fortress"
-      else
-        rm -f "$fortress" "$fortress.part"
-        echo "The fortress helper could not be loaded, so the check leaves the fortress out."
-      fi
+      # ParleyPort's helpers for the fortress and the notifications, kept on
+      # the flash for offline boots. Without one, its part stays out, so a
+      # failed download never stops the install.
+      helper() {
+        file="&plgPath;/$1-&helperVer;"
+        find "&plgPath;" -maxdepth 1 -name "$1-v*" ! -name "$1-&helperVer;" -delete 2>/dev/null
+        if [ ! -s "$file" ]; then
+          if curl -fsSL --max-time 60 -o "$file.part" "&helperURL;/$1-linux-amd64" 2>/dev/null; then mv "$file.part" "$file"; fi
+        fi
+        if echo "$2  $file" | sha256sum -c --status 2>/dev/null; then
+          install -m 0755 "$file" "&emhttp;/$1"
+        else
+          rm -f "$file" "$file.part"
+          echo "The $1 helper could not be loaded, so FireSquire goes without it for now."
+        fi
+      }
+      helper fortress "&fortressSHA;"
+      helper notify "&notifySHA;"
+      # A schedule set on the settings page lives on the flash.
+      if [ -f "&plgPath;/&pkg;.cron" ]; then /usr/local/sbin/update_cron; fi
       echo ""
       cat "&emhttp;/banner.txt" 2>/dev/null
       echo ""
@@ -196,8 +203,9 @@
   <!-- Remove. This has to be a <FILE ... Method="remove"> block: Unraid's plugin
        manager only runs <FILE> elements, so a bare <REMOVE> tag is silently ignored
        and the cleanup never runs. It has to end with exit 0, or Unraid leaves the
-       .plg on the flash and it reinstalls on boot. Stateless on-demand check: no
-       daemon, no user data, so this just drops the exact package and files. -->
+       .plg on the flash and it reinstalls on boot. No daemon runs; removing the
+       folder on the flash drops the channels and the schedule, and update_cron
+       takes the schedule out of cron. -->
   <FILE Run="/bin/bash" Method="remove">
     <INLINE>
       # goodbye banner first, while the files still exist
@@ -210,6 +218,7 @@
       removepkg "&pkg;" 2>/dev/null
       rm -rf "&emhttp;"
       rm -rf "&plgPath;"
+      /usr/local/sbin/update_cron 2>/dev/null
       exit 0
     </INLINE>
   </FILE>
