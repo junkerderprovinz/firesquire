@@ -11,6 +11,9 @@
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
 <!ENTITY sha256 "20fd08c731bf4c24f5a0d3443d9dc35185f8f2ebaf1d6c2b409c88762901fa05">
+<!ENTITY fortressVer "vX.Y.Z">
+<!ENTITY fortressURL "https://github.com/junkerderprovinz/parleyport/releases/download/&fortressVer;/fortress-linux-amd64">
+<!ENTITY fortressSHA "0000000000000000000000000000000000000000000000000000000000000000">
 ]>
 
 <PLUGIN name="&name;"
@@ -169,6 +172,20 @@
       installpkg "&plgPath;/&pkg;-&version;.txz"
       # Enforce the exec bit on the engine (NTFS/CI builds can drop it)
       chmod +x "&emhttp;/&pkg;-check.sh" 2>/dev/null
+      # The fortress helper from ParleyPort's release, kept on the flash for
+      # offline boots. Without it the fortress check stays out of the report,
+      # so a failed download never stops the install.
+      fortress="&plgPath;/fortress-&fortressVer;"
+      find "&plgPath;" -maxdepth 1 -name 'fortress-v*' ! -name "fortress-&fortressVer;" -delete 2>/dev/null
+      if [ ! -s "$fortress" ]; then
+        if curl -fsSL --max-time 60 -o "$fortress.part" "&fortressURL;" 2>/dev/null; then mv "$fortress.part" "$fortress"; fi
+      fi
+      if echo "&fortressSHA;  $fortress" | sha256sum -c --status 2>/dev/null; then
+        install -m 0755 "$fortress" "&emhttp;/fortress"
+      else
+        rm -f "$fortress" "$fortress.part"
+        echo "The fortress helper could not be loaded, so the check leaves the fortress out."
+      fi
       echo ""
       cat "&emhttp;/banner.txt" 2>/dev/null
       echo ""

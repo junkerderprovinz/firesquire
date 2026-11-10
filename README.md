@@ -103,6 +103,8 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 - Container bind sources under `/mnt` that no longer exist
 - SMART health (`smartctl -H`) on every disk
 
+**Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup, is NO-GO and names the app, the device, the task and its progress. An app that reports an error waiting for you is CAUTION. Without a fortress the group stays out of the report.
+
 **Info**: uptime, kernel, Unraid version.
 
 ### Honest limits
@@ -113,7 +115,7 @@ This is an early-warning check, not an oracle. Genuine hardware, BIOS or timing 
 
 <p><a id="5-how-it-works" href="#5-how-it-works"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/5-how-it-works-dark.svg"><img src=".github/assets/sections/5-how-it-works.svg" alt="5. How it works" width="100%"></picture></a></p>
 
-A single Bash engine (`firesquire-check.sh`) runs the checks by querying the tools Unraid already ships: `mdcmd`, `losetup`, `docker`, `smartctl`, `df`, `pgrep`. No daemon, no dependencies. It prints a human-readable report on a console, or machine-readable JSON for the WebGUI:
+A single Bash engine (`firesquire-check.sh`) runs the checks by querying the tools Unraid already ships: `mdcmd`, `losetup`, `docker`, `smartctl`, `df`, `pgrep`. No daemon. For the fortress it calls the small `fortress` helper, which the plugin downloads from ParleyPort's releases. It prints a human-readable report on a console, or machine-readable JSON for the WebGUI:
 
 ```bash
 firesquire-check.sh          # human-readable report

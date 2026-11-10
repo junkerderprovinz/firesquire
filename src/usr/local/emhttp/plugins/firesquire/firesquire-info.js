@@ -171,7 +171,7 @@
     if (tools) tools.hidden = true;
     var cTools = card(t("tools_title"));
     cTools.classList.add("fs-card-tools");
-    ["tools_g_array", "tools_g_ops", "tools_g_containers", "tools_g_host"].forEach(function (k, i) { row(cTools, t(k), li[i]); });
+    ["tools_g_array", "tools_g_ops", "tools_g_containers", "tools_g_host", "tools_g_fortress"].forEach(function (k, i) { row(cTools, t(k), li[i]); });
     row(cTools, t("tools_note"), t("tools_lead")).appendChild(runButton("fs-acc fs-key"));
   } else if (tools) {
     if (rtl) tools.dir = "rtl";
