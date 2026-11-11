@@ -233,10 +233,10 @@
   }
 
   /* A window: the title notched into its top edge, the content, and Close at
-     the end of the foot. A window opened with head: true shows Unraid's own
-     title bar with the logo and a close cross instead, until TowerTorch gives
-     it GlimStone's notch and foot. Escape, the scrim and Close shut it, the
-     focus stays inside while it is open and goes back to what opened it. */
+     the end of the foot. A window opened with head: true keeps its title for
+     screen readers alone in Unraid's look, until TowerTorch shows the notch.
+     Escape, the scrim and Close shut it, the focus stays inside while it is
+     open and goes back to what opened it. */
   var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, iframe, [tabindex]';
   var shown = null;
   function openWindow(o){
@@ -254,11 +254,6 @@
     win.setAttribute('aria-labelledby', title.id);
     hue(title, 0);
     win.appendChild(title);
-    if (o.head) {
-      var x = button('fs-win-btn fs-win-x', 'Close', fsT('give_close'));
-      x.addEventListener('click', done);
-      win.appendChild(x);
-    }
     var body = el('div', 'fs-win-body');
     var act = el('div', 'fs-win-act'), close = button('fs-win-btn', 'Close', fsT('give_close'));
     act.appendChild(close);
@@ -394,7 +389,8 @@
     return h + '</div>';
   }
 
-  // The cards stand by level, the worst first, each group under its name.
+  // The cards stand by level, the worst first, each group under its name. The
+  // verdict names its own level at the top, so that group needs no heading.
   var LEVELS = [['fail', 'v_NO-GO'], ['warn', 'v_CAUTION'], ['pass', 'v_GO'], ['info', 'tier_info']];
   function reportHTML(data){
     var checks = data.checks || [];
@@ -402,7 +398,7 @@
     LEVELS.forEach(function(l){
       var grp = checks.filter(function(x){ return (STATUS[x.status] ? x.status : 'info') === l[0]; });
       if (!grp.length) return;
-      h += '<section class="fs-level fs-st-' + l[0] + '"><h3 class="fs-level-h">' + esc(fsT(l[1])) + '</h3>';
+      h += '<section class="fs-level fs-st-' + l[0] + '">' + (l[1] === 'v_' + data.verdict ? '' : '<h3 class="fs-level-h">' + esc(fsT(l[1])) + '</h3>');
       grp.forEach(function(x){ h += rowHTML(x); });
       h += '</section>';
     });

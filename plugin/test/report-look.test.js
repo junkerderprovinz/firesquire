@@ -1,10 +1,10 @@
 // The report opens with a warning beacon in the level's colour: a lit dome with a bright core and a
 // halo, and a beam that sweeps all the way round it, passing in front of and behind the dome, for
-// Es glimmt and Feuer am Dach on the motion engine's dial, lit but still without motion. The window
-// has no head bar, only a close cross in its corner, and FireSquire's logo rests as a faint mark
-// behind the verdict, which carries no line of its own besides the time. Buttons have rounded
-// corners and are never pills, in either look. Texts run as one paragraph each, without breaks set
-// by hand.
+// Es glimmt and Feuer am Dach on the motion engine's dial, with a glow that breathes on top, lit but
+// still without motion. The window has no head bar and closes from its foot, and FireSquire's logo
+// lies behind it as a watermark larger than the window. The verdict names the level alone. Buttons
+// have rounded corners and are never pills, in either look. Texts run as one paragraph each,
+// without breaks set by hand.
 const fs = require('fs');
 const path = require('path');
 const { DIR, read, ok, done, rules, keyframes, grabFn } = require('./lib');
@@ -72,7 +72,8 @@ ok('it lies behind everything and is never in the way', !!mark && /position:\s*a
 ok('as a faint watermark, four to eight percent on dark', op >= 0.04 && op <= 0.08, String(op));
 const light = css.find((r) => /Theme--white/.test(r.selector) && /\.fs-win-mark/.test(r.selector) && /opacity/.test(r.body));
 ok('a little less on light', !!light && +((/opacity:\s*([\d.]+)/.exec(light.body) || [])[1]) < op);
-ok('filling most of the window', /width:\s*(8\d|9\d)%/.test((rule('.fs-win-mark svg') || {}).body || ''));
+ok('larger than the window, cropped by its edges', +((/width:\s*(\d+)%/.exec((rule('.fs-win-mark svg') || {}).body || '') || [])[1]) >= 120
+  && /overflow:\s*hidden/.test((rule('.fs-win-mark') || {}).body || ''));
 ok('the content stands above it', css.some((r) => /\.fs-win-body/.test(r.selector) && /\.fs-win-act/.test(r.selector) && /z-index:\s*1/.test(r.body) && /position:\s*relative/.test(r.body)));
 const cards = css.filter((r) => /^\.fs-f$|^\.fs-verdict$/.test(r.selector) && !r.at.length);
 ok('the cards keep solid surfaces', cards.length === 2 && cards.every((r) => /background:\s*var\(--fs-card\)/.test(r.body)) && !css.some((r) => /\.fs-(f|verdict)\b/.test(r.selector) && /background:[^;]*transparent/.test(r.body)));
@@ -80,12 +81,15 @@ ok('the cards keep solid surfaces', cards.length === 2 && cards.every((r) => /ba
 console.log('\nThe window');
 const win = grabFn(js, 'openWindow');
 ok('has no head bar', !/fs-win-head(?!ed)|fs-win-name|fs-win-logo/.test(win + sheets));
-ok('closes with GlimStone\'s close button, glyph and words', /button\('fs-win-btn fs-win-x', 'Close', fsT\('give_close'\)\)/.test(win) && !/'×'/.test(win));
-const x = rule('.fs-win .fs-win-x');
-ok('floating in its top corner', !!x && /position:\s*absolute/.test(x.body) && /top:/.test(x.body) && /inset-inline-end:/.test(x.body), x && x.body);
-ok('with rounded corners in both looks', !!x && /border-radius:\s*var\(--fs-r-ctl\)/.test(x.body));
-ok('its glyph shows in Unraid\'s look too', css.some((r) => /\.fs-win-x \.fs-btn-g/.test(r.selector) && !/tt-popups-on/.test(r.selector) && /display:\s*inline-flex/.test(r.body)));
-ok('with a visible focus ring', css.some((r) => /\.fs-win-x:focus-visible/.test(r.selector) && /outline:\s*2px solid var\(--fs-focus\)/.test(r.body)));
+ok('closes with GlimStone\'s close button, glyph and words, in its foot', /button\('fs-win-btn', 'Close', fsT\('give_close'\)\)/.test(win) && /act\.appendChild\(close\)/.test(win));
+ok('and nothing floats in a corner', !/fs-win-x/.test(js + sheets) && !/'×'/.test(win));
+ok('the foot shows in both looks', !css.some((r) => /\.fs-win-headed .fs-win-act\b/.test(r.selector) && /display:\s*none/.test(r.body)));
+const foot = rule('.fs-win-act');
+ok('its buttons stand at the end, as GlimStone\'s dialog actions do', !!foot && /justify-content:\s*flex-end/.test(foot.body));
+const btn = css.find((r) => r.selector === '.fs-win button.fs-win-btn' && !r.at.length);
+ok('with rounded corners in both looks', !!btn && /border-radius:\s*var\(--fs-r-ctl\)/.test(btn.body));
+ok('their glyphs show in Unraid\'s look too', css.some((r) => /\.fs-win-act \.fs-btn-g/.test(r.selector) && !/tt-popups-on/.test(r.selector) && /display:\s*inline-flex/.test(r.body)));
+ok('with a visible focus ring', css.some((r) => /\.fs-win button\.fs-win-btn:focus-visible/.test(r.selector) && !/tt-popups-on/.test(r.selector) && /outline:\s*2px solid var\(--fs-focus\)/.test(r.body)));
 ok('and Escape closes the window', /e\.key === 'Escape'[^\n]*done\(\)/.test(win));
 
 console.log('\nButtons');

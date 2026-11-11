@@ -223,26 +223,26 @@ html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, b
 .fs-win-act > button { margin: 0; }
 /* Before a reboot the window asks, so its buttons show in every look. */
 .fs-win-act .fs-win-ask { margin-inline-end: auto; align-self: center; font-weight: 600; }
-/* The report's window has no head bar, only GlimStone's close button floating
-   in its corner, and in Unraid's look no foot either. FireSquire's logo fills
-   the window behind everything as a watermark; the cards keep their solid
-   surfaces, so it never sits under text. */
+/* The report's window has no head bar. It closes from its foot, where every
+   answer is GlimStone's button with its glyph, in Unraid's look as well.
+   FireSquire's logo lies behind everything as a watermark larger than the
+   window; the cards keep their solid surfaces, so it never sits under text. */
 .fs-win.fs-win-headed { padding: 0; overflow: hidden; border-radius: 10px; }
-.fs-win-headed .fs-win-title, .fs-win-headed .fs-win-act { display: none; }
-.fs-win-headed.fs-win-guard .fs-win-act { display: flex; padding-bottom: 16px; }
-.fs-win .fs-win-x {
-  position: absolute; z-index: 2; top: 12px; inset-inline-end: 14px; display: inline-flex; align-items: center; gap: .45em;
-  min-width: 0; min-height: 32px; height: auto; margin: 0; padding: 6px 12px; border: 0; border-radius: var(--fs-r-ctl); box-shadow: none;
+.fs-win-headed .fs-win-title { display: none; }
+.fs-win-headed .fs-win-act { padding: 14px 22px 16px; }
+.fs-win button.fs-win-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .45em;
+  min-width: 96px; min-height: 32px; height: auto; margin: 0; padding: 6px 14px; border: 0; border-radius: var(--fs-r-ctl); box-shadow: none;
   background: var(--fs-chip); color: var(--fs-text); font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1.2;
   letter-spacing: normal; text-transform: none; cursor: pointer;
 }
-.fs-win .fs-win-x:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
-.fs-win .fs-win-x:focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
-.fs-win-x .fs-btn-g { display: inline-flex; }
-.fs-win-headed .fs-win-body { padding: 56px 22px 18px; }
+.fs-win button.fs-win-btn:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+.fs-win button.fs-win-btn:focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
+.fs-win-act .fs-btn-g { display: inline-flex; }
+.fs-win-headed .fs-win-body { padding: 22px 22px 4px; }
 .fs-win-mark { position: absolute; z-index: 0; inset: 0; overflow: hidden; border-radius: inherit; opacity: .06; pointer-events: none; color: var(--fs-text); }
 html:is(.Theme--white, .Theme--azure) .fs-win-mark { opacity: .045; }
-.fs-win-mark svg { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 90%; height: 90%; }
+.fs-win-mark svg { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 140%; height: 140%; }
 .fs-win-mark .fs-lf { fill: currentColor; }
 .fs-win-mark .fs-lf-lit { fill: color-mix(in srgb, currentColor 55%, transparent); }
 .fs-win-body, .fs-win-act { position: relative; z-index: 1; }
@@ -256,7 +256,7 @@ html:is(.Theme--white, .Theme--azure) .fs-win-mark { opacity: .045; }
 html.tt-popups-on .fs-win.fs-win-headed { padding: 21px 0 16px; overflow: visible; border-radius: var(--fs-r-card); }
 html.tt-popups-on .fs-win-headed .fs-win-title { display: inline-flex; }
 html.tt-popups-on .fs-win-headed .fs-win-act { display: flex; }
-html.tt-popups-on .fs-win-headed .fs-win-body { padding: 52px 22px 4px; }
+html.tt-popups-on .fs-win-headed .fs-win-body { padding: 10px 22px 4px; }
 @media (prefers-reduced-motion: no-preference) {
   html.tt-popups-on .fs-scrim { animation: fs-fade-in var(--fs-motion-win-dur) ease-out both; }
   html.tt-popups-on .fs-win { animation: fs-win-in var(--fs-motion-win-dur) ease-out both; }

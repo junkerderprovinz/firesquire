@@ -36,12 +36,12 @@ const thread = fs.readFileSync(path.join(repo, '.github', 'SUPPORT_THREAD.html')
 ok('the support thread names them', /All clear/.test(thread) && /The roof is on fire/.test(thread) && !/GO \/ CAUTION \/ NO-GO/.test(thread));
 
 console.log('\nThe cards');
-function report(themed, checks) {
+function report(themed, checks, verdict = 'NO-GO') {
   const ctx = { FS_I18N: langs.en, FS_EN: {}, themed: () => themed, location: { hostname: 'tower' } };
   vm.createContext(ctx);
   const src = ['fsT', 'esc', 'glyph', 'fsLink', 'ownLink', 'message', 'logoHTML', 'lampHTML', 'verdictHTML', 'rowHTML', 'reportHTML'].map((n) => grabFn(js, n)).join('\n');
   const vars = ['VCLASS', 'STATUS', 'QUOTES_LOG', 'LEVELS'].map((n) => (new RegExp(`var ${n} = [^\\n]*;`).exec(js) || [''])[0]).join('\n');
-  vm.runInContext(`var GLYPHS = {}; var LOGO_SVG = '<svg></svg>';\n${vars}\n${src}\nthis.out = reportHTML(${JSON.stringify({ verdict: 'NO-GO', checks })});`, ctx);
+  vm.runInContext(`var GLYPHS = {}; var LOGO_SVG = '<svg></svg>';\n${vars}\n${src}\nthis.out = reportHTML(${JSON.stringify({ verdict, checks })});`, ctx);
   return ctx.out;
 }
 const checks = [
@@ -53,8 +53,11 @@ const checks = [
 ];
 const plain = report(false, checks), gs = report(true, checks);
 ok('the report is the same with and without TowerTorch', plain === gs);
-const groups = [...plain.matchAll(/<section class="fs-level fs-st-(\w+)"><h3 class="fs-level-h">([^<]*)<\/h3>/g)].map((m) => m[1] + ':' + m[2]);
-ok('the findings stand by level, the worst first, each under its name', JSON.stringify(groups) === JSON.stringify(['fail:The roof is on fire', 'warn:Smouldering', 'pass:All clear', 'info:' + langs.en.tier_info]), groups.join(', '));
+const groups = [...plain.matchAll(/<section class="fs-level fs-st-(\w+)">(?:<h3 class="fs-level-h">([^<]*)<\/h3>)?/g)].map((m) => m[1] + ':' + (m[2] || ''));
+ok('the findings stand by level, the worst first, each under its name', JSON.stringify(groups) === JSON.stringify(['fail:', 'warn:Smouldering', 'pass:All clear', 'info:' + langs.en.tier_info]), groups.join(', '));
+ok('the verdict\'s own level is named once, at the top', (plain.match(/The roof is on fire/g) || []).length === 1, String((plain.match(/The roof is on fire/g) || []).length));
+const calm = report(false, checks.filter((c) => c.status !== 'fail'), 'CAUTION');
+ok('so is Smouldering when it is the verdict', (calm.match(/Smouldering/g) || []).length === 1 && /fs-st-pass"><h3 class="fs-level-h">All clear/.test(calm));
 ok('every finding is a card of its own', (plain.match(/<div class="fs-f fs-st-\w+">/g) || []).length === checks.length);
 ok('two cautions share their group', /fs-st-warn"><h3[^]*?fs-f fs-st-warn[^]*?fs-f fs-st-warn[^]*?<\/section>/.test(plain));
 ok('a finding that leads to a page carries the button in both looks', /data-goto="\/Main"/.test(plain) && /data-goto="\/VMs"/.test(plain));
