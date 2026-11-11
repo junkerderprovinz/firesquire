@@ -1,0 +1,6 @@
+
+Service      pid     Machine       Connected at                     Encryption   Signing
+---------------------------------------------------------------------------------------------
+IPC$         4021    192.168.1.20  Wed Nov 11 09:58:12 PM 2026 CET  -            -
+media        4021    192.168.1.20  Wed Nov 11 09:58:12 PM 2026 CET  -            -
+backup       4388    192.168.1.31  Wed Nov 11 09:59:01 PM 2026 CET  -            -

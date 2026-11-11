@@ -105,12 +105,19 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 - Container bind sources under `/mnt` that no longer exist
 - SMART health (`smartctl -H`) on every disk
 - A UDMA CRC error count that rose since the last check, which usually means a bad cable or port
+- A shutdown time-out (Disk Settings) too short for the containers and VMs together, and containers that ask for more stop time than Docker Settings give them
+- An unclean last shutdown, so the next array start runs a parity check
+- Files open or being written over SMB or NFS, with the share and the machine
+- A UPS on battery or almost empty, when Unraid's UPS service runs
+- A flash backup older than a week, from BombVault in your fortress or from Unraid Connect
 
 Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, FireSquire links to Scrutiny if it runs on the server, or suggests it for the SMART history.
 
 **Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup, is NO-GO and names the app, the device, the task and its progress. An app that reports an error waiting for you is CAUTION. Without a fortress the group stays out of the report.
 
 **Info**: uptime, kernel, Unraid version.
+
+**Before every reboot and shutdown**: when you reboot or shut down from the WebGUI, on Main, on the Dashboard or from the update banner, FireSquire runs the check first. A GO goes straight on. With CAUTION or NO-GO you see the findings and decide: reboot anyway, or cancel and keep the server up. FireSquire changes none of Unraid's files for this, and removing the plugin removes the check.
 
 **Notifications and a schedule**: on the settings page you can add channels for Unraid's own notifications, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks. FireSquire sends its verdict when a check ends in CAUTION or NO-GO, and once more when it is back to GO. A check without findings sends nothing. A daily or weekly schedule runs the check without a click. The channels are stored in `/boot/config/plugins/firesquire/notify.json`, and the secrets in them never reach the browser.
 

@@ -1,0 +1,8 @@
+
+Locked files:
+Pid          Uid        DenyMode   Access      R/W        Oplock           SharePath   Name   Time
+--------------------------------------------------------------------------------------------------
+4021         1000       DENY_NONE  0x120089    RDONLY     LEASE(RWH)       /mnt/user/media   Filme/Dune.mkv   Wed Nov 11 21:10:02 2026
+4021         1000       DENY_WRITE 0x12019f    RDWR       LEASE(RWH)       /mnt/user/media   Filme/neu.mkv   Wed Nov 11 21:12:40 2026
+4388         1000       DENY_NONE  0x120089    RDONLY     NONE             /mnt/user/backup   laptop/2026-11.tar   Wed Nov 11 21:15:00 2026
+

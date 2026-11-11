@@ -1,0 +1,9 @@
+APC      : 001,036,0868
+DATE     : 2026-11-11 21:40:00 +0100
+UPSNAME  : tower
+STATUS   : ONBATT
+LINEV    : 230.0 Volts
+LOADPCT  : 18.0 Percent
+BCHARGE  : 64.0 Percent
+TIMELEFT : 18.5 Minutes
+END APC  : 2026-11-11 21:40:01 +0100

@@ -211,12 +211,15 @@ html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, b
 .fs-win .fs-win-sub { color: var(--fs-dim); }
 .fs-win-act { flex: none; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 14px 20px 0; }
 .fs-win-act > button { margin: 0; }
+/* Before a reboot the window asks, so its buttons show in every look. */
+.fs-win-act .fs-win-ask { margin-inline-end: auto; align-self: center; font-weight: 600; }
 .fs-win-head { display: none; }
 
 /* A window with Unraid's title bar: the logo, the title and a close cross over
    the content, no notch and no foot. */
 .fs-win.fs-win-headed { padding: 0; overflow: hidden; border-radius: 10px; }
 .fs-win-headed .fs-win-title, .fs-win-headed .fs-win-act { display: none; }
+.fs-win-headed.fs-win-guard .fs-win-act { display: flex; padding-bottom: 16px; }
 .fs-win-headed .fs-win-head {
   flex: none; display: flex; align-items: center; justify-content: space-between; gap: 10px;
   padding: 12px 18px; background: var(--fs-card); border-bottom: 1px solid var(--fs-line); font-weight: 700;

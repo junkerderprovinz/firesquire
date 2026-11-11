@@ -18,7 +18,7 @@ for (const f of files) {
   const wrong = Object.keys(en).filter((k) => k in tr && holes(en[k]) !== holes(tr[k]));
   ok(`${f} has every key and no other`, !missing.length && !extra.length, missing.concat(extra).join(', '));
   ok(`${f} keeps the placeholders`, !wrong.length, wrong.join(', '));
-  ok(`${f} lists six check groups`, Array.isArray(tr.tools_li) && tr.tools_li.length === 6);
+  ok(`${f} lists seven check groups`, Array.isArray(tr.tools_li) && tr.tools_li.length === 7);
 }
 
 console.log('\nThe scripts ask for strings that exist');

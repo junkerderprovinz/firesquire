@@ -1,0 +1,3 @@
+- 0x00000001: { type: open, access: rw, deny: --, superblock: "00:2f:263", filename: "/mnt/user/isos/debian.iso", owner: "open id:\x00\x00\x00\x3a" }
+- 0x00000002: { type: open, access: r-, deny: --, superblock: "00:2f:263", filename: "/mnt/user/isos/notes.txt", owner: "open id:\x00\x00\x00\x3b" }
+- 0x00000003: { type: lock, superblock: "00:2f:263", filename: "/mnt/user/isos/debian.iso", owner: "lock id:\x00\x00\x00\x3c" }

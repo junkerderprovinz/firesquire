@@ -31,7 +31,8 @@
       'No container mounting a host runtime dir, no stuck docker.img/libvirt.img loop',
       'Flash writable, free space, recent crashes, running VMs, services, SMART health',
       'Apps in your fortress: work a reboot would cut short, and errors that need you',
-      'ZFS pools and devices, btrfs device errors and rising CRC counts, each with the disk\'s port'
+      'ZFS pools and devices, btrfs device errors and rising CRC counts, each with the disk\'s port',
+      'Shutdown time-outs, an unclean last shutdown, files open over SMB and NFS, the UPS and the age of the flash backup'
     ],
     tools_btn: 'Run pre-reboot check',
     tools_title: 'Pre-reboot check',
@@ -41,6 +42,7 @@
     tools_g_host: 'Flash, space and services',
     tools_g_fortress: 'Your fortress',
     tools_g_health: 'Disk health',
+    tools_g_shutdown: 'Ready to shut down',
     tools_note: 'Advisory only, apart from a write test and the CRC counts on the flash',
     goto: 'Go to the source',
     retry: 'Check again',
@@ -58,6 +60,10 @@
     p_binds: 'Checking container binds…',
     p_fortress: 'Asking the fortress…',
     p_pools: 'Checking ZFS and btrfs pools…',
+    p_timeouts: 'Checking shutdown time-outs…',
+    p_shares: 'Checking open files on shares…',
+    p_ups: 'Checking the UPS…',
+    p_flashbak: 'Checking the flash backup…',
     p_smart: 'Checking SMART health…',
     p_info: 'Collecting system info…',
     p_done: 'Done',
@@ -114,6 +120,24 @@
     crc_rose: 'The CRC errors on {0} rose from {1} to {2} since the last check. Check or replace the cable on this port.',
     scrutiny_link: 'Scrutiny keeps the SMART history of your disks. Open it to see when the counts started to rise.',
     scrutiny_tip: 'Tip: Scrutiny from Community Apps keeps a SMART history of your disks, so you can see when a count started to rise.',
+    timeouts_ok: 'Unraid\'s shutdown time-out of {0}s covers containers and VMs ({1}s).',
+    timeouts_short: 'Unraid waits {0}s for a clean shutdown, but containers ({1}s) and VMs ({2}s) can take {3}s together. Raise the shutdown time-out in Disk Settings.',
+    timeouts_container: 'These containers ask for more time to stop than Unraid gives them ({1}s in Docker Settings): {0}',
+    unclean: 'The last shutdown was not clean. The next array start runs a parity check.',
+    share_open: '{2} has {3} file(s) open on the share {1} over {0}.',
+    share_writing: '{2} is writing {3} file(s) to the share {1} over {0}, maybe a copy.',
+    shares_ok: 'No open files on SMB or NFS shares.',
+    ups_ok: 'The UPS is on mains power, battery at {0}%.',
+    ups_battery: 'The UPS runs on battery: {0}% left, about {1} minutes.',
+    ups_low: 'The UPS battery is almost empty: {0}% left, about {1} minutes.',
+    flash_backup_ok: 'The last flash backup ({1}) is {0} day(s) old.',
+    flash_backup_old: 'The last flash backup ({1}) is {0} days old. Back up the flash before rebooting.',
+    flash_backup_none: 'FireSquire knows of no flash backup. BombVault in your fortress or Unraid Connect can keep one.',
+    g_ask_reboot: 'Reboot anyway?',
+    g_ask_shutdown: 'Shut down anyway?',
+    g_reboot: 'Reboot anyway',
+    g_shutdown: 'Shut down anyway',
+    g_cancel: 'Cancel',
     smart_failing: 'SMART health FAILING on:{0}. Investigate before rebooting.',
     smart_ok: 'SMART health PASSED on {0} disk(s).',
     smart_none: 'No disks found for SMART check.',
@@ -449,11 +473,26 @@
     }).catch(function(){ if (!got && !signal.aborted) onFail(); });
   }
 
-  function run(e){
+  // The question after a CAUTION, a NO-GO or a check that could not run. The
+  // findings stay in view, and closing the window keeps the server up.
+  function ask(guard, act, close){
+    var reboot = guard.cmd === 'reboot';
+    Array.prototype.forEach.call(act.querySelectorAll('.fs-ask'), function(n){ n.remove(); });
+    act.insertBefore(el('span', 'fs-win-ask fs-ask', fsT(reboot ? 'g_ask_reboot' : 'g_ask_shutdown')), act.firstChild);
+    var go = button('fs-win-btn fs-key fs-ask', 'Forward', fsT(reboot ? 'g_reboot' : 'g_shutdown'));
+    go.addEventListener('click', function(){ close(); guard.proceed(); });
+    act.appendChild(go);
+    var cancel = act.querySelector('.fs-win-btn .fs-btn-l');
+    if (cancel) cancel.textContent = fsT('g_cancel');
+  }
+
+  // run opens the report. Under a guard it stands between a reboot or a
+  // shutdown and the server: a GO lets it through at once.
+  function run(e, guard){
     var opener = e && e.currentTarget && e.currentTarget.focus ? e.currentTarget : document.activeElement;
     var abort = null, retry = null, act = null;
-    openWindow({
-      cls: 'fs-win-report', title: fsT('title'), head: true, opener: opener,
+    var win = openWindow({
+      cls: 'fs-win-report' + (guard ? ' fs-win-guard' : ''), title: fsT('title'), head: true, opener: opener,
       onClose: function(){ if (abort) abort.abort(); },
       build: function(body, win, foot){ act = foot; start(body); }
     });
@@ -492,8 +531,12 @@
         retry = button('fs-win-btn', 'Retry', fsT('retry'));
         retry.addEventListener('click', function(){ start(body); });
         act.appendChild(retry);
+        if (guard) ask(guard, act, win.close);
       }
-      function onResult(data){ finish(reportHTML(data)); }
+      function onResult(data){
+        if (guard && data && data.verdict === 'GO') { finished = true; win.close(); guard.proceed(); return; }
+        finish(reportHTML(data));
+      }
       function onErr(){ finish(errHTML()); }
       function fallback(){
         if (finished || ctl !== abort) return;
@@ -509,6 +552,32 @@
     }
   }
   window.firesquireRun = run;
+
+  // Unraid sends every reboot and shutdown of the WebGUI as a form to Boot.php,
+  // from Main, the Dashboard, the update banner and the boot pool alike, by
+  // form.submit() or by a submit event. Catching that form catches every
+  // button and leaves Unraid's files as they are.
+  function bootCmd(form){
+    if (!form || form.tagName !== 'FORM') return null;
+    var url = new URL(form.getAttribute('action') || '', location.href);
+    if (!/\/webGui\/include\/Boot\.php$/.test(url.pathname)) return null;
+    var c = form.querySelectorAll('[name="cmd"]'), v = c.length ? c[c.length - 1].value : '';
+    return v === 'reboot' || v === 'shutdown' ? v : null;
+  }
+  function installGuard(win, check){
+    var proto = win.HTMLFormElement.prototype, submit = proto.submit;
+    function hold(form){
+      var cmd = bootCmd(form);
+      if (!cmd || form.fsChecked) return false;
+      check(cmd, function(){ form.fsChecked = true; submit.call(form); });
+      return true;
+    }
+    proto.submit = function(){ if (!hold(this)) submit.call(this); };
+    win.document.addEventListener('submit', function(e){
+      if (hold(e.target)) { e.preventDefault(); e.stopImmediatePropagation(); }
+    }, true);
+  }
+  installGuard(window, function(cmd, proceed){ run(null, { cmd: cmd, proceed: proceed }); });
 
   $(function(){
     // Dashboard: the check's icon in the server tile's control row, next to Reboot.

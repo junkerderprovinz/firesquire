@@ -93,6 +93,7 @@ add() {
 have() { command -v "$1" >/dev/null 2>&1; }
 
 . "$HERE/firesquire-health.sh"
+. "$HERE/firesquire-more.sh"
 
 # Apps write their texts, and FireSquire its messages, in the language Unraid shows.
 UI_LANG="$(sed -n 's/^locale="\{0,1\}\([a-z][a-z]\).*/\1/p' /boot/config/plugins/dynamix/dynamix.cfg 2>/dev/null | head -n1)"
@@ -164,6 +165,7 @@ elif [ -n "$bad_parity" ]; then
 else
   add critical array_state info array_unknown "" "mdcmd not found, cannot determine array state."
 fi
+more_unclean
 
 # Mover.
 fspush 14 p_mover
@@ -334,6 +336,14 @@ if have docker && docker info >/dev/null 2>&1; then
   fi
 fi
 
+# Shutdown time-outs, open files on shares and the UPS.
+fspush 61 p_timeouts
+more_timeouts
+fspush 63 p_shares
+more_shares
+fspush 65 p_ups
+more_ups
+
 # Apps of the fortress at work that a reboot would cut short. Without the
 # helper or a joined directory there is no fortress, and the group stays out.
 FORTRESS="${FIRESQUIRE_FORTRESS:-$HERE/fortress}"
@@ -348,6 +358,9 @@ if [ -x "$FORTRESS" ] && [ -f "$FORTRESS_DIR/fortress.json" ] && have php; then
     add info fortress info fortress_skip "" "FireSquire could not reach the fortress and skipped its apps."
   fi
 fi
+
+fspush 69 p_flashbak
+more_flash
 
 # ZFS pools and btrfs devices.
 fspush 70 p_pools

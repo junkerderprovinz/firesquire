@@ -15,7 +15,7 @@ function helper(tmp, answer, code) {
   const out = path.join(tmp, 'answer.json');
   fs.writeFileSync(out, JSON.stringify(answer));
   const bin = path.join(tmp, 'fortress');
-  fs.writeFileSync(bin, `#!/bin/bash\nprintf '%s\\n' "$*" > "${path.join(tmp, 'args').replace(/\\/g, '/')}"\ncat "${out.replace(/\\/g, '/')}"\nexit ${code || 0}\n`);
+  fs.writeFileSync(bin, `#!/bin/bash\nprintf '%s\\n' "$*" >> "${path.join(tmp, 'args').replace(/\\/g, '/')}"\ncat "${out.replace(/\\/g, '/')}"\nexit ${code || 0}\n`);
   fs.chmodSync(bin, 0o755);
   return bin;
 }
@@ -75,7 +75,7 @@ r = engine({
   ],
 });
 ok('the helper is asked for the status as JSON in the joined directory',
-  /^status -dir \S+ -json\b/.test(r.args || '') && r.args.includes('membership'), r.args);
+  /^status -dir \S*membership -json\b/m.test(r.args || ''), r.args);
 const busy = find(r.checks, 'fortress_busy');
 ok('work that blocks a restart is NO-GO with app, device, title and progress',
   busy.length === 1 && busy[0].tier === 'critical' && busy[0].status === 'fail' && same(busy[0].args, ['BombVault', 'Tower', 'Nightly backup', '42%']),
