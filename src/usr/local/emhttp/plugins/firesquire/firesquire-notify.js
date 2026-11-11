@@ -109,27 +109,61 @@
       input.value = v == null || v === 0 ? "" : v;
     }
     if (spec[3] && type !== "select") input.placeholder = spec[3];
-    input.addEventListener(type === "select" ? "change" : "input", function () { block[name] = read(input, type); });
+    input.addEventListener(type === "select" ? "change" : "input", function () {
+      block[name] = read(input, type);
+      changed(type === "select");
+    });
     return labelled(t(spec[1]), input);
   }
 
-  var channels = [], list, saveMsg;
+  var channels = [], list, saveMsg, sMsg;
+
+  // A message under a card: a confirmation that goes away by itself, or a
+  // failure that stays until the next save works.
+  function tell(msg, text, passing) {
+    clearTimeout(msg.fade);
+    msg.textContent = text;
+    if (passing) msg.fade = setTimeout(function () { msg.textContent = ""; }, 2500);
+  }
+
+  // Every change saves on its own: a choice at once, typing once it pauses.
+  // One save runs at a time, and a change during it goes out right after.
+  var typing = null, saving = false, again = false;
+  function changed(now) {
+    clearTimeout(typing);
+    if (now) save();
+    else typing = setTimeout(save, 800);
+  }
+  function save() {
+    if (saving) { again = true; return; }
+    saving = true;
+    post({ "do": "save", channels: JSON.stringify(channels.map(clean)) }).then(function (r) {
+      if (r.channels) tell(saveMsg, t("n_saved"), true);
+      else if (r.problems && r.problems.length) tell(saveMsg, problem(r.problems[0]));
+      else tell(saveMsg, fill(t("n_failed"), [r.error || "?"]));
+    }).catch(function () {
+      tell(saveMsg, fill(t("n_failed"), ["network"]));
+    }).then(function () {
+      saving = false;
+      if (again) { again = false; save(); }
+    });
+  }
 
   function channelBox(c) {
     var b = el("div", "fs-ch"), head = el("div", "fs-ch-head");
     var kind = select(Object.keys(KINDS).map(function (k) { return [k, NAMES[k]]; }), c.kind);
     kind.setAttribute("aria-label", t("n_service"));
-    kind.addEventListener("change", function () { c.kind = kind.value; draw(); });
+    kind.addEventListener("change", function () { c.kind = kind.value; draw(); changed(true); });
     var name = el("input", "fs-in");
     name.type = "text";
     name.value = c.name || "";
     name.placeholder = t("n_name");
     name.setAttribute("aria-label", t("n_name"));
-    name.addEventListener("input", function () { c.name = name.value; });
+    name.addEventListener("input", function () { c.name = name.value; changed(false); });
     var on = el("input");
     on.type = "checkbox";
     on.checked = !!c.enabled;
-    on.addEventListener("change", function () { c.enabled = on.checked; });
+    on.addEventListener("change", function () { c.enabled = on.checked; changed(true); });
     var onL = labelled(t("n_enabled"), on);
     head.appendChild(kind);
     head.appendChild(name);
@@ -141,7 +175,7 @@
     KINDS[c.kind].forEach(function (spec) { field(c, spec).forEach(function (n) { fields.appendChild(n); }); });
     if (KINDS[c.kind].length) b.appendChild(fields);
 
-    var act = el("div", "fs-ch-act"), res = el("span", "fs-n-msg");
+    var act = el("div", "fs-ch-act"), res = el("span", "fs-n-msg fs-ch-res");
     res.setAttribute("role", "status");
     var test = UI.button(null, "Forward", t("n_test"));
     test.addEventListener("click", function () {
@@ -151,7 +185,7 @@
       }).catch(function () { res.textContent = fill(t("n_failed"), ["network"]); });
     });
     var remove = UI.button(null, "Close", t("n_remove"));
-    remove.addEventListener("click", function () { channels.splice(channels.indexOf(c), 1); draw(); });
+    remove.addEventListener("click", function () { channels.splice(channels.indexOf(c), 1); draw(); changed(true); });
     act.appendChild(test);
     act.appendChild(remove);
     act.appendChild(res);
@@ -172,21 +206,6 @@
     return fill(t("n_problem"), [label, c.name || NAMES[c.kind] || p.channel]);
   }
 
-  function save() {
-    saveMsg.textContent = "…";
-    post({ "do": "save", channels: JSON.stringify(channels.map(clean)) }).then(function (r) {
-      if (r.channels) {
-        channels = r.channels;
-        draw();
-        saveMsg.textContent = t("n_saved");
-      } else if (r.problems && r.problems.length) {
-        saveMsg.textContent = problem(r.problems[0]);
-      } else {
-        saveMsg.textContent = fill(t("n_failed"), [r.error || "?"]);
-      }
-    }).catch(function () { saveMsg.textContent = fill(t("n_failed"), ["network"]); });
-  }
-
   var cN = card(t("n_card"));
   cN.appendChild(el("p", "fs-prose", t("n_lead")));
   var missing = el("p", "fs-prose", t("n_nohelper"));
@@ -199,13 +218,11 @@
   add.addEventListener("click", function () {
     channels.push({ id: "ch-" + Date.now().toString(36), kind: "unraid", enabled: true, on: "always" });
     draw();
+    changed(true);
   });
-  var store = UI.button("fs-key", "Check", t("n_save"));
-  store.addEventListener("click", save);
   saveMsg = el("span", "fs-n-msg");
   saveMsg.setAttribute("role", "status");
   bar.appendChild(add);
-  bar.appendChild(store);
   bar.appendChild(saveMsg);
   cN.appendChild(bar);
 
@@ -218,19 +235,19 @@
   for (var h = 0; h < 24; h++) hours.push([String(h), (h < 10 ? "0" : "") + h + ":30"]);
   var hour = select(hours, "4");
   var hourL = labelled(t("n_sched_hour"), hour);
-  var sMsg = el("span", "fs-n-msg");
+  sMsg = el("span", "fs-n-msg");
   sMsg.setAttribute("role", "status");
-  var sSave = UI.button(null, "Check", t("n_save"));
-  sSave.addEventListener("click", function () {
-    sMsg.textContent = "…";
+  function schedule() {
     post({ "do": "schedule", every: every.value, hour: hour.value }).then(function (s) {
-      sMsg.textContent = s.every ? t("n_sched_saved") : fill(t("n_failed"), [s.error || "?"]);
-    }).catch(function () { sMsg.textContent = fill(t("n_failed"), ["network"]); });
-  });
+      if (s.every) tell(sMsg, t("n_sched_saved"), true);
+      else tell(sMsg, fill(t("n_failed"), [s.error || "?"]));
+    }).catch(function () { tell(sMsg, fill(t("n_failed"), ["network"])); });
+  }
+  every.addEventListener("change", schedule);
+  hour.addEventListener("change", schedule);
   sRow.appendChild(every);
   sRow.appendChild(hourL[0]);
   sRow.appendChild(hour);
-  sRow.appendChild(sSave);
   sRow.appendChild(sMsg);
   cS.appendChild(sRow);
 

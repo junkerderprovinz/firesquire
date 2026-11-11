@@ -151,7 +151,6 @@
   "n_name": "Name",
   "n_enabled": "On",
   "n_remove": "Remove",
-  "n_save": "Save",
   "n_test": "Send a test",
   "n_saved": "Saved.",
   "n_sent": "The test is on its way.",
