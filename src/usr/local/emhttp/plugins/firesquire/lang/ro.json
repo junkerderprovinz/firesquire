@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: Verificare înainte de repornire",
-  "hc": "verificare de sănătate înainte de repornire",
   "running": "Se rulează verificările…",
-  "subtitle": "Doar informativ · fișierul de test de pe flash a fost șters",
   "v_GO": "Totul e în regulă",
   "v_CAUTION": "Mocnește",
-  "v_NO-GO": "Arde",
+  "v_NO-GO": "Arde acoperișul",
   "tier_info": "Info",
   "err": "Nu s-a putut porni motorul de verificare.",
   "err_hint": "Încearcă din nou peste puțin timp. Dacă tot nu merge, syslog-ul poate spune de ce.",
-  "foot": "FireSquire citește starea curentă și anticipează capcanele frecvente la repornire (montări fixate, loop-uri blocate, array necurat, operațiuni în curs, o mașină prinsă într-o buclă de blocări). Este o avertizare timpurie, nu o garanție. Defecțiunile reale de hardware, BIOS sau de sincronizare din timpul pornirii nu pot fi văzute dintr-un sistem în funcțiune.",
-  "tools_lead": "FireSquire verifică dacă serverul va reporni curat înainte să reporniți și oferă un singur verdict (Totul e în regulă / Mocnește / Arde) împreună cu constatările exacte. Este doar informativ: citește gazda și raportează. Pe flash scrie un fișier de test gol, ca să verifice dacă /boot poate fi scris, și îl șterge imediat. Tot acolo păstrează contorul de erori CRC al fiecărui disc, ca să observe când unul crește.",
+  "tools_lead": "FireSquire verifică dacă serverul va reporni curat înainte să reporniți și oferă un singur verdict (Totul e în regulă / Mocnește / Arde acoperișul) împreună cu constatările exacte. Este doar informativ: citește gazda și raportează. Pe flash scrie un fișier de test gol, ca să verifice dacă /boot poate fi scris, și îl șterge imediat. Tot acolo păstrează contorul de erori CRC al fiecărui disc, ca să observe când unul crește.",
   "tools_intro": "Caută capcanele de repornire care pot fi detectate din sistemul în funcțiune:",
   "tools_li": [
     "Array pornit și curat: toate atribuirile de dispozitive OK (niciun disc dezactivat/nevalid/lipsă)",
@@ -141,7 +138,7 @@
   "n_test_title": "Test FireSquire",
   "n_test_body": "Dacă citești asta, mesajele FireSquire ajung la tine.",
   "n_card": "Notificări",
-  "n_lead": "FireSquire trimite verdictul când o verificare se încheie cu „Mocnește” sau „Arde” și încă o dată când totul revine la „Totul e în regulă”. O verificare fără constatări nu trimite nimic.",
+  "n_lead": "FireSquire trimite verdictul când o verificare se încheie cu „Mocnește” sau „Arde acoperișul” și încă o dată când totul revine la „Totul e în regulă”. O verificare fără constatări nu trimite nimic.",
   "n_nohelper": "Ajutorul pentru notificări nu este încă instalat, așa că FireSquire nu poate trimite nimic deocamdată.",
   "n_none": "Încă niciun canal.",
   "n_add": "Adaugă un canal",
@@ -221,5 +218,6 @@
   "f_leave": "Ieși",
   "f_leave_title": "Ieși din fortăreață?",
   "f_leave_body": "Celelalte aplicații nu vor mai vedea FireSquire, iar verificarea merge mai departe fără ele. Cu fraza, FireSquire se întoarce oricând.",
-  "f_left": "FireSquire a ieșit din fortăreață."
+  "f_left": "FireSquire a ieșit din fortăreață.",
+  "flash_probe_left": "FireSquire nu a putut șterge fișierul de test {0} de pe flash. Te rog șterge-l tu."
 }

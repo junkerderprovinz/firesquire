@@ -15,15 +15,12 @@
   /* English fallback, the source of lang/en.json. */
   var FS_EN = {
     title: 'FireSquire: Pre-Reboot Check',
-    hc: 'pre-reboot health check',
     running: 'Running checks…',
-    subtitle: 'Advisory only · the flash test file is already deleted',
-    v_GO: 'All clear', v_CAUTION: 'Smouldering', 'v_NO-GO': 'On fire',
+    v_GO: 'All clear', v_CAUTION: 'Smouldering', 'v_NO-GO': 'The roof is on fire',
     tier_info: 'Info',
     err: 'Could not run the check engine.',
     err_hint: 'Try again in a moment. If it keeps failing, the syslog may say why.',
-    foot: 'FireSquire reads the current state and predicts the common reboot landmines (pinned mounts, stuck loops, unclean array, in-flight operations, a crash-looping box). It is an early warning, not a guarantee. Genuine hardware, BIOS or timing failures during boot cannot be seen from a running system.',
-    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (All clear / Smouldering / On fire) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.',
+    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (All clear / Smouldering / The roof is on fire) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.',
     tools_intro: 'It looks for the reboot landmines that are detectable from the running system:',
     tools_li: [
       'Array started & clean: every device assignment OK (no disabled/invalid/missing disk)',
@@ -150,7 +147,6 @@
   var FS_RTL = ['ar', 'he', 'fa', 'ur'].indexOf(FS_LANGCODE) >= 0;
   var html = document.documentElement;
   var GLYPHS = window.fireSquireGlyphs || {};
-  var LOGO = '/plugins/firesquire/images/firesquire.png';
   var REPORT_URL = '/plugins/firesquire/include/FireSquireReport.php';
   var STREAM_URL = '/plugins/firesquire/include/FireSquireStream.php';
 
@@ -259,17 +255,11 @@
     hue(title, 0);
     win.appendChild(title);
     if (o.head) {
-      var head = el('div', 'fs-win-head'), name = el('span', 'fs-win-name'), logo = el('img', 'fs-win-logo');
-      logo.src = LOGO; logo.alt = '';
-      name.appendChild(logo);
-      name.appendChild(el('span', null, o.title));
       var x = el('button', 'fs-win-x', '×');
       x.type = 'button';
       x.setAttribute('aria-label', fsT('give_close'));
       x.addEventListener('click', done);
-      head.appendChild(name);
-      head.appendChild(x);
-      win.appendChild(head);
+      win.appendChild(x);
     }
     var body = el('div', 'fs-win-body');
     var act = el('div', 'fs-win-act'), close = button('fs-win-btn', 'Close', fsT('give_close'));
@@ -384,18 +374,18 @@
     '<path class="fs-lf-lit" d="M799.83,401.51L457.8,59.49c-7.76-7.75-17.94-11.63-28.13-11.63v38.15l343.64,343.63-343.64,343.64v38.17c10.19,0,20.37-3.88,28.15-11.63l342.04-342.04c15.49-15.52,15.48-40.76-.03-56.28Z"/><path class="fs-lf" d="M842.33,388.6L470.7,16.97c-11.32-11.32-26.17-16.97-41.03-16.97v47.86c10.19,0,20.37,3.88,28.13,11.63l342.03,342.02c15.5,15.52,15.51,40.76.03,56.28l-342.04,342.04c-7.78,7.75-17.96,11.63-28.15,11.63v47.87c15.5,0,30.07-6.04,41.03-17.01l371.63-371.63c10.97-10.97,17.01-25.54,17.01-41.05s-6.04-30.09-17.01-41.05Z"/><path class="fs-lf" d="M429.67,86.02v-38.15c-10.19,0-20.39,3.88-28.15,11.64L59.5,401.51c-15.51,15.52-15.52,40.77,0,56.3l342.03,342.02c7.75,7.75,17.93,11.62,28.13,11.62h0v-38.17l-.02.02L86,429.65,429.65,86l.02.02Z"/><path class="fs-lf-lit" d="M401.52,59.5c7.76-7.76,17.96-11.64,28.15-11.64V0c-14.88,0-29.74,5.65-41.07,16.98L16.97,388.6c-22.63,22.63-22.63,59.47,0,82.1l371.63,371.63c10.97,10.97,25.55,17.01,41.05,17.01h.02v-47.87h0c-10.19,0-20.37-3.87-28.13-11.62L59.5,457.82c-15.52-15.54-15.51-40.78,0-56.3L401.52,59.5Z"/></svg>';
   function logoHTML(){ return '<span class="fs-v-logo">' + LOGO_SVG + '</span>'; }
   function lampHTML(){
-    return '<span class="fs-v-lamp" aria-hidden="true"><span class="fs-lamp-dome"><span class="fs-lamp-sweep"></span></span><span class="fs-lamp-base"></span></span>';
+    return '<span class="fs-v-lamp" aria-hidden="true"><span class="fs-lamp-halo"></span><span class="fs-lamp-beam fs-lamp-back"></span>' +
+      '<span class="fs-lamp-dome"></span><span class="fs-lamp-base"></span><span class="fs-lamp-beam fs-lamp-front"></span></span>';
   }
 
   function verdictHTML(data){
     var v = data.verdict, word = fsT('v_' + v) || v;
-    var tip = fsT('subtitle') + '. ' + fsT('foot');
-    var h = '<div class="fs-verdict ' + (VCLASS[v] || 'fs-v-unknown') + '">';
+    var h = '<div class="fs-verdict ' + (VCLASS[v] || 'fs-v-unknown') + '"><span class="fs-v-mark" aria-hidden="true">' + LOGO_SVG + '</span>';
     h += lampHTML() + logoHTML() + '<div class="fs-v-word">' + esc(word) + '</div>';
-    h += '<div class="fs-v-meta"><div class="fs-v-name">FireSquire: ' + esc(fsT('hc')) + '<span class="fs-v-info" data-info="' + esc(tip) + '"></span></div>';
-    h += '<div class="fs-v-sub"><span class="fs-v-adv">' + esc(fsT('subtitle')) + (data.generated ? ' · ' : '') + '</span>' + (data.generated ? '<span class="fs-num">' + esc(data.generated) + '</span>' : '') + '</div></div></div>';
-    return h;
+    if (data.generated) h += '<div class="fs-v-sub fs-num">' + esc(data.generated) + '</div>';
+    return h + '</div>';
   }
+
 
   // Every finding is a card of its own. A problem leads to the page that can
   // fix it, and a finding with a link of its own, such as a port on this
@@ -426,7 +416,6 @@
 
   // The parts a string cannot carry: the (i) and the buttons that lead away.
   function wireReport(body){
-    Array.prototype.forEach.call(body.querySelectorAll('.fs-v-info'), function(n){ n.replaceWith(info(n.getAttribute('data-info'))); });
     Array.prototype.forEach.call(body.querySelectorAll('.fs-f-act'), function(n){
       var a = button('fs-f-go', 'Forward', fsT('goto'), 'a');
       a.href = n.getAttribute('data-goto');

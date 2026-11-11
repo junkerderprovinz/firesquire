@@ -1,5 +1,6 @@
-// The three levels carry the fire in their names: All clear, Smouldering and On fire, in German
-// Alles klar, Es glimmt and Es brennt, translated by meaning in every language. The engine keeps
+// The three levels carry the fire in their names: All clear, Smouldering and The roof is on fire, in
+// German Alles klar, Es glimmt and Feuer am Dach, in every other language a local saying of the same
+// meaning or a faithful translation. The engine keeps
 // GO, CAUTION and NO-GO as its codes. The report draws every finding as a card of its own in
 // GlimStone's style, grouped by level, the same markup with and without TowerTorch, which only
 // recolours them.
@@ -13,8 +14,8 @@ const langs = Object.fromEntries(fs.readdirSync(langDir).map((f) => [f.slice(0, 
 const names = (l) => [l.v_GO, l.v_CAUTION, l['v_NO-GO']];
 
 console.log('\nThe names of the levels');
-ok('English says All clear, Smouldering and On fire', JSON.stringify(names(langs.en)) === JSON.stringify(['All clear', 'Smouldering', 'On fire']), names(langs.en).join(' / '));
-ok('German says Alles klar, Es glimmt and Es brennt', JSON.stringify(names(langs.de)) === JSON.stringify(['Alles klar', 'Es glimmt', 'Es brennt']), names(langs.de).join(' / '));
+ok('English says All clear, Smouldering and The roof is on fire', JSON.stringify(names(langs.en)) === JSON.stringify(['All clear', 'Smouldering', 'The roof is on fire']), names(langs.en).join(' / '));
+ok('German says Alles klar, Es glimmt and Feuer am Dach', JSON.stringify(names(langs.de)) === JSON.stringify(['Alles klar', 'Es glimmt', 'Feuer am Dach']), names(langs.de).join(' / '));
 const codes = Object.entries(langs).filter(([, l]) => names(l).some((n) => /^(GO|NO-GO|CAUTION)$/.test(n)) || new Set(names(l)).size !== 3);
 ok('every language names the three in its own words', codes.length === 0, codes.map(([k]) => k).join(', '));
 const stale = [];
@@ -22,15 +23,17 @@ for (const [k, l] of Object.entries(langs)) {
   for (const [key, v] of Object.entries(l)) if (/\bNO-GO\b|\(GO\b|\bGO\b \//.test([].concat(v).join(' '))) stale.push(`${k}:${key}`);
 }
 ok('no text still names the old levels', stale.length === 0, stale.join(', '));
+const unnamed = Object.entries(langs).filter(([, l]) => !['n_lead', 'tools_lead'].every((k) => l[k].includes(l['v_NO-GO']))).map(([k]) => k);
+ok('the lead texts name the top level as the badge does', unnamed.length === 0, unnamed.join(', '));
 const js = read('firesquire.js');
-ok('the English fallback carries the names', /v_GO: 'All clear', v_CAUTION: 'Smouldering', 'v_NO-GO': 'On fire'/.test(js));
+ok('the English fallback carries the names', /v_GO: 'All clear', v_CAUTION: 'Smouldering', 'v_NO-GO': 'The roof is on fire'/.test(js));
 ok('the engine keeps its codes', /VERDICT="GO"/.test(read('firesquire-check.sh')) && /VCLASS = \{ GO: 'fs-v-go', CAUTION: 'fs-v-caution', 'NO-GO': 'fs-v-nogo' \}/.test(js));
-ok('the console report names the level too', /VNAME="All clear"/.test(read('firesquire-check.sh')) && /FIRESQUIRE: \$VNAME/.test(read('firesquire-check.sh')));
+ok('the console report names the level too', /VNAME="All clear"/.test(read('firesquire-check.sh')) && /VNAME="The roof is on fire"/.test(read('firesquire-check.sh')) && /FIRESQUIRE: \$VNAME/.test(read('firesquire-check.sh')));
 const repo = path.join(__dirname, '..', '..');
 const readme = fs.readFileSync(path.join(repo, 'README.md'), 'utf8');
-ok('the README names them', /All clear/.test(readme) && /Smouldering/.test(readme) && /On fire/.test(readme) && !/GO \/ CAUTION \/ NO-GO/.test(readme));
+ok('the README names them', /All clear/.test(readme) && /Smouldering/.test(readme) && /The roof is on fire/.test(readme) && !/On fire/.test(readme) && !/GO \/ CAUTION \/ NO-GO/.test(readme));
 const thread = fs.readFileSync(path.join(repo, '.github', 'SUPPORT_THREAD.html'), 'utf8');
-ok('the support thread names them', /All clear/.test(thread) && !/GO \/ CAUTION \/ NO-GO/.test(thread));
+ok('the support thread names them', /All clear/.test(thread) && /The roof is on fire/.test(thread) && !/GO \/ CAUTION \/ NO-GO/.test(thread));
 
 console.log('\nThe cards');
 function report(themed, checks) {
@@ -51,7 +54,7 @@ const checks = [
 const plain = report(false, checks), gs = report(true, checks);
 ok('the report is the same with and without TowerTorch', plain === gs);
 const groups = [...plain.matchAll(/<section class="fs-level fs-st-(\w+)"><h3 class="fs-level-h">([^<]*)<\/h3>/g)].map((m) => m[1] + ':' + m[2]);
-ok('the findings stand by level, the worst first, each under its name', JSON.stringify(groups) === JSON.stringify(['fail:On fire', 'warn:Smouldering', 'pass:All clear', 'info:' + langs.en.tier_info]), groups.join(', '));
+ok('the findings stand by level, the worst first, each under its name', JSON.stringify(groups) === JSON.stringify(['fail:The roof is on fire', 'warn:Smouldering', 'pass:All clear', 'info:' + langs.en.tier_info]), groups.join(', '));
 ok('every finding is a card of its own', (plain.match(/<div class="fs-f fs-st-\w+">/g) || []).length === checks.length);
 ok('two cautions share their group', /fs-st-warn"><h3[^]*?fs-f fs-st-warn[^]*?fs-f fs-st-warn[^]*?<\/section>/.test(plain));
 ok('a finding that leads to a page carries the button in both looks', /data-goto="\/Main"/.test(plain) && /data-goto="\/VMs"/.test(plain));

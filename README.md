@@ -15,7 +15,7 @@
 
 <p align="center">
 An Unraid plugin that answers one question before you reboot: <b>will the box come back up clean?</b><br>
-FireSquire reads the live host state and gives you a single verdict (<b>All clear / Smouldering / On fire</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads the host. On the flash it writes a test file that it deletes right away, and it keeps the CRC error count of each disk there, so it notices when one rises.
+FireSquire reads the live host state and gives you a single verdict (<b>All clear / Smouldering / The roof is on fire</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads the host. On the flash it writes a test file that it deletes right away, and it keeps the CRC error count of each disk there, so it notices when one rises.
 </p>
 
 <br>
@@ -60,7 +60,7 @@ A reboot is never 100% guaranteed, but a large class of "it didn't come back rig
 
 - **All clear**: nothing found that should block a reboot
 - **Smouldering**: non-fatal issues you should know about first
-- **On fire**: conditions likely to make the reboot come back dirty
+- **The roof is on fire**: conditions likely to make the reboot come back dirty
 
 It is **advisory only**. It reads the system and reports. It never stops, mounts or unmounts anything, because acting on the host is exactly what tends to cause reboot trouble in the first place. It writes two things to the flash. One is the flash write test, an empty file on `/boot` that it deletes as soon as it has been created. The other is `crc.state` in `/boot/config/plugins/firesquire`, with the CRC error count of each disk, so it can tell when one rises. It rewrites that file only when a count changes.
 
@@ -72,7 +72,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 <p align="center">
   <img src=".github/assets/screenshots/report.png" alt="FireSquire pre-reboot report with a Smouldering verdict" width="58%">
-  <br><em>The pre-reboot report: a single All clear / Smouldering / On fire verdict with the exact checks behind it. Advisory only: apart from a flash write test it removes at once and the CRC counts it keeps, it changes nothing.</em>
+  <br><em>The pre-reboot report: a single All clear / Smouldering / The roof is on fire verdict with the exact checks behind it. Advisory only: apart from a flash write test it removes at once and the CRC counts it keeps, it changes nothing.</em>
 </p>
 
 <br>
@@ -86,7 +86,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 <p><a id="4-what-it-checks" href="#4-what-it-checks"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/4-what-it-checks-dark.svg"><img src=".github/assets/sections/4-what-it-checks.svg" alt="4. What it checks" width="100%"></picture></a></p>
 
-**Critical: a failure here means On fire**
+**Critical: a failure here means The roof is on fire**
 
 - Array started and clean (no disabled / invalid / missing disks)
 - No parity check / sync / rebuild / clear in progress, mover not running
@@ -113,13 +113,13 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, FireSquire links to Scrutiny if it runs on the server, or suggests it for the SMART history.
 
-**Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup or update, is On fire and names the app, the device, the task and its progress. What an app needs from you has nothing to do with a reboot, so it stays out of the report. TollRoll shows it. You join with the twelve words of your fortress phrase on the settings page. FireSquire keeps only its own keys, never the phrase, and lists the other apps there as connected or not reachable. Without a fortress the group stays out of the report.
+**Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup or update, sets the roof on fire and names the app, the device, the task and its progress. What an app needs from you has nothing to do with a reboot, so it stays out of the report. TollRoll shows it. You join with the twelve words of your fortress phrase on the settings page. FireSquire keeps only its own keys, never the phrase, and lists the other apps there as connected or not reachable. Without a fortress the group stays out of the report.
 
 **Info**: uptime, kernel, Unraid version.
 
-**Before every reboot and shutdown**: when you reboot or shut down from the WebGUI, on Main, on the Dashboard or from the update banner, FireSquire runs the check first. All clear goes straight on. With Smouldering or On fire you see the findings and decide: reboot anyway, or cancel and keep the server up. FireSquire changes none of Unraid's files for this, and removing the plugin removes the check.
+**Before every reboot and shutdown**: when you reboot or shut down from the WebGUI, on Main, on the Dashboard or from the update banner, FireSquire runs the check first. All clear goes straight on. With Smouldering or The roof is on fire you see the findings and decide: reboot anyway, or cancel and keep the server up. FireSquire changes none of Unraid's files for this, and removing the plugin removes the check.
 
-**Notifications and a schedule**: on the settings page you can add channels for Unraid's own notifications, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks. FireSquire sends its verdict when a check ends in Smouldering or On fire, and once more when it is back to All clear. A check without findings sends nothing. A daily or weekly schedule runs the check without a click. The channels are stored in `/boot/config/plugins/firesquire/notify.json`, and the secrets in them never reach the browser.
+**Notifications and a schedule**: on the settings page you can add channels for Unraid's own notifications, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks. FireSquire sends its verdict when a check ends in Smouldering or The roof is on fire, and once more when it is back to All clear. A check without findings sends nothing. A daily or weekly schedule runs the check without a click. The channels are stored in `/boot/config/plugins/firesquire/notify.json`, and the secrets in them never reach the browser.
 
 ### Honest limits
 
@@ -136,7 +136,7 @@ firesquire-check.sh          # human-readable report
 firesquire-check.sh --json   # machine-readable (used by the WebGUI)
 ```
 
-Exit code mirrors the verdict: `0` = All clear, `1` = Smouldering, `2` = On fire. The JSON names them by their codes `GO`, `CAUTION` and `NO-GO`.
+Exit code mirrors the verdict: `0` = All clear, `1` = Smouldering, `2` = The roof is on fire. The JSON names them by their codes `GO`, `CAUTION` and `NO-GO`.
 
 The WebGUI layer is a small PHP page (`FireSquireReport.php`) that runs the engine and renders the verdict in an Unraid modal.
 

@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: uudelleenkäynnistystä edeltävä tarkistus",
-  "hc": "uudelleenkäynnistystä edeltävä kuntotarkistus",
   "running": "Suoritetaan tarkistuksia…",
-  "subtitle": "Vain suositus · flash-muistin testitiedosto on poistettu",
   "v_GO": "Kaikki selvää",
   "v_CAUTION": "Kytee",
-  "v_NO-GO": "Palaa",
+  "v_NO-GO": "Katto tulessa",
   "tier_info": "Info",
   "err": "Tarkistusmoottoria ei voitu suorittaa.",
   "err_hint": "Yritä hetken päästä uudelleen. Jos se epäonnistuu yhä, syslog voi kertoa syyn.",
-  "foot": "FireSquire lukee nykyisen tilan ja tunnistaa yleiset uudelleenkäynnistyksen sudenkuopat (kiinnitetyt liitokset, jumittuneet loopit, epäpuhdas array, käynnissä olevat operaatiot, kaatuilua toistava kone). Se on ennakkovaroitus, ei takuu. Todellisia laitteisto-, BIOS- tai ajoitusvirheitä käynnistyksen aikana ei voi nähdä käynnissä olevasta järjestelmästä.",
-  "tools_lead": "FireSquire tarkistaa ennen uudelleenkäynnistystä, käynnistyykö palvelimesi puhtaasti takaisin, ja antaa yhden verdiktin (Kaikki selvää / Kytee / Palaa) tarkkojen havaintojen kera. Se on vain suositus: se lukee isäntäkoneen ja raportoi. Flash-muistiin se kirjoittaa tyhjän testitiedoston nähdäkseen, onko /boot kirjoitettavissa, ja poistaa sen heti. Sinne se tallentaa myös jokaisen levyn CRC-virhelaskurin, jotta se huomaa, kun jokin kasvaa.",
+  "tools_lead": "FireSquire tarkistaa ennen uudelleenkäynnistystä, käynnistyykö palvelimesi puhtaasti takaisin, ja antaa yhden verdiktin (Kaikki selvää / Kytee / Katto tulessa) tarkkojen havaintojen kera. Se on vain suositus: se lukee isäntäkoneen ja raportoi. Flash-muistiin se kirjoittaa tyhjän testitiedoston nähdäkseen, onko /boot kirjoitettavissa, ja poistaa sen heti. Sinne se tallentaa myös jokaisen levyn CRC-virhelaskurin, jotta se huomaa, kun jokin kasvaa.",
   "tools_intro": "Se etsii uudelleenkäynnistyksen sudenkuopat, jotka ovat havaittavissa käynnissä olevasta järjestelmästä:",
   "tools_li": [
     "Array käynnistetty ja puhdas: kaikki laitemääritykset OK (ei poistettuja/virheellisiä/puuttuvia levyjä)",
@@ -141,7 +138,7 @@
   "n_test_title": "FireSquiren testi",
   "n_test_body": "Jos luet tätä, FireSquiren viestit tavoittavat sinut.",
   "n_card": "Ilmoitukset",
-  "n_lead": "FireSquire lähettää arvionsa, kun tarkistus päättyy tilaan ”Kytee” tai ”Palaa”, ja vielä kerran, kun kaikki on taas ”Kaikki selvää”. Tarkistus ilman havaintoja ei lähetä mitään.",
+  "n_lead": "FireSquire lähettää arvionsa, kun tarkistus päättyy tilaan ”Kytee” tai ”Katto tulessa”, ja vielä kerran, kun kaikki on taas ”Kaikki selvää”. Tarkistus ilman havaintoja ei lähetä mitään.",
   "n_nohelper": "Ilmoitusten apuohjelmaa ei ole vielä asennettu, joten FireSquire ei voi lähettää mitään toistaiseksi.",
   "n_none": "Ei vielä kanavia.",
   "n_add": "Lisää kanava",
@@ -221,5 +218,6 @@
   "f_leave": "Poistu",
   "f_leave_title": "Poistutaanko linnoituksesta?",
   "f_leave_body": "Muut sovelluksesi eivät enää näe FireSquirea, ja tarkistus jatkuu ilman niitä. Lauseella FireSquire palaa milloin vain.",
-  "f_left": "FireSquire poistui linnoituksesta."
+  "f_left": "FireSquire poistui linnoituksesta.",
+  "flash_probe_left": "FireSquire ei voinut poistaa testitiedostoaan {0} flash-muistista. Poista se itse, kiitos."
 }

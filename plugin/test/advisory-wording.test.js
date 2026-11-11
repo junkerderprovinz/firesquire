@@ -8,6 +8,7 @@ const ROOT = path.join(DIR, '..', '..', '..', '..', '..', '..');
 const en = JSON.parse(read('lang/en.json'));
 const sources = {
   'firesquire-check.sh': read('firesquire-check.sh'),
+  'firesquire-more.sh': read('firesquire-more.sh'),
   'firesquire.js': read('firesquire.js'),
   'lang/en.json': read('lang/en.json'),
   'plugin README.md': read('README.md'),
@@ -16,7 +17,8 @@ const sources = {
 };
 
 console.log('\nThe probe on the flash is part of what the check does');
-ok('the engine still writes and removes its probe file', /tf="\/boot\/\.firesquire_write_test\.\$\$"[\s\S]*?rm -f "\$tf"/.test(sources['firesquire-check.sh']));
+ok('the engine still writes and removes its probe file', /tf="\$FS_BOOT\/\.firesquire_write_test\.\$\$"[\s\S]*?rm -f "\$tf"/.test(sources['firesquire-more.sh'])
+  && /more_probe/.test(sources['firesquire-check.sh']));
 
 console.log('\nNo text claims that nothing is ever changed');
 const claim = /never (changes|touches)|nothing was changed|changes the system/i;
@@ -25,7 +27,7 @@ for (const [name, src] of Object.entries(sources)) {
 }
 
 console.log('\nThe English texts name the flash write test');
-for (const k of ['subtitle', 'tools_lead', 'tools_note']) {
+for (const k of ['tools_lead', 'tools_note']) {
   ok(`${k} mentions the flash`, /flash/i.test(en[k]), en[k]);
 }
 for (const name of ['firesquire-check.sh', 'plugin README.md', 'README.md', 'SUPPORT_THREAD.html']) {

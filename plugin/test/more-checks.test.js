@@ -1,6 +1,9 @@
-// What else stands in the way of a clean reboot: time-outs that do not add up, an unclean last
-// shutdown, files open over SMB or NFS, a UPS on battery and an old flash backup. The tests feed
-// sample outputs from fixtures/ to firesquire-more.sh instead of a real server.
+// What else stands in the way of a clean reboot: a flash that takes no file or keeps the test file,
+// time-outs that do not add up, an unclean last shutdown, files open over SMB or NFS, a UPS on
+// battery and an old flash backup. The tests feed sample outputs from fixtures/ to
+// firesquire-more.sh instead of a real server.
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { DIR, read, ok, done } = require('./lib');
@@ -82,14 +85,29 @@ ok('the newer of the two wins', one(r, 'flash_backup_ok', 'pass', ['2', 'Unraid 
 r = more(`${now}\n${fortress('', 1)}\nFS_BOOT=/nonexistent\nmore_flash`);
 ok('without any backup FireSquire says so', one(r, 'flash_backup_none', 'info', []), JSON.stringify(r));
 
+console.log('\nThe flash write test');
+const boot = fs.mkdtempSync(path.join(os.tmpdir(), 'fs-boot-')).replace(/\\/g, '/');
+r = more(`FS_BOOT="${boot}"; boot_mounted() { return 0; }\nmore_probe`);
+ok('a writable flash passes in one card', one(r, 'flash_ok', 'pass', []) && r[0].tier === 'critical', JSON.stringify(r));
+ok('and keeps no test file', fs.readdirSync(boot).length === 0, fs.readdirSync(boot).join(', '));
+r = more(`FS_BOOT="${boot}"; boot_mounted() { return 0; }; rm() { return 1; }\nmore_probe`);
+const left = r.find((f) => f.key === 'flash_probe_left');
+ok('a test file it cannot delete gets a card of its own', r.length === 2 && r[0].key === 'flash_ok' && !!left && left.status === 'warn'
+  && left.tier === 'warning' && /\/\.firesquire_write_test\.\d+$/.test(left.args[0]), JSON.stringify(r));
+fs.rmSync(boot, { recursive: true, force: true });
+r = more('FS_BOOT=/nonexistent; boot_mounted() { return 0; }\nmore_probe');
+ok('a flash that takes no file is NO-GO', one(r, 'flash_ro', 'fail', []), JSON.stringify(r));
+r = more('FS_BOOT=/nonexistent; boot_mounted() { return 1; }\nmore_probe');
+ok('an unmounted flash is NO-GO', one(r, 'flash_unmounted', 'fail', []), JSON.stringify(r));
+
 console.log('\nThe texts');
 const keys = ['p_timeouts', 'timeouts_ok', 'timeouts_short', 'timeouts_container', 'unclean', 'p_shares', 'share_open', 'share_writing',
   'shares_ok', 'p_ups', 'ups_ok', 'ups_battery', 'ups_low', 'p_flashbak', 'flash_backup_ok', 'flash_backup_old', 'flash_backup_none',
-  'tools_g_shutdown', 'g_ask_reboot', 'g_ask_shutdown', 'g_reboot', 'g_shutdown', 'g_cancel'];
+  'flash_probe_left', 'tools_g_shutdown', 'g_ask_reboot', 'g_ask_shutdown', 'g_reboot', 'g_shutdown', 'g_cancel'];
 const missing = keys.filter((k) => !(k in en));
 ok('every new text is in en.json', missing.length === 0, missing.join(', '));
 const engine = read('firesquire-check.sh');
 ok('the engine sources the checks and runs each of them', /\. "\$HERE\/firesquire-more\.sh"/.test(engine) &&
-  ['more_timeouts', 'more_unclean', 'more_shares', 'more_ups', 'more_flash'].every((f) => engine.includes(f)));
+  ['more_probe', 'more_timeouts', 'more_unclean', 'more_shares', 'more_ups', 'more_flash'].every((f) => engine.includes(f)));
 
 done();

@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: kontrola przed restartem",
-  "hc": "kontrola stanu przed restartem",
   "running": "Sprawdzanie…",
-  "subtitle": "Tylko informacyjnie · plik testowy na napędzie flash został usunięty",
   "v_GO": "Wszystko gra",
   "v_CAUTION": "Tli się",
-  "v_NO-GO": "Płonie",
+  "v_NO-GO": "Dach płonie",
   "tier_info": "Informacja",
   "err": "Nie udało się uruchomić mechanizmu kontroli.",
   "err_hint": "Spróbuj ponownie za chwilę. Jeśli nadal się nie uda, syslog może podpowiedzieć dlaczego.",
-  "foot": "FireSquire odczytuje bieżący stan i przewiduje typowe pułapki związane z restartem (przypięte montowania, zawieszone pętle, array w nieczystym stanie, trwające operacje, serwer w pętli awarii). To wczesne ostrzeżenie, a nie gwarancja. Rzeczywistych błędów sprzętu, BIOS lub czasowych podczas rozruchu nie widać z poziomu działającego systemu.",
-  "tools_lead": "FireSquire sprawdza, czy serwer wstanie czysto po restarcie, zanim go zrestartujesz, i wydaje jeden werdykt (Wszystko gra / Tli się / Płonie) wraz z dokładnymi ustaleniami. Ma charakter wyłącznie doradczy: odczytuje stan hosta i raportuje. Na napędzie flash zapisuje pusty plik testowy, żeby sprawdzić, czy /boot jest zapisywalny, i od razu go usuwa. Przechowuje tam też licznik błędów CRC każdego dysku, żeby zauważyć, gdy któryś rośnie.",
+  "tools_lead": "FireSquire sprawdza, czy serwer wstanie czysto po restarcie, zanim go zrestartujesz, i wydaje jeden werdykt (Wszystko gra / Tli się / Dach płonie) wraz z dokładnymi ustaleniami. Ma charakter wyłącznie doradczy: odczytuje stan hosta i raportuje. Na napędzie flash zapisuje pusty plik testowy, żeby sprawdzić, czy /boot jest zapisywalny, i od razu go usuwa. Przechowuje tam też licznik błędów CRC każdego dysku, żeby zauważyć, gdy któryś rośnie.",
   "tools_intro": "Szuka pułapek związanych z restartem, które można wykryć z poziomu działającego systemu:",
   "tools_li": [
     "Array uruchomione i czyste: wszystkie przypisania urządzeń OK (brak wyłączonych/nieprawidłowych/brakujących dysków)",
@@ -141,7 +138,7 @@
   "n_test_title": "Test FireSquire",
   "n_test_body": "Jeśli to czytasz, wiadomości od FireSquire do ciebie docierają.",
   "n_card": "Powiadomienia",
-  "n_lead": "FireSquire wysyła swój werdykt, gdy sprawdzenie kończy się na „Tli się” lub „Płonie”, i jeszcze raz, gdy wszystko wróci do „Wszystko gra”. Sprawdzenie bez uwag niczego nie wysyła.",
+  "n_lead": "FireSquire wysyła swój werdykt, gdy sprawdzenie kończy się na „Tli się” lub „Dach płonie”, i jeszcze raz, gdy wszystko wróci do „Wszystko gra”. Sprawdzenie bez uwag niczego nie wysyła.",
   "n_nohelper": "Pomocnik powiadomień nie jest jeszcze zainstalowany, więc FireSquire na razie nic nie wyśle.",
   "n_none": "Brak kanałów.",
   "n_add": "Dodaj kanał",
@@ -221,5 +218,6 @@
   "f_leave": "Opuść",
   "f_leave_title": "Opuścić twierdzę?",
   "f_leave_body": "Twoje inne aplikacje przestaną widzieć FireSquire, a sprawdzanie toczy się dalej bez nich. Z frazą FireSquire wróci w każdej chwili.",
-  "f_left": "FireSquire opuścił twierdzę."
+  "f_left": "FireSquire opuścił twierdzę.",
+  "flash_probe_left": "FireSquire nie mógł usunąć swojego pliku testowego {0} z pendrive’a. Usuń go proszę sam."
 }

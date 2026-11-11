@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: Kiểm tra trước khi khởi động lại",
-  "hc": "kiểm tra tình trạng trước khi khởi động lại",
   "running": "Đang chạy kiểm tra…",
-  "subtitle": "Chỉ mang tính tư vấn · tệp thử trên USB flash đã được xóa",
   "v_GO": "Mọi thứ ổn",
   "v_CAUTION": "Đang âm ỉ",
-  "v_NO-GO": "Đang cháy",
+  "v_NO-GO": "Nước sôi lửa bỏng",
   "tier_info": "Thông tin",
   "err": "Không thể chạy công cụ kiểm tra.",
   "err_hint": "Thử lại sau giây lát. Nếu vẫn lỗi, syslog có thể cho biết lý do.",
-  "foot": "FireSquire đọc trạng thái hiện tại và dự đoán những cạm bẫy khởi động lại thường gặp (mount bị ghim, loop bị kẹt, array không sạch, thao tác đang chạy, máy lặp vòng crash). Đây là cảnh báo sớm, không phải bảo đảm. Lỗi phần cứng, BIOS hoặc lỗi thời điểm thực sự trong lúc khởi động không thể nhìn thấy từ một hệ thống đang chạy.",
-  "tools_lead": "FireSquire kiểm tra xem máy chủ của bạn có khởi động lại sạch sẽ hay không trước khi bạn khởi động lại, và đưa ra một kết luận (Mọi thứ ổn / Đang âm ỉ / Đang cháy) kèm các phát hiện cụ thể. Nó chỉ mang tính tư vấn: nó đọc host và báo cáo. Trên USB flash, nó ghi một tệp thử rỗng để xem /boot có ghi được không, rồi xóa ngay. Nó cũng lưu bộ đếm lỗi CRC của từng ổ đĩa ở đó, để nhận ra khi một bộ đếm tăng.",
+  "tools_lead": "FireSquire kiểm tra xem máy chủ của bạn có khởi động lại sạch sẽ hay không trước khi bạn khởi động lại, và đưa ra một kết luận (Mọi thứ ổn / Đang âm ỉ / Nước sôi lửa bỏng) kèm các phát hiện cụ thể. Nó chỉ mang tính tư vấn: nó đọc host và báo cáo. Trên USB flash, nó ghi một tệp thử rỗng để xem /boot có ghi được không, rồi xóa ngay. Nó cũng lưu bộ đếm lỗi CRC của từng ổ đĩa ở đó, để nhận ra khi một bộ đếm tăng.",
   "tools_intro": "Nó tìm những cạm bẫy khởi động lại có thể phát hiện được từ hệ thống đang chạy:",
   "tools_li": [
     "Array đã khởi động & sạch: mọi gán thiết bị đều OK (không có đĩa bị vô hiệu hóa/không hợp lệ/thiếu)",
@@ -141,7 +138,7 @@
   "n_test_title": "Thử FireSquire",
   "n_test_body": "Nếu bạn đọc được dòng này, tin nhắn của FireSquire đã đến với bạn.",
   "n_card": "Thông báo",
-  "n_lead": "FireSquire gửi kết luận khi một lần kiểm tra kết thúc ở “Đang âm ỉ” hoặc “Đang cháy”, và gửi thêm một lần khi mọi thứ trở lại “Mọi thứ ổn”. Lần kiểm tra không có phát hiện thì không gửi gì.",
+  "n_lead": "FireSquire gửi kết luận khi một lần kiểm tra kết thúc ở “Đang âm ỉ” hoặc “Nước sôi lửa bỏng”, và gửi thêm một lần khi mọi thứ trở lại “Mọi thứ ổn”. Lần kiểm tra không có phát hiện thì không gửi gì.",
   "n_nohelper": "Công cụ thông báo chưa được cài, nên FireSquire tạm thời chưa gửi được gì.",
   "n_none": "Chưa có kênh nào.",
   "n_add": "Thêm kênh",
@@ -221,5 +218,6 @@
   "f_leave": "Rời đi",
   "f_leave_title": "Rời pháo đài?",
   "f_leave_body": "Các ứng dụng khác sẽ không còn thấy FireSquire, và việc kiểm tra tiếp tục mà không có chúng. Với cụm từ, FireSquire quay lại bất cứ lúc nào.",
-  "f_left": "FireSquire đã rời pháo đài."
+  "f_left": "FireSquire đã rời pháo đài.",
+  "flash_probe_left": "FireSquire không xóa được tệp thử {0} trên flash. Bạn hãy tự xóa giúp nhé."
 }

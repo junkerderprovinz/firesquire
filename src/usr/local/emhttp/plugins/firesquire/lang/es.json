@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: Comprobación previa al reinicio",
-  "hc": "comprobación de estado previa al reinicio",
   "running": "Ejecutando comprobaciones…",
-  "subtitle": "Solo informativo · el archivo de prueba del flash ya se borró",
   "v_GO": "Todo en calma",
   "v_CAUTION": "Echa humo",
-  "v_NO-GO": "Está ardiendo",
+  "v_NO-GO": "Arde Troya",
   "tier_info": "Información",
   "err": "No se pudo ejecutar el motor de comprobación.",
   "err_hint": "Inténtalo de nuevo en un momento. Si sigue fallando, el syslog quizá diga por qué.",
-  "foot": "FireSquire lee el estado actual y predice los tropiezos habituales del reinicio (montajes fijados, loops atascados, array no limpio, operaciones en curso, un equipo en bucle de fallos). Es un aviso temprano, no una garantía. Los fallos reales de hardware, BIOS o de temporización durante el arranque no se pueden ver desde un sistema en marcha.",
-  "tools_lead": "FireSquire comprueba si tu servidor volverá a arrancar limpio antes de que reinicies y da un único veredicto (Todo en calma / Echa humo / Está ardiendo) con los hallazgos exactos. Es solo informativo: lee el host e informa. En el flash escribe un archivo de prueba vacío para comprobar que /boot admite escritura, y lo borra al instante. También guarda allí el contador de errores CRC de cada disco, para notar cuándo sube uno.",
+  "tools_lead": "FireSquire comprueba si tu servidor volverá a arrancar limpio antes de que reinicies y da un único veredicto (Todo en calma / Echa humo / Arde Troya) con los hallazgos exactos. Es solo informativo: lee el host e informa. En el flash escribe un archivo de prueba vacío para comprobar que /boot admite escritura, y lo borra al instante. También guarda allí el contador de errores CRC de cada disco, para notar cuándo sube uno.",
   "tools_intro": "Busca los tropiezos de reinicio detectables desde el sistema en marcha:",
   "tools_li": [
     "Array iniciado y limpio: todas las asignaciones de dispositivo OK (sin discos desactivados/no válidos/ausentes)",
@@ -141,7 +138,7 @@
   "n_test_title": "Prueba de FireSquire",
   "n_test_body": "Si puedes leer esto, los mensajes de FireSquire te llegan.",
   "n_card": "Notificaciones",
-  "n_lead": "FireSquire envía su veredicto cuando una comprobación termina en «Echa humo» o «Está ardiendo», y otra vez cuando todo vuelve a «Todo en calma». Una comprobación sin hallazgos no envía nada.",
+  "n_lead": "FireSquire envía su veredicto cuando una comprobación termina en «Echa humo» o «Arde Troya», y otra vez cuando todo vuelve a «Todo en calma». Una comprobación sin hallazgos no envía nada.",
   "n_nohelper": "La herramienta de notificaciones aún no está instalada, así que FireSquire no puede enviar nada por ahora.",
   "n_none": "Todavía no hay canales.",
   "n_add": "Añadir un canal",
@@ -221,5 +218,6 @@
   "f_leave": "Salir",
   "f_leave_title": "¿Salir de la fortaleza?",
   "f_leave_body": "Tus otras apps ya no verán FireSquire, y la comprobación sigue sin ellas. Con la frase, FireSquire vuelve cuando quieras.",
-  "f_left": "FireSquire ha salido de la fortaleza."
+  "f_left": "FireSquire ha salido de la fortaleza.",
+  "flash_probe_left": "FireSquire no pudo borrar su archivo de prueba {0} en el flash. Bórralo tú mismo, por favor."
 }

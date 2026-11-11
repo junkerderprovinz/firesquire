@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: kontrola před restartem",
-  "hc": "kontrola stavu před restartem",
   "running": "Probíhá kontrola…",
-  "subtitle": "Pouze informativní · testovací soubor na flash disku je smazán",
   "v_GO": "Vše v pořádku",
   "v_CAUTION": "Doutná to",
-  "v_NO-GO": "Hoří",
+  "v_NO-GO": "Hoří střecha",
   "tier_info": "Info",
   "err": "Kontrolní modul se nepodařilo spustit.",
   "err_hint": "Zkus to za chvíli znovu. Pokud to dál nepůjde, syslog možná prozradí proč.",
-  "foot": "FireSquire načte aktuální stav a odhalí obvyklé nástrahy restartu (připnuté přípojné body, zaseknuté smyčky, nečisté pole, probíhající operace, opakovaně padající server). Jde o včasné varování, nikoli o záruku. Skutečné chyby hardwaru, BIOSu nebo časování při startu nelze z běžícího systému rozpoznat.",
-  "tools_lead": "FireSquire ještě před restartem ověří, zda váš server naběhne čistě, a vydá jeden verdikt (Vše v pořádku / Doutná to / Hoří) s přesnými zjištěními. Je pouze informativní: načte hostitele a podá zprávu. Na flash disk zapíše prázdný testovací soubor, aby ověřil, že do /boot lze zapisovat, a hned ho smaže. Ukládá tam také počet chyb CRC každého disku, aby poznal, když některý roste.",
+  "tools_lead": "FireSquire ještě před restartem ověří, zda váš server naběhne čistě, a vydá jeden verdikt (Vše v pořádku / Doutná to / Hoří střecha) s přesnými zjištěními. Je pouze informativní: načte hostitele a podá zprávu. Na flash disk zapíše prázdný testovací soubor, aby ověřil, že do /boot lze zapisovat, a hned ho smaže. Ukládá tam také počet chyb CRC každého disku, aby poznal, když některý roste.",
   "tools_intro": "Hledá nástrahy restartu, které lze rozpoznat z běžícího systému:",
   "tools_li": [
     "Pole spuštěno a čisté: všechna přiřazení zařízení v pořádku (žádný zakázaný/neplatný/chybějící disk)",
@@ -141,7 +138,7 @@
   "n_test_title": "Test FireSquire",
   "n_test_body": "Jestli tohle čteš, zprávy od FireSquire k tobě dorazí.",
   "n_card": "Oznámení",
-  "n_lead": "FireSquire pošle svůj verdikt, když kontrola skončí na „Doutná to“ nebo „Hoří“, a ještě jednou, když je zase vše na „Vše v pořádku“. Kontrola bez nálezů nic neposílá.",
+  "n_lead": "FireSquire pošle svůj verdikt, když kontrola skončí na „Doutná to“ nebo „Hoří střecha“, a ještě jednou, když je zase vše na „Vše v pořádku“. Kontrola bez nálezů nic neposílá.",
   "n_nohelper": "Pomocník pro oznámení ještě není nainstalovaný, takže FireSquire zatím nic poslat nemůže.",
   "n_none": "Zatím žádný kanál.",
   "n_add": "Přidat kanál",
@@ -221,5 +218,6 @@
   "f_leave": "Opustit",
   "f_leave_title": "Opustit pevnost?",
   "f_leave_body": "Tvé ostatní aplikace už FireSquire neuvidí a kontrola poběží dál bez nich. S frází se FireSquire kdykoli vrátí.",
-  "f_left": "FireSquire opustil pevnost."
+  "f_left": "FireSquire opustil pevnost.",
+  "flash_probe_left": "FireSquire nedokázal smazat svůj testovací soubor {0} na flash disku. Smaž ho prosím sám."
 }

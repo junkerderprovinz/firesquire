@@ -1,16 +1,13 @@
 {
   "title": "FireSquire : Contrôle avant redémarrage",
-  "hc": "contrôle d'intégrité avant redémarrage",
   "running": "Vérifications en cours…",
-  "subtitle": "Simple avertissement · le fichier de test sur la clé a été supprimé",
   "v_GO": "Tout va bien",
   "v_CAUTION": "Ça couve",
-  "v_NO-GO": "Ça brûle",
+  "v_NO-GO": "Il y a le feu",
   "tier_info": "Info",
   "err": "Impossible d'exécuter le moteur de vérification.",
   "err_hint": "Réessaie dans un instant. Si ça échoue encore, le syslog dira peut-être pourquoi.",
-  "foot": "FireSquire lit l'état actuel et anticipe les pièges courants du redémarrage (montages épinglés, boucles bloquées, array non propre, opérations en cours, machine qui plante en boucle). C'est une alerte précoce, pas une garantie. Les véritables défaillances matérielles, BIOS ou de timing au démarrage ne sont pas visibles depuis un système en fonctionnement.",
-  "tools_lead": "FireSquire vérifie si votre serveur redémarrera proprement avant que vous ne redémarriez, et rend un verdict unique (Tout va bien / Ça couve / Ça brûle) accompagné des constats exacts. C'est un simple avis : il lit l'hôte et rapporte. Sur la clé flash, il écrit un fichier de test vide pour vérifier que /boot est accessible en écriture, et le supprime aussitôt. Il y garde aussi le compteur d'erreurs CRC de chaque disque, pour voir quand l'un d'eux augmente.",
+  "tools_lead": "FireSquire vérifie si votre serveur redémarrera proprement avant que vous ne redémarriez, et rend un verdict unique (Tout va bien / Ça couve / Il y a le feu) accompagné des constats exacts. C'est un simple avis : il lit l'hôte et rapporte. Sur la clé flash, il écrit un fichier de test vide pour vérifier que /boot est accessible en écriture, et le supprime aussitôt. Il y garde aussi le compteur d'erreurs CRC de chaque disque, pour voir quand l'un d'eux augmente.",
   "tools_intro": "Il recherche les pièges du redémarrage détectables depuis le système en fonctionnement :",
   "tools_li": [
     "Array démarré et propre : toutes les affectations de périphériques OK (aucun disque désactivé/invalide/manquant)",
@@ -141,7 +138,7 @@
   "n_test_title": "Test FireSquire",
   "n_test_body": "Si tu lis ceci, les messages de FireSquire t’arrivent bien.",
   "n_card": "Notifications",
-  "n_lead": "FireSquire envoie son verdict quand une vérification se termine en « Ça couve » ou « Ça brûle », puis une fois encore quand tout repasse à « Tout va bien ». Une vérification sans constat n’envoie rien.",
+  "n_lead": "FireSquire envoie son verdict quand une vérification se termine en « Ça couve » ou « Il y a le feu », puis une fois encore quand tout repasse à « Tout va bien ». Une vérification sans constat n’envoie rien.",
   "n_nohelper": "L’outil de notification n’est pas encore installé, donc FireSquire ne peut rien envoyer pour l’instant.",
   "n_none": "Aucun canal pour l’instant.",
   "n_add": "Ajouter un canal",
@@ -221,5 +218,6 @@
   "f_leave": "Quitter",
   "f_leave_title": "Quitter la forteresse ?",
   "f_leave_body": "Tes autres apps ne verront plus FireSquire, et la vérification continue sans elles. La phrase ramène FireSquire quand tu veux.",
-  "f_left": "FireSquire a quitté la forteresse."
+  "f_left": "FireSquire a quitté la forteresse.",
+  "flash_probe_left": "FireSquire n’a pas pu supprimer son fichier de test {0} sur la clé flash. Supprime-le toi-même, s’il te plaît."
 }

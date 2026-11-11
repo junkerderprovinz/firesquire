@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: Kontroll före omstart",
-  "hc": "hälsokontroll före omstart",
   "running": "Kör kontroller…",
-  "subtitle": "Endast rådgivande · testfilen på flashminnet är borttagen",
   "v_GO": "Allt lugnt",
   "v_CAUTION": "Det pyr",
-  "v_NO-GO": "Det brinner",
+  "v_NO-GO": "Taket brinner",
   "tier_info": "Info",
   "err": "Kunde inte köra kontrollmotorn.",
   "err_hint": "Försök igen om en stund. Fortsätter det att misslyckas kan syslog kanske berätta varför.",
-  "foot": "FireSquire läser det aktuella tillståndet och förutser de vanliga fallgroparna vid omstart (fastnaglade monteringar, hängande loopar, oren array, pågående operationer, en box som kraschar i loop). Det är en tidig varning, inte en garanti. Verkliga fel i hårdvara, BIOS eller timing under uppstart går inte att se från ett körande system.",
-  "tools_lead": "FireSquire kontrollerar om din server kommer att starta upp rent innan du startar om, och ger ett omdöme (Allt lugnt / Det pyr / Det brinner) med de exakta fynden. Det är endast rådgivande: det läser servern och rapporterar. På flashminnet skriver det en tom testfil för att se om /boot är skrivbart, och tar bort den direkt. Där sparar det också CRC-felräknaren för varje disk, så att det märker när en ökar.",
+  "tools_lead": "FireSquire kontrollerar om din server kommer att starta upp rent innan du startar om, och ger ett omdöme (Allt lugnt / Det pyr / Taket brinner) med de exakta fynden. Det är endast rådgivande: det läser servern och rapporterar. På flashminnet skriver det en tom testfil för att se om /boot är skrivbart, och tar bort den direkt. Där sparar det också CRC-felräknaren för varje disk, så att det märker när en ökar.",
   "tools_intro": "Det letar efter de fallgropar vid omstart som går att upptäcka från det körande systemet:",
   "tools_li": [
     "Array startad och ren: alla enhetstilldelningar OK (ingen inaktiverad/ogiltig/saknad disk)",
@@ -141,7 +138,7 @@
   "n_test_title": "FireSquire-test",
   "n_test_body": "Om du kan läsa det här når FireSquires meddelanden dig.",
   "n_card": "Aviseringar",
-  "n_lead": "FireSquire skickar sitt besked när en kontroll slutar med ”Det pyr” eller ”Det brinner”, och en gång till när allt är tillbaka på ”Allt lugnt”. En kontroll utan fynd skickar ingenting.",
+  "n_lead": "FireSquire skickar sitt besked när en kontroll slutar med ”Det pyr” eller ”Taket brinner”, och en gång till när allt är tillbaka på ”Allt lugnt”. En kontroll utan fynd skickar ingenting.",
   "n_nohelper": "Aviseringsverktyget är inte installerat än, så FireSquire kan inte skicka något just nu.",
   "n_none": "Ingen kanal än.",
   "n_add": "Lägg till en kanal",
@@ -221,5 +218,6 @@
   "f_leave": "Lämna",
   "f_leave_title": "Lämna fästningen?",
   "f_leave_body": "Dina andra appar ser inte FireSquire längre, och kontrollen fortsätter utan dem. Med frasen kommer FireSquire tillbaka när du vill.",
-  "f_left": "FireSquire har lämnat fästningen."
+  "f_left": "FireSquire har lämnat fästningen.",
+  "flash_probe_left": "FireSquire kunde inte ta bort sin testfil {0} på flashminnet. Ta gärna bort den själv."
 }

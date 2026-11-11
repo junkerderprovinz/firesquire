@@ -1,5 +1,5 @@
 # What else stands in the way of a clean reboot, for firesquire-check.sh:
-# shutdown time-outs, an unclean last shutdown, files open over SMB and NFS,
+# the flash write test, shutdown time-outs, an unclean last shutdown, files open over SMB and NFS,
 # the UPS and the age of the flash backup. The engine sources this file and
 # brings add() and have().
 # shellcheck shell=bash
@@ -16,6 +16,26 @@ ini_get() {
 }
 
 libvirt_up() { pgrep -x libvirtd >/dev/null 2>&1; }
+boot_mounted() { mountpoint -q "$FS_BOOT"; }
+
+# more_probe writes an empty file to the flash and deletes it again. Only a
+# test file it could not delete earns a card of its own.
+more_probe() {
+  local tf="$FS_BOOT/.firesquire_write_test.$$"
+  if ! boot_mounted; then
+    add critical flash fail flash_unmounted "" "Flash /boot is not mounted."
+    return 0
+  fi
+  if ! ( : > "$tf" ) 2>/dev/null; then
+    add critical flash fail flash_ro "" "Flash /boot is mounted but not writable, possibly from FAT corruption, so the config will not persist."
+    return 0
+  fi
+  rm -f "$tf" 2>/dev/null
+  add critical flash pass flash_ok "" "Flash /boot is mounted and writable."
+  if [ -e "$tf" ]; then
+    add warning flash_probe warn flash_probe_left "$tf" "FireSquire could not delete its test file $tf on the flash. Please delete it yourself."
+  fi
+}
 
 # more_timeouts holds Unraid's shutdown time-out against the time Docker and
 # the VMs may take. Unraid stops every container with its own time-out, which

@@ -1,16 +1,13 @@
 {
   "title": "FireSquire: Pre-Reboot Check",
-  "hc": "pre-reboot health check",
   "running": "Running checks…",
-  "subtitle": "Advisory only · the flash test file is already deleted",
   "v_GO": "All clear",
   "v_CAUTION": "Smouldering",
-  "v_NO-GO": "On fire",
+  "v_NO-GO": "The roof is on fire",
   "tier_info": "Info",
   "err": "Could not run the check engine.",
   "err_hint": "Try again in a moment. If it keeps failing, the syslog may say why.",
-  "foot": "FireSquire reads the current state and predicts the common reboot landmines (pinned mounts, stuck loops, unclean array, in-flight operations, a crash-looping box). It is an early warning, not a guarantee. Genuine hardware, BIOS or timing failures during boot cannot be seen from a running system.",
-  "tools_lead": "FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (All clear / Smouldering / On fire) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.",
+  "tools_lead": "FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (All clear / Smouldering / The roof is on fire) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.",
   "tools_intro": "It looks for the reboot landmines that are detectable from the running system:",
   "tools_li": [
     "Array started & clean: every device assignment OK (no disabled/invalid/missing disk)",
@@ -141,7 +138,7 @@
   "n_test_title": "FireSquire test",
   "n_test_body": "If you can read this, FireSquire's messages reach you.",
   "n_card": "Notifications",
-  "n_lead": "FireSquire sends its verdict when a check ends in Smouldering or On fire, and once more when it is back to All clear. A check without findings sends nothing.",
+  "n_lead": "FireSquire sends its verdict when a check ends in \"Smouldering\" or \"The roof is on fire\", and once more when it is back to \"All clear\". A check without findings sends nothing.",
   "n_nohelper": "The notification helper is not installed yet, so FireSquire cannot send anything for now.",
   "n_none": "No channel yet.",
   "n_add": "Add a channel",
@@ -221,5 +218,6 @@
   "f_leave": "Leave",
   "f_leave_title": "Leave the fortress?",
   "f_leave_body": "Your other apps will not see FireSquire anymore, and the check goes on without them. The phrase brings FireSquire back any time.",
-  "f_left": "FireSquire has left the fortress."
+  "f_left": "FireSquire has left the fortress.",
+  "flash_probe_left": "FireSquire could not delete its test file {0} on the flash. Please delete it yourself."
 }
