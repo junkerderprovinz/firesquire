@@ -255,9 +255,7 @@
     hue(title, 0);
     win.appendChild(title);
     if (o.head) {
-      var x = el('button', 'fs-win-x', '×');
-      x.type = 'button';
-      x.setAttribute('aria-label', fsT('give_close'));
+      var x = button('fs-win-btn fs-win-x', 'Close', fsT('give_close'));
       x.addEventListener('click', done);
       win.appendChild(x);
     }
@@ -380,10 +378,7 @@
 
   function verdictHTML(data){
     var v = data.verdict, word = fsT('v_' + v) || v;
-    var h = '<div class="fs-verdict ' + (VCLASS[v] || 'fs-v-unknown') + '"><span class="fs-v-mark" aria-hidden="true">' + LOGO_SVG + '</span>';
-    h += lampHTML() + logoHTML() + '<div class="fs-v-word">' + esc(word) + '</div>';
-    if (data.generated) h += '<div class="fs-v-sub fs-num">' + esc(data.generated) + '</div>';
-    return h + '</div>';
+    return '<div class="fs-verdict ' + (VCLASS[v] || 'fs-v-unknown') + '">' + lampHTML() + logoHTML() + '<div class="fs-v-word">' + esc(word) + '</div></div>';
   }
 
 
@@ -484,7 +479,14 @@
     var win = openWindow({
       cls: 'fs-win-report' + (guard ? ' fs-win-guard' : ''), title: fsT('title'), head: true, opener: opener,
       onClose: function(){ if (abort) abort.abort(); },
-      build: function(body, win, foot){ act = foot; start(body); }
+      build: function(body, win, foot){
+        var mark = el('span', 'fs-win-mark');
+        mark.setAttribute('aria-hidden', 'true');
+        mark.innerHTML = LOGO_SVG;
+        win.insertBefore(mark, win.firstChild);
+        act = foot;
+        start(body);
+      }
     });
 
     function start(body){

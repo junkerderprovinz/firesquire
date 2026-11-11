@@ -46,25 +46,47 @@ ok('every level sets the dial', (sheets.match(/--fs-motion-lamp-dur:/g) || []).l
 ok('the turn comes to rest at none', /transform:\s*none/.test((keyframes(sheets)['fs-beacon'] || '').split('to')[1] || ''));
 ok('the turning cone is gone', !/fs-lamp-sweep/.test(sheets + js));
 
+const glows = css.filter((r) => /\.fs-lamp-halo/.test(r.selector) && /animation:\s*fs-glow /.test(r.body));
+ok('its glow breathes in and out on the engine\'s dial', glows.length > 0 && glows.every(NO_PREF) && glows.every((r) => /var\(--fs-motion-glow-dur\)/.test(r.body) && /infinite/.test(r.body)));
+ok('every level sets the glow\'s dial, about two seconds at rest', (sheets.match(/--fs-motion-glow-dur:/g) || []).length === 4 && /--fs-motion-glow-dur:\s*2s/.test(sheets));
+const pace = (sel) => css.find((r) => r.selector.includes(sel) && /fs-lamp-halo/.test(r.selector) && /animation-duration/.test(r.body) && NO_PREF(r));
+ok('it breathes faster when the roof burns and calmer when all is clear', /\* \.6\)/.test((pace('.fs-v-nogo') || {}).body || '') && /\* 1\.5\)/.test((pace('.fs-v-go') || {}).body || ''));
+ok('never more than three times a second', /\* \.6\)/.test((pace('.fs-v-nogo') || {}).body || '') && !/--fs-motion-glow-dur:\s*0?\.[0-4]\d*s/.test(sheets));
+ok('the glow stops at off and stays lit', css.some((r) => r.selector.includes('[data-tt-motion="off"]') && r.selector.includes('.fs-lamp-halo') && /animation:\s*none/.test(r.body)));
+ok('and rests where it started', /0%\s*,\s*100%/.test(keyframes(sheets)['fs-glow'] || ''));
+
 console.log('\nThe verdict');
 const verdict = css.filter((r) => /\.fs-verdict\b/.test(r.selector) && !/\.fs-v-/.test(r.selector));
 ok('has no coloured edge', !verdict.some((r) => /box-shadow:\s*inset/.test(r.body)), verdict.map((r) => r.selector).join(' | '));
 const vsrc = grabFn(js, 'verdictHTML');
-ok('carries no name line and no advisory line', !/fsT\('hc'\)|fsT\('subtitle'\)|fs-v-name|fs-v-adv/.test(vsrc));
-ok('but still the time of the check', /data\.generated/.test(vsrc));
-ok('FireSquire\'s logo rests behind it as a faint mark', /<span class="fs-v-mark" aria-hidden="true">' \+ LOGO_SVG/.test(vsrc));
-const mark = rule('.fs-v-mark');
-const op = mark && +((/opacity:\s*([\d.]+)/.exec(mark.body) || [])[1]);
-ok('the mark is faint and never in the way', !!mark && op > 0 && op <= 0.15 && /pointer-events:\s*none/.test(mark.body) && /position:\s*absolute/.test(mark.body), mark && mark.body);
-ok('the mark is large', +((/(?:width|height):\s*(\d+)px/.exec((rule('.fs-v-mark svg') || {}).body || '') || [])[1]) >= 140);
+ok('carries the level alone, no name, advice or time', !/fsT\('hc'\)|fsT\('subtitle'\)|fs-v-name|fs-v-adv|generated|fs-v-sub/.test(vsrc));
 ok('the advisory texts are gone', !['hc', 'subtitle', 'foot'].some((k) => k in JSON.parse(read('lang/en.json'))));
+
+console.log('\nThe logo in the background');
+const runSrc = grabFn(js, 'run');
+ok('the report window carries FireSquire\'s logo as a watermark', /class="fs-win-mark" aria-hidden="true"|'fs-win-mark'/.test(runSrc) && /LOGO_SVG/.test(runSrc));
+ok('the verdict no longer has a mark of its own', !/fs-v-mark/.test(js + sheets));
+const mark = rule('.fs-win-mark');
+const op = mark && +((/opacity:\s*([\d.]+)/.exec(mark.body) || [])[1]);
+ok('it lies behind everything and is never in the way', !!mark && /position:\s*absolute/.test(mark.body) && /inset:\s*0/.test(mark.body) && /pointer-events:\s*none/.test(mark.body) && /z-index:\s*0/.test(mark.body));
+ok('as a faint watermark, four to eight percent on dark', op >= 0.04 && op <= 0.08, String(op));
+const light = css.find((r) => /Theme--white/.test(r.selector) && /\.fs-win-mark/.test(r.selector) && /opacity/.test(r.body));
+ok('a little less on light', !!light && +((/opacity:\s*([\d.]+)/.exec(light.body) || [])[1]) < op);
+ok('filling most of the window', /width:\s*(8\d|9\d)%/.test((rule('.fs-win-mark svg') || {}).body || ''));
+ok('the content stands above it', css.some((r) => /\.fs-win-body/.test(r.selector) && /\.fs-win-act/.test(r.selector) && /z-index:\s*1/.test(r.body) && /position:\s*relative/.test(r.body)));
+const cards = css.filter((r) => /^\.fs-f$|^\.fs-verdict$/.test(r.selector) && !r.at.length);
+ok('the cards keep solid surfaces', cards.length === 2 && cards.every((r) => /background:\s*var\(--fs-card\)/.test(r.body)) && !css.some((r) => /\.fs-(f|verdict)\b/.test(r.selector) && /background:[^;]*transparent/.test(r.body)));
 
 console.log('\nThe window');
 const win = grabFn(js, 'openWindow');
 ok('has no head bar', !/fs-win-head(?!ed)|fs-win-name|fs-win-logo/.test(win + sheets));
-ok('keeps a close cross', /el\('button', 'fs-win-x', '×'\)/.test(win) && /aria-label', fsT\('give_close'\)/.test(win));
+ok('closes with GlimStone\'s close button, glyph and words', /button\('fs-win-btn fs-win-x', 'Close', fsT\('give_close'\)\)/.test(win) && !/'×'/.test(win));
 const x = rule('.fs-win .fs-win-x');
 ok('floating in its top corner', !!x && /position:\s*absolute/.test(x.body) && /top:/.test(x.body) && /inset-inline-end:/.test(x.body), x && x.body);
+ok('with rounded corners in both looks', !!x && /border-radius:\s*var\(--fs-r-ctl\)/.test(x.body));
+ok('its glyph shows in Unraid\'s look too', css.some((r) => /\.fs-win-x \.fs-btn-g/.test(r.selector) && !/tt-popups-on/.test(r.selector) && /display:\s*inline-flex/.test(r.body)));
+ok('with a visible focus ring', css.some((r) => /\.fs-win-x:focus-visible/.test(r.selector) && /outline:\s*2px solid var\(--fs-focus\)/.test(r.body)));
+ok('and Escape closes the window', /e\.key === 'Escape'[^\n]*done\(\)/.test(win));
 
 console.log('\nButtons');
 const BUTTON = /\.fs-btn\b|\.fs-win-btn\b|\.fs-f-go\b|\.fs-rbtn(-unit)?\b|\.fs-net\b|\.fs-seg-opt\b|\.fs-coin\b/;

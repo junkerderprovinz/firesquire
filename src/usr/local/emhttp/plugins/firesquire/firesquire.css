@@ -21,6 +21,7 @@ html {
   --fs-motion-pop-dur: 0s;
   --fs-motion-pop-scale: 1;
   --fs-motion-lamp-dur: 0s;
+  --fs-motion-glow-dur: 0s;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -33,6 +34,7 @@ html {
     --fs-motion-pop-dur: 380ms;
     --fs-motion-pop-scale: 1.12;
     --fs-motion-lamp-dur: 1.6s;
+    --fs-motion-glow-dur: 2s;
   }
   html[data-tt-motion="subtle"] {
     --fs-motion-bar-dur: 240ms;
@@ -44,6 +46,7 @@ html {
     --fs-motion-pop-dur: 520ms;
     --fs-motion-pop-scale: 1.05;
     --fs-motion-lamp-dur: 2.4s;
+    --fs-motion-glow-dur: 2.8s;
   }
   html[data-tt-motion="off"] {
     --fs-motion-bar-dur: 0s;
@@ -55,12 +58,14 @@ html {
     --fs-motion-pop-dur: 0s;
     --fs-motion-pop-scale: 1;
     --fs-motion-lamp-dur: 0s;
+    --fs-motion-glow-dur: 0s;
   }
 }
 @keyframes fs-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fs-win-in { from { opacity: 0; transform: translateY(var(--fs-motion-win-travel, 0px)); } to { opacity: 1; transform: none; } }
 @keyframes fs-sweep { from { left: -38%; } to { left: 100%; } }
 @keyframes fs-tint { from { color: var(--fs-neutral); } }
+@keyframes fs-glow { 0%, 100% { opacity: .6; transform: none; } 50% { opacity: 1; transform: scale(1.12); } }
 @keyframes fs-beacon { from { transform: rotate(-360deg); } to { transform: none; } }
 @keyframes fs-pop { 0% { transform: none; } 45% { transform: scale(var(--fs-motion-pop-scale, 1)); } 100% { transform: none; } }
 
@@ -218,17 +223,29 @@ html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, b
 .fs-win-act > button { margin: 0; }
 /* Before a reboot the window asks, so its buttons show in every look. */
 .fs-win-act .fs-win-ask { margin-inline-end: auto; align-self: center; font-weight: 600; }
-/* The report's window has no head bar, only a close cross floating in its
-   corner, and in Unraid's look no foot either. */
+/* The report's window has no head bar, only GlimStone's close button floating
+   in its corner, and in Unraid's look no foot either. FireSquire's logo fills
+   the window behind everything as a watermark; the cards keep their solid
+   surfaces, so it never sits under text. */
 .fs-win.fs-win-headed { padding: 0; overflow: hidden; border-radius: 10px; }
 .fs-win-headed .fs-win-title, .fs-win-headed .fs-win-act { display: none; }
 .fs-win-headed.fs-win-guard .fs-win-act { display: flex; padding-bottom: 16px; }
 .fs-win .fs-win-x {
-  position: absolute; z-index: 2; top: 8px; inset-inline-end: 10px; min-width: 0; height: auto; margin: 0; padding: 0 4px;
-  border: 0; background: none; box-shadow: none; color: inherit; font-size: 22px; line-height: 1; opacity: .75; cursor: pointer;
+  position: absolute; z-index: 2; top: 12px; inset-inline-end: 14px; display: inline-flex; align-items: center; gap: .45em;
+  min-width: 0; min-height: 32px; height: auto; margin: 0; padding: 6px 12px; border: 0; border-radius: var(--fs-r-ctl); box-shadow: none;
+  background: var(--fs-chip); color: var(--fs-text); font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1.2;
+  letter-spacing: normal; text-transform: none; cursor: pointer;
 }
-.fs-win .fs-win-x:hover { opacity: 1; background: none; color: inherit; }
-.fs-win-headed .fs-win-body { padding: 40px 22px 18px; }
+.fs-win .fs-win-x:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+.fs-win .fs-win-x:focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
+.fs-win-x .fs-btn-g { display: inline-flex; }
+.fs-win-headed .fs-win-body { padding: 56px 22px 18px; }
+.fs-win-mark { position: absolute; z-index: 0; inset: 0; overflow: hidden; border-radius: inherit; opacity: .06; pointer-events: none; color: var(--fs-text); }
+html:is(.Theme--white, .Theme--azure) .fs-win-mark { opacity: .045; }
+.fs-win-mark svg { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 90%; height: 90%; }
+.fs-win-mark .fs-lf { fill: currentColor; }
+.fs-win-mark .fs-lf-lit { fill: color-mix(in srgb, currentColor 55%, transparent); }
+.fs-win-body, .fs-win-act { position: relative; z-index: 1; }
 
 /* The report runs from near the top, so it does not jump while the progress
    bar turns into a result. */
@@ -239,7 +256,7 @@ html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, b
 html.tt-popups-on .fs-win.fs-win-headed { padding: 21px 0 16px; overflow: visible; border-radius: var(--fs-r-card); }
 html.tt-popups-on .fs-win-headed .fs-win-title { display: inline-flex; }
 html.tt-popups-on .fs-win-headed .fs-win-act { display: flex; }
-html.tt-popups-on .fs-win-headed .fs-win-body { padding: 22px 22px 4px; }
+html.tt-popups-on .fs-win-headed .fs-win-body { padding: 52px 22px 4px; }
 @media (prefers-reduced-motion: no-preference) {
   html.tt-popups-on .fs-scrim { animation: fs-fade-in var(--fs-motion-win-dur) ease-out both; }
   html.tt-popups-on .fs-win { animation: fs-win-in var(--fs-motion-win-dur) ease-out both; }
@@ -264,20 +281,16 @@ html.tt-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-fo
 .fs-v-caution { --fs-v: var(--fs-caution); }
 .fs-v-nogo { --fs-v: var(--fs-nogo); }
 .fs-v-unknown { --fs-v: var(--fs-neutral); }
-.fs-verdict { position: relative; isolation: isolate; display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 10px; background: var(--fs-card); }
-/* FireSquire's logo rests as a faint mark behind the verdict, cut by its edge
-   like the banner's silhouette on the settings page. */
-.fs-v-mark { position: absolute; z-index: -1; inset: 0; overflow: hidden; border-radius: inherit; opacity: .1; pointer-events: none; color: var(--fs-text); }
-.fs-v-mark svg { position: absolute; top: 50%; inset-inline-end: -24px; translate: 0 -50%; width: 168px; height: 168px; }
-.fs-v-mark .fs-lf { fill: currentColor; }
-.fs-v-mark .fs-lf-lit { fill: color-mix(in srgb, currentColor 55%, transparent); }
+.fs-verdict { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 10px; background: var(--fs-card); }
 .fs-v-logo { display: none; }
 /* The warning beacon leads the verdict, like the light on a patrol car: a dome
    with a bright core in the level's colour, a halo that lights the verdict
    around it, and two beams lying flat around the dome. The front half of the
    beams passes before the dome, the back half behind it. The beams sweep round
    while something smoulders or burns, faster when the roof is on fire. All
-   clear keeps them still, and without motion every beacon stays lit and still. */
+   clear keeps them still. The glow breathes calmly on top, about every two
+   seconds while something smoulders, faster when the roof is on fire, slower
+   when all is clear. Without motion every beacon stays lit and still. */
 .fs-v-lamp { position: relative; flex: none; width: 72px; height: 44px; }
 .fs-lamp-halo, .fs-lamp-beam { position: absolute; left: 50%; top: 20px; width: 96px; height: 96px; margin: -48px 0 0 -48px; pointer-events: none; }
 .fs-lamp-halo {
@@ -307,9 +320,12 @@ html.tt-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-fo
   :is(.fs-v-caution, .fs-v-nogo) .fs-lamp-beam::before { animation: fs-beacon var(--fs-motion-lamp-dur) linear infinite; }
   .fs-v-nogo .fs-lamp-beam::before { animation-duration: calc(var(--fs-motion-lamp-dur) * .6); }
   html[data-tt-motion="off"] .fs-lamp-beam::before { animation: none; }
+  .fs-verdict .fs-lamp-halo { animation: fs-glow var(--fs-motion-glow-dur) ease-in-out infinite; }
+  .fs-v-nogo .fs-lamp-halo { animation-duration: calc(var(--fs-motion-glow-dur) * .6); }
+  .fs-v-go .fs-lamp-halo { animation-duration: calc(var(--fs-motion-glow-dur) * 1.5); }
+  html[data-tt-motion="off"] .fs-lamp-halo { animation: none; }
 }
 .fs-v-word { font-size: 30px; font-weight: 800; letter-spacing: 1px; line-height: 1.1; color: var(--fs-v); }
-.fs-v-sub { align-self: flex-end; color: var(--fs-dim); font-size: 12px; }
 html.tt-popups-on .fs-v-go { --fs-v: var(--tt-ok-ink, #6fdc8c); }
 html.tt-popups-on .fs-v-caution { --fs-v: var(--tt-warn-ink, #ff832b); }
 html.tt-popups-on .fs-v-nogo { --fs-v: var(--tt-err-ink, #ff8389); }
@@ -329,7 +345,6 @@ html.tt-popups-on .fs-v-logo svg { display: block; width: 100%; height: 100%; ov
   html.tt-popups-on :is(.fs-verdict, .fs-err) .fs-v-logo svg { animation: fs-pop var(--fs-motion-pop-dur) cubic-bezier(.34, 1.56, .64, 1); }
   html.tt-popups-on[data-tt-motion="off"] :is(.fs-verdict, .fs-err) :is(.fs-v-logo, .fs-v-logo svg) { animation: none; }
 }
-html.tt-popups-on .fs-v-sub { font-size: var(--tt-text-subline, 13px); }
 
 /* Every finding is a card in GlimStone's style, in Unraid's look as in
    TowerTorch's, whose tokens only recolour them. The cards stand by level,
@@ -337,7 +352,7 @@ html.tt-popups-on .fs-v-sub { font-size: var(--tt-text-subline, 13px); }
 .fs-level { margin-top: 16px; }
 .fs-level-h {
   margin: 0 0 8px; padding: 0; border: 0;
-  color: var(--fs-dim); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--fs-text) 35%, var(--fs-dim)); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
 }
 .fs-f { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 10px 14px; border-radius: var(--fs-r-card); background: var(--fs-card); }
 .fs-f + .fs-f { margin-top: 8px; }
