@@ -12,18 +12,24 @@ function finding($tier, $status, $key, $args, $msg) {
   echo implode("\x1f", [$tier, $status, $key, implode('|', array_map('flat', $args)), flat($msg)]), "\n";
 }
 
-if (!$members) {
-  finding('info', 'info', 'fortress_alone', [], 'No other app of your fortress is in reach right now.');
-  exit(0);
+/* An app that offers no status refuses with not_found. It has nothing to say
+ * about a reboot, so it gets no line, unlike one that offers a status and
+ * does not answer. */
+function offers_status($m) {
+  return !preg_match('/refused with "not_found" \(404\)/', (string) ($m['error'] ?? ''));
 }
 
 $busy = 0;
 $answered = 0;
+$unanswered = 0;
 foreach ($members as $m) {
   $app = flat(($m['report']['app']['name'] ?? '') ?: (($m['app']['name'] ?? '') ?: ($m['app']['id'] ?? '')));
   $device = flat($m['device'] ?? '');
   if (!isset($m['report']) || !is_array($m['report'])) {
-    finding('info', 'info', 'fortress_unanswered', [$app, $device], "$app on $device did not answer.");
+    if (offers_status($m)) {
+      $unanswered++;
+      finding('info', 'info', 'fortress_unanswered', [$app, $device], "$app on $device did not answer.");
+    }
     continue;
   }
   $answered++;
@@ -39,6 +45,8 @@ foreach ($members as $m) {
     }
   }
 }
-if ($busy === 0) {
+if ($answered === 0 && $unanswered === 0) {
+  finding('info', 'info', 'fortress_alone', [], 'No other app of your fortress is in reach right now.');
+} elseif ($answered > 0 && $busy === 0) {
   finding('critical', 'pass', 'fortress_ok', [(string) $answered], "$answered app(s) in your fortress answered. None is busy with work a reboot would cut short.");
 }

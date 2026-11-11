@@ -98,6 +98,15 @@ ok('says how many apps answered and that none is busy',
 r = engine({ answer: [] });
 ok('with no app in reach it says so', r.checks.length === 1 && r.checks[0].key === 'fortress_alone' && r.checks[0].status === 'info', JSON.stringify(r.checks));
 
+console.log('\nAn app that offers no status');
+const silent = member('m9', 'tollroll', 'TollRoll', 'Bottich', { error: 'fortress: refused with "not_found" (404)' });
+r = engine({ answer: [member('m1', 'bombvault', 'BombVault', 'Tower', { report: report({}) }), silent] });
+ok('has nothing to say and gets no line', r.checks.length === 1 && r.checks[0].key === 'fortress_ok' && same(r.checks[0].args, ['1']), JSON.stringify(r.checks));
+r = engine({ answer: [silent] });
+ok('alone, it leaves the fortress as quiet as no app at all', r.checks.length === 1 && r.checks[0].key === 'fortress_alone', JSON.stringify(r.checks));
+r = engine({ answer: [member('m3', 'arrowloop', 'ArrowLoop', 'Laptop', { error: 'fortress: refused with "internal" (500)' })] });
+ok('an app that offers one and fails still counts as not answering', r.checks.length === 1 && r.checks[0].key === 'fortress_unanswered', JSON.stringify(r.checks));
+
 console.log('\nA helper that fails');
 r = engine({ answer: 'relay down', code: 1 });
 ok('is a note, not a verdict', r.checks.length === 1 && r.checks[0].key === 'fortress_skip' && r.checks[0].status === 'info', JSON.stringify(r.checks));
