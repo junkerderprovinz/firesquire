@@ -185,7 +185,9 @@
 
   if (rtl) root.dir = "rtl";
   var ver = root.getAttribute("data-fs-ver");
-  // firesquire-notify.js fills in the notification and schedule cards here.
+  // firesquire-fortress.js fills in the fortress card, firesquire-notify.js
+  // the notification and schedule cards.
+  root.appendChild(el("div")).id = "fs-fortress";
   root.appendChild(el("div")).id = "fs-notify";
 
   var cVer = card(t("ver_title"));
@@ -218,6 +220,8 @@
     Array.prototype.forEach.call(root.querySelectorAll(".fs-card"), function (c, i) { hue(c, i); });
   }
   paint();
+  // The cards of the scripts after this one join the rainbow once they stand.
+  document.addEventListener("DOMContentLoaded", paint);
   new MutationObserver(paint).observe(html, { attributes: true, attributeFilter: ["class"] });
   window.addEventListener("storage", function (e) { if (!e.key || /^tt\./.test(e.key)) paint(); });
 

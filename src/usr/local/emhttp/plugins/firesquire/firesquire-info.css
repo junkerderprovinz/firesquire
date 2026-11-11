@@ -223,3 +223,17 @@ html.tt-popups-on #fs-info .fs-key .fs-btn-g svg { width: 1rem; height: 1rem; }
 #fs-info textarea.fs-in { min-height: 64px; font-family: monospace; }
 .fs-n-msg { color: var(--fs-dim); font-size: 12px; }
 @media (max-width: 600px) { .fs-ch-fields { grid-template-columns: minmax(0, 1fr); } }
+
+/* The fortress card, filled in by firesquire-fortress.js. A member's state is
+   a chip whose dot carries the colour, so the words keep the text colour on
+   every theme. */
+#fs-fortress { display: contents; }
+#fs-info .fs-phrase { width: 320px; }
+.fs-fort-list { border-top: 1px solid var(--fs-line); }
+.fs-fort-wait { color: var(--fs-dim); }
+.fs-state { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--fs-r-ctl); background: var(--fs-chip); font-size: 12px; white-space: nowrap; }
+.fs-state::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--fs-dot); }
+.fs-state-on { --fs-dot: var(--fs-ok); }
+.fs-state-off { --fs-dot: var(--fs-dim); }
+#fs-info p.fs-n-msg { margin: 4px 0 0; }
+#fs-info p.fs-n-msg:empty { display: none; }

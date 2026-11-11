@@ -1,7 +1,8 @@
 <?php
 /* Reads `fortress status -json` on stdin and prints one finding per line for
  * firesquire-check.sh: tier, status, key, args and the English message,
- * separated by the unit separator, with the args joined by "|". */
+ * separated by the unit separator, with the args joined by "|". Only work a
+ * reboot would cut short counts; what an app needs from you is TollRoll's. */
 $members = json_decode(stream_get_contents(STDIN), true);
 if (!is_array($members)) exit(1);
 
@@ -36,11 +37,6 @@ foreach ($members as $m) {
     } else {
       finding('critical', 'fail', 'fortress_busy_open', [$app, $device, $title], "$app on $device is still busy with $title. Let it finish before rebooting.");
     }
-  }
-  foreach ($m['report']['needsYou'] ?? [] as $n) {
-    if (($n['severity'] ?? '') !== 'error') continue;
-    $text = flat($n['text'] ?? '');
-    finding('warning', 'warn', 'fortress_needs', [$app, $device, $text], "$app on $device needs you: $text");
   }
 }
 if ($busy === 0) {

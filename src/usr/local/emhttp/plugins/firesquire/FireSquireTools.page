@@ -81,4 +81,5 @@ if (preg_match('/<!ENTITY\s+version\s+"([^"]+)"/', (string)@file_get_contents('/
 <div id="fs-info" data-fs-ver="<?=htmlspecialchars($fsVer, ENT_QUOTES)?>"></div>
 <script src="<?autov('/plugins/firesquire/firesquire-marks.js')?>"></script>
 <script src="<?autov('/plugins/firesquire/firesquire-info.js')?>"></script>
+<script src="<?autov('/plugins/firesquire/firesquire-fortress.js')?>"></script>
 <script src="<?autov('/plugins/firesquire/firesquire-notify.js')?>"></script>

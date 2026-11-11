@@ -32,7 +32,7 @@ const js = read('firesquire.js');
 let parses = true;
 try { new (require('vm').Script)(js); } catch (e) { parses = e.message; }
 ok('the script with the English fallback parses', parses === true, parses);
-const fallback = ['err_hint', 'tools_title', 'tools_note', 'retry', 'rel_notes', 'tools_g_fortress', 'p_fortress', 'fortress_busy', 'fortress_busy_open', 'fortress_needs', 'fortress_unanswered', 'fortress_ok', 'fortress_alone', 'fortress_skip', 'tools_g_health', 'p_pools', 'zfs_degraded', 'zfs_dev_errors', 'zfs_dev_state', 'zfs_ok', 'btrfs_dev_errors', 'btrfs_ok', 'crc_found', 'crc_rose', 'scrutiny_link', 'scrutiny_tip'].filter((k) => !js.includes('    ' + k + ': '));
+const fallback = ['err_hint', 'tools_title', 'tools_note', 'retry', 'rel_notes', 'tools_g_fortress', 'p_fortress', 'fortress_busy', 'fortress_busy_open', 'fortress_unanswered', 'fortress_ok', 'fortress_alone', 'fortress_skip', 'tools_g_health', 'p_pools', 'zfs_degraded', 'zfs_dev_errors', 'zfs_dev_state', 'zfs_ok', 'btrfs_dev_errors', 'btrfs_ok', 'crc_found', 'crc_rose', 'scrutiny_link', 'scrutiny_tip'].filter((k) => !js.includes('    ' + k + ': '));
 ok('the English fallback carries the new strings', fallback.length === 0, fallback.join(', '));
 
 done();

@@ -1,6 +1,7 @@
 // The fortress group: the engine asks the other apps of the fortress through the helper and reports
-// work that a reboot would cut short as NO-GO and a need marked as an error as CAUTION. Without a
-// helper or a joined directory the group stays out of the report.
+// work that a reboot would cut short as NO-GO. What an app needs from you has nothing to do with a
+// reboot and stays out; TollRoll shows it. Without a helper or a joined directory the group stays
+// out of the report.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -84,11 +85,7 @@ const open = find(r.checks, 'fortress_busy_open');
 ok('work without a progress is NO-GO without one',
   open.length === 1 && open[0].status === 'fail' && same(open[0].args, ['KnightLoader', 'Tower', 'Ubuntu ISO']), JSON.stringify(open));
 ok('work that does not block a restart stays out', !JSON.stringify(r.checks).includes('Integrity check'));
-const needs = find(r.checks, 'fortress_needs');
-ok('a need marked as an error is CAUTION with its text on one line',
-  needs.length === 1 && needs[0].tier === 'warning' && needs[0].status === 'warn' &&
-  same(needs[0].args, ['BombVault', 'Tower', 'The last backup of Plex failed. See the log.']), JSON.stringify(needs));
-ok('a warning stays out', !JSON.stringify(r.checks).includes('An update is ready'));
+ok('what an app needs from you stays out, even an error', !JSON.stringify(r.checks).includes('Plex') && !JSON.stringify(r.checks).includes('An update is ready'), JSON.stringify(r.checks));
 const quiet = find(r.checks, 'fortress_unanswered');
 ok('an app that did not answer is a note', quiet.length === 1 && quiet[0].status === 'info' && same(quiet[0].args, ['ArrowLoop', 'Laptop']), JSON.stringify(quiet));
 ok('nothing claims the fortress is idle', find(r.checks, 'fortress_ok').length === 0);
@@ -106,8 +103,9 @@ r = engine({ answer: 'relay down', code: 1 });
 ok('is a note, not a verdict', r.checks.length === 1 && r.checks[0].key === 'fortress_skip' && r.checks[0].status === 'info', JSON.stringify(r.checks));
 
 console.log('\nThe texts');
-const keys = ['fortress_busy', 'fortress_busy_open', 'fortress_needs', 'fortress_unanswered', 'fortress_ok', 'fortress_alone', 'fortress_skip', 'p_fortress', 'tools_g_fortress'];
+const keys = ['fortress_busy', 'fortress_busy_open', 'fortress_unanswered', 'fortress_ok', 'fortress_alone', 'fortress_skip', 'p_fortress', 'tools_g_fortress'];
 const missing = keys.filter((k) => !(k in en));
 ok('every fortress text is in en.json', missing.length === 0, missing.join(', '));
+ok('and the need texts are gone', !('fortress_needs' in en));
 
 done();

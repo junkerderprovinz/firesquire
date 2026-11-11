@@ -30,7 +30,7 @@
       'No parity/sync/rebuild/clear or mover in progress',
       'No container mounting a host runtime dir, no stuck docker.img/libvirt.img loop',
       'Flash writable, free space, recent crashes, running VMs, services, SMART health',
-      'Apps in your fortress: work a reboot would cut short, and errors that need you',
+      'Apps in your fortress: work a reboot would cut short, such as a running backup or update',
       'ZFS pools and devices, btrfs device errors and rising CRC counts, each with the disk\'s port',
       'Shutdown time-outs, an unclean last shutdown, files open over SMB and NFS, the UPS and the age of the flash backup'
     ],
@@ -105,7 +105,6 @@
     binds_ok: 'All container bind sources under /mnt exist.',
     fortress_busy: '{0} on {1} is still busy with {2} ({3}). Let it finish before rebooting.',
     fortress_busy_open: '{0} on {1} is still busy with {2}. Let it finish before rebooting.',
-    fortress_needs: '{0} on {1} needs you: {2}',
     fortress_unanswered: '{0} on {1} did not answer.',
     fortress_ok: '{0} app(s) in your fortress answered. None is busy with work a reboot would cut short.',
     fortress_alone: 'No other app of your fortress is in reach right now.',

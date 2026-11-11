@@ -113,7 +113,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 
 Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, FireSquire links to Scrutiny if it runs on the server, or suggests it for the SMART history.
 
-**Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup, is NO-GO and names the app, the device, the task and its progress. An app that reports an error waiting for you is CAUTION. Without a fortress the group stays out of the report.
+**Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup or update, is NO-GO and names the app, the device, the task and its progress. What an app needs from you has nothing to do with a reboot, so it stays out of the report. TollRoll shows it. You join with the twelve words of your fortress phrase on the settings page. FireSquire keeps only its own keys, never the phrase, and lists the other apps there as connected or not reachable. Without a fortress the group stays out of the report.
 
 **Info**: uptime, kernel, Unraid version.
 
