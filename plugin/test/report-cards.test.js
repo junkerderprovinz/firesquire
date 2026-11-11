@@ -39,9 +39,9 @@ console.log('\nThe cards');
 function report(themed, checks, verdict = 'NO-GO') {
   const ctx = { FS_I18N: langs.en, FS_EN: {}, themed: () => themed, location: { hostname: 'tower' } };
   vm.createContext(ctx);
-  const src = ['fsT', 'esc', 'glyph', 'fsLink', 'ownLink', 'message', 'logoHTML', 'lampHTML', 'verdictHTML', 'rowHTML', 'reportHTML'].map((n) => grabFn(js, n)).join('\n');
+  const src = ['fsT', 'esc', 'glyph', 'fsLink', 'ownLink', 'message', 'lampHTML', 'verdictHTML', 'rowHTML', 'reportHTML'].map((n) => grabFn(js, n)).join('\n');
   const vars = ['VCLASS', 'STATUS', 'QUOTES_LOG', 'LEVELS'].map((n) => (new RegExp(`var ${n} = [^\\n]*;`).exec(js) || [''])[0]).join('\n');
-  vm.runInContext(`var GLYPHS = {}; var LOGO_SVG = '<svg></svg>';\n${vars}\n${src}\nthis.out = reportHTML(${JSON.stringify({ verdict, checks })});`, ctx);
+  vm.runInContext(`var GLYPHS = {};\n${vars}\n${src}\nthis.out = reportHTML(${JSON.stringify({ verdict, checks })});`, ctx);
   return ctx.out;
 }
 const checks = [

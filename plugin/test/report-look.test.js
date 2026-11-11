@@ -1,10 +1,9 @@
 // The report opens with a warning beacon in the level's colour: a lit dome with a bright core and a
 // halo, and a beam that sweeps all the way round it, passing in front of and behind the dome, for
 // Es glimmt and Feuer am Dach on the motion engine's dial, with a glow that breathes on top, lit but
-// still without motion. The window has no head bar and closes from its foot, and FireSquire's logo
-// lies behind it as a watermark larger than the window. The verdict names the level alone. Buttons
-// have rounded corners and are never pills, in either look. Texts run as one paragraph each,
-// without breaks set by hand.
+// still without motion. The window has no head bar and closes from its foot, and its cards keep
+// solid surfaces. The verdict names the level alone. Buttons have rounded corners and are never
+// pills, in either look. Texts run as one paragraph each, without breaks set by hand.
 const fs = require('fs');
 const path = require('path');
 const { DIR, read, ok, done, rules, keyframes, grabFn } = require('./lib');
@@ -16,7 +15,7 @@ const NO_PREF = (r) => r.at.some((a) => /prefers-reduced-motion:\s*no-preference
 const rule = (sel) => css.find((r) => r.selector === sel);
 
 console.log('\nThe warning beacon');
-ok('the verdict starts with the beacon', /lampHTML\(\) \+ logoHTML\(\)/.test(grabFn(js, 'verdictHTML')));
+ok('the verdict starts with the beacon', /'">' \+ lampHTML\(\)/.test(grabFn(js, 'verdictHTML')));
 const beacon = grabFn(js, 'lampHTML');
 ok('it is decoration for a screen reader', /class="fs-v-lamp" aria-hidden="true"/.test(beacon));
 ok('it has a halo, a dome on a base and a beam behind and in front of the dome',
@@ -62,19 +61,7 @@ const vsrc = grabFn(js, 'verdictHTML');
 ok('carries the level alone, no name, advice or time', !/fsT\('hc'\)|fsT\('subtitle'\)|fs-v-name|fs-v-adv|generated|fs-v-sub/.test(vsrc));
 ok('the advisory texts are gone', !['hc', 'subtitle', 'foot'].some((k) => k in JSON.parse(read('lang/en.json'))));
 
-console.log('\nThe logo in the background');
-const runSrc = grabFn(js, 'run');
-ok('the report window carries FireSquire\'s logo as a watermark', /class="fs-win-mark" aria-hidden="true"|'fs-win-mark'/.test(runSrc) && /LOGO_SVG/.test(runSrc));
-ok('the verdict no longer has a mark of its own', !/fs-v-mark/.test(js + sheets));
-const mark = rule('.fs-win-mark');
-const op = mark && +((/opacity:\s*([\d.]+)/.exec(mark.body) || [])[1]);
-ok('it lies behind everything and is never in the way', !!mark && /position:\s*absolute/.test(mark.body) && /inset:\s*0/.test(mark.body) && /pointer-events:\s*none/.test(mark.body) && /z-index:\s*0/.test(mark.body));
-ok('as a faint watermark, four to eight percent on dark', op >= 0.04 && op <= 0.08, String(op));
-const light = css.find((r) => /Theme--white/.test(r.selector) && /\.fs-win-mark/.test(r.selector) && /opacity/.test(r.body));
-ok('a little less on light', !!light && +((/opacity:\s*([\d.]+)/.exec(light.body) || [])[1]) < op);
-ok('larger than the window, cropped by its edges', +((/width:\s*(\d+)%/.exec((rule('.fs-win-mark svg') || {}).body || '') || [])[1]) >= 120
-  && /overflow:\s*hidden/.test((rule('.fs-win-mark') || {}).body || ''));
-ok('the content stands above it', css.some((r) => /\.fs-win-body/.test(r.selector) && /\.fs-win-act/.test(r.selector) && /z-index:\s*1/.test(r.body) && /position:\s*relative/.test(r.body)));
+console.log('\nThe cards');
 const cards = css.filter((r) => /^\.fs-f$|^\.fs-verdict$/.test(r.selector) && !r.at.length);
 ok('the cards keep solid surfaces', cards.length === 2 && cards.every((r) => /background:\s*var\(--fs-card\)/.test(r.body)) && !css.some((r) => /\.fs-(f|verdict)\b/.test(r.selector) && /background:[^;]*transparent/.test(r.body)));
 
