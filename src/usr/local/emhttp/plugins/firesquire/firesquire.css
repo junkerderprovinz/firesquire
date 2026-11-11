@@ -61,7 +61,7 @@ html {
 @keyframes fs-win-in { from { opacity: 0; transform: translateY(var(--fs-motion-win-travel, 0px)); } to { opacity: 1; transform: none; } }
 @keyframes fs-sweep { from { left: -38%; } to { left: 100%; } }
 @keyframes fs-tint { from { color: var(--fs-neutral); } }
-@keyframes fs-lamp { 0% { transform: none; opacity: .6; } 70% { transform: scale(2.6); opacity: 0; } 100% { transform: none; opacity: 0; } }
+@keyframes fs-beacon { from { transform: rotate(-360deg); } to { transform: none; } }
 @keyframes fs-pop { 0% { transform: none; } 45% { transform: scale(var(--fs-motion-pop-scale, 1)); } 100% { transform: none; } }
 
 #fs-info, .fs-win, .fs-scrim {
@@ -230,7 +230,7 @@ html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, b
   padding: 12px 18px; background: var(--fs-card); font-weight: 700;
 }
 .fs-win-name { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.fs-win-logo { flex: none; width: 26px; height: 26px; }
+.fs-win-logo { flex: none; width: 64px; height: 64px; }
 .fs-win .fs-win-x {
   flex: none; min-width: 0; height: auto; margin: 0; padding: 0 4px; border: 0; background: none; box-shadow: none;
   color: inherit; font-size: 22px; line-height: 1; opacity: .75; cursor: pointer;
@@ -273,19 +273,28 @@ html.tt-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-fo
 .fs-v-caution { --fs-v: var(--fs-caution); }
 .fs-v-nogo { --fs-v: var(--fs-nogo); }
 .fs-v-unknown { --fs-v: var(--fs-neutral); }
-.fs-verdict {
-  display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 10px;
-  background: var(--fs-card); box-shadow: inset 8px 0 0 var(--fs-v);
-}
-[dir="rtl"] .fs-verdict { box-shadow: inset -8px 0 0 var(--fs-v); }
+.fs-verdict { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 10px; background: var(--fs-card); }
 .fs-v-logo { display: none; }
-/* The warning lamp leads the verdict in its colour, and a ring of its light
-   keeps going out from it while the motion engine lets it. */
-.fs-v-lamp { position: relative; flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--fs-v); }
-.fs-v-lamp::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--fs-v); opacity: 0; }
+/* The warning beacon leads the verdict: a dome lit in the level's colour on a
+   dark base, with a beam inside that turns like the light on a patrol car
+   while something smoulders or burns. All clear keeps its beam still, and
+   without motion every beacon stays lit and still. */
+.fs-v-lamp { flex: none; display: inline-flex; flex-direction: column; align-items: center; width: 38px; }
+.fs-lamp-dome {
+  position: relative; overflow: hidden; width: 30px; height: 26px; border-radius: 15px 15px 3px 3px;
+  background: radial-gradient(circle at 50% 75%, color-mix(in srgb, var(--fs-v) 45%, #fff) 0 15%, var(--fs-v) 55%, color-mix(in srgb, var(--fs-v) 70%, #000));
+  box-shadow: 0 0 14px 2px color-mix(in srgb, var(--fs-v) 55%, transparent);
+}
+.fs-lamp-sweep {
+  position: absolute; left: -15px; top: -11px; width: 60px; height: 60px;
+  background: conic-gradient(transparent 0 290deg, rgba(255, 255, 255, .75) 335deg, transparent 360deg);
+  border-radius: 50%; transform: rotate(-60deg);
+}
+.fs-lamp-base { width: 38px; height: 7px; border-radius: 2px; background: color-mix(in srgb, var(--fs-text) 30%, #000); }
 @media (prefers-reduced-motion: no-preference) {
-  .fs-verdict .fs-v-lamp::after { animation: fs-lamp var(--fs-motion-lamp-dur) ease-out infinite; }
-  html[data-tt-motion="off"] .fs-verdict .fs-v-lamp::after { animation: none; }
+  :is(.fs-v-caution, .fs-v-nogo) .fs-lamp-sweep { animation: fs-beacon var(--fs-motion-lamp-dur) linear infinite; }
+  .fs-v-nogo .fs-lamp-sweep { animation-duration: calc(var(--fs-motion-lamp-dur) * .6); }
+  html[data-tt-motion="off"] .fs-lamp-sweep { animation: none; }
 }
 .fs-v-word { font-size: 30px; font-weight: 800; letter-spacing: 1px; line-height: 1.1; color: var(--fs-v); }
 .fs-v-meta { min-width: 0; }
@@ -311,7 +320,7 @@ html.tt-popups-on .fs-v-logo svg { display: block; width: 100%; height: 100%; ov
 }
 html.tt-popups-on .fs-v-name { font-size: var(--tt-text-title, 16px); font-weight: 600; }
 html.tt-popups-on .fs-v-sub { font-size: var(--tt-text-subline, 13px); }
-html.tt-popups-on .fs-v-adv, html.tt-popups-on .fs-foot { display: none; }
+html.tt-popups-on .fs-v-adv { display: none; }
 
 /* Every finding is a card in GlimStone's style, in Unraid's look as in
    TowerTorch's, whose tokens only recolour them. The cards stand by level,
@@ -334,7 +343,6 @@ html.tt-popups-on .fs-v-adv, html.tt-popups-on .fs-foot { display: none; }
 .fs-f-ic svg { display: block; width: 12px; height: 12px; }
 .fs-f-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
 .fs-f-text code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; color: var(--fs-dim); }
-.fs-foot { margin: 18px 0 0; color: var(--fs-dim); font-size: 11px; line-height: 1.5; }
 
 html.tt-popups-on .fs-st-warn { --fs-st: var(--tt-warn, #ff832b); }
 html.tt-popups-on .fs-st-fail { --fs-st: var(--tt-err, #ff8389); }
