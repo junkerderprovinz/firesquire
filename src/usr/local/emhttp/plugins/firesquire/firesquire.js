@@ -18,12 +18,12 @@
     hc: 'pre-reboot health check',
     running: 'Running checks…',
     subtitle: 'Advisory only · the flash test file is already deleted',
-    v_GO: 'GO', v_CAUTION: 'CAUTION', 'v_NO-GO': 'NO-GO',
-    tier_critical: 'Critical', tier_warning: 'Caution', tier_info: 'Info',
+    v_GO: 'All clear', v_CAUTION: 'Smouldering', 'v_NO-GO': 'On fire',
+    tier_info: 'Info',
     err: 'Could not run the check engine.',
     err_hint: 'Try again in a moment. If it keeps failing, the syslog may say why.',
     foot: 'FireSquire reads the current state and predicts the common reboot landmines (pinned mounts, stuck loops, unclean array, in-flight operations, a crash-looping box). It is an early warning, not a guarantee. Genuine hardware, BIOS or timing failures during boot cannot be seen from a running system.',
-    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (GO / CAUTION / NO-GO) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.',
+    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (All clear / Smouldering / On fire) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.',
     tools_intro: 'It looks for the reboot landmines that are detectable from the running system:',
     tools_li: [
       'Array started & clean: every device assignment OK (no disabled/invalid/missing disk)',
@@ -360,7 +360,7 @@
   function ownLink(l){ return l.charAt(0) === ':' ? 'http://' + location.hostname + l : l; }
 
   var VCLASS = { GO: 'fs-v-go', CAUTION: 'fs-v-caution', 'NO-GO': 'fs-v-nogo' };
-  var STATUS = { pass: ['Check', '✓'], warn: ['Warning', '!'], fail: ['Close', '✗'], info: ['Info', 'i'] };
+  var STATUS = { pass: 'Check', warn: 'Warning', fail: 'Close', info: 'Info' };
   // The newest syslog line a finding quotes reads as the log it came from.
   var QUOTES_LOG = { syslog_crashes: 1, io_errors: 1 };
 
@@ -383,40 +383,40 @@
     '<path d="M431.25,686.99c-27.9-28.89-49.08-70.38-56.65-110.09-13.4-70.28,9.23-101.79,39.84-159.3,35.07-65.89,45.66-98.57,30.24-174.85-4.32-21.36-11.44-42.19-15.07-63.68,50.31,46.01,84.31,116.04,70.04,185.35-10.66,51.79-37.27,81.72-62.99,124.5-36.56,60.8-23.14,133.23-5.4,198.08Z" fill="#f9cc12"/><path d="M438.81,187.93c37.2,45.66,59.34,105.7,47.49,165.16-10.55,52.96-37.1,83.52-62.73,127.23-33.54,57.19-24.69,124.56-9.12,186.69,5.25,7.14,10.87,13.85,16.8,19.98-17.74-64.85-31.15-137.27,5.4-198.08,25.72-42.78,52.33-72.72,62.99-124.5,13.38-64.99-15.68-130.62-60.83-176.48Z" fill="#f39200"/><path d="M504.5,677.87c-32.39-33.86-46.73-87.93-35.29-133.62,9.98-39.83,44.34-70,60.85-107.64,18.31-41.75,9.83-75.82,8.87-119.21-.04-1.6-1.12-3,1.33-2.79,39.03,36.31,59.49,91.6,42.36,143.85-12.98,39.6-35.9,56.25-57.93,87.49-26.51,37.6-24.13,88.07-20.2,131.91Z" fill="#f39200"/><path d="M544.4,318.61c27.04,36.3,39.02,83.55,24.89,128.52-12.85,40.91-35.73,58.06-57.66,90.29-23.9,35.13-24.07,81.25-20.87,123.33,4.13,6.12,8.72,11.87,13.75,17.12-3.93-43.84-6.31-94.31,20.2-131.91,22.03-31.24,44.95-47.89,57.93-87.49,16.51-50.37-1.92-103.57-38.23-139.86Z" fill="#e8651c"/><path d="M339.35,567.91l-6.93-5.26c-30.24-32.83-47.23-77.26-41.21-122.28,6.22-46.46,45.66-83.54,55.2-130.94,7.27-36.1-3.22-71.03-6.94-106.75,27.91,20.78,49.65,52.11,57.09,86.42,8.39,38.67-3.89,75.09-23.63,107.95-9.88,16.44-24.34,31.87-31.76,49.29-16.01,37.6-8.96,82.66-1.83,121.57Z" fill="#fff57c"/><path d="M396.57,289.1c-6.16-28.38-22.11-54.72-43.24-74.74,14.3,17.92,24.91,39.08,29.71,61.46,8.48,39.57-3.72,76.81-23.4,110.38-9.84,16.8-24.27,32.55-31.65,50.35-15.06,36.32-9.49,79.5-2.75,117.74,2.31,2.85,4.7,5.64,7.19,8.35l6.93,5.26c-7.12-38.91-14.18-83.97,1.83-121.57,7.42-17.42,21.88-32.85,31.76-49.29,19.74-32.86,32.03-69.28,23.63-107.95Z" fill="#f9cc12"/>' +
     '<path class="fs-lf-lit" d="M799.83,401.51L457.8,59.49c-7.76-7.75-17.94-11.63-28.13-11.63v38.15l343.64,343.63-343.64,343.64v38.17c10.19,0,20.37-3.88,28.15-11.63l342.04-342.04c15.49-15.52,15.48-40.76-.03-56.28Z"/><path class="fs-lf" d="M842.33,388.6L470.7,16.97c-11.32-11.32-26.17-16.97-41.03-16.97v47.86c10.19,0,20.37,3.88,28.13,11.63l342.03,342.02c15.5,15.52,15.51,40.76.03,56.28l-342.04,342.04c-7.78,7.75-17.96,11.63-28.15,11.63v47.87c15.5,0,30.07-6.04,41.03-17.01l371.63-371.63c10.97-10.97,17.01-25.54,17.01-41.05s-6.04-30.09-17.01-41.05Z"/><path class="fs-lf" d="M429.67,86.02v-38.15c-10.19,0-20.39,3.88-28.15,11.64L59.5,401.51c-15.51,15.52-15.52,40.77,0,56.3l342.03,342.02c7.75,7.75,17.93,11.62,28.13,11.62h0v-38.17l-.02.02L86,429.65,429.65,86l.02.02Z"/><path class="fs-lf-lit" d="M401.52,59.5c7.76-7.76,17.96-11.64,28.15-11.64V0c-14.88,0-29.74,5.65-41.07,16.98L16.97,388.6c-22.63,22.63-22.63,59.47,0,82.1l371.63,371.63c10.97,10.97,25.55,17.01,41.05,17.01h.02v-47.87h0c-10.19,0-20.37-3.87-28.13-11.62L59.5,457.82c-15.52-15.54-15.51-40.78,0-56.3L401.52,59.5Z"/></svg>';
   function logoHTML(){ return '<span class="fs-v-logo">' + LOGO_SVG + '</span>'; }
+  function lampHTML(){ return '<span class="fs-v-lamp" aria-hidden="true"></span>'; }
 
   function verdictHTML(data){
     var v = data.verdict, word = fsT('v_' + v) || v;
     var tip = fsT('subtitle') + '. ' + fsT('foot');
     var h = '<div class="fs-verdict ' + (VCLASS[v] || 'fs-v-unknown') + '">';
-    h += logoHTML() + '<div class="fs-v-word">' + esc(word) + '</div>';
+    h += lampHTML() + logoHTML() + '<div class="fs-v-word">' + esc(word) + '</div>';
     h += '<div class="fs-v-meta"><div class="fs-v-name">FireSquire: ' + esc(fsT('hc')) + '<span class="fs-v-info" data-info="' + esc(tip) + '"></span></div>';
     h += '<div class="fs-v-sub"><span class="fs-v-adv">' + esc(fsT('subtitle')) + (data.generated ? ' · ' : '') + '</span>' + (data.generated ? '<span class="fs-num">' + esc(data.generated) + '</span>' : '') + '</div></div></div>';
     return h;
   }
 
-  function rowHTML(x, gs){
+  // Every finding is a card of its own. A problem leads to the page that can
+  // fix it, and a finding with a link of its own, such as a port on this
+  // server, leads there.
+  function rowHTML(x){
     var st = STATUS[x.status] ? x.status : 'info';
-    var msg = message(x);
-    // Problem findings lead to the page that can fix them. A finding with a
-    // link of its own, such as a port on this server, leads there.
     var link = x.link ? ownLink(x.link) : (st === 'warn' || st === 'fail') ? fsLink(x.key) : null;
-    var text = link && !gs
-      ? '<a class="fs-f-link" href="' + esc(link) + '"' + (/^http/.test(link) ? ' target="_blank" rel="noopener"' : '') + ' title="' + esc(fsT('goto')) + '">' + msg + ' <span aria-hidden="true">&#8599;</span></a>'
-      : msg;
-    var h = '<div class="fs-f fs-st-' + st + '"><span class="fs-f-ic" aria-hidden="true"><span class="fs-f-g">' + glyph(STATUS[st][0]) + '</span><span class="fs-f-ch">' + STATUS[st][1] + '</span></span>';
-    h += '<div class="fs-f-text">' + text + '</div>';
-    if (link && gs) h += '<span class="fs-f-act" data-goto="' + esc(link) + '"></span>';
+    var h = '<div class="fs-f fs-st-' + st + '"><span class="fs-f-ic" aria-hidden="true">' + glyph(STATUS[st]) + '</span>';
+    h += '<div class="fs-f-text">' + message(x) + '</div>';
+    if (link) h += '<span class="fs-f-act" data-goto="' + esc(link) + '"></span>';
     return h + '</div>';
   }
 
+  // The cards stand by level, the worst first, each group under its name.
+  var LEVELS = [['fail', 'v_NO-GO'], ['warn', 'v_CAUTION'], ['pass', 'v_GO'], ['info', 'tier_info']];
   function reportHTML(data){
-    var gs = themed(), checks = data.checks || [];
+    var checks = data.checks || [];
     var h = verdictHTML(data);
-    [['critical', 'tier_critical'], ['warning', 'tier_warning'], ['info', 'tier_info']].forEach(function(tt){
-      var grp = checks.filter(function(x){ return (x.tier || '') === tt[0]; });
+    LEVELS.forEach(function(l){
+      var grp = checks.filter(function(x){ return (STATUS[x.status] ? x.status : 'info') === l[0]; });
       if (!grp.length) return;
-      h += '<section class="fs-tier"><h3 class="fs-tier-h">' + esc(fsT(tt[1])) + '</h3>';
-      grp.forEach(function(x){ h += rowHTML(x, gs); });
+      h += '<section class="fs-level fs-st-' + l[0] + '"><h3 class="fs-level-h">' + esc(fsT(l[1])) + '</h3>';
+      grp.forEach(function(x){ h += rowHTML(x); });
       h += '</section>';
     });
     return h + '<p class="fs-foot">' + esc(fsT('foot')) + '</p>';

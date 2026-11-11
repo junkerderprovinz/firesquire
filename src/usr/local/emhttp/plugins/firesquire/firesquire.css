@@ -20,6 +20,7 @@ html {
   --fs-motion-tint-dur: 0s;
   --fs-motion-pop-dur: 0s;
   --fs-motion-pop-scale: 1;
+  --fs-motion-lamp-dur: 0s;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -31,6 +32,7 @@ html {
     --fs-motion-tint-dur: 450ms;
     --fs-motion-pop-dur: 380ms;
     --fs-motion-pop-scale: 1.12;
+    --fs-motion-lamp-dur: 1.6s;
   }
   html[data-tt-motion="subtle"] {
     --fs-motion-bar-dur: 240ms;
@@ -41,6 +43,7 @@ html {
     --fs-motion-tint-dur: 600ms;
     --fs-motion-pop-dur: 520ms;
     --fs-motion-pop-scale: 1.05;
+    --fs-motion-lamp-dur: 2.4s;
   }
   html[data-tt-motion="off"] {
     --fs-motion-bar-dur: 0s;
@@ -51,12 +54,14 @@ html {
     --fs-motion-tint-dur: 0s;
     --fs-motion-pop-dur: 0s;
     --fs-motion-pop-scale: 1;
+    --fs-motion-lamp-dur: 0s;
   }
 }
 @keyframes fs-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fs-win-in { from { opacity: 0; transform: translateY(var(--fs-motion-win-travel, 0px)); } to { opacity: 1; transform: none; } }
 @keyframes fs-sweep { from { left: -38%; } to { left: 100%; } }
 @keyframes fs-tint { from { color: var(--fs-neutral); } }
+@keyframes fs-lamp { 0% { transform: none; opacity: .6; } 70% { transform: scale(2.6); opacity: 0; } 100% { transform: none; opacity: 0; } }
 @keyframes fs-pop { 0% { transform: none; } 45% { transform: scale(var(--fs-motion-pop-scale, 1)); } 100% { transform: none; } }
 
 #fs-info, .fs-win, .fs-scrim {
@@ -222,7 +227,7 @@ html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, b
 .fs-win-headed.fs-win-guard .fs-win-act { display: flex; padding-bottom: 16px; }
 .fs-win-headed .fs-win-head {
   flex: none; display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 12px 18px; background: var(--fs-card); border-bottom: 1px solid var(--fs-line); font-weight: 700;
+  padding: 12px 18px; background: var(--fs-card); font-weight: 700;
 }
 .fs-win-name { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .fs-win-logo { flex: none; width: 26px; height: 26px; }
@@ -252,7 +257,7 @@ html.tt-popups-on .fs-win-headed .fs-win-body { padding: 10px 22px 4px; }
    as a word. */
 html.tt-popups-on .fs-win button.fs-win-btn {
   min-width: 96px; min-height: 32px; height: auto; margin: 0; padding: 6px 14px;
-  border: none; border-radius: var(--fs-r-pill); box-shadow: none; background: var(--fs-chip); color: var(--fs-text);
+  border: none; border-radius: var(--fs-r-ctl); box-shadow: none; background: var(--fs-chip); color: var(--fs-text);
   font-family: inherit; font-size: var(--tt-text-meta, 12px); font-weight: 600; line-height: 1.2; letter-spacing: normal; text-transform: none; cursor: pointer;
 }
 html.tt-popups-on .fs-win button.fs-win-btn:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
@@ -274,6 +279,14 @@ html.tt-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-fo
 }
 [dir="rtl"] .fs-verdict { box-shadow: inset -8px 0 0 var(--fs-v); }
 .fs-v-logo { display: none; }
+/* The warning lamp leads the verdict in its colour, and a ring of its light
+   keeps going out from it while the motion engine lets it. */
+.fs-v-lamp { position: relative; flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--fs-v); }
+.fs-v-lamp::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--fs-v); opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .fs-verdict .fs-v-lamp::after { animation: fs-lamp var(--fs-motion-lamp-dur) ease-out infinite; }
+  html[data-tt-motion="off"] .fs-verdict .fs-v-lamp::after { animation: none; }
+}
 .fs-v-word { font-size: 30px; font-weight: 800; letter-spacing: 1px; line-height: 1.1; color: var(--fs-v); }
 .fs-v-meta { min-width: 0; }
 .fs-v-sub { color: var(--fs-dim); font-size: 12px; }
@@ -300,24 +313,27 @@ html.tt-popups-on .fs-v-name { font-size: var(--tt-text-title, 16px); font-weigh
 html.tt-popups-on .fs-v-sub { font-size: var(--tt-text-subline, 13px); }
 html.tt-popups-on .fs-v-adv, html.tt-popups-on .fs-foot { display: none; }
 
-.fs-tier-h {
-  margin: 22px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--fs-line);
-  color: var(--fs-dim); font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+/* Every finding is a card in GlimStone's style, in Unraid's look as in
+   TowerTorch's, whose tokens only recolour them. The cards stand by level,
+   each group under its name. */
+.fs-level { margin-top: 16px; }
+.fs-level-h {
+  margin: 0 0 8px; padding: 0; border: 0;
+  color: var(--fs-dim); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
 }
-.fs-f { display: flex; align-items: flex-start; gap: 10px; padding: 7px 4px; border-bottom: 1px solid var(--fs-line); }
+.fs-f { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 10px 14px; border-radius: var(--fs-r-card); background: var(--fs-card); }
+.fs-f + .fs-f { margin-top: 8px; }
 .fs-st-pass { --fs-st: var(--fs-go); }
 .fs-st-warn { --fs-st: var(--fs-caution); }
 .fs-st-fail { --fs-st: var(--fs-nogo); }
 .fs-st-info { --fs-st: var(--fs-neutral); }
 .fs-f-ic {
-  display: inline-flex; align-items: center; justify-content: center; flex: 0 0 22px; width: 22px; height: 22px;
-  border-radius: 50%; background: var(--fs-st); color: var(--fs-state-ink); font-weight: 700; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center; flex: 0 0 24px; width: 24px; height: 24px;
+  border-radius: 50%; background: var(--fs-st); color: var(--fs-state-ink);
 }
-.fs-f-g { display: none; }
-.fs-f-text { flex: 1 1 auto; min-width: 0; padding-top: 2px; overflow-wrap: anywhere; }
+.fs-f-ic svg { display: block; width: 12px; height: 12px; }
+.fs-f-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
 .fs-f-text code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; color: var(--fs-dim); }
-.fs-f-link { color: inherit; text-decoration: underline; text-decoration-color: var(--fs-st); text-underline-offset: 2px; }
-.fs-f-link span { opacity: .65; }
 .fs-foot { margin: 18px 0 0; color: var(--fs-dim); font-size: 11px; line-height: 1.5; }
 
 html.tt-popups-on .fs-st-warn { --fs-st: var(--tt-warn, #ff832b); }
@@ -325,15 +341,7 @@ html.tt-popups-on .fs-st-fail { --fs-st: var(--tt-err, #ff8389); }
 html.tt-popups-on .fs-st-warn .fs-f-ic { color: var(--tt-warn-fg, #161616); }
 html.tt-popups-on .fs-st-fail .fs-f-ic { color: var(--tt-err-fg, #161616); }
 html.tt-popups-on .fs-st-info .fs-f-ic { color: var(--fs-ground); }
-html.tt-popups-on .fs-tier { margin-top: 12px; padding: 12px 14px 4px; border-radius: var(--fs-r-card); background: var(--fs-card); }
-html.tt-popups-on .fs-tier-h { margin: 0 0 4px; padding: 0; border: 0; font-size: var(--tt-text-meta, 12px); font-weight: 600; letter-spacing: .14em; }
-html.tt-popups-on .fs-f { min-height: 40px; padding: 8px 0; border: 0; }
-html.tt-popups-on .fs-f + .fs-f { box-shadow: 0 -1px 0 var(--fs-line); }
-html.tt-popups-on .fs-f-ic { flex-basis: 24px; width: 24px; height: 24px; border-radius: var(--fs-r-pill); }
-html.tt-popups-on .fs-f-g { display: inline-flex; }
-html.tt-popups-on .fs-f-g svg { width: 12px; height: 12px; }
-html.tt-popups-on .fs-f-ch { display: none; }
-/* The way to the page that can fix a finding shows on its row under the
+/* The way to the page that can fix a finding shows on its card under the
    pointer or the focus, and always on a touch screen. */
 .fs-f-act { flex: none; opacity: 0; }
 .fs-f:is(:hover, :focus-within) .fs-f-act { opacity: 1; }
@@ -341,11 +349,12 @@ html.tt-popups-on .fs-f-ch { display: none; }
 @media (prefers-reduced-motion: no-preference) {
   .fs-f-act { transition: opacity var(--tt-motion-control-dur, 0s); }
 }
-html.tt-popups-on .fs-win a.fs-f-go {
-  min-height: 28px; padding: 4px 12px; border-radius: var(--fs-r-pill); background: var(--fs-chip); color: var(--fs-text);
-  font-size: var(--tt-text-meta, 12px); font-weight: 600; white-space: nowrap;
+.fs-win a.fs-f-go {
+  display: inline-flex; align-items: center; gap: .45em; min-height: 28px; padding: 4px 12px; border-radius: var(--fs-r-ctl);
+  background: var(--fs-chip); color: var(--fs-text); font-size: 12px; font-weight: 600; white-space: nowrap; text-decoration: none;
 }
-html.tt-popups-on .fs-win a.fs-f-go:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+html.tt-popups-on :is(.fs-level-h, .fs-win a.fs-f-go) { font-size: var(--tt-text-meta, 12px); }
+.fs-win a.fs-f-go:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
 html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) .fs-win a.fs-f-go { min-width: 28px; padding: 4px 8px; }
 
 /* The bar changes all the time, so a change inside it stays inside it
@@ -379,8 +388,8 @@ html.tt-popups-on .fs-err-hint { display: block; margin-top: 4px; color: var(--f
 @media (max-width: 640px) {
   .fs-win.fs-win-report { width: calc(100vw - 16px); }
   html.tt-popups-on .fs-v-word { font-size: 2rem; }
-  /* On a phone the way to a finding goes under its text, which keeps the row's width. */
-  html.tt-popups-on .fs-f { flex-wrap: wrap; }
-  html.tt-popups-on .fs-f-text { flex-basis: calc(100% - 34px); }
-  html.tt-popups-on .fs-f-act { margin-inline-start: 34px; }
+  /* On a phone the way to a finding goes under its text, which keeps the card's width. */
+  .fs-f { flex-wrap: wrap; }
+  .fs-f-text { flex-basis: calc(100% - 36px); }
+  .fs-f-act { margin-inline-start: 36px; }
 }

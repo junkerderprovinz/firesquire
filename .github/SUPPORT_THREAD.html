@@ -38,7 +38,7 @@
 <p>A reboot is never 100% guaranteed, but a large class of "it didn't come back right"
 is <strong>predictable from the current state of the running system</strong>. FireSquire
 inspects that state <strong>before</strong> you reboot and gives you one honest verdict:
-<strong>GO / CAUTION / NO-GO</strong>, with the exact findings.</p>
+<strong>All clear / Smouldering / On fire</strong>, with the exact findings.</p>
 <p>It is <strong>advisory only</strong>: it reads the host and reports. It never stops,
 mounts or unmounts anything (acting on the host is exactly what tends to cause reboot
 trouble in the first place). On the flash it writes an empty test file on <code>/boot</code> that
@@ -49,10 +49,10 @@ Reboot</strong> on the Main tab. Click, read the verdict, then reboot.</p>
 
 <h2>Highlights</h2>
 <ul>
-  <li><strong>Critical (NO-GO)</strong>: array started &amp; every device assignment OK (no disabled/invalid/missing disk); no parity/sync/rebuild/clear or mover running; no container mounting a host runtime dir (the bind class that can take libvirt/docker down on reboot); no stuck <code>docker.img</code>/<code>libvirt.img</code> loop; flash writable; no degraded ZFS pool and no ZFS or btrfs device with errors</li>
-  <li><strong>Caution</strong>: crashes since boot in the syslog, <strong>disk/IO errors</strong> (failing disk or loose cable), low free space, running VMs, a stopped core service, missing container bind sources, and <strong>SMART health</strong> (status + attributes: reallocated/pending/uncorrectable sectors, temperature), and a <strong>UDMA CRC count that rose</strong> since the last check. Every disk finding names its port, so you know which cable to look at</li>
+  <li><strong>Critical (On fire)</strong>: array started &amp; every device assignment OK (no disabled/invalid/missing disk); no parity/sync/rebuild/clear or mover running; no container mounting a host runtime dir (the bind class that can take libvirt/docker down on reboot); no stuck <code>docker.img</code>/<code>libvirt.img</code> loop; flash writable; no degraded ZFS pool and no ZFS or btrfs device with errors</li>
+  <li><strong>Warnings (Smouldering)</strong>: crashes since boot in the syslog, <strong>disk/IO errors</strong> (failing disk or loose cable), low free space, running VMs, a stopped core service, missing container bind sources, and <strong>SMART health</strong> (status + attributes: reallocated/pending/uncorrectable sectors, temperature), and a <strong>UDMA CRC count that rose</strong> since the last check. Every disk finding names its port, so you know which cable to look at</li>
   <li><strong>Advisory only</strong>: reads and reports. On the flash it writes a test file it deletes at once and keeps the CRC counts of the disks</li>
-  <li><strong>Notifications</strong>: Unraid, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, webhook or Healthchecks, for CAUTION, NO-GO and the way back to GO, with a daily or weekly schedule if you like</li>
+  <li><strong>Notifications</strong>: Unraid, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, webhook or Healthchecks, for Smouldering, On fire and the way back to All clear, with a daily or weekly schedule if you like</li>
   <li><strong>Follows your Unraid theme &amp; language</strong>: light/dark, all 26 supported languages (English fallback)</li>
   <li><strong>No dependencies</strong>: a small Bash engine querying the tools Unraid already ships; no daemon, nothing to configure</li>
 </ul>

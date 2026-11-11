@@ -36,7 +36,7 @@
 /* The give row is the loudest row on the card, so a line of space sets it
    apart from the sentence above. */
 #fs-info .fs-rbtn-rows.fs-give { margin-top: 21px; }
-#fs-info .fs-rbtn-unit { position: relative; display: inline-flex; border-radius: var(--tt-radius-pill, 9999px); overflow: hidden; isolation: isolate; --fs-brand-coffee: #ffdd00; --fs-brand-paypal: #4fb5f0; --fs-brand-bitcoin: #f7931a; }
+#fs-info .fs-rbtn-unit { position: relative; display: inline-flex; border-radius: var(--fs-r-ctl); overflow: hidden; isolation: isolate; --fs-brand-coffee: #ffdd00; --fs-brand-paypal: #4fb5f0; --fs-brand-bitcoin: #f7931a; }
 #fs-info .fs-rbtn { position: relative; display: block; flex: none; width: 160px; height: 46.6px; padding: 0; background: var(--tt-surface-3, #2e2e2e); text-decoration: none; cursor: pointer; }
 #fs-info .fs-rbtn:hover { text-decoration: none; }
 #fs-info .fs-rbtn:focus-visible { outline: none !important; filter: none !important; box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--tt-accent, #FCC419) 45%, transparent) !important; }
@@ -113,7 +113,7 @@ html.tt-popups-on #fs-info .fs-tile-house { --fs-house: var(--tt-accent, #FCC419
 .fs-nets { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .fs-win .fs-net {
   min-width: 0; height: auto; margin: 0; padding: 4px 12px;
-  border: none; border-radius: var(--fs-r-pill); box-shadow: none; background: var(--fs-chip); color: var(--fs-dim);
+  border: none; border-radius: var(--fs-r-ctl); box-shadow: none; background: var(--fs-chip); color: var(--fs-dim);
   font-family: inherit; font-size: 12px; font-weight: 500; line-height: 1.4; letter-spacing: normal; text-transform: none; cursor: pointer;
 }
 .fs-win .fs-net:hover { background: var(--fs-chip); color: inherit; }
@@ -192,12 +192,12 @@ html.tt-popups-on #fs-info a.fs-ver {
     #fs-info .fs-rbtn-unit:hover a.fs-rbtn { color: var(--fs-give-ink) !important; }
   }
   html.tt-popups-on #fs-info a.fs-ver { color: var(--tt-text, #e6e6e6) !important; }
-  /* TowerTorch makes every button on a settings page an accent pill. The run
-     button keeps the accent at the size of a key, the release notes are a
-     secondary button. */
+  /* TowerTorch makes every button on a settings page an accent pill. Here a
+     button has rounded corners, the run button keeps the accent at the size
+     of a key, and the release notes are a secondary button. */
   html.tt-popups-on #fs-info .fs-btn {
     min-width: 0 !important; height: 32px !important; margin: 0 !important; padding: 0 14px !important;
-    border: none !important; border-radius: var(--fs-r-pill) !important; box-shadow: none !important;
+    border: none !important; border-radius: var(--fs-r-ctl) !important; box-shadow: none !important;
     background: color-mix(in srgb, var(--tt-text, #e6e6e6) 18%, var(--fs-card)) !important; color: var(--tt-text, #e6e6e6) !important;
     font-size: var(--tt-text-body, 14px) !important; font-weight: 600 !important; text-transform: none !important; letter-spacing: normal !important;
   }

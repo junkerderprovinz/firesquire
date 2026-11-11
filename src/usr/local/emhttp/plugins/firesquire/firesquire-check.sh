@@ -2,10 +2,11 @@
 #
 # FireSquire engine for Unraid.
 #
-# Advisory only. Inspects the live host and reports an overall verdict:
-#   GO       nothing found that should block a reboot
-#   CAUTION  non-fatal issues you should know about before rebooting
-#   NO-GO    conditions likely to make the reboot come back dirty
+# Advisory only. Inspects the live host and reports an overall verdict, by
+# its code and the name the reports show:
+#   GO       All clear     nothing found that should block a reboot
+#   CAUTION  Smouldering   non-fatal issues you should know about before rebooting
+#   NO-GO    On fire       conditions likely to make the reboot come back dirty
 #
 # It changes nothing on the host apart from the flash write test, which creates
 # an empty file on /boot and deletes it at once. Run it before a planned reboot.
@@ -437,9 +438,9 @@ ver="$(cut -d'"' -f2 /etc/unraid-version 2>/dev/null)"
 [ -n "$ver" ] && add info unraid info info_unraid "$ver" "Unraid version: $ver"
 
 case "$WORST" in
-  0) VERDICT="GO";      VCOLOR=32 ;;
-  1) VERDICT="CAUTION"; VCOLOR=33 ;;
-  2) VERDICT="NO-GO";   VCOLOR=31 ;;
+  0) VERDICT="GO";      VNAME="All clear";   VCOLOR=32 ;;
+  1) VERDICT="CAUTION"; VNAME="Smouldering"; VCOLOR=33 ;;
+  2) VERDICT="NO-GO";   VNAME="On fire";     VCOLOR=31 ;;
 esac
 
 # A CAUTION or NO-GO goes to the channels on every run, the way back to GO
@@ -478,9 +479,9 @@ if [ -f "$HERE/banner.txt" ]; then
 fi
 
 echo
-banner "  ===== FIRESQUIRE: $VERDICT ====="
+banner "  ===== FIRESQUIRE: $VNAME ====="
 echo
-if [ -n "$TXT_CRIT" ]; then echo "  -- Critical (NO-GO if failing) --"; printf '%s\n' "$TXT_CRIT"; fi
-if [ -n "$TXT_WARN" ]; then echo "  -- Caution --";                     printf '%s\n' "$TXT_WARN"; fi
-if [ -n "$TXT_INFO" ]; then echo "  -- Info --";                        printf '%s\n' "$TXT_INFO"; fi
+if [ -n "$TXT_CRIT" ]; then echo "  -- Critical (On fire if failing) --";      printf '%s\n' "$TXT_CRIT"; fi
+if [ -n "$TXT_WARN" ]; then echo "  -- Warnings (Smouldering if failing) --"; printf '%s\n' "$TXT_WARN"; fi
+if [ -n "$TXT_INFO" ]; then echo "  -- Info --";                               printf '%s\n' "$TXT_INFO"; fi
 exit "$WORST"
