@@ -568,8 +568,8 @@
     var proto = win.HTMLFormElement.prototype, submit = proto.submit;
     function hold(form){
       var cmd = bootCmd(form);
-      if (!cmd || form.fsChecked) return false;
-      check(cmd, function(){ form.fsChecked = true; submit.call(form); });
+      if (!cmd) return false;
+      check(cmd, function(){ submit.call(form); });
       return true;
     }
     proto.submit = function(){ if (!hold(this)) submit.call(this); };

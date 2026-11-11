@@ -10,7 +10,7 @@ const en = JSON.parse(read('lang/en.json'));
 // A form as Unraid writes it, with the fields it carries.
 function form(action, fields) {
   return {
-    tagName: 'FORM', fsChecked: false, sent: 0,
+    tagName: 'FORM', sent: 0,
     getAttribute: (k) => (k === 'action' ? action : null),
     querySelectorAll: (sel) => (sel === '[name="cmd"]' ? fields.map((v) => ({ value: v })) : []),
   };
@@ -38,9 +38,10 @@ const dash = form('/webGui/include/Boot.php', ['reboot']);
 s.proto.submit.call(dash);
 ok('the Dashboard\'s reboot waits for the check', dash.sent === 0 && s.asked.length === 1 && s.asked[0].cmd === 'reboot');
 s.asked[0].proceed();
-ok('and goes out once the check lets it', dash.sent === 1 && dash.fsChecked === true);
+ok('and goes out once the check lets it', dash.sent === 1);
 s.proto.submit.call(dash);
-ok('a form the check let through is not asked again', dash.sent === 2 && s.asked.length === 1);
+ok('the next reboot is checked again', dash.sent === 1 && s.asked.length === 2);
+s.asked.pop();
 
 const main = form('/webGui/include/Boot.php', ['', 'shutdown']);
 const ev = s.submitEvent(main);
