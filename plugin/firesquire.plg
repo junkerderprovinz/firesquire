@@ -147,7 +147,7 @@
       done
       rm -rf "&emhttp;"
       installpkg "&plgPath;/&pkg;-&version;.txz"
-      # Unraid keeps every downloaded package on the flash; only this one is needed.
+      # Unraid keeps every downloaded package on the flash, and only this one is needed.
       find "&plgPath;" -maxdepth 1 -name '&pkg;-*.txz' ! -name '&pkg;-&version;.txz' -delete 2>/dev/null
       # Enforce the exec bit on the engine (NTFS/CI builds can drop it)
       chmod +x "&emhttp;/&pkg;-check.sh" 2>/dev/null

@@ -281,7 +281,7 @@
     act.appendChild(close);
     win.appendChild(body);
     win.appendChild(act);
-    // The page behind stays out of reach for the pointer and for screen readers alike.
+    // Neither the pointer nor a screen reader reaches the page behind the window.
     var behind = Array.prototype.filter.call(document.body.children, function(n){ return !n.inert; });
     behind.forEach(function(n){ n.inert = true; });
     document.body.appendChild(scrim);
