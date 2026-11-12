@@ -124,6 +124,39 @@ const MEMBERS = { members: [{ app: 'BombVault', device: 'Tower', online: true },
   await p.settle();
   ok('Enter joins at once', p.posts.length === 1);
   ok('words that are no phrase say so and stay to be fixed', p.text().includes(en.f_err_phrase) && field(p) && field(p).value === 'abandon ability' && !field(p).disabled, p.text());
+
+  // Typed word by word, the twelfth word is cut short at a pause and joins too early.
+  const note = (p) => p.find((e) => e.className === 'fs-n-msg').textContent;
+  const typed = WORDS.slice(0, -3);
+  p = fortressCard({ helper: true, joined: false, device: 'Tower' }, {
+    join: (d) => (d.phrase === WORDS ? { helper: true, joined: true, device: 'Tower' } : { error: 'phrase' }), members: MEMBERS,
+  });
+  await p.settle();
+  field(p).value = typed; field(p).fire('input'); p.wait(800);
+  await p.settle();
+  ok('a word cut short at a pause says the words are no phrase', note(p) === en.f_err_phrase, note(p));
+  field(p).value = WORDS; field(p).fire('input');
+  ok('the note goes as soon as the twelve words are whole again', note(p) === '', note(p));
+  p.wait(800);
+  await p.settle();
+  ok('then FireSquire joins and leaves no note about the phrase under the list', p.text().includes(fill(en.f_in, ['Tower'])) && !p.text().includes(en.f_err_phrase), p.text());
+  p.wait(2500);
+  ok('and the welcome passes', note(p) === '', note(p));
+
+  // The word is finished while the early join is still on its way.
+  let answer;
+  p = fortressCard({ helper: true, joined: false, device: 'Tower' }, {
+    join: (d) => (d.phrase === WORDS ? { helper: true, joined: true, device: 'Tower' } : new Promise((r) => { answer = r; })), members: MEMBERS,
+  });
+  await p.settle();
+  field(p).value = typed; field(p).fire('input'); p.wait(800);
+  await p.settle();
+  field(p).value = WORDS; field(p).fire('input'); p.wait(800);
+  answer({ error: 'phrase' });
+  await p.settle();
+  await p.settle();
+  ok('the finished words join once the early try is answered', p.posts.length === 2 && p.posts[1].phrase === WORDS, JSON.stringify(p.posts.map((x) => x.phrase.split(' ').pop())));
+  ok('and the early answer leaves no note behind', p.text().includes(fill(en.f_in, ['Tower'])) && !p.text().includes(en.f_err_phrase), p.text());
   p = fortressCard({ helper: true, joined: false, device: 'Tower' }, { join: () => ({ error: 'member' }) });
   await p.settle();
   field(p).value = WORDS; field(p).fire('keydown', { key: 'Enter' });

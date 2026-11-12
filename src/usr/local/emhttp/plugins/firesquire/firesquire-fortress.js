@@ -66,7 +66,7 @@
     var w = String(text).trim();
     return w ? w.split(/\s+/).length : 0;
   }
-  var typing = null, joining = false;
+  var typing = null, joining = false, again = false;
   function door() {
     var input = el("input", "fs-in fs-phrase");
     input.type = "password";
@@ -76,7 +76,9 @@
     input.setAttribute("aria-label", t("f_join"));
     input.addEventListener("input", function () {
       clearTimeout(typing);
-      if (count(input.value) === 12) typing = setTimeout(function () { join(input); }, 800);
+      if (count(input.value) !== 12) return;
+      tell("");
+      typing = setTimeout(function () { join(input); }, 800);
     });
     input.addEventListener("keydown", function (e) {
       if (e.key !== "Enter") return;
@@ -86,26 +88,35 @@
     });
     row(body, t("f_join"), t("f_join_info")).appendChild(input);
   }
+  // Words finished while an earlier try is on its way join once it is
+  // answered, and that answer says nothing about them.
   function join(input) {
-    if (joining) return;
+    if (joining) { again = true; return; }
     if (!count(input.value)) { tell(t("f_err_phrase")); return; }
     joining = true;
     input.disabled = true;
     tell(t("f_joining"));
     post({ "do": "join", phrase: input.value }).then(function (r) {
       if (r.joined) {
+        again = false;
         input.value = "";
         draw(r);
         tell(t("f_joined"), true);
         return;
       }
       input.disabled = false;
+      if (again) return;
       tell(r.error === "phrase" ? t("f_err_phrase") : r.error === "member" ? t("f_err_member") : failed(r));
       if (r.error === "member") load();
     }, function () {
       input.disabled = false;
-      tell(failed());
-    }).then(function () { joining = false; });
+      if (!again) tell(failed());
+    }).then(function () {
+      joining = false;
+      if (!again) return;
+      again = false;
+      join(input);
+    });
   }
 
   function memberName(m) { return fill(t("f_member"), [m.app, m.device]); }
