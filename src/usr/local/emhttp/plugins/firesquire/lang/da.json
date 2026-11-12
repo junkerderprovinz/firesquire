@@ -282,5 +282,6 @@
   "f_change_where": "Sætningen skifter du i {0}.",
   "f_change_none": "FireSquire gemmer kun sine egne nøgler, aldrig sætningen. Skift den i en app i din fæstning, der har den, for eksempel BombVault.",
   "f_err_no_member": "Den app er ikke længere i din fæstning.",
+  "f_removed_here": "En anden app tog FireSquire ud af fæstningen. Deltag igen med den aktuelle sætning.",
   "flash_probe_left": "FireSquire kunne ikke slette sin testfil {0} på flashdrevet. Slet den gerne selv."
 }

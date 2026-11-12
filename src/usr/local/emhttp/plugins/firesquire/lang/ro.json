@@ -303,5 +303,6 @@
   "f_change_where": "Fraza o schimbi în {0}.",
   "f_change_none": "FireSquire păstrează doar cheile sale, niciodată fraza. Schimb-o într-o aplicație din fortăreața ta care o păstrează, de exemplu BombVault.",
   "f_err_no_member": "Aplicația nu mai este în fortăreața ta.",
+  "f_removed_here": "O altă aplicație a scos FireSquire din fortăreață. Intră din nou cu fraza actuală.",
   "flash_probe_left": "FireSquire nu a putut șterge fișierul de test {0} de pe flash. Te rog șterge-l tu."
 }

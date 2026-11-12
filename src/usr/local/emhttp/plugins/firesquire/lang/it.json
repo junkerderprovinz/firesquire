@@ -276,5 +276,6 @@
   "f_change_where": "La frase la cambi in {0}.",
   "f_change_none": "FireSquire tiene solo le sue chiavi, mai la frase. Cambiala in un'app della tua fortezza che la conserva, come BombVault.",
   "f_err_no_member": "Questa app non è più nella tua fortezza.",
+  "f_removed_here": "Un'altra app ha tolto FireSquire dalla fortezza. Rientra con la frase attuale.",
   "flash_probe_left": "FireSquire non è riuscito a cancellare il suo file di prova {0} sulla chiavetta. Cancellalo tu, per favore."
 }

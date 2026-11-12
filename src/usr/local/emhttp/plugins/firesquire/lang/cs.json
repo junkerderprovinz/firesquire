@@ -303,5 +303,6 @@
   "f_change_where": "Frázi změníš v {0}.",
   "f_change_none": "FireSquire si ponechává jen vlastní klíče, nikdy frázi. Změň ji v aplikaci své pevnosti, která ji má, třeba v BombVault.",
   "f_err_no_member": "Tahle aplikace už ve tvé pevnosti není.",
+  "f_removed_here": "Jiná aplikace vyjmula FireSquire z pevnosti. Připoj se znovu s aktuální frází.",
   "flash_probe_left": "FireSquire nedokázal smazat svůj testovací soubor {0} na flash disku. Smaž ho prosím sám."
 }

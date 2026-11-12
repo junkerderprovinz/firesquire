@@ -285,5 +285,6 @@
   "f_change_where": "De frase wijzig je in {0}.",
   "f_change_none": "FireSquire bewaart alleen zijn eigen sleutels, nooit de frase. Wijzig hem in een app van je vesting die hem bewaart, zoals BombVault.",
   "f_err_no_member": "Die app zit niet meer in je vesting.",
+  "f_removed_here": "Een andere app heeft FireSquire uit het fort gehaald. Doe weer mee met de huidige zin.",
   "flash_probe_left": "FireSquire kon zijn testbestand {0} op de flash niet verwijderen. Verwijder het alsjeblieft zelf."
 }

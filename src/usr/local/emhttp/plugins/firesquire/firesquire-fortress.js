@@ -59,7 +59,10 @@
     body.textContent = "";
     if (!s.helper) body.appendChild(el("p", "fs-prose", t("f_nohelper")));
     else if (s.joined) inside(s);
-    else door();
+    else {
+      if (s.removedHere) body.appendChild(el("p", "fs-prose fs-fort-out", t("f_removed_here")));
+      door();
+    }
   }
 
   function count(text) {
@@ -157,6 +160,7 @@
     fetch(ENDPOINT + "?do=members", { credentials: "same-origin" }).then(json).then(function (r) {
       clearTimeout(wait);
       if (mine !== drawn) return;
+      if (r.removedHere) { draw(r); return; }
       list.textContent = "";
       if (!r.members) { list.appendChild(el("p", "fs-prose", failed(r))); return; }
       keepers = r.keepers || [];

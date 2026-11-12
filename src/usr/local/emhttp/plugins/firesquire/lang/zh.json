@@ -231,5 +231,6 @@
   "f_change_where": "请在 {0} 中更改口令。",
   "f_change_none": "FireSquire 只保存自己的密钥，从不保存口令。请在堡垒中保存口令的应用里更改，例如 BombVault。",
   "f_err_no_member": "这个应用已不在你的堡垒中。",
+  "f_removed_here": "另一个应用已将 FireSquire 移出堡垒。用当前的短语重新加入即可。",
   "flash_probe_left": "FireSquire 无法删除闪存上的测试文件 {0}。请手动删除它。"
 }

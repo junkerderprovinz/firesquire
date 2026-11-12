@@ -243,5 +243,6 @@
   "f_change_where": "İfadeyi {0} içinde değiştirirsin.",
   "f_change_none": "FireSquire yalnızca kendi anahtarlarını saklar, ifadeyi asla. İfadeyi, kalendeki onu saklayan bir uygulamada değiştir, örneğin BombVault'ta.",
   "f_err_no_member": "Bu uygulama artık kalende değil.",
+  "f_removed_here": "Başka bir uygulama FireSquire'ı kaleden çıkardı. Güncel ifadeyle yeniden katıl.",
   "flash_probe_left": "FireSquire, flash üzerindeki {0} test dosyasını silemedi. Lütfen kendin sil."
 }

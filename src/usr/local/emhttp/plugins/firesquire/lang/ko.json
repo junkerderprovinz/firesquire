@@ -231,5 +231,6 @@
   "f_change_where": "문구는 {0}에서 바꿔요.",
   "f_change_none": "FireSquire는 자신의 키만 보관하고 문구는 보관하지 않습니다. 문구를 보관하는 요새의 앱(예: BombVault)에서 변경하세요.",
   "f_err_no_member": "이 앱은 더 이상 요새에 없습니다.",
+  "f_removed_here": "다른 앱이 FireSquire를 요새에서 뺐어요. 지금의 문구로 다시 참여하세요.",
   "flash_probe_left": "FireSquire가 플래시의 테스트 파일 {0}을(를) 지우지 못했습니다. 직접 지워 주세요."
 }

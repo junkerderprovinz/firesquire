@@ -231,5 +231,6 @@
   "f_change_where": "Bạn đổi cụm từ trong {0}.",
   "f_change_none": "FireSquire chỉ giữ khóa của riêng nó, không bao giờ giữ cụm từ. Hãy đổi cụm từ trong một ứng dụng của pháo đài có giữ nó, ví dụ BombVault.",
   "f_err_no_member": "Ứng dụng này không còn ở trong pháo đài của bạn.",
+  "f_removed_here": "Một ứng dụng khác đã đưa FireSquire ra khỏi pháo đài. Hãy tham gia lại bằng cụm từ hiện tại.",
   "flash_probe_left": "FireSquire không xóa được tệp thử {0} trên flash. Bạn hãy tự xóa giúp nhé."
 }

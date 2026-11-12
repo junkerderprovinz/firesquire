@@ -279,5 +279,6 @@
   "f_change_where": "Frasen bytter du i {0}.",
   "f_change_none": "FireSquire beholder bare sine egne nøkler, aldri frasen. Bytt den i en app i festningen din som har den, for eksempel BombVault.",
   "f_err_no_member": "Den appen er ikke lenger i festningen din.",
+  "f_removed_here": "En annen app tok FireSquire ut av festningen. Bli med igjen med den nåværende frasen.",
   "flash_probe_left": "FireSquire klarte ikke å slette testfilen sin {0} på flash-enheten. Slett den gjerne selv."
 }

@@ -243,5 +243,6 @@
   "f_change_where": "A jelmondatot itt változtatod meg: {0}.",
   "f_change_none": "A FireSquire csak a saját kulcsait tartja meg, a jelmondatot soha. Változtasd meg az erődöd egy olyan alkalmazásában, amely megőrzi, például a BombVaultban.",
   "f_err_no_member": "Ez az alkalmazás már nincs az erődödben.",
+  "f_removed_here": "Egy másik alkalmazás kivette a FireSquire-t az erődből. Csatlakozz újra a jelenlegi kifejezéssel.",
   "flash_probe_left": "A FireSquire nem tudta törölni a(z) {0} tesztfájlt a flashről. Kérlek, töröld magad."
 }

@@ -21,6 +21,12 @@ function fs_fortress_joined($dir) {
   return is_file("$dir/fortress.json");
 }
 
+/* Another app took FireSquire out. The helper then forgets the membership
+ * and leaves removed-here, which stays until FireSquire joins again. */
+function fs_fortress_removed_here($dir) {
+  return !fs_fortress_joined($dir) && is_file("$dir/removed-here");
+}
+
 /* The server's name as Unraid shows it, which the other apps see it under. */
 function fs_fortress_device($ident) {
   $cfg = @parse_ini_file($ident);
@@ -59,7 +65,7 @@ function fs_fortress_app_name($m) {
 function fs_fortress_members($dir, $run) {
   list($code, $out, $err) = $run(array('members', '-dir', $dir, '-json', '-wait', '4s'), '');
   $list = $code === 0 ? json_decode($out, true) : null;
-  if (!is_array($list)) return array('error' => fs_fortress_reason($err));
+  if (!is_array($list)) return array('error' => fs_fortress_removed_here($dir) ? 'removedHere' : fs_fortress_reason($err));
   $members = array();
   $keepers = array();
   foreach ($list as $m) {

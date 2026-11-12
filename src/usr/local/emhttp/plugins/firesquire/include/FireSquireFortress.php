@@ -27,7 +27,7 @@ $fsRun = function ($args, $stdin) use ($fsHelper) {
 
 function fs_state($dir, $helper, $removed) {
   return array('helper' => is_executable($helper), 'joined' => fs_fortress_joined($dir), 'device' => fs_fortress_device('/boot/config/ident.cfg'),
-    'removed' => fs_fortress_names(fs_fortress_removed($dir, $removed)));
+    'removed' => fs_fortress_names(fs_fortress_removed($dir, $removed)), 'removedHere' => fs_fortress_removed_here($dir));
 }
 
 function fs_answer($code, $body) {
@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));
   if (!fs_fortress_joined($fsDir)) fs_answer(409, array('error' => 'notMember'));
   $r = fs_fortress_members($fsDir, $fsRun);
+  if (($r['error'] ?? '') === 'removedHere') fs_answer(410, fs_state($fsDir, $fsHelper, $fsRemoved));
   fs_answer(isset($r['error']) ? 502 : 200, $r);
 }
 

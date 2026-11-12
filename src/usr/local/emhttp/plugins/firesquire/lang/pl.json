@@ -321,5 +321,6 @@
   "f_change_where": "Frazę zmienisz w {0}.",
   "f_change_none": "FireSquire zachowuje tylko własne klucze, nigdy frazę. Zmień ją w aplikacji twojej twierdzy, która ją przechowuje, na przykład w BombVault.",
   "f_err_no_member": "Tej aplikacji nie ma już w twojej twierdzy.",
+  "f_removed_here": "Inna aplikacja wyjęła FireSquire z twierdzy. Dołącz ponownie z aktualną frazą.",
   "flash_probe_left": "FireSquire nie mógł usunąć swojego pliku testowego {0} z pendrive’a. Usuń go proszę sam."
 }

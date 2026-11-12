@@ -285,5 +285,6 @@
   "f_change_where": "You change the phrase in {0}.",
   "f_change_none": "FireSquire keeps only its own keys, never the phrase. Change it in an app of your fortress that keeps it, such as BombVault.",
   "f_err_no_member": "That app is not in your fortress anymore.",
+  "f_removed_here": "Another app took FireSquire out of the fortress. Join again with the current phrase.",
   "flash_probe_left": "FireSquire could not delete its test file {0} on the flash. Please delete it yourself."
 }
