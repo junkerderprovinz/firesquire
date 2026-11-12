@@ -14,8 +14,9 @@
   function t(k) { return L[k] == null ? k : String(L[k]); }
   function fill(s, args) { return args.reduce(function (m, a, i) { return m.split("{" + i + "}").join(a); }, s); }
   function json(r) { return r.json(); }
+  // Unraid's webGUI never answers a multipart POST, so the body goes URL-encoded.
   function post(data) {
-    var f = new FormData();
+    var f = new URLSearchParams();
     f.append("csrf_token", window.csrf_token || "");
     Object.keys(data).forEach(function (k) { f.append(k, data[k]); });
     return fetch(ENDPOINT, { method: "POST", body: f, credentials: "same-origin" }).then(json);

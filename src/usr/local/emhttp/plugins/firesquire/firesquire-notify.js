@@ -59,8 +59,9 @@
     return [l, input];
   }
 
+  // Unraid's webGUI never answers a multipart POST, so the body goes URL-encoded.
   function post(data) {
-    var f = new FormData();
+    var f = new URLSearchParams();
     f.append("csrf_token", window.csrf_token || "");
     Object.keys(data).forEach(function (k) { f.append(k, data[k]); });
     return fetch(ENDPOINT, { method: "POST", body: f, credentials: "same-origin" }).then(function (r) { return r.json(); });
