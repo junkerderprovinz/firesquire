@@ -71,15 +71,36 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 <p><a id="3-screenshots" href="#3-screenshots"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/3-screenshots-dark.svg"><img src=".github/assets/sections/3-screenshots.svg" alt="3. Screenshots" width="100%"></picture></a></p>
 
 <p align="center">
-  <img src=".github/assets/screenshots/report.png" alt="FireSquire pre-reboot report with a Smouldering verdict" width="58%">
-  <br><em>The pre-reboot report: a single All clear / Smouldering / The roof is on fire verdict with the exact checks behind it. Advisory only: apart from a flash write test it removes at once and the CRC counts it keeps, it changes nothing.</em>
+  <img src=".github/assets/screenshots/firesquire-1.png" alt="FireSquire's report window with the verdict Smouldering and five warnings: rising CRC errors on a disk's port, a shutdown time-out that is too short, a file open over SMB, the UPS on battery and a flash backup twelve days old" width="100%">
+  <br><em>The report: one verdict at the top, then every finding on its own card.</em>
 </p>
 
 <br>
 
 <p align="center">
-  <img src=".github/assets/screenshots/main-button.png" alt="FireSquire button next to Reboot on the Main tab" width="90%">
-  <br><em>One click from the Main tab: the FireSquire button sits right next to Reboot.</em>
+  <img src=".github/assets/screenshots/firesquire-2.png" alt="FireSquire's report with the verdict The roof is on fire: a parity check is running and a ZFS pool is degraded, with Smouldering and All clear groups below" width="100%">
+  <br><em>The roof is on fire: a parity check is still running and a ZFS pool is degraded.</em>
+</p>
+
+<br>
+
+<p align="center">
+  <img src=".github/assets/screenshots/firesquire-3.png" alt="FireSquire stepping in after Reboot was clicked on the Main tab, showing its findings with the question Reboot anyway? and the buttons Cancel, Check again and Reboot anyway" width="100%">
+  <br><em>Click Reboot and FireSquire checks first. What happens next is up to you.</em>
+</p>
+
+<br>
+
+<p align="center">
+  <img src=".github/assets/screenshots/firesquire-4.png" alt="Unraid's Dashboard with FireSquire's icon in the server tile, and the Main tab's Array Operation section with the FireSquire button between Reboot and Shutdown" width="100%">
+  <br><em>The FireSquire button next to Reboot on Main, and its icon in the Dashboard's server tile.</em>
+</p>
+
+<br>
+
+<p align="center">
+  <img src=".github/assets/screenshots/firesquire-5.png" alt="FireSquire's settings page with the banner, the pre-reboot check card and its Run pre-reboot check button, and the Version, Help and About cards" width="100%">
+  <br><em>The settings page under User Utilities: what the check covers, the version and where to get help.</em>
 </p>
 
 <br>
