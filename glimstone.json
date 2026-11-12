@@ -1,0 +1,10 @@
+{
+  "targets": [
+    {
+      "name": "plugin",
+      "mode": "port",
+      "version": "4.3.7",
+      "versionFile": "src/usr/local/emhttp/plugins/firesquire/firesquire-info.js"
+    }
+  ]
+}
