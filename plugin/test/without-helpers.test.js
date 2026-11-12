@@ -1,8 +1,9 @@
-// A fresh install without ParleyPort's helpers. The .plg downloads only FireSquire's own package,
-// the settings page shows no fortress card and no notification or schedule cards, the check card
-// leaves the fortress out, and the engine still walks every other stage. The flash backup then
-// comes from Unraid Connect alone, and its hint names only that. With a helper in place its part
-// comes back.
+// A fresh install without ParleyPort's helpers, as after a download that failed. The .plg pins
+// the helpers to one ParleyPort release and their checksums, and the install goes on without
+// them. The settings page then shows no fortress card and no notification or schedule cards, the
+// check card leaves the fortress out, and the engine still walks every other stage. The flash
+// backup then comes from Unraid Connect alone, and its hint names only that. With a helper in
+// place its part comes back.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -16,7 +17,12 @@ console.log('\nThe install');
 const plg = fs.readFileSync(path.join(__dirname, '..', 'firesquire.plg'), 'utf8');
 const urls = [...plg.matchAll(/<URL>([^<]*)<\/URL>/g)].map((m) => m[1].trim());
 ok('downloads only its own package', urls.length === 1 && urls[0] === '&pkgURL;', urls.join(' '));
-ok('and fetches nothing else while it installs', !/curl|wget/.test(plg));
+const ent = (n) => (new RegExp('<!ENTITY ' + n + '\\s+"([^"]*)">').exec(plg) || [])[1] || '';
+ok('takes the helpers from one ParleyPort release', /^v\d+\.\d+\.\d+$/.test(ent('helperVer'))
+  && ent('helperURL') === 'https://github.com/junkerderprovinz/parleyport/releases/download/&helperVer;', ent('helperVer'));
+ok('each pinned to its checksum', /^[0-9a-f]{64}$/.test(ent('fortressSHA')) && /^[0-9a-f]{64}$/.test(ent('notifySHA')));
+ok('and a helper that fails to load leaves the install going', /helper fortress "&fortressSHA;"/.test(plg) && /helper notify "&notifySHA;"/.test(plg)
+  && /sha256sum -c --status/.test(plg) && !/exit 1/.test(plg.split('<!-- Install -->')[1].split('</FILE>')[0]));
 
 console.log('\nThe settings page');
 const tools = read('FireSquireTools.page');

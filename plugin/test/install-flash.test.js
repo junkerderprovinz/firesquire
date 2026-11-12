@@ -19,6 +19,8 @@ for (const d of [flash, web, bin]) fs.mkdirSync(d);
 for (const tool of ['installpkg', 'removepkg']) {
   fs.writeFileSync(path.join(bin, tool), '#!/bin/bash\nexit 0\n', { mode: 0o755 });
 }
+// No network here, so the helpers stay out as on a server that cannot reach ParleyPort.
+fs.writeFileSync(path.join(bin, 'curl'), '#!/bin/bash\nexit 1\n', { mode: 0o755 });
 
 const version = entities.version;
 const current = `${entities.pkg}-${version}.txz`;

@@ -53,6 +53,14 @@ jobs:
             echo "version=0.0.0-dev" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Refuse placeholder helper checksums
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          if grep -qE '<!ENTITY (fortress|notify)SHA "0{64}">' plugin/firesquire.plg; then
+            echo "::error::fortressSHA or notifySHA in plugin/firesquire.plg is still all zeros. Set both from ParleyPort's helpers-sha256sums.txt before tagging."
+            exit 1
+          fi
+
       - name: Build .txz package
         run: bash plugin/pkg_build.sh "${{ steps.v.outputs.version }}"
 

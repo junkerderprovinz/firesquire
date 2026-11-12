@@ -11,6 +11,10 @@
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
 <!ENTITY sha256 "bee892904cb1f2005cc934c18a337223862614b270de8b92151cf68249e8dc94">
+<!ENTITY helperVer "v1.2.0">
+<!ENTITY helperURL "https://github.com/junkerderprovinz/parleyport/releases/download/&helperVer;">
+<!ENTITY fortressSHA "0000000000000000000000000000000000000000000000000000000000000000">
+<!ENTITY notifySHA "0000000000000000000000000000000000000000000000000000000000000000">
 ]>
 
 <PLUGIN name="&name;"
@@ -130,6 +134,24 @@
       find "&plgPath;" -maxdepth 1 -name '&pkg;-*.txz' ! -name '&pkg;-&version;.txz' -delete 2>/dev/null
       # Enforce the exec bit on the engine (NTFS/CI builds can drop it)
       chmod +x "&emhttp;/&pkg;-check.sh" 2>/dev/null
+      # ParleyPort's helpers for the fortress and the notifications, kept on
+      # the flash for offline boots. Without one, its part stays out, so a
+      # failed download never stops the install.
+      helper() {
+        file="&plgPath;/$1-&helperVer;"
+        find "&plgPath;" -maxdepth 1 -name "$1-v*" ! -name "$1-&helperVer;" -delete 2>/dev/null
+        if [ ! -s "$file" ]; then
+          if curl -fsSL --max-time 60 -o "$file.part" "&helperURL;/$1-linux-amd64" 2>/dev/null; then mv "$file.part" "$file"; fi
+        fi
+        if echo "$2  $file" | sha256sum -c --status 2>/dev/null; then
+          install -m 0755 "$file" "&emhttp;/$1"
+        else
+          rm -f "$file" "$file.part"
+          echo "The $1 helper could not be loaded, so FireSquire goes without it for now."
+        fi
+      }
+      helper fortress "&fortressSHA;"
+      helper notify "&notifySHA;"
       # A schedule set on the settings page lives on the flash.
       if [ -f "&plgPath;/&pkg;.cron" ]; then /usr/local/sbin/update_cron; fi
       echo ""
