@@ -233,17 +233,17 @@
     "one": "UPS-batteriet er næsten tomt: {0} % tilbage, omkring {1} minut.",
     "other": "UPS-batteriet er næsten tomt: {0} % tilbage, omkring {1} minutter."
   },
-  "p_flashbak": "Tjekker flash-backuppen…",
+  "p_flashbak": "Tjekker sikkerhedskopien af flashdrevet…",
   "flash_backup_ok": {
-    "one": "Den seneste flash-backup ({1}) er {0} dag gammel.",
-    "other": "Den seneste flash-backup ({1}) er {0} dage gammel."
+    "one": "Den seneste sikkerhedskopi af flashdrevet ({1}) er {0} dag gammel.",
+    "other": "Den seneste sikkerhedskopi af flashdrevet ({1}) er {0} dage gammel."
   },
   "flash_backup_old": {
-    "one": "Den seneste flash-backup ({1}) er {0} dag gammel. Tag backup af flashdrevet, før du genstarter.",
-    "other": "Den seneste flash-backup ({1}) er {0} dage gammel. Tag backup af flashdrevet, før du genstarter."
+    "one": "Den seneste sikkerhedskopi af flashdrevet ({1}) er {0} dag gammel. Tag en sikkerhedskopi af flashdrevet, før du genstarter.",
+    "other": "Den seneste sikkerhedskopi af flashdrevet ({1}) er {0} dage gammel. Tag en sikkerhedskopi af flashdrevet, før du genstarter."
   },
-  "flash_backup_none": "FireSquire kender ingen flash-backup. BombVault i din fæstning eller Unraid Connect kan holde en.",
-  "flash_backup_none_connect": "FireSquire kender ingen flash-backup. Unraid Connect kan holde en.",
+  "flash_backup_none": "FireSquire kender ingen sikkerhedskopi af flashdrevet. BombVault i din fæstning eller Unraid Connect kan holde en.",
+  "flash_backup_none_connect": "FireSquire kender ingen sikkerhedskopi af flashdrevet. Unraid Connect kan holde en.",
   "tools_g_shutdown": "Klar til at lukke ned",
   "g_ask_reboot": "Genstart alligevel?",
   "g_ask_shutdown": "Luk ned alligevel?",
@@ -253,11 +253,11 @@
   "f_card": "Fæstning",
   "f_lead": "I din fæstning spørger FireSquire dine andre apps før en genstart, om en af dem stadig arbejder, og BombVault fortæller, hvornår flashen sidst blev sikkerhedskopieret.",
   "f_join": "Bliv en del af din fæstning",
-  "f_join_info": "Skriv din fæstnings sætning, de tolv ord. FireSquire går med, så snart alle tolv står der, og gemmer kun sine egne nøgler, aldrig sætningen.",
+  "f_join_info": "Skriv din sætning, de tolv ord. FireSquire går med, så snart alle tolv står der, og gemmer kun sine egne nøgler, aldrig sætningen.",
   "f_join_ph": "tolv ord",
   "f_joining": "FireSquire går med i din fæstning…",
   "f_joined": "Velkommen i din fæstning!",
-  "f_err_phrase": "De ord er ikke en fæstningssætning. Kig gerne hvert ord igennem en gang til.",
+  "f_err_phrase": "De ord danner ikke en sætning. Kig gerne hvert ord igennem en gang til.",
   "f_err_member": "FireSquire er allerede i en fæstning.",
   "f_err_not_member": "FireSquire er ikke i nogen fæstning.",
   "f_nohelper": "Fæstningshjælperen er ikke installeret endnu, så FireSquire kan ikke gå med i en fæstning lige nu.",

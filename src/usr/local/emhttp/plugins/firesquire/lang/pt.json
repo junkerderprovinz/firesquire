@@ -236,17 +236,17 @@
     "one": "A bateria da UPS está quase vazia: restam {0} %, cerca de {1} minuto.",
     "other": "A bateria da UPS está quase vazia: restam {0} %, cerca de {1} minutos."
   },
-  "p_flashbak": "A verificar a cópia do flash…",
+  "p_flashbak": "A verificar o backup do flash…",
   "flash_backup_ok": {
-    "one": "A última cópia do flash ({1}) tem {0} dia.",
-    "other": "A última cópia do flash ({1}) tem {0} dias."
+    "one": "O último backup do flash ({1}) tem {0} dia.",
+    "other": "O último backup do flash ({1}) tem {0} dias."
   },
   "flash_backup_old": {
-    "one": "A última cópia do flash ({1}) tem {0} dia. Faz uma cópia do flash antes de reiniciar.",
-    "other": "A última cópia do flash ({1}) tem {0} dias. Faz uma cópia do flash antes de reiniciar."
+    "one": "O último backup do flash ({1}) tem {0} dia. Faz um backup do flash antes de reiniciar.",
+    "other": "O último backup do flash ({1}) tem {0} dias. Faz um backup do flash antes de reiniciar."
   },
-  "flash_backup_none": "O FireSquire não conhece nenhuma cópia do flash. O BombVault na tua fortaleza ou o Unraid Connect podem manter uma.",
-  "flash_backup_none_connect": "O FireSquire não conhece nenhuma cópia do flash. O Unraid Connect pode manter uma.",
+  "flash_backup_none": "O FireSquire não conhece nenhum backup do flash. O BombVault na tua fortaleza ou o Unraid Connect podem manter um.",
+  "flash_backup_none_connect": "O FireSquire não conhece nenhum backup do flash. O Unraid Connect pode manter um.",
   "tools_g_shutdown": "Pronto para desligar",
   "g_ask_reboot": "Reiniciar mesmo assim?",
   "g_ask_shutdown": "Desligar mesmo assim?",
@@ -256,11 +256,11 @@
   "f_card": "Fortaleza",
   "f_lead": "Na tua fortaleza, o FireSquire pergunta às tuas outras apps antes de um reinício se alguma ainda está a trabalhar, e o BombVault diz-lhe quando foi feita a última cópia do flash.",
   "f_join": "Entrar na tua fortaleza",
-  "f_join_info": "Escreve a frase da tua fortaleza, as doze palavras. O FireSquire entra assim que estiverem as doze, e só guarda as suas próprias chaves, nunca a frase.",
+  "f_join_info": "Escreve a tua frase, as doze palavras. O FireSquire entra assim que estiverem as doze, e só guarda as suas próprias chaves, nunca a frase.",
   "f_join_ph": "doze palavras",
   "f_joining": "O FireSquire está a entrar na tua fortaleza…",
   "f_joined": "Bem-vindo à tua fortaleza!",
-  "f_err_phrase": "Essas palavras não são uma frase de fortaleza. Vê cada uma outra vez, por favor.",
+  "f_err_phrase": "Essas palavras não formam uma frase. Vê cada uma outra vez, por favor.",
   "f_err_member": "O FireSquire já está numa fortaleza.",
   "f_err_not_member": "O FireSquire não está em nenhuma fortaleza.",
   "f_nohelper": "A ferramenta da fortaleza ainda não está instalada, por isso o FireSquire ainda não pode entrar em nenhuma fortaleza.",

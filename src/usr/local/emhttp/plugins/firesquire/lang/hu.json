@@ -214,11 +214,11 @@
   "f_card": "Erőd",
   "f_lead": "Az erődödben a FireSquire újraindítás előtt megkérdezi a többi alkalmazásodat, dolgozik-e még valamelyik, a BombVault pedig elmondja, mikor készült utoljára mentés a flashről.",
   "f_join": "Csatlakozás az erődödhöz",
-  "f_join_info": "Írd be az erődöd mondatát, a tizenkét szót. A FireSquire csatlakozik, amint mind a tizenkettő megvan, és csak a saját kulcsait tartja meg, a mondatot soha.",
+  "f_join_info": "Írd be a jelmondatodat, a tizenkét szót. A FireSquire csatlakozik, amint mind a tizenkettő megvan, és csak a saját kulcsait tartja meg, a jelmondatot soha.",
   "f_join_ph": "tizenkét szó",
   "f_joining": "A FireSquire csatlakozik az erődödhöz…",
   "f_joined": "Üdv az erődödben!",
-  "f_err_phrase": "Ezek a szavak nem egy erőd mondata. Kérlek, nézd át még egyszer mindegyiket.",
+  "f_err_phrase": "Ezek a szavak nem adnak ki jelmondatot. Kérlek, nézd át még egyszer mindegyiket.",
   "f_err_member": "A FireSquire már egy erőd tagja.",
   "f_err_not_member": "A FireSquire egyik erődnek sem tagja.",
   "f_nohelper": "Az erőd segédje még nincs telepítve, ezért a FireSquire egyelőre nem tud erődhöz csatlakozni.",
@@ -230,7 +230,7 @@
   "f_unreachable": "Nem érhető el",
   "f_leave": "Kilépés",
   "f_leave_title": "Kilépsz az erődből?",
-  "f_leave_body": "A többi alkalmazásod ezután nem látja a FireSquire-t, és az ellenőrzés nélkülük megy tovább. A mondattal a FireSquire bármikor visszatér.",
+  "f_leave_body": "A többi alkalmazásod ezután nem látja a FireSquire-t, és az ellenőrzés nélkülük megy tovább. A jelmondattal a FireSquire bármikor visszatér.",
   "f_left": "A FireSquire kilépett az erődből.",
   "flash_probe_left": "A FireSquire nem tudta törölni a(z) {0} tesztfájlt a flashről. Kérlek, töröld magad."
 }
