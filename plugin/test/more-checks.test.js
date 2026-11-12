@@ -73,7 +73,7 @@ ok('without Unraid\'s UPS service nothing is said', ups('onbatt', 1).length === 
 
 console.log('\nThe flash backup');
 const now = 'FS_NOW=1794398400'; // 2026-11-11 12:00 UTC
-const fortress = (answer, code = 0) => `FORTRESS=fortress_stub; FORTRESS_DIR=/x; fortress_stub() { echo "$*" > /dev/null; printf '%s\\n' '${answer}'; return ${code}; }; joined() { return 0; }`;
+const fortress = (answer, code = 0) => `FORTRESS=fortress_stub; FORTRESS_DIR=/x; fortress_stub() { echo "$*" > /dev/null; printf '%s\\n' '${answer}'; return ${code}; }; fortress_helper() { return 0; }; joined() { return 0; }`;
 r = more(`${now}\n${fortress('{"domain":"flash","at":"2026-11-01T03:00:00Z","ok":true}')}\nFS_BOOT=/nonexistent\nmore_flash`);
 ok('BombVault in the fortress tells the date, ten days is CAUTION', one(r, 'flash_backup_old', 'warn', ['10', 'BombVault']) && r[0].tier === 'warning', JSON.stringify(r));
 r = more(`${now}\n${fortress('{"domain":"flash","at":"2026-11-09T03:00:00Z","ok":true}')}\nFS_BOOT=/nonexistent\nmore_flash`);
@@ -84,6 +84,16 @@ r = more(`${now}\n${fortress('{"domain":"flash","at":"2026-10-01T03:00:00Z","ok"
 ok('the newer of the two wins', one(r, 'flash_backup_ok', 'pass', ['2', 'Unraid Connect']), JSON.stringify(r));
 r = more(`${now}\n${fortress('', 1)}\nFS_BOOT=/nonexistent\nmore_flash`);
 ok('without any backup FireSquire says so', one(r, 'flash_backup_none', 'info', []), JSON.stringify(r));
+r = more(`${now}
+FORTRESS=/nonexistent
+FS_BOOT=/nonexistent
+more_flash`);
+ok('without the fortress helper it names Unraid Connect alone', one(r, 'flash_backup_none_connect', 'info', []), JSON.stringify(r));
+r = more(`${now}
+FORTRESS=/nonexistent
+FS_BOOT="${FIX}"; boot_git() { echo 1794225600; }
+more_flash`);
+ok('and still reads Unraid Connect\'s backup', one(r, 'flash_backup_ok', 'pass', ['2', 'Unraid Connect']), JSON.stringify(r));
 
 console.log('\nThe flash write test');
 const boot = fs.mkdtempSync(path.join(os.tmpdir(), 'fs-boot-')).replace(/\\/g, '/');
@@ -102,7 +112,7 @@ ok('an unmounted flash is NO-GO', one(r, 'flash_unmounted', 'fail', []), JSON.st
 
 console.log('\nThe texts');
 const keys = ['p_timeouts', 'timeouts_ok', 'timeouts_short', 'timeouts_container', 'unclean', 'p_shares', 'share_open', 'share_writing',
-  'shares_ok', 'p_ups', 'ups_ok', 'ups_battery', 'ups_low', 'p_flashbak', 'flash_backup_ok', 'flash_backup_old', 'flash_backup_none',
+  'shares_ok', 'p_ups', 'ups_ok', 'ups_battery', 'ups_low', 'p_flashbak', 'flash_backup_ok', 'flash_backup_old', 'flash_backup_none', 'flash_backup_none_connect',
   'flash_probe_left', 'tools_g_shutdown', 'g_ask_reboot', 'g_ask_shutdown', 'g_reboot', 'g_shutdown', 'g_cancel'];
 const missing = keys.filter((k) => !(k in en));
 ok('every new text is in en.json', missing.length === 0, missing.join(', '));

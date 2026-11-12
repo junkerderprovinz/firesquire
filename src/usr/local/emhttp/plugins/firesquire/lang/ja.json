@@ -192,6 +192,7 @@
   "flash_backup_ok": "最後のフラッシュバックアップ ({1}) は {0} 日前です。",
   "flash_backup_old": "最後のフラッシュバックアップ ({1}) は {0} 日前です。再起動の前にフラッシュをバックアップしてください。",
   "flash_backup_none": "FireSquire はフラッシュのバックアップを把握していません。要塞の BombVault か Unraid Connect で保管できます。",
+  "flash_backup_none_connect": "FireSquire はフラッシュのバックアップを把握していません。Unraid Connect で保管できます。",
   "tools_g_shutdown": "シャットダウンの準備",
   "g_ask_reboot": "それでも再起動しますか?",
   "g_ask_shutdown": "それでもシャットダウンしますか?",

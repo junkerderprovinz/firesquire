@@ -109,17 +109,13 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 - An unclean last shutdown, so the next array start runs a parity check
 - Files open or being written over SMB or NFS, with the share and the machine
 - A UPS on battery or almost empty, when Unraid's UPS service runs
-- A flash backup older than a week, from BombVault in your fortress or from Unraid Connect
+- A flash backup from Unraid Connect older than a week
 
 Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, FireSquire links to Scrutiny if it runs on the server, or suggests it for the SMART history.
-
-**Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup or update, sets the roof on fire and names the app, the device, the task and its progress. What an app needs from you has nothing to do with a reboot, so it stays out of the report. TollRoll shows it. You join with the twelve words of your fortress phrase on the settings page. FireSquire keeps only its own keys, never the phrase, and lists the other apps there as connected or not reachable. Without a fortress the group stays out of the report.
 
 **Info**: uptime, kernel, Unraid version.
 
 **Before every reboot and shutdown**: when you reboot or shut down from the WebGUI, on Main, on the Dashboard or from the update banner, FireSquire runs the check first. All clear goes straight on. With Smouldering or The roof is on fire you see the findings and decide: reboot anyway, or cancel and keep the server up. FireSquire changes none of Unraid's files for this, and removing the plugin removes the check.
-
-**Notifications and a schedule**: on the settings page you can add channels for Unraid's own notifications, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks. FireSquire sends its verdict when a check ends in Smouldering or The roof is on fire, and once more when it is back to All clear. A check without findings sends nothing. A daily or weekly schedule runs the check without a click. The channels are stored in `/boot/config/plugins/firesquire/notify.json`, and the secrets in them never reach the browser.
 
 ### Honest limits
 
@@ -129,7 +125,7 @@ This is an early-warning check, not an oracle. Genuine hardware, BIOS or timing 
 
 <p><a id="5-how-it-works" href="#5-how-it-works"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/sections/5-how-it-works-dark.svg"><img src=".github/assets/sections/5-how-it-works.svg" alt="5. How it works" width="100%"></picture></a></p>
 
-A single Bash engine (`firesquire-check.sh`) runs the checks by querying the tools Unraid already ships: `mdcmd`, `losetup`, `docker`, `smartctl`, `df`, `pgrep`. No daemon. For the fortress it calls the small `fortress` helper, which the plugin downloads from ParleyPort's releases. It prints a human-readable report on a console, or machine-readable JSON for the WebGUI:
+A single Bash engine (`firesquire-check.sh`) runs the checks by querying the tools Unraid already ships: `mdcmd`, `losetup`, `docker`, `smartctl`, `df`, `pgrep`. No daemon. It prints a human-readable report on a console, or machine-readable JSON for the WebGUI:
 
 ```bash
 firesquire-check.sh          # human-readable report

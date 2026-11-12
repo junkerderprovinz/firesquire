@@ -192,6 +192,7 @@
   "flash_backup_ok": "גיבוי הפלאש האחרון ({1}) בן {0} ימים.",
   "flash_backup_old": "גיבוי הפלאש האחרון ({1}) בן {0} ימים. כדאי לגבות את הפלאש לפני האתחול.",
   "flash_backup_none": "FireSquire לא מכיר גיבוי פלאש. BombVault במבצר שלך או Unraid Connect יכולים לשמור אחד.",
+  "flash_backup_none_connect": "FireSquire לא מכיר גיבוי פלאש. Unraid Connect יכול לשמור אחד.",
   "tools_g_shutdown": "מוכן לכיבוי",
   "g_ask_reboot": "לאתחל בכל זאת?",
   "g_ask_shutdown": "לכבות בכל זאת?",

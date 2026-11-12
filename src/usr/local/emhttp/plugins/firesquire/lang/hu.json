@@ -192,6 +192,7 @@
   "flash_backup_ok": "Az utolsó flash-mentés ({1}) {0} napos.",
   "flash_backup_old": "Az utolsó flash-mentés ({1}) {0} napos. Mentsd a flasht az újraindítás előtt.",
   "flash_backup_none": "A FireSquire nem tud flash-mentésről. A BombVault az erődödben vagy az Unraid Connect vezethet egyet.",
+  "flash_backup_none_connect": "A FireSquire nem tud flash-mentésről. Az Unraid Connect vezethet egyet.",
   "tools_g_shutdown": "Leállításra kész",
   "g_ask_reboot": "Mégis újraindítod?",
   "g_ask_shutdown": "Mégis leállítod?",

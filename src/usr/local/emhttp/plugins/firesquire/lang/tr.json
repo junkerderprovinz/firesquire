@@ -192,6 +192,7 @@
   "flash_backup_ok": "Son flash yedeği ({1}) {0} günlük.",
   "flash_backup_old": "Son flash yedeği ({1}) {0} günlük. Yeniden başlatmadan önce flash'ı yedekle.",
   "flash_backup_none": "FireSquire hiçbir flash yedeği bilmiyor. Kalendeki BombVault ya da Unraid Connect bir tane tutabilir.",
+  "flash_backup_none_connect": "FireSquire hiçbir flash yedeği bilmiyor. Unraid Connect bir tane tutabilir.",
   "tools_g_shutdown": "Kapatmaya hazır",
   "g_ask_reboot": "Yine de yeniden başlatılsın mı?",
   "g_ask_shutdown": "Yine de kapatılsın mı?",

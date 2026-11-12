@@ -192,6 +192,7 @@
   "flash_backup_ok": "L’ultimo backup della chiavetta ({1}) ha {0} giorno/i.",
   "flash_backup_old": "L’ultimo backup della chiavetta ({1}) ha {0} giorni. Fai un backup della chiavetta prima di riavviare.",
   "flash_backup_none": "FireSquire non conosce alcun backup della chiavetta. BombVault nella tua fortezza o Unraid Connect possono tenerne uno.",
+  "flash_backup_none_connect": "FireSquire non conosce alcun backup della chiavetta. Unraid Connect può tenerne uno.",
   "tools_g_shutdown": "Pronto allo spegnimento",
   "g_ask_reboot": "Riavviare comunque?",
   "g_ask_shutdown": "Spegnere comunque?",

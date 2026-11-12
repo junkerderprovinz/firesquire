@@ -192,6 +192,7 @@
   "flash_backup_ok": "마지막 플래시 백업({1})은 {0}일 전입니다.",
   "flash_backup_old": "마지막 플래시 백업({1})은 {0}일 전입니다. 재부팅 전에 플래시를 백업하세요.",
   "flash_backup_none": "FireSquire가 아는 플래시 백업이 없습니다. 요새의 BombVault나 Unraid Connect가 백업을 보관할 수 있습니다.",
+  "flash_backup_none_connect": "FireSquire가 아는 플래시 백업이 없습니다. Unraid Connect가 백업을 보관할 수 있습니다.",
   "tools_g_shutdown": "종료 준비",
   "g_ask_reboot": "그래도 재부팅할까요?",
   "g_ask_shutdown": "그래도 종료할까요?",

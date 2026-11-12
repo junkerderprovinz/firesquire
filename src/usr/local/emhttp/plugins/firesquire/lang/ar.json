@@ -192,6 +192,7 @@
   "flash_backup_ok": "عمر آخر نسخة احتياطية للفلاش ({1}) هو {0} يوم.",
   "flash_backup_old": "عمر آخر نسخة احتياطية للفلاش ({1}) هو {0} يومًا. انسخ الفلاش احتياطيًا قبل إعادة التشغيل.",
   "flash_backup_none": "لا يعرف FireSquire أي نسخة احتياطية للفلاش. يمكن لـ BombVault في حصنك أو Unraid Connect الاحتفاظ بواحدة.",
+  "flash_backup_none_connect": "لا يعرف FireSquire أي نسخة احتياطية للفلاش. يمكن لـ Unraid Connect الاحتفاظ بواحدة.",
   "tools_g_shutdown": "جاهز للإيقاف",
   "g_ask_reboot": "إعادة التشغيل على أي حال؟",
   "g_ask_shutdown": "الإيقاف على أي حال؟",

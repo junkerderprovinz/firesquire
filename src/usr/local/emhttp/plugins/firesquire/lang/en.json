@@ -192,6 +192,7 @@
   "flash_backup_ok": "The last flash backup ({1}) is {0} day(s) old.",
   "flash_backup_old": "The last flash backup ({1}) is {0} days old. Back up the flash before rebooting.",
   "flash_backup_none": "FireSquire knows of no flash backup. BombVault in your fortress or Unraid Connect can keep one.",
+  "flash_backup_none_connect": "FireSquire knows of no flash backup. Unraid Connect can keep one.",
   "tools_g_shutdown": "Ready to shut down",
   "g_ask_reboot": "Reboot anyway?",
   "g_ask_shutdown": "Shut down anyway?",

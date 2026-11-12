@@ -166,19 +166,25 @@
     b.addEventListener("click", function (e) { window.firesquireRun(e); });
     return b;
   }
+  // The fortress and the notifications come with ParleyPort's helpers. Without
+  // its helper a part stays off the page, and it appears once the helper is in.
+  var withFortress = root.hasAttribute("data-fs-fortress"), withNotify = root.hasAttribute("data-fs-notify");
   var li = L.tools_li && L.tools_li.length ? L.tools_li : [];
+  var groups = ["tools_g_array", "tools_g_ops", "tools_g_containers", "tools_g_host", "tools_g_fortress", "tools_g_health", "tools_g_shutdown"]
+    .map(function (k, i) { return [k, li[i]]; })
+    .filter(function (g) { return withFortress || g[0] !== "tools_g_fortress"; });
   if (UI.themed()) {
     if (tools) tools.hidden = true;
     var cTools = card(t("tools_title"));
     cTools.classList.add("fs-card-tools");
-    ["tools_g_array", "tools_g_ops", "tools_g_containers", "tools_g_host", "tools_g_fortress", "tools_g_health", "tools_g_shutdown"].forEach(function (k, i) { row(cTools, t(k), li[i]); });
+    groups.forEach(function (g) { row(cTools, t(g[0]), g[1]); });
     row(cTools, t("tools_note"), t("tools_lead")).appendChild(runButton("fs-acc fs-key"));
   } else if (tools) {
     if (rtl) tools.dir = "rtl";
     tools.appendChild(el("p", "fs-tools-lead", t("tools_lead")));
     tools.appendChild(el("p", null, t("tools_intro")));
     var ul = el("ul", "fs-tools-list");
-    li.forEach(function (x) { ul.appendChild(el("li", null, x)); });
+    groups.forEach(function (g) { if (g[1]) ul.appendChild(el("li", null, g[1])); });
     tools.appendChild(ul);
     tools.appendChild(runButton());
   }
@@ -187,8 +193,8 @@
   var ver = root.getAttribute("data-fs-ver");
   // firesquire-fortress.js fills in the fortress card, firesquire-notify.js
   // the notification and schedule cards.
-  root.appendChild(el("div")).id = "fs-fortress";
-  root.appendChild(el("div")).id = "fs-notify";
+  if (withFortress) root.appendChild(el("div")).id = "fs-fortress";
+  if (withNotify) root.appendChild(el("div")).id = "fs-notify";
 
   var cVer = card(t("ver_title"));
   row(cVer, "FireSquire").appendChild(version(ver, REPO));

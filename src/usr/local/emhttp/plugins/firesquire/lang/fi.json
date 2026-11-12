@@ -192,6 +192,7 @@
   "flash_backup_ok": "Viimeisin flash-varmuuskopio ({1}) on {0} päivää vanha.",
   "flash_backup_old": "Viimeisin flash-varmuuskopio ({1}) on {0} päivää vanha. Varmuuskopioi flash ennen uudelleenkäynnistystä.",
   "flash_backup_none": "FireSquire ei tunne flash-varmuuskopiota. BombVault linnoituksessasi tai Unraid Connect voi pitää sellaista.",
+  "flash_backup_none_connect": "FireSquire ei tunne flash-varmuuskopiota. Unraid Connect voi pitää sellaista.",
   "tools_g_shutdown": "Valmis sammutukseen",
   "g_ask_reboot": "Käynnistetäänkö silti uudelleen?",
   "g_ask_shutdown": "Sammutetaanko silti?",

@@ -192,6 +192,7 @@
   "flash_backup_ok": "Το τελευταίο αντίγραφο του flash ({1}) είναι {0} ημέρα(ες).",
   "flash_backup_old": "Το τελευταίο αντίγραφο του flash ({1}) είναι {0} ημερών. Κάνε αντίγραφο του flash πριν την επανεκκίνηση.",
   "flash_backup_none": "Το FireSquire δεν γνωρίζει αντίγραφο του flash. Το BombVault στο φρούριό σου ή το Unraid Connect μπορεί να κρατά ένα.",
+  "flash_backup_none_connect": "Το FireSquire δεν γνωρίζει αντίγραφο του flash. Το Unraid Connect μπορεί να κρατά ένα.",
   "tools_g_shutdown": "Έτοιμο για τερματισμό",
   "g_ask_reboot": "Επανεκκίνηση παρ’ όλα αυτά;",
   "g_ask_shutdown": "Τερματισμός παρ’ όλα αυτά;",

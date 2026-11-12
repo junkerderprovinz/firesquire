@@ -192,6 +192,7 @@
   "flash_backup_ok": "Bản sao lưu flash gần nhất ({1}) đã {0} ngày.",
   "flash_backup_old": "Bản sao lưu flash gần nhất ({1}) đã {0} ngày. Hãy sao lưu flash trước khi khởi động lại.",
   "flash_backup_none": "FireSquire không biết bản sao lưu flash nào. BombVault trong pháo đài của bạn hoặc Unraid Connect có thể giữ một bản.",
+  "flash_backup_none_connect": "FireSquire không biết bản sao lưu flash nào. Unraid Connect có thể giữ một bản.",
   "tools_g_shutdown": "Sẵn sàng tắt máy",
   "g_ask_reboot": "Vẫn khởi động lại?",
   "g_ask_shutdown": "Vẫn tắt máy?",

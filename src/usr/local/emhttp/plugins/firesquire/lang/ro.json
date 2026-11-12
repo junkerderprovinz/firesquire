@@ -192,6 +192,7 @@
   "flash_backup_ok": "Ultima copie a flash-ului ({1}) are {0} zi(le).",
   "flash_backup_old": "Ultima copie a flash-ului ({1}) are {0} zile. Fă o copie a flash-ului înainte de repornire.",
   "flash_backup_none": "FireSquire nu știe de nicio copie a flash-ului. BombVault din fortăreața ta sau Unraid Connect poate ține una.",
+  "flash_backup_none_connect": "FireSquire nu știe de nicio copie a flash-ului. Unraid Connect poate ține una.",
   "tools_g_shutdown": "Gata de oprire",
   "g_ask_reboot": "Repornești totuși?",
   "g_ask_shutdown": "Oprești totuși?",

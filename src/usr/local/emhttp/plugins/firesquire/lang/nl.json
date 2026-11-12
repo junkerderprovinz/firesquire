@@ -192,6 +192,7 @@
   "flash_backup_ok": "De laatste flash-back-up ({1}) is {0} dag(en) oud.",
   "flash_backup_old": "De laatste flash-back-up ({1}) is {0} dagen oud. Maak een back-up van de flash voor je herstart.",
   "flash_backup_none": "FireSquire kent geen flash-back-up. BombVault in je vesting of Unraid Connect kan er een bijhouden.",
+  "flash_backup_none_connect": "FireSquire kent geen flash-back-up. Unraid Connect kan er een bijhouden.",
   "tools_g_shutdown": "Klaar om af te sluiten",
   "g_ask_reboot": "Toch herstarten?",
   "g_ask_shutdown": "Toch afsluiten?",

@@ -192,6 +192,7 @@
   "flash_backup_ok": "Ostatnia kopia pendrive’a ({1}) ma dni: {0}.",
   "flash_backup_old": "Ostatnia kopia pendrive’a ({1}) ma dni: {0}. Zrób kopię pendrive’a przed restartem.",
   "flash_backup_none": "FireSquire nie zna żadnej kopii pendrive’a. BombVault w twojej twierdzy albo Unraid Connect może ją prowadzić.",
+  "flash_backup_none_connect": "FireSquire nie zna żadnej kopii pendrive’a. Unraid Connect może ją prowadzić.",
   "tools_g_shutdown": "Gotowość do wyłączenia",
   "g_ask_reboot": "Mimo to uruchomić ponownie?",
   "g_ask_shutdown": "Mimo to wyłączyć?",

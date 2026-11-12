@@ -192,6 +192,7 @@
   "flash_backup_ok": "La dernière sauvegarde de la clé flash ({1}) date de {0} jour(s).",
   "flash_backup_old": "La dernière sauvegarde de la clé flash ({1}) date de {0} jours. Sauvegarde la clé flash avant de redémarrer.",
   "flash_backup_none": "FireSquire ne connaît aucune sauvegarde de la clé flash. BombVault dans ta forteresse ou Unraid Connect peut en tenir une.",
+  "flash_backup_none_connect": "FireSquire ne connaît aucune sauvegarde de la clé flash. Unraid Connect peut en tenir une.",
   "tools_g_shutdown": "Prêt à s’arrêter",
   "g_ask_reboot": "Redémarrer quand même ?",
   "g_ask_shutdown": "Éteindre quand même ?",

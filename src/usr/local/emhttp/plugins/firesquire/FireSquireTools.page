@@ -76,10 +76,17 @@ html.tt-popups-on .fs-hero {
 <?php
 $fsVer = '';
 if (preg_match('/<!ENTITY\s+version\s+"([^"]+)"/', (string)@file_get_contents('/var/log/plugins/firesquire.plg'), $fsM)) $fsVer = $fsM[1];
+$fsWeb = '/usr/local/emhttp/plugins/firesquire';
+$fsFortress = is_executable("$fsWeb/fortress");
+$fsNotify = is_executable("$fsWeb/notify");
 ?>
 <link type="text/css" rel="stylesheet" href="<?autov('/plugins/firesquire/firesquire-info.css')?>">
-<div id="fs-info" data-fs-ver="<?=htmlspecialchars($fsVer, ENT_QUOTES)?>"></div>
+<div id="fs-info" data-fs-ver="<?=htmlspecialchars($fsVer, ENT_QUOTES)?>"<?=$fsFortress ? ' data-fs-fortress' : ''?><?=$fsNotify ? ' data-fs-notify' : ''?>></div>
 <script src="<?autov('/plugins/firesquire/firesquire-marks.js')?>"></script>
 <script src="<?autov('/plugins/firesquire/firesquire-info.js')?>"></script>
+<?if ($fsFortress):?>
 <script src="<?autov('/plugins/firesquire/firesquire-fortress.js')?>"></script>
+<?endif;?>
+<?if ($fsNotify):?>
 <script src="<?autov('/plugins/firesquire/firesquire-notify.js')?>"></script>
+<?endif;?>

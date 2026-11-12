@@ -192,6 +192,7 @@
   "flash_backup_ok": "Den siste flash-sikkerhetskopien ({1}) er {0} dag(er) gammel.",
   "flash_backup_old": "Den siste flash-sikkerhetskopien ({1}) er {0} dager gammel. Ta sikkerhetskopi av flash-enheten før du starter på nytt.",
   "flash_backup_none": "FireSquire kjenner ingen flash-sikkerhetskopi. BombVault i festningen din eller Unraid Connect kan holde en.",
+  "flash_backup_none_connect": "FireSquire kjenner ingen flash-sikkerhetskopi. Unraid Connect kan holde en.",
   "tools_g_shutdown": "Klar til å slå av",
   "g_ask_reboot": "Starte på nytt likevel?",
   "g_ask_shutdown": "Slå av likevel?",

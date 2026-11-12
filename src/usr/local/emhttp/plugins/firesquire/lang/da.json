@@ -192,6 +192,7 @@
   "flash_backup_ok": "Den seneste flash-backup ({1}) er {0} dag(e) gammel.",
   "flash_backup_old": "Den seneste flash-backup ({1}) er {0} dage gammel. Tag backup af flashdrevet, før du genstarter.",
   "flash_backup_none": "FireSquire kender ingen flash-backup. BombVault i din fæstning eller Unraid Connect kan holde en.",
+  "flash_backup_none_connect": "FireSquire kender ingen flash-backup. Unraid Connect kan holde en.",
   "tools_g_shutdown": "Klar til at lukke ned",
   "g_ask_reboot": "Genstart alligevel?",
   "g_ask_shutdown": "Luk ned alligevel?",

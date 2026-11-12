@@ -192,6 +192,7 @@
   "flash_backup_ok": "Poslední záloha flash disku ({1}) je stará dní: {0}.",
   "flash_backup_old": "Poslední záloha flash disku ({1}) je stará dní: {0}. Zazálohuj flash disk před restartem.",
   "flash_backup_none": "FireSquire nezná žádnou zálohu flash disku. BombVault v tvé pevnosti nebo Unraid Connect ji může vést.",
+  "flash_backup_none_connect": "FireSquire nezná žádnou zálohu flash disku. Unraid Connect ji může vést.",
   "tools_g_shutdown": "Připraveno k vypnutí",
   "g_ask_reboot": "Přesto restartovat?",
   "g_ask_shutdown": "Přesto vypnout?",

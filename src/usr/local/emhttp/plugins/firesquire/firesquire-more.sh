@@ -147,7 +147,8 @@ more_ups() {
   fi
 }
 
-joined() { [ -x "${FORTRESS:-}" ] && [ -f "${FORTRESS_DIR:-}/fortress.json" ]; }
+fortress_helper() { [ -x "${FORTRESS:-}" ]; }
+joined() { fortress_helper && [ -f "${FORTRESS_DIR:-}/fortress.json" ]; }
 
 # boot_git prints when Unraid Connect last backed up the flash, which it keeps
 # as a git repository on the flash itself.
@@ -156,7 +157,8 @@ boot_git() {
 }
 
 # more_flash finds the newest flash backup it can see: BombVault's in the
-# fortress through backup.last, and Unraid Connect's.
+# fortress through backup.last, and Unraid Connect's. Without the fortress
+# helper there is no BombVault to ask, so the hint names Unraid Connect alone.
 more_flash() {
   local now="${FS_NOW:-$(date +%s)}" at="" source="" t answer days
   if joined; then
@@ -167,8 +169,11 @@ more_flash() {
   fi
   t="$(boot_git)"
   if [ -n "$t" ] && { [ -z "$at" ] || [ "$t" -gt "$at" ]; }; then at="$t"; source="Unraid Connect"; fi
-  if [ -z "$at" ]; then
+  if [ -z "$at" ] && fortress_helper; then
     add info flash_backup info flash_backup_none "" "FireSquire knows of no flash backup. BombVault in your fortress or Unraid Connect can keep one."
+    return 0
+  elif [ -z "$at" ]; then
+    add info flash_backup info flash_backup_none_connect "" "FireSquire knows of no flash backup. Unraid Connect can keep one."
     return 0
   fi
   days=$(( (now - at) / 86400 ))

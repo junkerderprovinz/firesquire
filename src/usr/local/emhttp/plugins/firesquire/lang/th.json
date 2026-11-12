@@ -192,6 +192,7 @@
   "flash_backup_ok": "การสำรองแฟลชครั้งล่าสุด ({1}) ผ่านมา {0} วัน",
   "flash_backup_old": "การสำรองแฟลชครั้งล่าสุด ({1}) ผ่านมา {0} วันแล้ว สำรองแฟลชก่อนรีบูต",
   "flash_backup_none": "FireSquire ไม่รู้จักการสำรองแฟลชใดเลย BombVault ในป้อมปราการของคุณหรือ Unraid Connect เก็บไว้ได้",
+  "flash_backup_none_connect": "FireSquire ไม่รู้จักการสำรองแฟลชใดเลย Unraid Connect เก็บไว้ได้",
   "tools_g_shutdown": "พร้อมปิดเครื่อง",
   "g_ask_reboot": "ยังจะรีบูตไหม?",
   "g_ask_shutdown": "ยังจะปิดเครื่องไหม?",

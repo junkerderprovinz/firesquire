@@ -192,6 +192,7 @@
   "flash_backup_ok": "Den senaste flash-säkerhetskopian ({1}) är {0} dag(ar) gammal.",
   "flash_backup_old": "Den senaste flash-säkerhetskopian ({1}) är {0} dagar gammal. Säkerhetskopiera flashminnet innan du startar om.",
   "flash_backup_none": "FireSquire känner inte till någon flash-säkerhetskopia. BombVault i din fästning eller Unraid Connect kan hålla en.",
+  "flash_backup_none_connect": "FireSquire känner inte till någon flash-säkerhetskopia. Unraid Connect kan hålla en.",
   "tools_g_shutdown": "Redo att stänga av",
   "g_ask_reboot": "Starta om ändå?",
   "g_ask_shutdown": "Stäng av ändå?",

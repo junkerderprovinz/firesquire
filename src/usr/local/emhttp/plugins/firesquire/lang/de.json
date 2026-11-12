@@ -192,6 +192,7 @@
   "flash_backup_ok": "Die letzte Flash-Sicherung ({1}) ist {0} Tag(e) alt.",
   "flash_backup_old": "Die letzte Flash-Sicherung ({1}) ist {0} Tage alt. Sichere den Flash vor dem Neustart.",
   "flash_backup_none": "FireSquire kennt keine Flash-Sicherung. BombVault in deiner Festung oder Unraid Connect kann eine führen.",
+  "flash_backup_none_connect": "FireSquire kennt keine Flash-Sicherung. Unraid Connect kann eine führen.",
   "tools_g_shutdown": "Bereit zum Herunterfahren",
   "g_ask_reboot": "Trotzdem neu starten?",
   "g_ask_shutdown": "Trotzdem herunterfahren?",

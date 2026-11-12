@@ -192,6 +192,7 @@
   "flash_backup_ok": "A última cópia do flash ({1}) tem {0} dia(s).",
   "flash_backup_old": "A última cópia do flash ({1}) tem {0} dias. Faz uma cópia do flash antes de reiniciar.",
   "flash_backup_none": "O FireSquire não conhece nenhuma cópia do flash. O BombVault na tua fortaleza ou o Unraid Connect podem manter uma.",
+  "flash_backup_none_connect": "O FireSquire não conhece nenhuma cópia do flash. O Unraid Connect pode manter uma.",
   "tools_g_shutdown": "Pronto para desligar",
   "g_ask_reboot": "Reiniciar mesmo assim?",
   "g_ask_shutdown": "Desligar mesmo assim?",

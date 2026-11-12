@@ -192,6 +192,7 @@
   "flash_backup_ok": "上次闪存备份（{1}）是 {0} 天前。",
   "flash_backup_old": "上次闪存备份（{1}）是 {0} 天前。请在重启前备份闪存。",
   "flash_backup_none": "FireSquire 不知道任何闪存备份。你堡垒中的 BombVault 或 Unraid Connect 可以保存一份。",
+  "flash_backup_none_connect": "FireSquire 不知道任何闪存备份。Unraid Connect 可以保存一份。",
   "tools_g_shutdown": "关机准备",
   "g_ask_reboot": "仍要重启吗？",
   "g_ask_shutdown": "仍要关机吗？",
