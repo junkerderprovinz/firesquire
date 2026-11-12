@@ -9,8 +9,9 @@ name: Release
 # previous version (zero user impact, re-run the tag to heal).
 #
 # To release, add a "## X.Y.Z" block to plugin/firesquire.plg <CHANGES> and
-# `git tag vX.Y.Z` on main. Version and hash are not bumped by hand; CI flips
-# them after the asset is live.
+# `git tag vX.Y.Z` on main. The hash is not set by hand; CI flips it after the
+# asset is live. The block's bold category labels become the release's
+# headings.
 #
 # workflow_dispatch = build-only dry run: builds the .txz, uploads it as an
 # artifact, creates no release and touches nothing on main.
@@ -62,8 +63,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           ver="${{ steps.v.outputs.version }}"
-          awk -v v="## $ver" '$0==v{grab=1;next} grab&&/^## /{exit} grab{print}' \
-            plugin/firesquire.plg > release-notes.md
+          awk -v v="## $ver" '$0==v{grab=1;next} grab&&/^(## |  <\/CHANGES>)/{exit} grab{print}' plugin/firesquire.plg \
+            | sed -E 's/^([^ *#-]+) \*\*([A-Z][a-z]+)\*\*$/## \1 \2/' > release-notes.md
           if [ ! -s release-notes.md ]; then
             echo "::error::no '## $ver' block in plugin/firesquire.plg <CHANGES>; add it before tagging"
             exit 1
@@ -104,8 +105,9 @@ jobs:
             || { echo "::error::version not written into firesquire.plg"; exit 1; }
           grep -qE "<!ENTITY sha256[[:space:]]+\"${sha}\">" plugin/firesquire.plg \
             || { echo "::error::SHA256 not written into firesquire.plg"; exit 1; }
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # The pin is the owner's commit, so no bot shows up among the contributors.
+          git config user.name "junkerderprovinz"
+          git config user.email "jdp@braethoria.com"
           if git diff --quiet -- plugin/firesquire.plg; then
             echo "firesquire.plg already current, nothing to commit"
           else

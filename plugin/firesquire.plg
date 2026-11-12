@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "3.1.2">
+<!ENTITY version   "1.3.0">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -28,70 +28,83 @@
 </ICON>
 
   <CHANGES>
-## 3.1.2
-🐛 **Fixed**
-- **The texts say what the check writes.** FireSquire said it never changes anything, yet the flash check writes an empty test file to /boot and deletes it right away. The report, the settings page and the README say so now, in all 26 languages.
+## 1.3.0
+✨ **Added**
+- **A check before every reboot.** Reboot or shut down from the WebGUI, on Main, on the Dashboard or from the update banner, and FireSquire runs its check first. All clear goes straight through. With Smouldering or The roof is on fire you see the findings and decide: reboot anyway, or cancel and keep the server up.
+- **ZFS pools, btrfs devices and CRC counts.** A degraded, faulted or unavailable pool, or a device with read, write or checksum errors, sets the roof on fire. A UDMA CRC count that rose since the last check means Smouldering, and usually a bad cable or port.
+- **Every disk finding names its port**, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, the report links to Scrutiny if it runs on the server, or suggests it for the SMART history.
+- **More of what stands in a reboot's way:** a shutdown time-out too short for the containers and VMs together, containers that ask for more stop time than Docker gives them, an unclean last shutdown, files open or being written over SMB and NFS, a UPS on battery or almost empty, and a flash backup from Unraid Connect older than a week.
 
-## 3.1.1
+🎨 **Design**
+- **New names for the three levels: All clear, Smouldering and The roof is on fire.** In German they read Alles klar, Es glimmt and Feuer am Dach, and other languages use a saying of their own where they have one. The JSON keeps GO, CAUTION and NO-GO as its codes.
+- **A warning beacon leads the verdict.** Its dome glows in the level's colour, and while something smoulders or burns, its beam sweeps round it, faster when the roof is on fire. With motion switched off it stays lit and still.
+- **Every finding is a card**, grouped by level, with or without TowerTorch. The button to the page that fixes it shows when you point at the card.
+- **The report closes from its foot** with GlimStone's close button. Every button there wears its glyph in Unraid's look too, and with no head bar and no logo, the beacon and the level have the window to themselves.
+- **Buttons have rounded corners** instead of pill shapes, in both looks.
+- **FireSquire follows GlimStone 4.3.7.** A button you point at or reach with the keyboard takes a touch of the accent in its ground and all of it in its glyph, and under the rainbow every button gets a colour of its own. Buttons in a window's foot keep their words instead of trailing off, and a running progress bar carries a sheen.
+
 ⚡ **Improved**
 - **Ready for TowerTorch 1.4.1.** FireSquire follows TowerTorch's new internal names, so please update both together to keep the shared look.
-
-## 3.1.0
-✨ **Added**
-- With TowerTorch installed, the report window has a Check again button at its foot. It runs the check once more without closing the window.
-- The flame is back on the Dashboard. A FireSquire icon sits next to Reboot in the server tile, so you can run the check right where you reboot, and it leaves no empty tile behind.
-- Version, Help and About cards on the settings page, as on TowerTorch's and ShipLog's Info tab. The Version card shows the version without a "v", along with the GlimStone version and a Release notes button.
-- The coffee, PayPal and crypto buttons open their windows in the page instead of a new tab. Each coin's logo shows in its own colour.
-
-🎨 **Design**
-- New logo. The flames sit in a grey diamond that reads on light and dark themes alike, on the Plugins tab, in the menu and in the report window.
-- With TowerTorch installed, FireSquire takes on TowerTorch's look: the report window, the FireSquire button next to Reboot on the Main tab, the icon in the Dashboard's server tile and Settings → User Utilities → FireSquire. Theme, motion, labels, colours and corners follow TowerTorch's settings, and every button shows its icon.
-- In the report, FireSquire's logo stands right before GO, CAUTION or NO-GO, and its frame takes on the verdict's colour. Findings are grouped by tier, and each problem gets a button that opens the page where you can fix it. The note that FireSquire only advises sits behind the (i) next to the title.
-- Settings → User Utilities → FireSquire opens with a banner across the page: FireSquire's logo, its name and the claim. Below it, a card lists what the check looks at, with the details behind each (i).
-- Without TowerTorch, the report window follows Unraid's light or dark theme instead of fixed colours.
-- The text report from the command line opens with the new knight banner.
-
-⚡ **Improved**
-- The keyboard focus stays inside the report window while it is open. Escape closes it, and the focus goes back to the button you opened it from.
-
-🌐 **Translations**
-- The report and the settings page read more smoothly in all 26 languages, and the new labels are translated into all of them.
-
-## 3.0.0
-✨ **Added**
-- **FireSquire launches**, a new medieval-flavored name to match the rest of the house. Same pre-reboot GO / CAUTION / NO-GO advisory, same read-only engine, now a squire tending the beacon before the reboot. See the entries below for everything this plugin already did under its previous name.
-
----
-
-## 2.0.0
-✨ **Added**
-- New three-variant logo (flame-in-diamond): the Plugins-tab tile, menu icon and report window now use a flip-compatible double-ring variant that reads on every Unraid theme; the README banner, store icon and support thread follow the new design (light + dark).
-
-🎨 **Design**
-- The check-result window now uses Unraid's own font instead of a fixed one, so it matches the rest of the WebGUI. Its progress bar follows your accent colour when TowerTorch is installed (amber otherwise). The verdict and status colours (green, amber, red) are unchanged.
-- The report-window logo cache-buster is bumped so existing installs pick up the new v1.2.0 flame-in-diamond logo in the modal header.
-- The plugin author shows as "Junker der Provinz"; the install/uninstall ceremony prints the house ASCII banner (a ready message after an install, "Bye!" on removal).
-- Branded ASCII startup banner. Running the engine from the Unraid console prints the "Junker der Provinz" house banner as its report header (human-readable report only; the WebGUI JSON is untouched).
-- Reproducible packaging via plugin/pkg_build.sh (identical locally and on CI): root:root ownership, LF-normalised text, banner embedded from .github/assets/banner-raw.txt. The release workflow builds and publishes the .txz on a v* tag.
-
-⚡ **Improved**
-- The check-result window now shows a live progress bar while the engine runs, with the current stage and a percentage, instead of a static "Running checks" line. It reflects real progress (each check, plus per-disk during the slower SMART scan) by streaming from the engine; if streaming is unavailable it falls back to an animated bar, so the report always appears.
-- Click a problem finding in the check-result window to jump straight to the relevant Unraid page: syslog and disk/IO findings open the System Log viewer, array / parity / mover / space / flash / SMART findings open Main, running VMs open the VMs tab, risky mounts / missing binds / a stuck image open Docker, and a stopped dockerd or libvirt opens its Settings page. Only warning and error findings are linked (a healthy check has nothing to jump to).
+- **A quieter flash check.** The flash write test gets a card of its own only when FireSquire cannot delete its test file.
 
 🐛 **Fixed**
-- Critical uninstall fix (the same bug found in TowerTorch and ShipLog): the removal was a bare `&lt;REMOVE&gt;` tag Unraid never runs, so uninstalling left the files, the package and the cached flash .txz behind. Removal is now a proper `&lt;FILE Run="/bin/bash" Method="remove"&gt;` block ending in `exit 0` that removes the package and wipes the files (the plugin is stateless  -  no daemon, no user data).
+- **The texts say what the check writes.** FireSquire said it never changes anything, yet the flash check writes an empty test file to /boot and deletes it right away, and the CRC counts live in `crc.state` on the flash. The report, the settings page and the README say so now, in all 26 languages.
+- **Release notes only where there is a release.** The Version card's Release notes button opens the version's own release when there is one, and the list of releases otherwise.
 
 🌐 **Translations**
-- The report and the Tools page now follow the language configured in the Unraid UI across all 26 supported languages (previously English and German only), the same way ShipLog does. Right-to-left languages (Arabic, Hebrew) are laid out accordingly, and any string not yet translated falls back to English.
+- **Everything new speaks all 26 languages**, the level names included.
 
-## 1.0.0
+## 1.2.0
+✨ **Added**
+- **A new name: FireSquire**, a squire who tends the beacon before your reboot, to fit the rest of the house. The check and its verdict stay as they were.
+- **Check again.** With TowerTorch installed, the report window has a Check again button at its foot. It runs the check once more without closing the window.
+- **The flame on the Dashboard.** A FireSquire icon sits next to Reboot in the server tile, so you can run the check right where you reboot, and it leaves no empty tile behind.
+- **Version, Help and About cards** on the settings page, as on TowerTorch's and ShipLog's Info tab. The Version card shows the version without a "v", along with the GlimStone version and a Release notes button.
+- **The give buttons open in the page.** Coffee, PayPal and crypto open their windows right there instead of in a new tab, and each coin's logo shows in its own colour.
+
 🎨 **Design**
-- Localised to the configured Unraid language (German + English, English fallback); the report window follows the Unraid light/dark theme.
-- Flame-in-hazard-diamond logo across the Plugins tab, menu icon and report window; banner in Bree Serif + Lato.
+- **New logo.** The flames sit in a grey diamond that reads on light and dark themes alike, on the Plugins tab, in the menu and in the report window.
+- **TowerTorch's look.** With TowerTorch installed, FireSquire takes on its look: the report window, the FireSquire button next to Reboot on the Main tab, the icon in the Dashboard's server tile and Settings → User Utilities → FireSquire. Theme, motion, labels, colours and corners follow TowerTorch's settings, and every button shows its icon.
+- **The verdict in its colour.** FireSquire's logo stands right before GO, CAUTION or NO-GO, and its frame takes on the verdict's colour. Findings are grouped by tier, and each problem gets a button that opens the page where you can fix it. The note that FireSquire only advises sits behind the (i) next to the title.
+- **A banner on the settings page.** Settings → User Utilities → FireSquire opens with FireSquire's logo, its name and the claim across the page. Below it, a card lists what the check looks at, with the details behind each (i).
+- **Unraid's theme without TowerTorch.** The report window follows Unraid's light or dark theme instead of fixed colours.
+- **A knight banner** opens the text report on the command line.
 
 ⚡ **Improved**
-- First stable release (SemVer, matching the container repos): the pre-reboot health check with a single GO / CAUTION / NO-GO verdict  -  advisory only, it reads the host state and never changes anything.
-- Checks: array + disk assignments and health, degraded/missing parity (CAUTION vs NO-GO), syslog disk/IO errors, SMART early-warning, plus the Main-tab button next to Reboot.
+- **The focus stays in the report.** The keyboard focus stays inside the report window while it is open. Escape closes it, and the focus goes back to the button you opened it from.
+
+🌐 **Translations**
+- **Smoother in all 26 languages.** The report and the settings page read more smoothly, and every new label is translated.
+
+## 1.1.0
+✨ **Added**
+- **A new logo, the flame in a diamond.** On the Plugins tab, in the menu and in the report window it sits in a double ring that reads on every Unraid theme, and existing installs pick it up right away. The README banner, the store icon and the support thread follow it in light and dark.
+- **A live progress bar** while the check runs, with the current stage and a percentage instead of a still "Running checks" line. It follows the engine check by check, and disk by disk through the slower SMART scan. Where streaming is not available it falls back to a moving bar, so the report always appears.
+- **Findings link to where you fix them.** Syslog and disk findings open the System Log, array, parity, mover, space, flash and SMART findings open Main, running VMs open the VMs tab, mount and image findings open Docker, and a stopped dockerd or libvirt opens its settings page. Only warnings and errors get a link.
+- **The house banner** heads the text report when you run the engine from the console, greets you after an install and says goodbye on removal.
+
+🎨 **Design**
+- **Unraid's own font in the report window**, so it matches the rest of the WebGUI. Its progress bar takes your accent colour when TowerTorch is installed and stays amber otherwise. The verdict colours green, amber and red stay as they are.
+- **The author shows as Junker der Provinz** on the Plugins tab.
+
+⚡ **Improved**
+- **The same package locally and on CI.** `plugin/pkg_build.sh` builds it with root ownership and LF line endings, and the release workflow publishes it from a version tag.
+
+🐛 **Fixed**
+- **Uninstalling removes everything.** The removal step was a bare REMOVE tag that Unraid never runs, so the files, the package and the cached copy on the flash stayed behind. A proper remove script cleans up all of it, and since the plugin runs no daemon and keeps no user data, nothing else is left.
+
+🌐 **Translations**
+- **The report follows Unraid's language** in all 26 languages it offers, where it had only English and German before, the same way ShipLog does. Arabic and Hebrew read right to left, and a string not yet translated falls back to English.
+
+## 1.0.0
+✨ **Added**
+- **The pre-reboot check.** One verdict, GO, CAUTION or NO-GO, with the exact findings behind it. It is advisory only: it reads the host and reports.
+- **What it looks at:** the array with its disk assignments and health, missing or degraded parity (CAUTION or NO-GO), disk and I/O errors in the syslog, and SMART early warnings.
+- **A button next to Reboot** on the Main tab runs the check.
+
+🎨 **Design**
+- **In your language and theme.** The report follows Unraid's language, English or German with English as the fallback, and its light or dark theme.
+- **The flame in a hazard diamond** is the logo on the Plugins tab, in the menu and in the report window, and the banner is set in Bree Serif and Lato.
   </CHANGES>
 
   <!-- Download the package from the GitHub release -->
