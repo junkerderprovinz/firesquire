@@ -34,6 +34,10 @@ let x = php(`return fs_fortress_join('${dir}', "  ${WORDS.split(' ').join('  \\n
 const call = x.calls[0] || { args: [] };
 ok('the helper joins for FireSquire under the server\'s name', call.args.slice(0, 7).join(' ') === `join -dir ${dir} -app firesquire -name Tower`, call.args.join(' '));
 ok('it may ask BombVault for the last flash backup', call.args.join(' ').includes('-uses backup.last'), call.args.join(' '));
+const icon = call.args[call.args.indexOf('-icon') + 1] || '';
+ok('it hands the helper FireSquire\'s logo for the other apps', icon === '/usr/local/emhttp/plugins/firesquire/images/firesquire.svg', call.args.join(' '));
+const logo = fs.existsSync(path.join(DIR, 'images', 'firesquire.svg')) ? read('images/firesquire.svg') : '';
+ok('the logo ships with the plugin, a plain SVG under 16 KiB', logo.startsWith('<svg xmlns="http://www.w3.org/2000/svg"') && Buffer.byteLength(logo) <= 16384 && !/<script|\son\w+=/i.test(logo), logo.slice(0, 80));
 ok('no address and no relay go along', !call.args.some((a) => /^-relay/.test(a)), call.args.join(' '));
 ok('the phrase goes in on one line, on the input alone', call.stdin === WORDS + '\n' && !call.args.some((a) => a.includes('abandon')), JSON.stringify(call.stdin));
 ok('a join that worked says so', x.r.ok === true, JSON.stringify(x.r));

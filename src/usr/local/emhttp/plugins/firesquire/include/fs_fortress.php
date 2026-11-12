@@ -7,6 +7,8 @@
 
 /* FireSquire asks BombVault when the flash was last backed up. */
 const FS_FORTRESS_USES = 'backup.last';
+/* The other apps of the fortress show FireSquire with this logo. */
+const FS_FORTRESS_ICON = '/usr/local/emhttp/plugins/firesquire/images/firesquire.svg';
 
 /* How the house's apps write their names; a plugin joins under its id alone. */
 const FS_FORTRESS_NAMES = array(
@@ -37,7 +39,7 @@ function fs_fortress_join($dir, $phrase, $device, $run) {
   // fortress join reads one line, and a pasted phrase may come in several.
   $words = trim(preg_replace('/\s+/', ' ', (string) $phrase));
   if ($words === '') return array('error' => 'phrase');
-  list($code, , $err) = $run(array('join', '-dir', $dir, '-app', 'firesquire', '-name', $device, '-lan', '-uses', FS_FORTRESS_USES), $words . "\n");
+  list($code, , $err) = $run(array('join', '-dir', $dir, '-app', 'firesquire', '-name', $device, '-lan', '-uses', FS_FORTRESS_USES, '-icon', FS_FORTRESS_ICON), $words . "\n");
   if ($code === 0) return array('ok' => true);
   $reason = fs_fortress_reason($err);
   return array('error' => strpos($reason, 'phrase: ') === 0 ? 'phrase' : $reason);
