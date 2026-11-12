@@ -27,7 +27,7 @@ ok('and a helper that fails to load leaves the install going', /helper fortress 
 console.log('\nThe settings page');
 const tools = read('FireSquireTools.page');
 ok('asks whether each helper is installed', /is_executable\("\$fsWeb\/fortress"\)/.test(tools) && /is_executable\("\$fsWeb\/notify"\)/.test(tools));
-ok('loads the fortress card only with its helper', /<\?if \(\$fsFortress\):\?>\s*<script src="<\?autov\('\/plugins\/firesquire\/firesquire-fortress\.js'\)\?>"><\/script>\s*<\?endif;\?>/.test(tools));
+ok('loads the fortress card only with its helper', /<\?if \(\$fsFortress\):\?>\s*<link type="text\/css" rel="stylesheet" href="<\?autov\('\/plugins\/firesquire\/fortress-card\.css'\)\?>">\s*<script src="<\?autov\('\/plugins\/firesquire\/fortress-card\.js'\)\?>"><\/script>\s*<script src="<\?autov\('\/plugins\/firesquire\/firesquire-fortress\.js'\)\?>"><\/script>\s*<\?endif;\?>/.test(tools));
 ok('loads the notification cards only with their helper', /<\?if \(\$fsNotify\):\?>\s*<script src="<\?autov\('\/plugins\/firesquire\/firesquire-notify\.js'\)\?>"><\/script>\s*<\?endif;\?>/.test(tools));
 
 class El {
@@ -87,6 +87,12 @@ for (const themed of [true, false]) {
   ok(`${look}: and names every other group`, en.tools_li.filter((x) => x !== fortressLine).every((x) => themed || p.text.includes(x)));
   p = settings({ themed, fortress: true, notify: true });
   ok(`${look}: with the helpers both come back`, p.ids.includes('fs-fortress') && p.ids.includes('fs-notify') && (themed ? p.text.includes(en.tools_g_fortress) : p.text.includes(fortressLine)));
+  // The fortress sits where every plugin of the house has it, right after the general part:
+  // the card of what the check looks at, or that description above the cards in Unraid's look.
+  const kids = p.root.children;
+  const at = kids.findIndex((e) => e.id === 'fs-fortress');
+  ok(`${look}: the fortress comes right after the first card`, themed ? at === 1 && / fs-card-tools/.test(kids[0].className) : at === 0, kids.map((e) => e.id || e.className).join(' | '));
+  ok(`${look}: in an empty place of its own for GlimStone's card`, kids[at] && kids[at].children.length === 0 && kids[at].textContent === '');
 }
 
 console.log('\nThe check');

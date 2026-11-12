@@ -1,12 +1,14 @@
 <?php
 /* FireSquire's place in a fortress, for the settings page: joining with the
- * phrase, the members, taking one out and leaving. Every call to ParleyPort's
- * fortress helper goes through $run($args, $stdin), which returns its exit
- * code, output and error output. The phrase reaches the helper on its input and nowhere else;
+ * phrase, the members and their status, taking one out and leaving. Every
+ * call to ParleyPort's fortress helper goes through $run($args, $stdin), which
+ * returns its exit code, output and error output. The phrase reaches the helper on its input and nowhere else;
  * the directory keeps only the keys fortress join derives from it. */
 
 /* FireSquire asks BombVault when the flash was last backed up. */
 const FS_FORTRESS_USES = 'backup.last';
+/* A member id as the helper prints it, which no flag can pass for. */
+const FS_FORTRESS_ID = '/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/';
 /* The other apps of the fortress show FireSquire with this logo. */
 const FS_FORTRESS_ICON = '/usr/local/emhttp/plugins/firesquire/images/firesquire.svg';
 
@@ -57,27 +59,49 @@ function fs_fortress_app_name($m) {
   return $name === '' || $name === $id ? FS_FORTRESS_NAMES[$id] ?? $id : $name;
 }
 
-/* The other apps of the fortress: each instance with its device and whether
- * it is in reach. Phones, viewers and an instance that never said which app
- * it runs carry no app, so they stay out. FireSquire keeps no phrase, so
- * keepers are the apps that do, where it is changed, those in reach first.
- * An app the fortress still knows from an earlier install is named once. */
+/* The other apps of the fortress as the fortress card draws them. Phones,
+ * viewers and an instance that never said which app it runs carry no app, so
+ * they stay out. The form tells the card which apps keep the phrase. */
 function fs_fortress_members($dir, $run) {
   list($code, $out, $err) = $run(array('members', '-dir', $dir, '-json', '-wait', '4s'), '');
   $list = $code === 0 ? json_decode($out, true) : null;
-  if (!is_array($list)) return array('error' => fs_fortress_removed_here($dir) ? 'removedHere' : fs_fortress_reason($err));
+  if (!is_array($list)) return array('error' => fs_fortress_reason($err));
   $members = array();
-  $keepers = array();
   foreach ($list as $m) {
     if (($m['kind'] ?? '') !== 'instance' || (string) ($m['app']['id'] ?? '') === '') continue;
-    $member = array('id' => (string) ($m['id'] ?? ''), 'app' => fs_fortress_app_name($m), 'device' => (string) ($m['device'] ?? ''), 'online' => !empty($m['online']));
-    $members[] = $member;
-    if (($m['deployment'] ?? '') !== 'plugin') $keepers[] = $member;
+    $online = !empty($m['online']);
+    $members[] = array('id' => (string) ($m['id'] ?? ''), 'app' => (string) $m['app']['id'], 'name' => fs_fortress_app_name($m),
+      'device' => (string) ($m['device'] ?? ''), 'form' => (string) ($m['deployment'] ?? ''),
+      'version' => (string) ($m['app']['version'] ?? ''), 'icon' => (string) ($m['app']['icon'] ?? ''),
+      'online' => $online, 'relay' => $online && empty($m['direct']), 'lastSeen' => (string) ($m['lastSeen'] ?? ''));
   }
-  usort($keepers, function ($a, $b) { return $b['online'] <=> $a['online']; });
-  $named = array();
-  foreach ($keepers as $k) $named[$k['app'] . "\n" . $k['device']] = array('app' => $k['app'], 'device' => $k['device']);
-  return array('members' => $members, 'keepers' => array_values($named));
+  return array('members' => $members);
+}
+
+/* Everything the fortress card shows, in one answer. Listing the members can
+ * find FireSquire taken out, so the membership is read after. */
+function fs_fortress_state($dir, $file, $device, $run) {
+  $members = array();
+  if (fs_fortress_joined($dir)) $members = fs_fortress_members($dir, $run)['members'] ?? array();
+  return array('joined' => fs_fortress_joined($dir), 'device' => $device, 'removedHere' => fs_fortress_removed_here($dir),
+    'members' => $members, 'removed' => fs_fortress_names(fs_fortress_removed($dir, $file)));
+}
+
+/* The status report of one member in reach, in the page's language. The
+ * helper asks every instance in reach and reads no log. */
+function fs_fortress_status($dir, $id, $lang, $run) {
+  if (!fs_fortress_joined($dir)) return array('error' => 'notMember');
+  if (!preg_match(FS_FORTRESS_ID, $id)) return array('error' => 'invalid');
+  $args = array('status', '-dir', $dir, '-json', '-wait', '4s');
+  if (preg_match('/^[a-z]{2}$/', $lang)) array_push($args, '-lang', $lang);
+  list($code, $out, $err) = $run($args, '');
+  $list = $code === 0 ? json_decode($out, true) : null;
+  if (!is_array($list)) return array('error' => fs_fortress_reason($err));
+  foreach ($list as $m) {
+    if (($m['id'] ?? '') !== $id) continue;
+    return is_array($m['report'] ?? null) ? array('report' => $m['report'], 'log' => array()) : array('error' => 'unanswered');
+  }
+  return array('error' => 'noMember');
 }
 
 function fs_fortress_group($dir) {
@@ -103,7 +127,7 @@ function fs_fortress_removed($dir, $file) {
  * reach, and adds it to the removed. */
 function fs_fortress_remove($dir, $file, $id, $run) {
   if (!fs_fortress_joined($dir)) return array('error' => 'notMember');
-  if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/', $id)) return array('error' => 'invalid');
+  if (!preg_match(FS_FORTRESS_ID, $id)) return array('error' => 'invalid');
   list($code, $out, $err) = $run(array('remove', '-dir', $dir, '-wait', '4s', $id), '');
   $gone = $code === 0 ? json_decode($out, true) : null;
   if (!is_array($gone)) {
@@ -111,7 +135,7 @@ function fs_fortress_remove($dir, $file, $id, $run) {
     return array('error' => strpos($reason, 'no member ') === 0 ? 'noMember' : $reason);
   }
   $list = array_values(array_filter(fs_fortress_removed($dir, $file), function ($r) use ($id) { return ($r['id'] ?? '') !== $id; }));
-  $list[] = array('id' => $id, 'app' => fs_fortress_app_name($gone), 'device' => (string) ($gone['device'] ?? ''));
+  $list[] = array('id' => $id, 'app' => (string) ($gone['app']['id'] ?? ''), 'name' => fs_fortress_app_name($gone), 'device' => (string) ($gone['device'] ?? ''));
   $part = "$file.part";
   if (@file_put_contents($part, json_encode(array('group' => fs_fortress_group($dir), 'removed' => $list))) !== false) {
     @chmod($part, 0600);
@@ -122,7 +146,7 @@ function fs_fortress_remove($dir, $file, $id, $run) {
 
 /* The removed as the card shows them, without their ids. */
 function fs_fortress_names($list) {
-  return array_map(function ($r) { return array('app' => (string) ($r['app'] ?? ''), 'device' => (string) ($r['device'] ?? '')); }, $list);
+  return array_map(function ($r) { return array('app' => (string) ($r['app'] ?? ''), 'name' => (string) ($r['name'] ?? ''), 'device' => (string) ($r['device'] ?? '')); }, $list);
 }
 
 /* Leaving forgets the membership. The others keep FireSquire as away until

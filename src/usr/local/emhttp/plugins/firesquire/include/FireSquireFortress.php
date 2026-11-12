@@ -1,8 +1,9 @@
 <?php
-/* The settings page's way into the fortress. A GET says whether FireSquire is
- * in one and whom it took out, and with do=members how the other apps are
- * doing. A POST joins with the phrase, takes another app out or leaves. The
- * phrase is handed to the fortress helper and dropped;
+/* The settings page's way into the fortress, for GlimStone's fortress card.
+ * A GET answers the state: whether FireSquire is in one, the other apps and
+ * whom it took out; with do=status the status of one of them. A POST joins
+ * with the phrase, takes another app out or leaves, and answers the state
+ * after. The phrase is handed to the fortress helper and dropped;
  * /boot/config/plugins/firesquire/fortress keeps only the keys. */
 require_once __DIR__ . '/fs_fortress.php';
 header('Content-Type: application/json');
@@ -25,9 +26,9 @@ $fsRun = function ($args, $stdin) use ($fsHelper) {
   return array(proc_close($p), trim($out), trim($err));
 };
 
-function fs_state($dir, $helper, $removed) {
-  return array('helper' => is_executable($helper), 'joined' => fs_fortress_joined($dir), 'device' => fs_fortress_device('/boot/config/ident.cfg'),
-    'removed' => fs_fortress_names(fs_fortress_removed($dir, $removed)), 'removedHere' => fs_fortress_removed_here($dir));
+function fs_state($dir, $helper, $removed, $run) {
+  if (!is_executable($helper)) return array('helper' => false);
+  return array('helper' => true) + fs_fortress_state($dir, $removed, fs_fortress_device('/boot/config/ident.cfg'), $run);
 }
 
 function fs_answer($code, $body) {
@@ -37,12 +38,11 @@ function fs_answer($code, $body) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  if (($_GET['do'] ?? '') !== 'members') fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved));
+  if (($_GET['do'] ?? '') !== 'status') fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
   if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));
-  if (!fs_fortress_joined($fsDir)) fs_answer(409, array('error' => 'notMember'));
-  $r = fs_fortress_members($fsDir, $fsRun);
-  if (($r['error'] ?? '') === 'removedHere') fs_answer(410, fs_state($fsDir, $fsHelper, $fsRemoved));
-  fs_answer(isset($r['error']) ? 502 : 200, $r);
+  $r = fs_fortress_status($fsDir, (string) ($_GET['id'] ?? ''), (string) ($_GET['lang'] ?? ''), $fsRun);
+  if (isset($r['error'])) fs_answer(array('notMember' => 409, 'invalid' => 400, 'noMember' => 404)[$r['error']] ?? 502, $r);
+  fs_answer(200, $r);
 }
 
 switch ($_POST['do'] ?? '') {
@@ -50,15 +50,15 @@ switch ($_POST['do'] ?? '') {
     if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));
     $r = fs_fortress_join($fsDir, (string) ($_POST['phrase'] ?? ''), fs_fortress_device('/boot/config/ident.cfg'), $fsRun);
     if (isset($r['error'])) fs_answer($r['error'] === 'member' ? 409 : ($r['error'] === 'phrase' ? 400 : 500), $r);
-    fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved));
+    fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
   case 'remove':
     if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));
     $r = fs_fortress_remove($fsDir, $fsRemoved, (string) ($_POST['id'] ?? ''), $fsRun);
     if (isset($r['error'])) fs_answer(array('notMember' => 409, 'invalid' => 400, 'noMember' => 404)[$r['error']] ?? 502, $r);
-    fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved));
+    fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
   case 'leave':
     $r = fs_fortress_leave($fsDir);
     if (isset($r['error'])) fs_answer($r['error'] === 'notMember' ? 409 : 500, $r);
-    fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved));
+    fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
 }
 fs_answer(400, array('error' => 'invalid'));

@@ -60,7 +60,7 @@ ok('and wakes up again when it closes', /behind\.forEach\(function\(n\)\{ n\.ine
 console.log('\nEvery element names itself by its GlimStone name');
 ok('a button', /b\.setAttribute\('data-glim', 'Button'\)/.test(js));
 ok('a window, with its title', /win\.setAttribute\('data-glim', 'Window'\)/.test(js) && /win\.setAttribute\('data-glim-title', o\.title\)/.test(js));
-for (const f of ['firesquire-info.js', 'firesquire-notify.js', 'firesquire-fortress.js']) {
+for (const f of ['firesquire-info.js', 'firesquire-notify.js']) {
   ok(`a card in ${f}, with its title`, /\.setAttribute\("data-glim", "Card"\)/.test(read(f)) && /\.setAttribute\("data-glim-title", /.test(read(f)));
 }
 

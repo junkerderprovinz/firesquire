@@ -88,6 +88,8 @@ $fsNotify = is_executable("$fsWeb/notify");
 <script src="<?autov('/plugins/firesquire/firesquire-marks.js')?>"></script>
 <script src="<?autov('/plugins/firesquire/firesquire-info.js')?>"></script>
 <?if ($fsFortress):?>
+<link type="text/css" rel="stylesheet" href="<?autov('/plugins/firesquire/fortress-card.css')?>">
+<script src="<?autov('/plugins/firesquire/fortress-card.js')?>"></script>
 <script src="<?autov('/plugins/firesquire/firesquire-fortress.js')?>"></script>
 <?endif;?>
 <?if ($fsNotify):?>

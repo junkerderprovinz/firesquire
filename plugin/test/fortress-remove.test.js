@@ -1,15 +1,13 @@
 // Taking another app out of the fortress from the settings page. The helper removes it there and at
 // every member in reach, and FireSquire keeps the names on the flash until the phrase changes,
 // since the old phrase still lets a removed app back in. FireSquire keeps no phrase, so the card
-// names the apps of the fortress that keep one.
+// names the apps of the fortress that keep one, which it tells by their form.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { DIR, read, ok, done, fortressCard } = require('./lib');
+const { DIR, read, ok, done, fortressAdapter } = require('./lib');
 
-const en = JSON.parse(read('lang/en.json'));
-const fill = (s, args) => args.reduce((m, a, i) => m.split('{' + i + '}').join(a), s);
 const LIB = path.join(DIR, 'include', 'fs_fortress.php').replace(/\\/g, '/');
 const BRAVO = 'a1b2c3d4e5f60718293a4b5c6d7e8f90';
 
@@ -36,7 +34,7 @@ x = php(`return fs_fortress_remove('${dir}', '${kept}', '-wait', $run);`);
 ok('an id that reads like a flag reaches no helper', x.r.error === 'invalid' && x.calls.length === 0, JSON.stringify(x));
 x = php(`return fs_fortress_remove('${dir}', '${kept}', '${BRAVO}', $run);`, [gone(BRAVO, 'tollroll', 'tollroll', 'Bottich')]);
 ok('the helper takes the member out by its id', (x.calls[0] || { args: [] }).args.join(' ') === `remove -dir ${dir} -wait 4s ${BRAVO}`, JSON.stringify(x.calls));
-ok('and FireSquire names it the way the house writes it', x.r.ok === true && JSON.stringify(x.r.removed) === JSON.stringify([{ app: 'TollRoll', device: 'Bottich' }]), JSON.stringify(x.r));
+ok('and FireSquire names it the way the house writes it', x.r.ok === true && JSON.stringify(x.r.removed) === JSON.stringify([{ app: 'tollroll', name: 'TollRoll', device: 'Bottich' }]), JSON.stringify(x.r));
 x = php(`return fs_fortress_remove('${dir}', '${kept}', 'ffff0000', $run);`, [[1, '', 'fortress: no member ffff0000 is in reach']]);
 ok('a member the fortress does not know is a clear error', x.r.error === 'noMember', JSON.stringify(x.r));
 x = php(`return fs_fortress_remove('${dir}', '${kept}', 'c0ffee', $run);`, [[1, '', 'fortress: dial tcp: no route to host']]);
@@ -46,9 +44,9 @@ console.log('\nThe list of the removed');
 ok('stays on the flash, readable by its owner alone', fs.existsSync(kept) && (process.platform === 'win32' || (fs.statSync(kept).mode & 0o777) === 0o600));
 ok('holds the names, not the phrase or a key', !/abandon|seed|frame|peerAuth/i.test(fs.readFileSync(kept, 'utf8')), fs.readFileSync(kept, 'utf8'));
 x = php(`return fs_fortress_removed('${dir}', '${kept}');`);
-ok('a new run reads it back, so a restart keeps it', JSON.stringify(x.r) === JSON.stringify([{ id: BRAVO, app: 'TollRoll', device: 'Bottich' }]), JSON.stringify(x.r));
+ok('a new run reads it back, so a restart keeps it', JSON.stringify(x.r) === JSON.stringify([{ id: BRAVO, app: 'tollroll', name: 'TollRoll', device: 'Bottich' }]), JSON.stringify(x.r));
 x = php(`return fs_fortress_remove('${dir}', '${kept}', 'beef01', $run);`, [gone('beef01', 'bombvault', 'BombVault', 'Tower')]);
-ok('a second removal joins the first', x.r.removed.map((m) => m.app).join(',') === 'TollRoll,BombVault', JSON.stringify(x.r));
+ok('a second removal joins the first', x.r.removed.map((m) => m.name).join(',') === 'TollRoll,BombVault', JSON.stringify(x.r));
 x = php(`return fs_fortress_remove('${dir}', '${kept}', '${BRAVO}', $run);`, [gone(BRAVO, 'tollroll', 'TollRoll', 'Bottich')]);
 ok('the same member twice stays once', x.r.removed.length === 2, JSON.stringify(x.r));
 joinedUnder('g2');
@@ -66,85 +64,36 @@ const listed = JSON.stringify([
 ]);
 x = php(`return fs_fortress_members('${dir}', $run);`, [[0, listed, '']]);
 ok('each carries its id for Remove', x.r.members.map((m) => m.id).join(',') === 'a,b,c,e', JSON.stringify(x.r));
-ok('the phrase is changed at the apps that keep it, those in reach first and each once', JSON.stringify(x.r.keepers) === JSON.stringify([{ app: 'BombVault', device: 'Tower' }, { app: 'ArrowLoop', device: 'Atlas' }]), JSON.stringify(x.r.keepers));
+ok('each carries its form, so the card knows the apps that keep the phrase', x.r.members.map((m) => m.form).join(',') === 'container,plugin,container,container', JSON.stringify(x.r));
 ok('no member\'s address reaches the page', !/address|192\.168/.test(JSON.stringify(x.r)), JSON.stringify(x.r));
-x = php(`return fs_fortress_members('${dir}', $run);`, [[0, JSON.stringify(JSON.parse(listed).filter((m) => m.id === 'b' || m.id === 'd')), '']]);
-ok('a plugin or a phone keeps no phrase', Array.isArray(x.r.keepers) && x.r.keepers.length === 0, JSON.stringify(x.r.keepers));
 
 console.log('\nThe endpoint');
 const endpoint = read('include/FireSquireFortress.php');
 ok('removes on a post, as join and leave do', /case 'remove':[\s\S]*fs_fortress_remove\(\$fsDir, \$fsRemoved, \(string\) \(\$_POST\['id'\] \?\? ''\), \$fsRun\)/.test(endpoint), endpoint.match(/case 'remove':[\s\S]{0,300}/)?.[0]);
 ok('keeps the list on the flash next to the membership', /\$fsRemoved = '\/boot\/config\/plugins\/firesquire\/fortress-removed\.json'/.test(endpoint));
 ok('answers an unknown member with 404', /'noMember' => 404/.test(endpoint));
-ok('and says who is out with the state', /'removed' =>/.test(endpoint));
+ok('and says who is out with the state', /'removed' => fs_fortress_names\(fs_fortress_removed\(/.test(read('include/fs_fortress.php')));
 fs.rmSync(tmp, { recursive: true, force: true });
 
-const IN = { helper: true, joined: true, device: 'Tower', removed: [] };
-const MEMBERS = {
-  members: [{ id: 'a', app: 'BombVault', device: 'Tower', online: true }, { id: BRAVO, app: 'TollRoll', device: 'Bottich', online: true }],
-  keepers: [{ app: 'BombVault', device: 'Tower' }],
-};
-const buttons = (root, label) => root.all().filter((e) => e.tagName === 'BUTTON' && e.textContent === label);
+const IN = { helper: true, joined: true, device: 'Tower', removedHere: false, removed: [],
+  members: [{ id: 'a', app: 'bombvault', name: 'BombVault', device: 'Tower', form: 'container', online: true }, { id: BRAVO, app: 'tollroll', name: 'TollRoll', device: 'Bottich', form: 'container', online: true }] };
+const refused = (promise) => promise.then(() => null, (e) => e);
 
 (async () => {
   console.log('\nThe card');
-  let p = fortressCard(IN, { members: MEMBERS, remove: () => ({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }) });
-  await p.settle();
-  const removes = buttons(p.box, en.f_remove);
-  ok('every other app has Remove', removes.length === 2, p.text());
-  ok('it wears the trash glyph and is not painted red', removes.every((b) => b.glyph === 'Trash' && !/danger|red|warn/.test(b.className)), removes.map((b) => b.className).join(' '));
-  ok('FireSquire itself has none, since it leaves instead', !p.text().includes(fill(en.f_member, ['FireSquire', 'Tower'])) && buttons(p.box, en.f_leave).length === 1);
-  removes[1].fire('click');
-  const w = p.windows[0];
-  const name = fill(en.f_member, ['TollRoll', 'Bottich']);
-  ok('Remove asks first and sends nothing yet', p.windows.length === 1 && p.posts.length === 0);
-  ok('the window names app and device', w && w.title.textContent === fill(en.f_remove_title, [name]), w && w.title.textContent);
-  ok('and says the access ends for good', w.body.textContent.includes(fill(en.f_remove_body, [name])) && w.body.textContent.includes(en.f_remove_back), w.body.textContent);
-  const go = buttons(w.act, en.f_remove)[0];
-  ok('Remove and Cancel, the focus on Remove', !!go && buttons(w.act, en.g_cancel).length === 1 && p.focused() === go);
-  go.fire('click');
-  await p.settle();
+  const OUT = { ...IN, members: IN.members.slice(0, 1), removed: [{ app: 'tollroll', name: 'TollRoll', device: 'Bottich' }] };
+  let p = fortressAdapter(IN, { remove: () => OUT });
+  const s = await p.adapter.remove(BRAVO);
   ok('Remove sends the member\'s id with the token', p.posts.length === 1 && p.posts[0].do === 'remove' && p.posts[0].id === BRAVO && p.posts[0].csrf_token === 'tok', JSON.stringify(p.posts));
   ok('URL-encoded, as every post of the page', p.bodies[0] instanceof URLSearchParams);
-  ok('the same window then asks to change the phrase', !w.closed && w.title.textContent === en.f_removed_title && w.body.textContent.includes(fill(en.f_removed_body, [name])), w.title.textContent + ' | ' + w.body.textContent);
-  ok('and names the app and device where that happens, since FireSquire keeps no phrase', w.body.textContent.includes(fill(en.f_change_where, ['BombVault on Tower'])), w.body.textContent);
-  ok('Later is the only way on, with the focus on it', buttons(w.act, en.f_later).length === 1 && buttons(w.act, en.g_cancel).length === 0 && w.act.all().filter((e) => e.tagName === 'BUTTON').length === 1 && p.focused() === buttons(w.act, en.f_later)[0], w.act.textContent);
-  ok('the reminder names who is out', p.text().includes(fill(en.f_removed_note, ['TollRoll on Bottich'])), p.text());
-  ok('and nothing opens a member\'s address', p.opened.length === 0, JSON.stringify(p.opened));
+  ok('and the card gets the state with the member out and named among the removed', s.members.length === 1 && s.removed[0].name === 'TollRoll', JSON.stringify(s));
 
-  p = fortressCard({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }, { app: 'ShipLog', device: 'Tower' }] }, { members: MEMBERS });
-  await p.settle();
-  ok('after a restart the reminder is still there', p.text().includes(fill(en.f_removed_note, ['TollRoll on Bottich, ShipLog on Tower'])), p.text());
-  ok('and says where the phrase is changed', p.text().includes(fill(en.f_change_where, ['BombVault on Tower'])), p.text());
-
-  p = fortressCard({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }, { members: { ...MEMBERS, keepers: [{ app: 'BombVault', device: 'Tower' }, { app: 'ArrowLoop', device: 'Atlas' }] } });
-  await p.settle();
-  ok('several apps that keep the phrase read as a choice', p.text().includes(fill(en.f_change_where, ['BombVault on Tower or ArrowLoop on Atlas'])), p.text());
-
-  p = fortressCard({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }, { members: { members: [], keepers: [] } });
-  await p.settle();
-  ok('with no app that keeps the phrase, the line says where to change it', p.text().includes(en.f_change_none), p.text());
-
-  p = fortressCard(IN, { members: MEMBERS, remove: () => ({ error: 'noMember' }) });
-  await p.settle();
-  buttons(p.box, en.f_remove)[0].fire('click');
-  buttons(p.windows[0].act, en.f_remove)[0].fire('click');
-  await p.settle();
-  ok('a member that is gone already says so in the window', p.windows[0].body.textContent.includes(en.f_err_no_member) && p.windows[0].title.textContent !== en.f_removed_title, p.windows[0].body.textContent);
-
-  p = fortressCard(IN, { members: { ...MEMBERS, keepers: [] }, remove: () => ({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }) });
-  await p.settle();
-  buttons(p.box, en.f_remove)[1].fire('click');
-  buttons(p.windows[0].act, en.f_remove)[0].fire('click');
-  await p.settle();
-  ok('without an app that keeps the phrase, the window says where and offers Later alone', p.windows[0].body.textContent.includes(en.f_change_none)
-    && buttons(p.windows[0].act, en.f_later).length === 1, p.windows[0].body.textContent);
-
-  console.log('\nThe strings and glyphs');
-  for (const k of ['f_remove', 'f_remove_title', 'f_remove_body', 'f_remove_back', 'f_removed_title', 'f_removed_body', 'f_later', 'f_removed_note', 'f_change_where', 'f_change_none', 'f_err_no_member']) {
-    ok(`${k} is in en.json`, typeof en[k] === 'string', en[k]);
-  }
-  ok('Trash is in the table', /^\s+Trash: \["/m.test(read('firesquire-glyphs.js')));
+  p = fortressAdapter(IN, { remove: () => ({ error: 'noMember' }) });
+  let e = await refused(p.adapter.remove('ffff0000'));
+  ok('a member that is gone already is refused as noMember, which the card closes quietly', e && e.code === 'noMember', JSON.stringify(e));
+  p = fortressAdapter(IN, { remove: () => ({ error: 'dial tcp: no route to host' }) });
+  e = await refused(p.adapter.remove(BRAVO));
+  ok('any other failure is refused, so the window says it failed', e && e.code === 'dial tcp: no route to host', JSON.stringify(e));
 
   done();
 })();

@@ -6,7 +6,7 @@ const table = read('firesquire-glyphs.js');
 const have = new Set([...table.matchAll(/^\s+(\w+): \["/gm)].map((m) => m[1]));
 const sources = {
   'firesquire.js': read('firesquire.js'), 'firesquire-info.js': read('firesquire-info.js'),
-  'firesquire-notify.js': read('firesquire-notify.js'), 'firesquire-fortress.js': read('firesquire-fortress.js'),
+  'firesquire-notify.js': read('firesquire-notify.js'),
 };
 
 console.log('\nThe copy names its release');
@@ -28,7 +28,5 @@ ok('the way to a finding wears Forward', /button\('fs-f-go', 'Forward', fsT\('go
 ok('the button beside Reboot wears Check', /button\('fs-main-btn', 'Check', 'FireSquire'\)/.test(js));
 ok('running the check wears Check', /UI\.button\(cls, "Check", t\("tools_btn"\)\)/.test(info));
 ok('Copy wears Copy', /UI\.button\("fs-win-btn fs-copy", "Copy", t\("crypto_copy"\)\)/.test(info));
-const fort = sources['firesquire-fortress.js'];
-ok('leaving the fortress wears SignOut', /UI\.button\(null, "SignOut", t\("f_leave"\)\)/.test(fort) && /UI\.button\("fs-win-btn fs-key", "SignOut", t\("f_leave"\)\)/.test(fort));
 
 done();

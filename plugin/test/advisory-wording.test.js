@@ -44,8 +44,10 @@ for (const name of ['plugin README.md', 'README.md', 'SUPPORT_THREAD.html']) {
 }
 
 console.log('\nLeaving points at the current phrase, since the one FireSquire knew may have changed');
-const de = JSON.parse(read('lang/de.json'));
-ok('the English leave window names the current phrase', /current phrase/.test(en.f_leave_body) && !/any time/.test(en.f_leave_body), en.f_leave_body);
-ok('the German one too', /aktuellen Phrase/.test(de.f_leave_body) && !/jederzeit/.test(de.f_leave_body), de.f_leave_body);
+const card = {};
+require('vm').runInNewContext(read('fortress-card.js'), card);
+const leave = (lang) => card.GlimFortressCard.text(lang).leaveBack;
+ok('the English leave window names the current phrase', /current phrase/.test(leave('en')) && !/any time/.test(leave('en')), leave('en'));
+ok('the German one too', /aktuellen Phrase/.test(leave('de')) && !/jederzeit/.test(leave('de')), leave('de'));
 
 done();

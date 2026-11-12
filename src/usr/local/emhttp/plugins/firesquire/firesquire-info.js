@@ -193,8 +193,9 @@
 
   if (rtl) root.dir = "rtl";
   var ver = root.getAttribute("data-fs-ver");
-  // firesquire-fortress.js fills in the fortress card, firesquire-notify.js
-  // the notification and schedule cards.
+  // The fortress follows the general part, as in every plugin of the house:
+  // GlimStone's fortress card draws itself into this place, and
+  // firesquire-notify.js fills in the notification and schedule cards.
   if (withFortress) root.appendChild(el("div")).id = "fs-fortress";
   if (withNotify) root.appendChild(el("div")).id = "fs-notify";
 
