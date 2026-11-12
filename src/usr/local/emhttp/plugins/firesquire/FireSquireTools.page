@@ -57,6 +57,9 @@ html.tt-popups-on .fs-hero {
   .fs-hero-text { max-width: calc(100% - 260px); }
   .fs-hero .fs-hero-name { font-size: 26px; }
 }
+@media (max-width: 599px) {
+  .fs-hero-text { max-width: none; }
+}
 /* TowerTorch styles Unraid's title strip with !important, which only an
    important rule in a layer outranks. The banner names the page, so the strip
    would say it twice. */
