@@ -60,11 +60,13 @@ const listed = JSON.stringify([
   { id: 'a', kind: 'instance', app: { id: 'bombvault', name: 'BombVault' }, device: 'Tower', online: true },
   { id: 'b', kind: 'instance', app: { id: 'shiplog', name: 'shiplog' }, device: 'Mithallia', online: false },
   { id: 'c', kind: 'mobile', app: { id: '', name: '' }, device: 'Phone', online: true },
+  { id: 'd', kind: 'instance', app: { id: '', name: '', version: '' }, device: 'Bottich', online: false },
 ]);
 x = php(`return fs_fortress_members('${dir}', $run);`, [[0, listed, '']]);
 ok('the helper lists them as JSON and waits a moment for them', /^members -dir \S+ -json -wait \d+s$/.test((x.calls[0] || { args: [] }).args.join(' ')), JSON.stringify(x.calls));
 ok('each app shows with its device and whether it is in reach', JSON.stringify(x.r) === JSON.stringify({ members: [
   { app: 'BombVault', device: 'Tower', online: true }, { app: 'ShipLog', device: 'Mithallia', online: false }] }), JSON.stringify(x.r));
+ok('a member that never said which app it runs is left out', !x.r.members.some((m) => m.device === 'Bottich'), JSON.stringify(x.r));
 x = php(`return fs_fortress_members('${dir}', $run);`, [[1, '', 'fortress: dial tcp: no route to host']]);
 ok('a helper that fails names why', x.r.error === 'dial tcp: no route to host', JSON.stringify(x.r));
 
@@ -108,7 +110,7 @@ class El {
 
 function page(state, answers) {
   const box = new El('div');
-  const posts = [], gets = [], windows = [];
+  const posts = [], bodies = [], gets = [], windows = [];
   let timers = [];
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const button = (cls, glyph, label) => { const b = el('button', cls); b.glyph = glyph; b.appendChild(el('span', 'fs-btn-l', label)); return b; };
@@ -130,11 +132,13 @@ function page(state, answers) {
   const ctx = {
     window,
     document: { getElementById: (id) => (id === 'fs-fortress' ? box : null) },
-    FormData: class { constructor() { this.d = {}; } append(k, v) { this.d[k] = String(v); } },
+    FormData, URLSearchParams,
     fetch: (url, o) => {
       if (!o || o.method !== 'POST') { gets.push(url); return json(/do=members/.test(url) ? answers.members : state); }
-      posts.push(o.body.d);
-      return json(answers[o.body.d.do](o.body.d));
+      const d = Object.fromEntries(o.body);
+      bodies.push(o.body);
+      posts.push(d);
+      return json(answers[d.do](d));
     },
     setTimeout: (fn, ms) => { const t = { fn, ms }; timers.push(t); return t; },
     clearTimeout: (t) => { timers = timers.filter((x) => x !== t); },
@@ -142,7 +146,7 @@ function page(state, answers) {
   };
   vm.runInNewContext(read('firesquire-fortress.js'), ctx);
   return {
-    box, posts, gets, windows,
+    box, posts, bodies, gets, windows,
     find: (pred) => box.all().find(pred),
     text: () => box.textContent,
     wait: (ms) => { const due = timers.filter((t) => t.ms <= ms); timers = timers.filter((t) => t.ms > ms); due.forEach((t) => t.fn()); },
@@ -170,6 +174,7 @@ const MEMBERS = { members: [{ app: 'BombVault', device: 'Tower', online: true },
   p.wait(2000);
   await p.settle();
   ok('then join on their own', p.posts.length === 1 && p.posts[0].do === 'join' && p.posts[0].phrase === WORDS && p.posts[0].csrf_token === 'tok', JSON.stringify(p.posts));
+  ok('URL-encoded, since the webGUI never answers a multipart post', p.bodies[0] instanceof URLSearchParams, String(p.bodies[0]));
   await p.settle();
   ok('the welcome follows', p.text().includes(en.f_joined), p.text());
   ok('the field is gone with the words in it', !field(p));

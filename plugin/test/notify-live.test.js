@@ -30,7 +30,7 @@ class El {
 
 function page(answers) {
   const box = new El('div');
-  const posts = [];
+  const posts = [], bodies = [];
   let timers = [];
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const window = {
@@ -41,14 +41,16 @@ function page(answers) {
   const ctx = {
     window,
     document: { getElementById: (id) => (id === 'fs-notify' ? box : null) },
-    FormData: class { constructor() { this.d = {}; } append(k, v) { this.d[k] = String(v); } },
+    FormData, URLSearchParams,
     fetch: (url, o) => {
       if (!o || o.method !== 'POST') {
         return Promise.resolve({ json: () => ({ helper: true, schedule: { every: 'off', hour: 4 },
           channels: [{ id: 'a', kind: 'gotify', name: 'Phone', enabled: true, on: 'always', gotify: { url: 'https://gotify.example.org', token: '********' } }] }) });
       }
-      posts.push(o.body.d);
-      const answer = answers(o.body.d, posts.length);
+      const d = Object.fromEntries(o.body);
+      bodies.push(o.body);
+      posts.push(d);
+      const answer = answers(d, posts.length);
       return answer instanceof Promise ? answer : answer === 'down' ? Promise.reject(new Error('down')) : Promise.resolve({ json: () => answer });
     },
     setTimeout: (fn, ms) => { const t = { fn, ms }; timers.push(t); return t; },
@@ -58,7 +60,7 @@ function page(answers) {
   vm.runInNewContext(read('firesquire-notify.js'), ctx);
   const find = (pred) => box.all().find(pred);
   return {
-    box, posts, find,
+    box, posts, bodies, find,
     // Runs the timers that are due within ms, the way the browser would after a pause.
     wait: (ms) => { const due = timers.filter((t) => t.ms <= ms); timers = timers.filter((t) => t.ms > ms); due.forEach((t) => t.fn()); },
     pending: () => timers.filter((t) => t.ms > 0 && t.ms < 2000).length,
@@ -84,6 +86,7 @@ const saved = (d) => ({ channels: JSON.parse(d.channels) });
   p.wait(1000);
   await p.settle();
   ok('one save goes out after the pause', p.posts.length === 1 && p.posts[0].do === 'save' && p.posts[0].csrf_token === 'tok');
+  ok('URL-encoded, since the webGUI never answers a multipart post', p.bodies[0] instanceof URLSearchParams, String(p.bodies[0]));
   const sent = JSON.parse(p.posts[0].channels)[0];
   ok('with what was typed last and the masked token as it came', sent.gotify.url === 'https://gotify.example.org/ab' && sent.gotify.token === '********', JSON.stringify(sent));
   ok('a short confirmation follows', p.msg(0) === en.n_saved, p.msg(0));
@@ -140,6 +143,7 @@ const saved = (d) => ({ channels: JSON.parse(d.channels) });
   await p.settle();
   ok('choosing how often saves at once', p.posts.length === 1 && p.posts[0].do === 'schedule' && p.posts[0].every === 'weekly' && p.posts[0].hour === '4', JSON.stringify(p.posts));
   ok('with a confirmation', p.msg(1) === en.n_sched_saved, p.msg(1));
+  ok('and goes out URL-encoded as well', p.bodies[0] instanceof URLSearchParams, String(p.bodies[0]));
   hour.value = '22'; hour.fire('change');
   await p.settle();
   ok('choosing the hour saves at once', p.posts.length === 2 && p.posts[1].hour === '22');

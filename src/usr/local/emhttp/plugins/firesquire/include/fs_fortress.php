@@ -44,7 +44,8 @@ function fs_fortress_join($dir, $phrase, $device, $run) {
 }
 
 /* The other apps of the fortress: each instance with its device and whether
- * it is in reach. Phones and viewers carry no app, so they stay out. */
+ * it is in reach. Phones, viewers and an instance that never said which app
+ * it runs carry no app, so they stay out. */
 function fs_fortress_members($dir, $run) {
   list($code, $out, $err) = $run(array('members', '-dir', $dir, '-json', '-wait', '4s'), '');
   $list = $code === 0 ? json_decode($out, true) : null;
@@ -53,6 +54,7 @@ function fs_fortress_members($dir, $run) {
   foreach ($list as $m) {
     if (($m['kind'] ?? '') !== 'instance') continue;
     $id = (string) ($m['app']['id'] ?? '');
+    if ($id === '') continue;
     $name = (string) ($m['app']['name'] ?? '');
     if ($name === '' || $name === $id) $name = FS_FORTRESS_NAMES[$id] ?? $id;
     $members[] = array('app' => $name, 'device' => (string) ($m['device'] ?? ''), 'online' => !empty($m['online']));
