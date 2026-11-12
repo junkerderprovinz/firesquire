@@ -266,7 +266,7 @@
   "f_unreachable": "Ikke tilgjengelig",
   "f_leave": "Forlat",
   "f_leave_title": "Forlate festningen?",
-  "f_leave_body": "De andre appene dine ser ikke FireSquire lenger, og sjekken fortsetter uten dem. Med frasen kommer FireSquire tilbake når som helst.",
+  "f_leave_body": "De andre appene dine ser ikke FireSquire lenger, og sjekken fortsetter uten dem. Med den gjeldende frasen kommer FireSquire tilbake.",
   "f_left": "FireSquire har forlatt festningen.",
   "flash_probe_left": "FireSquire klarte ikke å slette testfilen sin {0} på flash-enheten. Slett den gjerne selv."
 }

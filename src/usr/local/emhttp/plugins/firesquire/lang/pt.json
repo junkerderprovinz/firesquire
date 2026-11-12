@@ -272,7 +272,7 @@
   "f_unreachable": "Inacessível",
   "f_leave": "Sair",
   "f_leave_title": "Sair da fortaleza?",
-  "f_leave_body": "As tuas outras apps deixam de ver o FireSquire, e a verificação continua sem elas. Com a frase, o FireSquire volta quando quiseres.",
+  "f_leave_body": "As tuas outras apps deixam de ver o FireSquire, e a verificação continua sem elas. Com a frase atual, o FireSquire volta.",
   "f_left": "O FireSquire saiu da fortaleza.",
   "flash_probe_left": "O FireSquire não conseguiu apagar o seu ficheiro de teste {0} no flash. Apaga-o tu, por favor."
 }

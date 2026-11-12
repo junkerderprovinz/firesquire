@@ -43,4 +43,9 @@ for (const name of ['plugin README.md', 'README.md', 'SUPPORT_THREAD.html']) {
   ok(`${name} mentions the CRC counts on the flash`, /CRC (error )?counts?/i.test(sources[name]));
 }
 
+console.log('\nLeaving points at the current phrase, since the one FireSquire knew may have changed');
+const de = JSON.parse(read('lang/de.json'));
+ok('the English leave window names the current phrase', /current phrase/.test(en.f_leave_body) && !/any time/.test(en.f_leave_body), en.f_leave_body);
+ok('the German one too', /aktuellen Phrase/.test(de.f_leave_body) && !/jederzeit/.test(de.f_leave_body), de.f_leave_body);
+
 done();

@@ -269,7 +269,7 @@
   "f_unreachable": "Nicht erreichbar",
   "f_leave": "Verlassen",
   "f_leave_title": "Festung verlassen?",
-  "f_leave_body": "Deine anderen Apps sehen FireSquire danach nicht mehr, und die Prüfung läuft ohne sie weiter. Mit der Phrase kommt FireSquire jederzeit zurück.",
+  "f_leave_body": "Deine anderen Apps sehen FireSquire danach nicht mehr, und die Prüfung läuft ohne sie weiter. Mit der aktuellen Phrase kommt FireSquire zurück.",
   "f_left": "FireSquire hat die Festung verlassen.",
   "flash_probe_left": "FireSquire konnte seine Testdatei {0} auf dem Flash nicht löschen. Lösch sie bitte selbst."
 }

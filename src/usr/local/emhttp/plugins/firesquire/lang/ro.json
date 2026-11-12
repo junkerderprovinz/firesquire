@@ -290,7 +290,7 @@
   "f_unreachable": "Inaccesibil",
   "f_leave": "Ieși",
   "f_leave_title": "Ieși din fortăreață?",
-  "f_leave_body": "Celelalte aplicații nu vor mai vedea FireSquire, iar verificarea merge mai departe fără ele. Cu fraza, FireSquire se întoarce oricând.",
+  "f_leave_body": "Celelalte aplicații nu vor mai vedea FireSquire, iar verificarea merge mai departe fără ele. Cu fraza actuală, FireSquire se întoarce.",
   "f_left": "FireSquire a ieșit din fortăreață.",
   "flash_probe_left": "FireSquire nu a putut șterge fișierul de test {0} de pe flash. Te rog șterge-l tu."
 }

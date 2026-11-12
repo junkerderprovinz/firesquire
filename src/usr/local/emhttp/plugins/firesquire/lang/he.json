@@ -290,7 +290,7 @@
   "f_unreachable": "לא נגיש",
   "f_leave": "עזיבה",
   "f_leave_title": "לעזוב את המבצר?",
-  "f_leave_body": "שאר האפליקציות שלך לא יראו יותר את FireSquire, והבדיקה תמשיך בלעדיהן. עם הביטוי FireSquire חוזר בכל עת.",
+  "f_leave_body": "שאר האפליקציות שלך לא יראו יותר את FireSquire, והבדיקה תמשיך בלעדיהן. עם הביטוי הנוכחי FireSquire חוזר.",
   "f_left": "FireSquire עזב את המבצר.",
   "flash_probe_left": "FireSquire לא הצליח למחוק את קובץ הבדיקה {0} בפלאש. בבקשה מחק אותו בעצמך."
 }

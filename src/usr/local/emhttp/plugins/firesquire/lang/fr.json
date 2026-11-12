@@ -272,7 +272,7 @@
   "f_unreachable": "Injoignable",
   "f_leave": "Quitter",
   "f_leave_title": "Quitter la forteresse ?",
-  "f_leave_body": "Tes autres apps ne verront plus FireSquire, et la vérification continue sans elles. La phrase ramène FireSquire quand tu veux.",
+  "f_leave_body": "Tes autres apps ne verront plus FireSquire, et la vérification continue sans elles. La phrase actuelle ramène FireSquire.",
   "f_left": "FireSquire a quitté la forteresse.",
   "flash_probe_left": "FireSquire n’a pas pu supprimer son fichier de test {0} sur la clé flash. Supprime-le toi-même, s’il te plaît."
 }

@@ -218,7 +218,7 @@
   "f_unreachable": "无法连接",
   "f_leave": "离开",
   "f_leave_title": "要离开堡垒吗？",
-  "f_leave_body": "你的其他应用将不再看到 FireSquire，检查会在没有它们的情况下继续。凭口令，FireSquire 随时可以回来。",
+  "f_leave_body": "你的其他应用将不再看到 FireSquire，检查会在没有它们的情况下继续。凭当前口令，FireSquire 可以回来。",
   "f_left": "FireSquire 已离开堡垒。",
   "flash_probe_left": "FireSquire 无法删除闪存上的测试文件 {0}。请手动删除它。"
 }

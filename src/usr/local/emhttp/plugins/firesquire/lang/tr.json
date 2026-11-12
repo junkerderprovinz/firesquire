@@ -230,7 +230,7 @@
   "f_unreachable": "Ulaşılamıyor",
   "f_leave": "Ayrıl",
   "f_leave_title": "Kaleden ayrılsın mı?",
-  "f_leave_body": "Diğer uygulamaların FireSquire’ı artık görmez, kontrol de onlarsız sürer. İfadeyle FireSquire istediğin zaman geri döner.",
+  "f_leave_body": "Diğer uygulamaların FireSquire’ı artık görmez, kontrol de onlarsız sürer. Güncel ifadeyle FireSquire geri döner.",
   "f_left": "FireSquire kaleden ayrıldı.",
   "flash_probe_left": "FireSquire, flash üzerindeki {0} test dosyasını silemedi. Lütfen kendin sil."
 }

@@ -266,7 +266,7 @@
   "f_unreachable": "Går inte att nå",
   "f_leave": "Lämna",
   "f_leave_title": "Lämna fästningen?",
-  "f_leave_body": "Dina andra appar ser inte FireSquire längre, och kontrollen fortsätter utan dem. Med frasen kommer FireSquire tillbaka när du vill.",
+  "f_leave_body": "Dina andra appar ser inte FireSquire längre, och kontrollen fortsätter utan dem. Med den aktuella frasen kommer FireSquire tillbaka.",
   "f_left": "FireSquire har lämnat fästningen.",
   "flash_probe_left": "FireSquire kunde inte ta bort sin testfil {0} på flashminnet. Ta gärna bort den själv."
 }

@@ -230,7 +230,7 @@
   "f_unreachable": "Nem érhető el",
   "f_leave": "Kilépés",
   "f_leave_title": "Kilépsz az erődből?",
-  "f_leave_body": "A többi alkalmazásod ezután nem látja a FireSquire-t, és az ellenőrzés nélkülük megy tovább. A jelmondattal a FireSquire bármikor visszatér.",
+  "f_leave_body": "A többi alkalmazásod ezután nem látja a FireSquire-t, és az ellenőrzés nélkülük megy tovább. Az aktuális jelmondattal a FireSquire visszatér.",
   "f_left": "A FireSquire kilépett az erődből.",
   "flash_probe_left": "A FireSquire nem tudta törölni a(z) {0} tesztfájlt a flashről. Kérlek, töröld magad."
 }

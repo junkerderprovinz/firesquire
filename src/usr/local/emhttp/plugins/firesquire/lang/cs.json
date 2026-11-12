@@ -290,7 +290,7 @@
   "f_unreachable": "Nedostupné",
   "f_leave": "Opustit",
   "f_leave_title": "Opustit pevnost?",
-  "f_leave_body": "Tvé ostatní aplikace už FireSquire neuvidí a kontrola poběží dál bez nich. S frází se FireSquire kdykoli vrátí.",
+  "f_leave_body": "Tvé ostatní aplikace už FireSquire neuvidí a kontrola poběží dál bez nich. S aktuální frází se FireSquire vrátí.",
   "f_left": "FireSquire opustil pevnost.",
   "flash_probe_left": "FireSquire nedokázal smazat svůj testovací soubor {0} na flash disku. Smaž ho prosím sám."
 }

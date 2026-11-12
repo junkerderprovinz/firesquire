@@ -269,7 +269,7 @@
   "f_unreachable": "Ei tavoitettavissa",
   "f_leave": "Poistu",
   "f_leave_title": "Poistutaanko linnoituksesta?",
-  "f_leave_body": "Muut sovelluksesi eivät enää näe FireSquirea, ja tarkistus jatkuu ilman niitä. Lauseella FireSquire palaa milloin vain.",
+  "f_leave_body": "Muut sovelluksesi eivät enää näe FireSquirea, ja tarkistus jatkuu ilman niitä. Nykyisellä lauseella FireSquire palaa.",
   "f_left": "FireSquire poistui linnoituksesta.",
   "flash_probe_left": "FireSquire ei voinut poistaa testitiedostoaan {0} flash-muistista. Poista se itse, kiitos."
 }

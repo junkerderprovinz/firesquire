@@ -272,7 +272,7 @@
   "f_unreachable": "Not reachable",
   "f_leave": "Leave",
   "f_leave_title": "Leave the fortress?",
-  "f_leave_body": "Your other apps will not see FireSquire anymore, and the check goes on without them. The phrase brings FireSquire back any time.",
+  "f_leave_body": "Your other apps will not see FireSquire anymore, and the check goes on without them. The current phrase brings FireSquire back.",
   "f_left": "FireSquire has left the fortress.",
   "flash_probe_left": "FireSquire could not delete its test file {0} on the flash. Please delete it yourself."
 }

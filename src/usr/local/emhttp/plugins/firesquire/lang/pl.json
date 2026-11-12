@@ -308,7 +308,7 @@
   "f_unreachable": "Nieosiągalna",
   "f_leave": "Opuść",
   "f_leave_title": "Opuścić twierdzę?",
-  "f_leave_body": "Twoje inne aplikacje przestaną widzieć FireSquire, a sprawdzanie toczy się dalej bez nich. Z frazą FireSquire wróci w każdej chwili.",
+  "f_leave_body": "Twoje inne aplikacje przestaną widzieć FireSquire, a sprawdzanie toczy się dalej bez nich. Z aktualną frazą FireSquire wróci.",
   "f_left": "FireSquire opuścił twierdzę.",
   "flash_probe_left": "FireSquire nie mógł usunąć swojego pliku testowego {0} z pendrive’a. Usuń go proszę sam."
 }

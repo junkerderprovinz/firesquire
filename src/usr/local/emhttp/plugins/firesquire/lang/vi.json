@@ -218,7 +218,7 @@
   "f_unreachable": "Không truy cập được",
   "f_leave": "Rời đi",
   "f_leave_title": "Rời pháo đài?",
-  "f_leave_body": "Các ứng dụng khác sẽ không còn thấy FireSquire, và việc kiểm tra tiếp tục mà không có chúng. Với cụm từ, FireSquire quay lại bất cứ lúc nào.",
+  "f_leave_body": "Các ứng dụng khác sẽ không còn thấy FireSquire, và việc kiểm tra tiếp tục mà không có chúng. Với cụm từ hiện tại, FireSquire quay lại.",
   "f_left": "FireSquire đã rời pháo đài.",
   "flash_probe_left": "FireSquire không xóa được tệp thử {0} trên flash. Bạn hãy tự xóa giúp nhé."
 }
