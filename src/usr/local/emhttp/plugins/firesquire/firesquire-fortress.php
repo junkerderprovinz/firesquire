@@ -48,5 +48,7 @@ foreach ($members as $m) {
 if ($answered === 0 && $unanswered === 0) {
   finding('info', 'info', 'fortress_alone', [], 'No other app of your fortress is in reach right now.');
 } elseif ($answered > 0 && $busy === 0) {
-  finding('critical', 'pass', 'fortress_ok', [(string) $answered], "$answered app(s) in your fortress answered. None is busy with work a reboot would cut short.");
+  finding('critical', 'pass', 'fortress_ok', [(string) $answered], $answered === 1
+    ? '1 app in your fortress answered. It is not busy with work a reboot would cut short.'
+    : "$answered apps in your fortress answered. None is busy with work a reboot would cut short.");
 }

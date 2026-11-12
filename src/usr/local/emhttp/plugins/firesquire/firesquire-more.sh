@@ -1,7 +1,7 @@
 # What else stands in the way of a clean reboot, for firesquire-check.sh:
 # the flash write test, shutdown time-outs, an unclean last shutdown, files open over SMB and NFS,
 # the UPS and the age of the flash backup. The engine sources this file and
-# brings add() and have().
+# brings add(), have() and plural().
 # shellcheck shell=bash
 
 FS_VAR_INI="${FS_VAR_INI:-/var/local/emhttp/var.ini}"
@@ -41,7 +41,7 @@ more_probe() {
 # the VMs may take. Unraid stops every container with its own time-out, which
 # overrides the one a container asks for.
 more_timeouts() {
-  local shutdown stop vm need=0 docker_up=0 slow="" name t
+  local shutdown stop vm need=0 docker_up=0 slow="" nslow=0 name t
   shutdown="$(ini_get shutdownTimeout "$FS_VAR_INI")"; shutdown="${shutdown:-90}"
   stop="$(ini_get DOCKER_TIMEOUT "$FS_DOCKER_CFG")"; stop="${stop:-10}"
   vm="$(ini_get TIMEOUT "$FS_DOMAIN_CFG")"; vm="${vm:-60}"
@@ -51,13 +51,15 @@ more_timeouts() {
     # shellcheck disable=SC2046
     while read -r name t; do
       case "$t" in ''|*[!0-9]*) continue ;; esac
-      [ "$t" -gt "$stop" ] && slow="${slow:+$slow, }${name#/} (${t}s)"
+      [ "$t" -gt "$stop" ] || continue
+      slow="${slow:+$slow, }${name#/} (${t}s)"
+      nslow=$((nslow + 1))
     done < <(docker inspect -f '{{.Name}} {{.Config.StopTimeout}}' $(docker ps -q 2>/dev/null) 2>/dev/null)
   fi
   libvirt_up && need=$((need + vm))
   [ "$need" -gt 0 ] || return 0
   if [ -n "$slow" ]; then
-    add warning timeouts warn timeouts_container "$slow|$stop" "These containers ask for more time to stop than Unraid gives them (${stop}s in Docker Settings): $slow"
+    add warning timeouts warn timeouts_container "$slow|$stop|$nslow" "$(plural "$nslow" 'This container asks' 'These containers ask') for more time to stop than Unraid gives $(plural "$nslow" it them) (${stop}s in Docker Settings): $slow"
   fi
   if [ "$need" -ge "$shutdown" ]; then
     add warning timeouts warn timeouts_short "$shutdown|$((docker_up * stop))|$((need - docker_up * stop))|$need" "Unraid waits ${shutdown}s for a clean shutdown, but containers ($((docker_up * stop))s) and VMs ($((need - docker_up * stop))s) can take ${need}s together. Raise the shutdown time-out in Disk Settings."
@@ -78,9 +80,9 @@ more_unclean() {
 share_finding() {
   local proto="$1" share="$2" machine="$3" open="$4" writing="$5"
   if [ "$writing" -gt 0 ]; then
-    add warning shares warn share_writing "$proto|$share|$machine|$writing" "$machine is writing $writing file(s) to the share $share over $proto, maybe a copy."
+    add warning shares warn share_writing "$proto|$share|$machine|$writing" "$machine is writing $writing $(plural "$writing" file files) to the share $share over $proto, maybe a copy."
   else
-    add warning shares warn share_open "$proto|$share|$machine|$open" "$machine has $open file(s) open on the share $share over $proto."
+    add warning shares warn share_open "$proto|$share|$machine|$open" "$machine has $open $(plural "$open" file files) open on the share $share over $proto."
   fi
 }
 
@@ -139,9 +141,9 @@ more_ups() {
   charge="$(printf '%s\n' "$out" | awk -F' *: *' '$1 == "BCHARGE" { printf "%d", $2; exit }')"
   left="$(printf '%s\n' "$out" | awk -F' *: *' '$1 == "TIMELEFT" { printf "%d", $2; exit }')"
   if [[ "$status" == *LOWBATT* ]] || { [ -n "$charge" ] && [ "$charge" -lt 20 ]; }; then
-    add warning ups warn ups_low "$charge|$left" "The UPS battery is almost empty: ${charge}% left, about $left minutes."
+    add warning ups warn ups_low "$charge|$left" "The UPS battery is almost empty: ${charge}% left, about $left $(plural "$left" minute minutes)."
   elif [[ "$status" == *ONBATT* ]]; then
-    add warning ups warn ups_battery "$charge|$left" "The UPS runs on battery: ${charge}% left, about $left minutes."
+    add warning ups warn ups_battery "$charge|$left" "The UPS runs on battery: ${charge}% left, about $left $(plural "$left" minute minutes)."
   else
     add warning ups pass ups_ok "$charge" "The UPS is on mains power, battery at ${charge}%."
   fi
@@ -178,8 +180,8 @@ more_flash() {
   fi
   days=$(( (now - at) / 86400 ))
   if [ "$days" -gt 7 ]; then
-    add warning flash_backup warn flash_backup_old "$days|$source" "The last flash backup ($source) is $days days old. Back up the flash before rebooting."
+    add warning flash_backup warn flash_backup_old "$days|$source" "The last flash backup ($source) is $days $(plural "$days" day days) old. Back up the flash before rebooting."
   else
-    add warning flash_backup pass flash_backup_ok "$days|$source" "The last flash backup ($source) is $days day(s) old."
+    add warning flash_backup pass flash_backup_ok "$days|$source" "The last flash backup ($source) is $days $(plural "$days" day days) old."
   fi
 }

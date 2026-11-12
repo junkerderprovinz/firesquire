@@ -11,6 +11,7 @@ const { DIR, read, ok, done } = require('./lib');
 const MORE = path.join(DIR, 'firesquire-more.sh').replace(/\\/g, '/');
 const FIX = path.join(__dirname, 'fixtures').replace(/\\/g, '/');
 const en = JSON.parse(read('lang/en.json'));
+const PLURAL = read('firesquire-check.sh').match(/^plural\(\) \{.*\}$/m)[0];
 
 function more(body) {
   const script = `
@@ -18,6 +19,7 @@ set -u
 source "${MORE}"
 add() { local IFS=$'\\x1f'; printf '%s\\n' "$*"; }
 have() { declare -F "$1" >/dev/null || command -v "$1" >/dev/null 2>&1; }
+${PLURAL}
 ${body}
 `;
   const out = execFileSync('bash', ['-c', script], { encoding: 'utf8' });
@@ -40,7 +42,7 @@ r = more(`${env('var-unclean.ini')}\n${docker('"/plex <nil>"')}\nlibvirt_up() { 
 ok('without VMs only the containers count', one(r, 'timeouts_ok', 'pass', ['60', '10']), JSON.stringify(r));
 r = more(`${env('var-running.ini')}\n${docker('"/mariadb 300" "/plex <nil>" "/nextcloud 60"')}\nlibvirt_up() { return 0; }\nmore_timeouts`);
 ok('containers that ask for more time than Unraid gives them are CAUTION, by name',
-  one(r, 'timeouts_container', 'warn', ['mariadb (300s), nextcloud (60s)', '10']), JSON.stringify(r));
+  one(r, 'timeouts_container', 'warn', ['mariadb (300s), nextcloud (60s)', '10', '2']), JSON.stringify(r));
 r = more(`${env('var-running.ini')}\ndocker() { return 1; }\nlibvirt_up() { return 1; }\nmore_timeouts`);
 ok('without Docker and VMs nothing is said', r.length === 0, JSON.stringify(r));
 

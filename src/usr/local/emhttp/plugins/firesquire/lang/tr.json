@@ -45,7 +45,10 @@
   "p_info": "Sistem bilgileri toplanıyor…",
   "p_done": "Tamamlandı",
   "array_ok": "Array başlatıldı ve sağlıklı; tüm cihaz atamaları sorunsuz.",
-  "array_bad_devices": "Array temiz değil, sağlıksız veri diski(leri): {0}",
+  "array_bad_devices": {
+    "one": "Array temiz değil, sağlıksız veri diski: {0}",
+    "other": "Array temiz değil, sağlıksız veri diskleri: {0}"
+  },
   "array_counts": "Array temiz değil: durum={0}, devre dışı={1} geçersiz={2} eksik={3}",
   "array_not_started": "Array başlatılmamış (durum={0}).",
   "array_parity_degraded": "Parity diski devre dışı/eksik: {0}. Array yine de açılır, ancak parity koruması azalmıştır.",
@@ -54,7 +57,10 @@
   "array_unknown": "mdcmd bulunamadı, array durumu belirlenemiyor.",
   "mover_running": "Mover çalışıyor. Yeniden başlatmadan önce bitmesini bekleyin.",
   "mover_ok": "Mover çalışmıyor.",
-  "risky_mount_found": "Konteyner(ler) bir ana sistem çalışma dizinini bağlıyor (yeniden başlatmada libvirt/docker'ı bozabilir):{0}",
+  "risky_mount_found": {
+    "one": "Bir konteyner bir ana sistem çalışma dizinini bağlıyor (yeniden başlatmada libvirt/docker’ı bozabilir):{0}",
+    "other": "Konteynerler bir ana sistem çalışma dizinini bağlıyor (yeniden başlatmada libvirt/docker’ı bozabilir):{0}"
+  },
   "risky_mount_ok": "docker.sock dışında hiçbir konteyner ana sistem çalışma dizini bağlamıyor.",
   "risky_mount_skip": "Docker kullanılamıyor, konteyner bağlama taraması atlandı.",
   "stuck_loop_found": "Takılı imaj/loop durumu{0}.",
@@ -78,7 +84,10 @@
   "svc_libvirt_down": "libvirt etkin ancak libvirtd çalışmıyor.",
   "svc_emhttp_ok": "emhttpd (WebGUI) çalışıyor.",
   "svc_emhttp_down": "emhttpd (WebGUI) çalışmıyor.",
-  "binds_missing": "Konteyner bind kaynağı(ları) eksik (yeniden başlatmadan sonra temiz başlamaz):{0}",
+  "binds_missing": {
+    "one": "Bir konteyner bind kaynağı eksik (yeniden başlatmadan sonra temiz başlamaz):{0}",
+    "other": "Konteyner bind kaynakları eksik (yeniden başlatmadan sonra temiz başlamaz):{0}"
+  },
   "binds_ok": "/mnt altındaki tüm konteyner bind kaynakları mevcut.",
   "fortress_busy": "{1} üzerindeki {0} hâlâ {2} ile meşgul ({3}). Yeniden başlatmadan önce bitmesini bekle.",
   "fortress_busy_open": "{1} üzerindeki {0} hâlâ {2} ile meşgul. Yeniden başlatmadan önce bitmesini bekle.",
@@ -178,7 +187,10 @@
   "p_timeouts": "Kapatma süre sınırları denetleniyor…",
   "timeouts_ok": "Unraid'in {0} sn'lik kapatma süre sınırı konteynerlere ve VM'lere ({1} sn) yetiyor.",
   "timeouts_short": "Unraid temiz bir kapanış için {0} sn bekliyor, ama konteynerler ({1} sn) ve VM'ler ({2} sn) birlikte {3} sn sürebilir. Disk ayarlarında kapatma süre sınırını artır.",
-  "timeouts_container": "Bu konteynerler durmak için Unraid'in verdiğinden fazla süre istiyor (Docker ayarlarında {1} sn): {0}",
+  "timeouts_container": {
+    "one": "Bu konteyner durmak için Unraid’in verdiğinden fazla süre istiyor (Docker ayarlarında {1} sn): {0}",
+    "other": "Bu konteynerler durmak için Unraid'in verdiğinden fazla süre istiyor (Docker ayarlarında {1} sn): {0}"
+  },
   "unclean": "Son kapanış temiz değildi. Dizinin bir sonraki başlatılışında eşlik denetimi çalışır.",
   "p_shares": "Paylaşımlardaki açık dosyalar denetleniyor…",
   "share_open": "{2}, {0} üzerinden {1} paylaşımında {3} dosya açık tutuyor.",

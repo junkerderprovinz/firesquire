@@ -45,7 +45,11 @@
   "p_info": "Sběr systémových informací…",
   "p_done": "Hotovo",
   "array_ok": "Pole spuštěno a v pořádku; všechna přiřazení zařízení OK.",
-  "array_bad_devices": "Pole není čisté, vadné datové disky: {0}",
+  "array_bad_devices": {
+    "one": "Pole není čisté, vadný datový disk: {0}",
+    "few": "Pole není čisté, vadné datové disky: {0}",
+    "other": "Pole není čisté, vadné datové disky: {0}"
+  },
   "array_counts": "Pole není čisté: stav={0}, zakázané={1} neplatné={2} chybějící={3}",
   "array_not_started": "Pole není spuštěno (stav={0}).",
   "array_parity_degraded": "Paritní disk zakázán/chybí: {0}. Pole stále naběhne, ale ochrana paritou je snížena.",
@@ -54,7 +58,11 @@
   "array_unknown": "mdcmd nenalezen, stav pole nelze určit.",
   "mover_running": "Mover běží. Před restartem počkejte na jeho dokončení.",
   "mover_ok": "Mover neběží.",
-  "risky_mount_found": "Kontejnery připojují běhový adresář hostitele (může po restartu rozbít libvirt/docker):{0}",
+  "risky_mount_found": {
+    "one": "Kontejner připojuje běhový adresář hostitele (může po restartu rozbít libvirt/docker):{0}",
+    "few": "Kontejnery připojují běhový adresář hostitele (může po restartu rozbít libvirt/docker):{0}",
+    "other": "Kontejnery připojují běhový adresář hostitele (může po restartu rozbít libvirt/docker):{0}"
+  },
   "risky_mount_ok": "Žádný kontejner nepřipojuje běhový adresář hostitele (kromě docker.sock).",
   "risky_mount_skip": "Docker není dostupný, kontrola přípojných bodů kontejnerů přeskočena.",
   "stuck_loop_found": "Zaseknutý stav obrazu/smyčky{0}.",
@@ -63,14 +71,26 @@
   "flash_ok": "Flash /boot je připojen a zapisovatelný.",
   "flash_ro": "Flash /boot je připojen, ale NENÍ zapisovatelný (možné poškození FAT). Konfigurace se neuloží.",
   "flash_unmounted": "Flash /boot není připojen.",
-  "syslog_crashes": "{0} řádků s pádem/nestabilitou v syslog od startu. Naposledy: {1}",
+  "syslog_crashes": {
+    "one": "{0} řádek s pádem/nestabilitou v syslog od startu. Naposledy: {1}",
+    "few": "{0} řádky s pádem/nestabilitou v syslog od startu. Naposledy: {1}",
+    "other": "{0} řádků s pádem/nestabilitou v syslog od startu. Naposledy: {1}"
+  },
   "syslog_ok": "Žádné pády/OOM/segfaulty v syslog od startu.",
   "syslog_skip": "syslog nelze číst, kontrola pádů přeskočena.",
-  "io_errors": "{0} řádků s chybou disku/IO v syslog od startu. Naposledy: {1}",
+  "io_errors": {
+    "one": "{0} řádek s chybou disku/IO v syslog od startu. Naposledy: {1}",
+    "few": "{0} řádky s chybou disku/IO v syslog od startu. Naposledy: {1}",
+    "other": "{0} řádků s chybou disku/IO v syslog od startu. Naposledy: {1}"
+  },
   "io_ok": "Žádné chyby disku/IO v syslog od startu.",
   "space_full": "{0} je zaplněn na {1}% (>={2}%).",
   "space_ok": "{0} využito na {1}%.",
-  "vms_running": "Běží {0} VM. Před restartem je řádně vypněte.",
+  "vms_running": {
+    "one": "Běží {0} VM. Před restartem ji řádně vypněte.",
+    "few": "Běží {0} VM. Před restartem je řádně vypněte.",
+    "other": "Běží {0} VM. Před restartem je řádně vypněte."
+  },
   "vms_ok": "Žádné běžící VM.",
   "svc_docker_ok": "dockerd běží.",
   "svc_docker_down": "Úložiště Dockeru připojeno, ale dockerd neběží.",
@@ -78,26 +98,50 @@
   "svc_libvirt_down": "libvirt povolen, ale libvirtd neběží.",
   "svc_emhttp_ok": "emhttpd (WebGUI) běží.",
   "svc_emhttp_down": "emhttpd (WebGUI) neběží.",
-  "binds_missing": "Chybí zdroje vazeb kontejnerů (po restartu nenaběhnou čistě):{0}",
+  "binds_missing": {
+    "one": "Chybí zdroj vazby kontejneru (po restartu nenaběhne čistě):{0}",
+    "few": "Chybí zdroje vazeb kontejnerů (po restartu nenaběhnou čistě):{0}",
+    "other": "Chybí zdroje vazeb kontejnerů (po restartu nenaběhnou čistě):{0}"
+  },
   "binds_ok": "Všechny zdroje vazeb kontejnerů pod /mnt existují.",
   "fortress_busy": "{0} na {1} ještě pracuje: {2} ({3}). Nech to před restartem dokončit.",
   "fortress_busy_open": "{0} na {1} ještě pracuje: {2}. Nech to před restartem dokončit.",
   "fortress_unanswered": "{0} na {1} neodpověděl.",
-  "fortress_ok": "Odpovědělo aplikací tvé pevnosti: {0}. Žádná nedělá práci, kterou by restart přerušil.",
+  "fortress_ok": {
+    "one": "Odpověděla {0} aplikace tvé pevnosti. Nedělá práci, kterou by restart přerušil.",
+    "few": "Odpověděly {0} aplikace tvé pevnosti. Žádná nedělá práci, kterou by restart přerušil.",
+    "other": "Odpovědělo {0} aplikací tvé pevnosti. Žádná nedělá práci, kterou by restart přerušil."
+  },
   "fortress_alone": "Žádná jiná aplikace tvé pevnosti teď není dosažitelná.",
   "fortress_skip": "FireSquire se k pevnosti nedostal a její aplikace přeskočil.",
   "zfs_degraded": "Pool ZFS {0} je ve stavu {1}. Vyřeš to před restartem.",
   "zfs_dev_errors": "Pool ZFS {0}: {1} má chyby čtení: {2}, zápisu: {3} a kontrolního součtu: {4}.",
   "zfs_dev_state": "Pool ZFS {0}: {1} je ve stavu {2}.",
-  "zfs_ok": "Pooly ZFS online: {0}, žádné chyby zařízení.",
+  "zfs_ok": {
+    "one": "{0} pool ZFS online, žádné chyby zařízení.",
+    "few": "{0} pooly ZFS online, žádné chyby zařízení.",
+    "other": "{0} poolů ZFS online, žádné chyby zařízení."
+  },
   "btrfs_dev_errors": "btrfs na {0}: {1} hlásí chyby ({2}).",
-  "btrfs_ok": "Souborové systémy btrfs bez chyb zařízení: {0}.",
-  "crc_found": "{0} má {1} chyb CRC. Obvykle za tím je kabel nebo port. FireSquire si počet pamatuje a znovu varuje, když vzroste.",
+  "btrfs_ok": {
+    "one": "{0} souborový systém btrfs bez chyb zařízení.",
+    "few": "{0} souborové systémy btrfs bez chyb zařízení.",
+    "other": "{0} souborových systémů btrfs bez chyb zařízení."
+  },
+  "crc_found": {
+    "one": "{0} má {1} chybu CRC. Obvykle za tím je kabel nebo port. FireSquire si počet pamatuje a znovu varuje, když vzroste.",
+    "few": "{0} má {1} chyby CRC. Obvykle za tím je kabel nebo port. FireSquire si počet pamatuje a znovu varuje, když vzroste.",
+    "other": "{0} má {1} chyb CRC. Obvykle za tím je kabel nebo port. FireSquire si počet pamatuje a znovu varuje, když vzroste."
+  },
   "crc_rose": "Chyby CRC na {0} od poslední kontroly vzrostly z {1} na {2}. Zkontroluj nebo vyměň kabel na tomto portu.",
   "scrutiny_link": "Scrutiny uchovává historii SMART tvých disků. Otevři ho a uvidíš, od kdy počítadla rostou.",
   "scrutiny_tip": "Tip: Scrutiny z Community Apps uchovává historii SMART tvých disků, takže uvidíš, od kdy počítadlo roste.",
   "smart_failing": "Stav SMART SELHÁVÁ na:{0}. Před restartem prověřte.",
-  "smart_ok": "Stav SMART v pořádku na {0} discích.",
+  "smart_ok": {
+    "one": "Stav SMART v pořádku na {0} disku.",
+    "few": "Stav SMART v pořádku na {0} discích.",
+    "other": "Stav SMART v pořádku na {0} discích."
+  },
   "smart_none": "Pro kontrolu SMART nebyly nalezeny žádné disky.",
   "smart_skip": "smartctl nenalezen, kontrola SMART přeskočena.",
   "smart_attr": "Varování atributů SMART:{0}",
@@ -178,19 +222,47 @@
   "p_timeouts": "Kontroluji časové limity vypnutí…",
   "timeouts_ok": "Limit vypnutí Unraidu {0} s stačí pro kontejnery a VM ({1} s).",
   "timeouts_short": "Unraid čeká na čisté vypnutí {0} s, ale kontejnery ({1} s) a VM ({2} s) mohou dohromady potřebovat {3} s. Zvyš limit vypnutí v nastavení disků.",
-  "timeouts_container": "Tyto kontejnery chtějí na zastavení víc času, než jim Unraid dává ({1} s v nastavení Dockeru): {0}",
+  "timeouts_container": {
+    "one": "Tento kontejner chce na zastavení víc času, než mu Unraid dává ({1} s v nastavení Dockeru): {0}",
+    "few": "Tyto kontejnery chtějí na zastavení víc času, než jim Unraid dává ({1} s v nastavení Dockeru): {0}",
+    "other": "Tyto kontejnery chtějí na zastavení víc času, než jim Unraid dává ({1} s v nastavení Dockeru): {0}"
+  },
   "unclean": "Poslední vypnutí nebylo čisté. Příští start pole spustí kontrolu parity.",
   "p_shares": "Kontroluji otevřené soubory na sdílených složkách…",
-  "share_open": "{2} má otevřených souborů na sdílené složce {1} přes {0}: {3}.",
-  "share_writing": "{2} zapisuje souborů na sdílenou složku {1} přes {0}: {3}, možná kopírování.",
+  "share_open": {
+    "one": "{2} má otevřený {3} soubor na sdílené složce {1} přes {0}.",
+    "few": "{2} má otevřené {3} soubory na sdílené složce {1} přes {0}.",
+    "other": "{2} má otevřeno {3} souborů na sdílené složce {1} přes {0}."
+  },
+  "share_writing": {
+    "one": "{2} zapisuje {3} soubor na sdílenou složku {1} přes {0}, možná kopírování.",
+    "few": "{2} zapisuje {3} soubory na sdílenou složku {1} přes {0}, možná kopírování.",
+    "other": "{2} zapisuje {3} souborů na sdílenou složku {1} přes {0}, možná kopírování."
+  },
   "shares_ok": "Žádné otevřené soubory na sdílených složkách SMB ani NFS.",
   "p_ups": "Kontroluji UPS…",
   "ups_ok": "UPS běží ze sítě, baterie na {0} %.",
-  "ups_battery": "UPS běží na baterii: zbývá {0} %, asi {1} minut.",
-  "ups_low": "Baterie UPS je skoro prázdná: zbývá {0} %, asi {1} minut.",
+  "ups_battery": {
+    "one": "UPS běží na baterii: zbývá {0} %, asi {1} minutu.",
+    "few": "UPS běží na baterii: zbývá {0} %, asi {1} minuty.",
+    "other": "UPS běží na baterii: zbývá {0} %, asi {1} minut."
+  },
+  "ups_low": {
+    "one": "Baterie UPS je skoro prázdná: zbývá {0} %, asi {1} minutu.",
+    "few": "Baterie UPS je skoro prázdná: zbývá {0} %, asi {1} minuty.",
+    "other": "Baterie UPS je skoro prázdná: zbývá {0} %, asi {1} minut."
+  },
   "p_flashbak": "Kontroluji zálohu flash disku…",
-  "flash_backup_ok": "Poslední záloha flash disku ({1}) je stará dní: {0}.",
-  "flash_backup_old": "Poslední záloha flash disku ({1}) je stará dní: {0}. Zazálohuj flash disk před restartem.",
+  "flash_backup_ok": {
+    "one": "Poslední záloha flash disku ({1}) je stará {0} den.",
+    "few": "Poslední záloha flash disku ({1}) je stará {0} dny.",
+    "other": "Poslední záloha flash disku ({1}) je stará {0} dní."
+  },
+  "flash_backup_old": {
+    "one": "Poslední záloha flash disku ({1}) je stará {0} den. Zazálohuj flash disk před restartem.",
+    "few": "Poslední záloha flash disku ({1}) je stará {0} dny. Zazálohuj flash disk před restartem.",
+    "other": "Poslední záloha flash disku ({1}) je stará {0} dní. Zazálohuj flash disk před restartem."
+  },
   "flash_backup_none": "FireSquire nezná žádnou zálohu flash disku. BombVault v tvé pevnosti nebo Unraid Connect ji může vést.",
   "flash_backup_none_connect": "FireSquire nezná žádnou zálohu flash disku. Unraid Connect ji může vést.",
   "tools_g_shutdown": "Připraveno k vypnutí",

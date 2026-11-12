@@ -45,7 +45,10 @@
   "p_info": "Sammle Systeminfos…",
   "p_done": "Fertig",
   "array_ok": "Array gestartet und gesund; alle Gerätezuweisungen OK.",
-  "array_bad_devices": "Array nicht sauber, ungesunde Daten-Disk(s): {0}",
+  "array_bad_devices": {
+    "one": "Array nicht sauber, ungesunde Daten-Disk: {0}",
+    "other": "Array nicht sauber, ungesunde Daten-Disks: {0}"
+  },
   "array_counts": "Array nicht sauber: Zustand={0}, deaktiviert={1} ungültig={2} fehlend={3}",
   "array_not_started": "Array ist nicht gestartet (Zustand={0}).",
   "array_parity_degraded": "Parity-Disk deaktiviert/fehlt: {0}. Das Array bootet weiterhin, aber der Parity-Schutz ist reduziert.",
@@ -54,7 +57,10 @@
   "array_unknown": "mdcmd nicht gefunden, Array-Zustand nicht ermittelbar.",
   "mover_running": "Mover läuft. Vor dem Neustart abwarten.",
   "mover_ok": "Mover läuft nicht.",
-  "risky_mount_found": "Container mountet ein Host-Runtime-Verzeichnis (kann libvirt/docker beim Neustart zerlegen):{0}",
+  "risky_mount_found": {
+    "one": "Ein Container mountet ein Host-Runtime-Verzeichnis (kann libvirt/docker beim Neustart zerlegen):{0}",
+    "other": "Container mounten ein Host-Runtime-Verzeichnis (kann libvirt/docker beim Neustart zerlegen):{0}"
+  },
   "risky_mount_ok": "Kein Container mountet ein Host-Runtime-Verzeichnis (außer docker.sock).",
   "risky_mount_skip": "Docker nicht verfügbar, Container-Mount-Prüfung übersprungen.",
   "stuck_loop_found": "Hängender Image-/Loop-Zustand{0}.",
@@ -63,14 +69,23 @@
   "flash_ok": "Flash /boot ist gemountet und beschreibbar.",
   "flash_ro": "Flash /boot ist gemountet, aber NICHT beschreibbar (evtl. FAT-Korruption). Konfig wird nicht gespeichert.",
   "flash_unmounted": "Flash /boot ist nicht gemountet.",
-  "syslog_crashes": "{0} Crash-/Instabilitäts-Zeile(n) im syslog seit dem Boot. Zuletzt: {1}",
+  "syslog_crashes": {
+    "one": "{0} Crash-/Instabilitäts-Zeile im syslog seit dem Boot. Zuletzt: {1}",
+    "other": "{0} Crash-/Instabilitäts-Zeilen im syslog seit dem Boot. Zuletzt: {1}"
+  },
   "syslog_ok": "Keine Crashes/OOM/Segfaults im syslog seit dem Boot.",
   "syslog_skip": "syslog nicht lesbar, Crash-Scan übersprungen.",
-  "io_errors": "{0} Disk-/IO-Fehler-Zeile(n) im syslog seit dem Boot. Zuletzt: {1}",
+  "io_errors": {
+    "one": "{0} Disk-/IO-Fehler-Zeile im syslog seit dem Boot. Zuletzt: {1}",
+    "other": "{0} Disk-/IO-Fehler-Zeilen im syslog seit dem Boot. Zuletzt: {1}"
+  },
   "io_ok": "Keine Disk-/IO-Fehler im syslog seit dem Boot.",
   "space_full": "{0} ist zu {1}% belegt (>={2}%).",
   "space_ok": "{0} bei {1}% belegt.",
-  "vms_running": "{0} VM(s) laufen. Vor dem Neustart sauber herunterfahren.",
+  "vms_running": {
+    "one": "{0} VM läuft. Vor dem Neustart sauber herunterfahren.",
+    "other": "{0} VMs laufen. Vor dem Neustart sauber herunterfahren."
+  },
   "vms_ok": "Keine VMs laufen.",
   "svc_docker_ok": "dockerd läuft.",
   "svc_docker_down": "Docker-Speicher gemountet, aber dockerd läuft nicht.",
@@ -78,26 +93,41 @@
   "svc_libvirt_down": "libvirt aktiviert, aber libvirtd läuft nicht.",
   "svc_emhttp_ok": "emhttpd (WebGUI) läuft.",
   "svc_emhttp_down": "emhttpd (WebGUI) läuft nicht.",
-  "binds_missing": "Container-Bind-Quelle(n) fehlen (starten nach dem Neustart nicht sauber):{0}",
+  "binds_missing": {
+    "one": "Eine Container-Bind-Quelle fehlt (startet nach dem Neustart nicht sauber):{0}",
+    "other": "Container-Bind-Quellen fehlen (starten nach dem Neustart nicht sauber):{0}"
+  },
   "binds_ok": "Alle Container-Bind-Quellen unter /mnt vorhanden.",
   "fortress_busy": "{0} auf {1} ist noch beschäftigt: {2} ({3}). Lass das vor dem Neustart fertig werden.",
   "fortress_busy_open": "{0} auf {1} ist noch beschäftigt: {2}. Lass das vor dem Neustart fertig werden.",
   "fortress_unanswered": "{0} auf {1} hat nicht geantwortet.",
-  "fortress_ok": "{0} App(s) deiner Festung haben geantwortet. Keine ist mit etwas beschäftigt, das ein Neustart abbrechen würde.",
+  "fortress_ok": {
+    "one": "{0} App deiner Festung hat geantwortet. Sie ist mit nichts beschäftigt, das ein Neustart abbrechen würde.",
+    "other": "{0} Apps deiner Festung haben geantwortet. Keine ist mit etwas beschäftigt, das ein Neustart abbrechen würde."
+  },
   "fortress_alone": "Gerade ist keine andere App deiner Festung erreichbar.",
   "fortress_skip": "FireSquire hat die Festung nicht erreicht und ihre Apps übersprungen.",
   "zfs_degraded": "ZFS-Pool {0} ist {1}. Bring das vor dem Neustart in Ordnung.",
   "zfs_dev_errors": "ZFS-Pool {0}: {1} hat {2} Lese-, {3} Schreib- und {4} Prüfsummenfehler.",
   "zfs_dev_state": "ZFS-Pool {0}: {1} ist {2}.",
-  "zfs_ok": "{0} ZFS-Pool(s) online, keine Gerätefehler.",
+  "zfs_ok": {
+    "one": "{0} ZFS-Pool online, keine Gerätefehler.",
+    "other": "{0} ZFS-Pools online, keine Gerätefehler."
+  },
   "btrfs_dev_errors": "btrfs auf {0}: {1} meldet Fehler ({2}).",
-  "btrfs_ok": "{0} btrfs-Dateisystem(e) ohne Gerätefehler.",
+  "btrfs_ok": {
+    "one": "{0} btrfs-Dateisystem ohne Gerätefehler.",
+    "other": "{0} btrfs-Dateisysteme ohne Gerätefehler."
+  },
   "crc_found": "{0} hat {1} CRC-Fehler. Das deutet meist auf das Kabel oder den Anschluss. FireSquire merkt sich den Stand und warnt wieder, wenn er steigt.",
   "crc_rose": "Die CRC-Fehler auf {0} sind seit der letzten Prüfung von {1} auf {2} gestiegen. Prüf oder tausch das Kabel an diesem Anschluss.",
   "scrutiny_link": "Scrutiny führt den SMART-Verlauf deiner Platten. Dort siehst du, seit wann die Zähler steigen.",
   "scrutiny_tip": "Tipp: Scrutiny aus den Community Apps führt einen SMART-Verlauf deiner Platten. Dort siehst du, seit wann ein Zähler steigt.",
   "smart_failing": "SMART-Status FEHLERHAFT auf:{0}. Vor dem Neustart prüfen.",
-  "smart_ok": "SMART-Status OK auf {0} Datenträger(n).",
+  "smart_ok": {
+    "one": "SMART-Status OK auf {0} Datenträger.",
+    "other": "SMART-Status OK auf {0} Datenträgern."
+  },
   "smart_none": "Keine Datenträger für SMART-Prüfung gefunden.",
   "smart_skip": "smartctl nicht gefunden, SMART-Prüfung übersprungen.",
   "smart_attr": "SMART-Attribut-Warnungen:{0}",
@@ -178,19 +208,40 @@
   "p_timeouts": "Prüfe Zeitlimits fürs Herunterfahren…",
   "timeouts_ok": "Unraids Zeitlimit von {0} s fürs Herunterfahren reicht für Container und VMs ({1} s).",
   "timeouts_short": "Unraid wartet {0} s auf ein sauberes Herunterfahren, Container ({1} s) und VMs ({2} s) können zusammen aber {3} s brauchen. Erhöh das Zeitlimit in den Disk-Einstellungen.",
-  "timeouts_container": "Diese Container wollen zum Stoppen mehr Zeit, als Unraid ihnen gibt ({1} s in den Docker-Einstellungen): {0}",
+  "timeouts_container": {
+    "one": "Dieser Container will zum Stoppen mehr Zeit, als Unraid ihm gibt ({1} s in den Docker-Einstellungen): {0}",
+    "other": "Diese Container wollen zum Stoppen mehr Zeit, als Unraid ihnen gibt ({1} s in den Docker-Einstellungen): {0}"
+  },
   "unclean": "Das letzte Herunterfahren war nicht sauber. Beim nächsten Start des Arrays läuft eine Paritätsprüfung.",
   "p_shares": "Prüfe offene Dateien auf Freigaben…",
-  "share_open": "{2} hat {3} Datei(en) auf der Freigabe {1} über {0} offen.",
-  "share_writing": "{2} schreibt {3} Datei(en) auf die Freigabe {1} über {0}, vielleicht eine Kopie.",
+  "share_open": {
+    "one": "{2} hat {3} Datei auf der Freigabe {1} über {0} offen.",
+    "other": "{2} hat {3} Dateien auf der Freigabe {1} über {0} offen."
+  },
+  "share_writing": {
+    "one": "{2} schreibt {3} Datei auf die Freigabe {1} über {0}, vielleicht eine Kopie.",
+    "other": "{2} schreibt {3} Dateien auf die Freigabe {1} über {0}, vielleicht eine Kopie."
+  },
   "shares_ok": "Keine offenen Dateien auf SMB- oder NFS-Freigaben.",
   "p_ups": "Prüfe die USV…",
   "ups_ok": "Die USV hängt am Netz, Akku bei {0} %.",
-  "ups_battery": "Die USV läuft auf Akku: noch {0} %, etwa {1} Minuten.",
-  "ups_low": "Der USV-Akku ist fast leer: noch {0} %, etwa {1} Minuten.",
+  "ups_battery": {
+    "one": "Die USV läuft auf Akku: noch {0} %, etwa {1} Minute.",
+    "other": "Die USV läuft auf Akku: noch {0} %, etwa {1} Minuten."
+  },
+  "ups_low": {
+    "one": "Der USV-Akku ist fast leer: noch {0} %, etwa {1} Minute.",
+    "other": "Der USV-Akku ist fast leer: noch {0} %, etwa {1} Minuten."
+  },
   "p_flashbak": "Prüfe die Flash-Sicherung…",
-  "flash_backup_ok": "Die letzte Flash-Sicherung ({1}) ist {0} Tag(e) alt.",
-  "flash_backup_old": "Die letzte Flash-Sicherung ({1}) ist {0} Tage alt. Sichere den Flash vor dem Neustart.",
+  "flash_backup_ok": {
+    "one": "Die letzte Flash-Sicherung ({1}) ist {0} Tag alt.",
+    "other": "Die letzte Flash-Sicherung ({1}) ist {0} Tage alt."
+  },
+  "flash_backup_old": {
+    "one": "Die letzte Flash-Sicherung ({1}) ist {0} Tag alt. Sichere den Flash vor dem Neustart.",
+    "other": "Die letzte Flash-Sicherung ({1}) ist {0} Tage alt. Sichere den Flash vor dem Neustart."
+  },
   "flash_backup_none": "FireSquire kennt keine Flash-Sicherung. BombVault in deiner Festung oder Unraid Connect kann eine führen.",
   "flash_backup_none_connect": "FireSquire kennt keine Flash-Sicherung. Unraid Connect kann eine führen.",
   "tools_g_shutdown": "Bereit zum Herunterfahren",

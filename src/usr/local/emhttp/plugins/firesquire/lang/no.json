@@ -45,7 +45,10 @@
   "p_info": "Samler systeminfo…",
   "p_done": "Ferdig",
   "array_ok": "Array startet og friskt; alle enhetstildelinger OK.",
-  "array_bad_devices": "Array ikke rent, usunn(e) datadisk(er): {0}",
+  "array_bad_devices": {
+    "one": "Array ikke rent, usunn datadisk: {0}",
+    "other": "Array ikke rent, usunne datadisker: {0}"
+  },
   "array_counts": "Array ikke rent: tilstand={0}, deaktivert={1} ugyldig={2} manglende={3}",
   "array_not_started": "Array er ikke startet (tilstand={0}).",
   "array_parity_degraded": "Paritetsdisk deaktivert/manglende: {0}. Array-et starter fortsatt, men paritetsbeskyttelsen er redusert.",
@@ -54,7 +57,10 @@
   "array_unknown": "mdcmd ikke funnet, kan ikke fastslå array-tilstand.",
   "mover_running": "Mover kjører. Vent til den er ferdig før omstart.",
   "mover_ok": "Mover kjører ikke.",
-  "risky_mount_found": "Container(e) monterer en runtime-katalog på verten (kan ødelegge libvirt/docker ved omstart):{0}",
+  "risky_mount_found": {
+    "one": "En container monterer en runtime-katalog på verten (kan ødelegge libvirt/docker ved omstart):{0}",
+    "other": "Containere monterer en runtime-katalog på verten (kan ødelegge libvirt/docker ved omstart):{0}"
+  },
   "risky_mount_ok": "Ingen container monterer en runtime-katalog på verten (bortsett fra docker.sock).",
   "risky_mount_skip": "Docker ikke tilgjengelig, hoppet over skanning av container-monteringer.",
   "stuck_loop_found": "Fastlåst image-/loop-tilstand{0}.",
@@ -63,14 +69,23 @@
   "flash_ok": "Flash /boot er montert og skrivbar.",
   "flash_ro": "Flash /boot er montert, men IKKE skrivbar (mulig FAT-korrupsjon). Konfigurasjonen lagres ikke.",
   "flash_unmounted": "Flash /boot er ikke montert.",
-  "syslog_crashes": "{0} krasj-/ustabilitetslinje(r) i syslog siden oppstart. Sist: {1}",
+  "syslog_crashes": {
+    "one": "{0} krasj-/ustabilitetslinje i syslog siden oppstart. Sist: {1}",
+    "other": "{0} krasj-/ustabilitetslinjer i syslog siden oppstart. Sist: {1}"
+  },
   "syslog_ok": "Ingen krasj/OOM/segfeil i syslog siden oppstart.",
   "syslog_skip": "syslog ikke lesbar, hoppet over krasj-skanning.",
-  "io_errors": "{0} disk-/IO-feillinje(r) i syslog siden oppstart. Sist: {1}",
+  "io_errors": {
+    "one": "{0} disk-/IO-feillinje i syslog siden oppstart. Sist: {1}",
+    "other": "{0} disk-/IO-feillinjer i syslog siden oppstart. Sist: {1}"
+  },
   "io_ok": "Ingen disk-/IO-feil i syslog siden oppstart.",
   "space_full": "{0} er {1}% full (>={2}%).",
   "space_ok": "{0} på {1}% brukt.",
-  "vms_running": "{0} VM(er) kjører. Steng dem ned kontrollert før omstart.",
+  "vms_running": {
+    "one": "{0} VM kjører. Steng den ned kontrollert før omstart.",
+    "other": "{0} VM-er kjører. Steng dem ned kontrollert før omstart."
+  },
   "vms_ok": "Ingen VM-er kjører.",
   "svc_docker_ok": "dockerd kjører.",
   "svc_docker_down": "Docker-lagring montert, men dockerd kjører ikke.",
@@ -78,18 +93,27 @@
   "svc_libvirt_down": "libvirt aktivert, men libvirtd kjører ikke.",
   "svc_emhttp_ok": "emhttpd (WebGUI) kjører.",
   "svc_emhttp_down": "emhttpd (WebGUI) kjører ikke.",
-  "binds_missing": "Container-bindingskilde(r) mangler (starter ikke rent etter omstart):{0}",
+  "binds_missing": {
+    "one": "En container-bindingskilde mangler (starter ikke rent etter omstart):{0}",
+    "other": "Container-bindingskilder mangler (starter ikke rent etter omstart):{0}"
+  },
   "binds_ok": "Alle container-bindingskilder under /mnt finnes.",
   "fortress_busy": "{0} på {1} holder fortsatt på med {2} ({3}). La det bli ferdig før du starter på nytt.",
   "fortress_busy_open": "{0} på {1} holder fortsatt på med {2}. La det bli ferdig før du starter på nytt.",
   "fortress_unanswered": "{0} på {1} svarte ikke.",
-  "fortress_ok": "{0} app(er) i festningen din svarte. Ingen holder på med noe en omstart ville avbryte.",
+  "fortress_ok": {
+    "one": "{0} app i festningen din svarte. Den holder ikke på med noe en omstart ville avbryte.",
+    "other": "{0} apper i festningen din svarte. Ingen holder på med noe en omstart ville avbryte."
+  },
   "fortress_alone": "Ingen annen app i festningen din kan nås akkurat nå.",
   "fortress_skip": "FireSquire nådde ikke festningen og hoppet over appene dens.",
   "zfs_degraded": "ZFS-poolen {0} er {1}. Rett det opp før du starter på nytt.",
   "zfs_dev_errors": "ZFS-pool {0}: {1} har {2} lese-, {3} skrive- og {4} sjekksumfeil.",
   "zfs_dev_state": "ZFS-pool {0}: {1} er {2}.",
-  "zfs_ok": "{0} ZFS-pool(er) online, ingen enhetsfeil.",
+  "zfs_ok": {
+    "one": "{0} ZFS-pool online, ingen enhetsfeil.",
+    "other": "{0} ZFS-pooler online, ingen enhetsfeil."
+  },
   "btrfs_dev_errors": "btrfs på {0}: {1} melder feil ({2}).",
   "btrfs_ok": "{0} btrfs-filsystem uten enhetsfeil.",
   "crc_found": "{0} har {1} CRC-feil. Det peker som regel på kabelen eller porten. FireSquire husker tallet og varsler igjen hvis det stiger.",
@@ -97,7 +121,10 @@
   "scrutiny_link": "Scrutiny tar vare på SMART-historikken til diskene dine. Åpne den for å se når tellerne begynte å stige.",
   "scrutiny_tip": "Tips: Scrutiny fra Community Apps tar vare på en SMART-historikk for diskene dine, så du ser når en teller begynte å stige.",
   "smart_failing": "SMART-status FEILER på:{0}. Undersøk før omstart.",
-  "smart_ok": "SMART-status BESTÅTT på {0} disk(er).",
+  "smart_ok": {
+    "one": "SMART-status BESTÅTT på {0} disk.",
+    "other": "SMART-status BESTÅTT på {0} disker."
+  },
   "smart_none": "Ingen disker funnet for SMART-sjekk.",
   "smart_skip": "smartctl ikke funnet, hoppet over SMART-sjekk.",
   "smart_attr": "SMART-attributtvarsler:{0}",
@@ -178,19 +205,40 @@
   "p_timeouts": "Sjekker tidsgrenser for avslutning…",
   "timeouts_ok": "Unraids tidsgrense for avslutning på {0} s dekker containere og VM-er ({1} s).",
   "timeouts_short": "Unraid venter {0} s på en ren avslutning, men containere ({1} s) og VM-er ({2} s) kan bruke {3} s til sammen. Øk tidsgrensen i diskinnstillingene.",
-  "timeouts_container": "Disse containerne vil ha mer tid til å stoppe enn Unraid gir dem ({1} s i Docker-innstillingene): {0}",
+  "timeouts_container": {
+    "one": "Denne containeren vil ha mer tid til å stoppe enn Unraid gir den ({1} s i Docker-innstillingene): {0}",
+    "other": "Disse containerne vil ha mer tid til å stoppe enn Unraid gir dem ({1} s i Docker-innstillingene): {0}"
+  },
   "unclean": "Den siste avslutningen var ikke ren. Neste start av arrayet kjører en paritetssjekk.",
   "p_shares": "Sjekker åpne filer på delte ressurser…",
-  "share_open": "{2} har {3} fil(er) åpne på den delte ressursen {1} via {0}.",
-  "share_writing": "{2} skriver {3} fil(er) til den delte ressursen {1} via {0}, kanskje en kopiering.",
+  "share_open": {
+    "one": "{2} har {3} fil åpen på den delte ressursen {1} via {0}.",
+    "other": "{2} har {3} filer åpne på den delte ressursen {1} via {0}."
+  },
+  "share_writing": {
+    "one": "{2} skriver {3} fil til den delte ressursen {1} via {0}, kanskje en kopiering.",
+    "other": "{2} skriver {3} filer til den delte ressursen {1} via {0}, kanskje en kopiering."
+  },
   "shares_ok": "Ingen åpne filer på SMB- eller NFS-ressurser.",
   "p_ups": "Sjekker UPS-en…",
   "ups_ok": "UPS-en går på strømnettet, batteri på {0} %.",
-  "ups_battery": "UPS-en går på batteri: {0} % igjen, omtrent {1} minutter.",
-  "ups_low": "UPS-batteriet er nesten tomt: {0} % igjen, omtrent {1} minutter.",
+  "ups_battery": {
+    "one": "UPS-en går på batteri: {0} % igjen, omtrent {1} minutt.",
+    "other": "UPS-en går på batteri: {0} % igjen, omtrent {1} minutter."
+  },
+  "ups_low": {
+    "one": "UPS-batteriet er nesten tomt: {0} % igjen, omtrent {1} minutt.",
+    "other": "UPS-batteriet er nesten tomt: {0} % igjen, omtrent {1} minutter."
+  },
   "p_flashbak": "Sjekker flash-sikkerhetskopien…",
-  "flash_backup_ok": "Den siste flash-sikkerhetskopien ({1}) er {0} dag(er) gammel.",
-  "flash_backup_old": "Den siste flash-sikkerhetskopien ({1}) er {0} dager gammel. Ta sikkerhetskopi av flash-enheten før du starter på nytt.",
+  "flash_backup_ok": {
+    "one": "Den siste flash-sikkerhetskopien ({1}) er {0} dag gammel.",
+    "other": "Den siste flash-sikkerhetskopien ({1}) er {0} dager gammel."
+  },
+  "flash_backup_old": {
+    "one": "Den siste flash-sikkerhetskopien ({1}) er {0} dag gammel. Ta sikkerhetskopi av flash-enheten før du starter på nytt.",
+    "other": "Den siste flash-sikkerhetskopien ({1}) er {0} dager gammel. Ta sikkerhetskopi av flash-enheten før du starter på nytt."
+  },
   "flash_backup_none": "FireSquire kjenner ingen flash-sikkerhetskopi. BombVault i festningen din eller Unraid Connect kan holde en.",
   "flash_backup_none_connect": "FireSquire kjenner ingen flash-sikkerhetskopi. Unraid Connect kan holde en.",
   "tools_g_shutdown": "Klar til å slå av",

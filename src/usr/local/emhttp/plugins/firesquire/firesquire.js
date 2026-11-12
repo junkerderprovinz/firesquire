@@ -65,7 +65,7 @@
     p_info: 'Collecting system info…',
     p_done: 'Done',
     array_ok: 'Array started and healthy; all device assignments OK.',
-    array_bad_devices: 'Array not clean, unhealthy data disk(s): {0}',
+    array_bad_devices: { one: 'Array not clean, unhealthy data disk: {0}', other: 'Array not clean, unhealthy data disks: {0}' },
     array_counts: 'Array not clean: state={0}, disabled={1} invalid={2} missing={3}',
     array_not_started: 'Array is not started (state={0}).',
     array_parity_degraded: 'Parity disk disabled/missing: {0}. The array still boots, but parity protection is reduced.',
@@ -74,7 +74,7 @@
     array_unknown: 'mdcmd not found, cannot determine array state.',
     mover_running: 'Mover is running. Wait for it to finish before rebooting.',
     mover_ok: 'Mover is not running.',
-    risky_mount_found: 'Container(s) mount a host runtime dir (can break libvirt/docker on reboot):{0}',
+    risky_mount_found: { one: 'A container mounts a host runtime dir (can break libvirt/docker on reboot):{0}', other: 'Containers mount a host runtime dir (can break libvirt/docker on reboot):{0}' },
     risky_mount_ok: 'No container mounts a host runtime directory (besides docker.sock).',
     risky_mount_skip: 'Docker not available, skipped container mount scan.',
     stuck_loop_found: 'Stuck image/loop state{0}.',
@@ -83,14 +83,14 @@
     flash_ok: 'Flash /boot is mounted and writable.',
     flash_ro: 'Flash /boot is mounted but NOT writable (possible FAT corruption). Config won’t persist.',
     flash_unmounted: 'Flash /boot is not mounted.',
-    syslog_crashes: '{0} crash/instability line(s) in syslog since boot. Latest: {1}',
+    syslog_crashes: { one: '{0} crash/instability line in syslog since boot. Latest: {1}', other: '{0} crash/instability lines in syslog since boot. Latest: {1}' },
     syslog_ok: 'No crashes/OOM/segfaults in syslog since boot.',
     syslog_skip: 'syslog not readable, skipped crash scan.',
-    io_errors: '{0} disk/IO error line(s) in syslog since boot. Latest: {1}',
+    io_errors: { one: '{0} disk/IO error line in syslog since boot. Latest: {1}', other: '{0} disk/IO error lines in syslog since boot. Latest: {1}' },
     io_ok: 'No disk/IO errors in syslog since boot.',
     space_full: '{0} is {1}% full (>={2}%).',
     space_ok: '{0} at {1}% used.',
-    vms_running: '{0} VM(s) running. Shut them down gracefully before rebooting.',
+    vms_running: { one: '{0} VM running. Shut it down gracefully before rebooting.', other: '{0} VMs running. Shut them down gracefully before rebooting.' },
     vms_ok: 'No VMs running.',
     svc_docker_ok: 'dockerd running.',
     svc_docker_down: 'Docker storage mounted but dockerd is not running.',
@@ -98,36 +98,36 @@
     svc_libvirt_down: 'libvirt enabled but libvirtd is not running.',
     svc_emhttp_ok: 'emhttpd (WebGUI) running.',
     svc_emhttp_down: 'emhttpd (WebGUI) is not running.',
-    binds_missing: 'Container bind source(s) missing (won’t start cleanly after reboot):{0}',
+    binds_missing: { one: 'A container bind source is missing (won’t start cleanly after reboot):{0}', other: 'Container bind sources missing (won’t start cleanly after reboot):{0}' },
     binds_ok: 'All container bind sources under /mnt exist.',
     fortress_busy: '{0} on {1} is still busy with {2} ({3}). Let it finish before rebooting.',
     fortress_busy_open: '{0} on {1} is still busy with {2}. Let it finish before rebooting.',
     fortress_unanswered: '{0} on {1} did not answer.',
-    fortress_ok: '{0} app(s) in your fortress answered. None is busy with work a reboot would cut short.',
+    fortress_ok: { one: '{0} app in your fortress answered. It is not busy with work a reboot would cut short.', other: '{0} apps in your fortress answered. None is busy with work a reboot would cut short.' },
     fortress_alone: 'No other app of your fortress is in reach right now.',
     fortress_skip: 'FireSquire could not reach the fortress and skipped its apps.',
     zfs_degraded: 'ZFS pool {0} is {1}. Fix it before rebooting.',
     zfs_dev_errors: 'ZFS pool {0}: {1} has {2} read, {3} write and {4} checksum errors.',
     zfs_dev_state: 'ZFS pool {0}: {1} is {2}.',
-    zfs_ok: '{0} ZFS pool(s) online, no device errors.',
+    zfs_ok: { one: '{0} ZFS pool online, no device errors.', other: '{0} ZFS pools online, no device errors.' },
     btrfs_dev_errors: 'btrfs on {0}: {1} reports errors ({2}).',
-    btrfs_ok: '{0} btrfs filesystem(s) without device errors.',
-    crc_found: '{0} has {1} CRC errors. That usually points to the cable or the port. FireSquire remembers the count and warns again if it rises.',
+    btrfs_ok: { one: '{0} btrfs filesystem without device errors.', other: '{0} btrfs filesystems without device errors.' },
+    crc_found: { one: '{0} has {1} CRC error. That usually points to the cable or the port. FireSquire remembers the count and warns again if it rises.', other: '{0} has {1} CRC errors. That usually points to the cable or the port. FireSquire remembers the count and warns again if it rises.' },
     crc_rose: 'The CRC errors on {0} rose from {1} to {2} since the last check. Check or replace the cable on this port.',
     scrutiny_link: 'Scrutiny keeps the SMART history of your disks. Open it to see when the counts started to rise.',
     scrutiny_tip: 'Tip: Scrutiny from Community Apps keeps a SMART history of your disks, so you can see when a count started to rise.',
     timeouts_ok: 'Unraid\'s shutdown time-out of {0}s covers containers and VMs ({1}s).',
     timeouts_short: 'Unraid waits {0}s for a clean shutdown, but containers ({1}s) and VMs ({2}s) can take {3}s together. Raise the shutdown time-out in Disk Settings.',
-    timeouts_container: 'These containers ask for more time to stop than Unraid gives them ({1}s in Docker Settings): {0}',
+    timeouts_container: { one: 'This container asks for more time to stop than Unraid gives it ({1}s in Docker Settings): {0}', other: 'These containers ask for more time to stop than Unraid gives them ({1}s in Docker Settings): {0}' },
     unclean: 'The last shutdown was not clean. The next array start runs a parity check.',
-    share_open: '{2} has {3} file(s) open on the share {1} over {0}.',
-    share_writing: '{2} is writing {3} file(s) to the share {1} over {0}, maybe a copy.',
+    share_open: { one: '{2} has {3} file open on the share {1} over {0}.', other: '{2} has {3} files open on the share {1} over {0}.' },
+    share_writing: { one: '{2} is writing {3} file to the share {1} over {0}, maybe a copy.', other: '{2} is writing {3} files to the share {1} over {0}, maybe a copy.' },
     shares_ok: 'No open files on SMB or NFS shares.',
     ups_ok: 'The UPS is on mains power, battery at {0}%.',
-    ups_battery: 'The UPS runs on battery: {0}% left, about {1} minutes.',
-    ups_low: 'The UPS battery is almost empty: {0}% left, about {1} minutes.',
-    flash_backup_ok: 'The last flash backup ({1}) is {0} day(s) old.',
-    flash_backup_old: 'The last flash backup ({1}) is {0} days old. Back up the flash before rebooting.',
+    ups_battery: { one: 'The UPS runs on battery: {0}% left, about {1} minute.', other: 'The UPS runs on battery: {0}% left, about {1} minutes.' },
+    ups_low: { one: 'The UPS battery is almost empty: {0}% left, about {1} minute.', other: 'The UPS battery is almost empty: {0}% left, about {1} minutes.' },
+    flash_backup_ok: { one: 'The last flash backup ({1}) is {0} day old.', other: 'The last flash backup ({1}) is {0} days old.' },
+    flash_backup_old: { one: 'The last flash backup ({1}) is {0} day old. Back up the flash before rebooting.', other: 'The last flash backup ({1}) is {0} days old. Back up the flash before rebooting.' },
     flash_backup_none: 'FireSquire knows of no flash backup. BombVault in your fortress or Unraid Connect can keep one.',
     g_ask_reboot: 'Reboot anyway?',
     g_ask_shutdown: 'Shut down anyway?',
@@ -135,7 +135,7 @@
     g_shutdown: 'Shut down anyway',
     g_cancel: 'Cancel',
     smart_failing: 'SMART health FAILING on:{0}. Investigate before rebooting.',
-    smart_ok: 'SMART health PASSED on {0} disk(s).',
+    smart_ok: { one: 'SMART health PASSED on {0} disk.', other: 'SMART health PASSED on {0} disks.' },
     smart_none: 'No disks found for SMART check.',
     smart_skip: 'smartctl not found, skipped SMART check.',
     smart_attr: 'SMART attribute warnings:{0}',
@@ -150,9 +150,18 @@
   var REPORT_URL = '/plugins/firesquire/include/FireSquireReport.php';
   var STREAM_URL = '/plugins/firesquire/include/FireSquireStream.php';
 
+  // A text that changes with a number holds one form per plural category of
+  // the language, and COUNTED names the argument whose number picks the form.
+  var COUNTED = { array_bad_devices: 1, risky_mount_found: 1, binds_missing: 1, timeouts_container: 2, syslog_crashes: 0, io_errors: 0, vms_running: 0, fortress_ok: 0, zfs_ok: 0, btrfs_ok: 0, crc_found: 1, smart_ok: 0, share_open: 3, share_writing: 3, ups_battery: 1, ups_low: 1, flash_backup_ok: 0, flash_backup_old: 0 };
+  function plural(m, key, args){
+    if (m == null || typeof m !== 'object' || Array.isArray(m)) return m;
+    var n = Number((args || [])[COUNTED[key]]);
+    var form = isNaN(n) ? 'other' : new Intl.PluralRules(FS_LANGCODE).select(n);
+    return m[form] != null ? m[form] : m.other;
+  }
+
   function fsT(key, args){
-    var m = FS_I18N[key];
-    if (m == null) m = FS_EN[key];
+    var m = plural(FS_I18N[key] != null ? FS_I18N[key] : FS_EN[key], key, args);
     if (m == null) return null;
     if (typeof m === 'string' && args && args.length) {
       for (var i = 0; i < args.length; i++) m = m.split('{' + i + '}').join(args[i]);
@@ -358,7 +367,7 @@
   var QUOTES_LOG = { syslog_crashes: 1, io_errors: 1 };
 
   function message(x){
-    var tpl = FS_I18N[x.key] != null ? FS_I18N[x.key] : FS_EN[x.key];
+    var tpl = plural(FS_I18N[x.key] != null ? FS_I18N[x.key] : FS_EN[x.key], x.key, x.args);
     if (tpl == null) return esc(x.message || '');
     var out = esc(tpl), args = x.args || [];
     for (var i = 0; i < args.length; i++) {

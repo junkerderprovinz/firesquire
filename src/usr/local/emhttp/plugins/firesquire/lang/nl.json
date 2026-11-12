@@ -45,7 +45,10 @@
   "p_info": "Systeeminfo verzamelen…",
   "p_done": "Klaar",
   "array_ok": "Array gestart en gezond; alle apparaattoewijzingen OK.",
-  "array_bad_devices": "Array niet schoon, ongezonde dataschijf/-schijven: {0}",
+  "array_bad_devices": {
+    "one": "Array niet schoon, ongezonde dataschijf: {0}",
+    "other": "Array niet schoon, ongezonde dataschijven: {0}"
+  },
   "array_counts": "Array niet schoon: status={0}, uitgeschakeld={1} ongeldig={2} ontbrekend={3}",
   "array_not_started": "Array is niet gestart (status={0}).",
   "array_parity_degraded": "Parityschijf uitgeschakeld/ontbreekt: {0}. Het array start nog steeds op, maar de parity-bescherming is verminderd.",
@@ -54,7 +57,10 @@
   "array_unknown": "mdcmd niet gevonden, kan de arraystatus niet bepalen.",
   "mover_running": "Mover draait. Wacht tot deze klaar is vóór het herstarten.",
   "mover_ok": "Mover draait niet.",
-  "risky_mount_found": "Container(s) mounten een host-runtimemap (kan libvirt/docker breken bij herstart):{0}",
+  "risky_mount_found": {
+    "one": "Een container mount een host-runtimemap (kan libvirt/docker breken bij herstart):{0}",
+    "other": "Containers mounten een host-runtimemap (kan libvirt/docker breken bij herstart):{0}"
+  },
   "risky_mount_ok": "Geen container mount een host-runtimemap (behalve docker.sock).",
   "risky_mount_skip": "Docker niet beschikbaar, container-mountscan overgeslagen.",
   "stuck_loop_found": "Vastzittende image-/loopstatus{0}.",
@@ -63,14 +69,23 @@
   "flash_ok": "Flash /boot is gemount en beschrijfbaar.",
   "flash_ro": "Flash /boot is gemount maar NIET beschrijfbaar (mogelijk FAT-corruptie). Configuratie blijft niet behouden.",
   "flash_unmounted": "Flash /boot is niet gemount.",
-  "syslog_crashes": "{0} crash-/instabiliteitsregel(s) in syslog sinds de boot. Laatste: {1}",
+  "syslog_crashes": {
+    "one": "{0} crash-/instabiliteitsregel in syslog sinds de boot. Laatste: {1}",
+    "other": "{0} crash-/instabiliteitsregels in syslog sinds de boot. Laatste: {1}"
+  },
   "syslog_ok": "Geen crashes/OOM/segfaults in syslog sinds de boot.",
   "syslog_skip": "syslog niet leesbaar, crashscan overgeslagen.",
-  "io_errors": "{0} schijf-/IO-foutregel(s) in syslog sinds de boot. Laatste: {1}",
+  "io_errors": {
+    "one": "{0} schijf-/IO-foutregel in syslog sinds de boot. Laatste: {1}",
+    "other": "{0} schijf-/IO-foutregels in syslog sinds de boot. Laatste: {1}"
+  },
   "io_ok": "Geen schijf-/IO-fouten in syslog sinds de boot.",
   "space_full": "{0} is {1}% vol (>={2}%).",
   "space_ok": "{0} op {1}% gebruikt.",
-  "vms_running": "{0} VM(s) actief. Sluit ze netjes af vóór het herstarten.",
+  "vms_running": {
+    "one": "{0} VM actief. Sluit hem netjes af vóór het herstarten.",
+    "other": "{0} VM’s actief. Sluit ze netjes af vóór het herstarten."
+  },
   "vms_ok": "Geen VM's actief.",
   "svc_docker_ok": "dockerd draait.",
   "svc_docker_down": "Docker-opslag gemount maar dockerd draait niet.",
@@ -78,26 +93,44 @@
   "svc_libvirt_down": "libvirt ingeschakeld maar libvirtd draait niet.",
   "svc_emhttp_ok": "emhttpd (WebGUI) draait.",
   "svc_emhttp_down": "emhttpd (WebGUI) draait niet.",
-  "binds_missing": "Container-bindbron(nen) ontbreekt/ontbreken (start niet schoon na herstart):{0}",
+  "binds_missing": {
+    "one": "Een container-bindbron ontbreekt (start niet schoon na herstart):{0}",
+    "other": "Container-bindbronnen ontbreken (starten niet schoon na herstart):{0}"
+  },
   "binds_ok": "Alle container-bindbronnen onder /mnt bestaan.",
   "fortress_busy": "{0} op {1} is nog bezig met {2} ({3}). Laat het afronden voor je herstart.",
   "fortress_busy_open": "{0} op {1} is nog bezig met {2}. Laat het afronden voor je herstart.",
   "fortress_unanswered": "{0} op {1} heeft niet geantwoord.",
-  "fortress_ok": "{0} app(s) van je vesting hebben geantwoord. Geen enkele is bezig met werk dat een herstart zou afbreken.",
+  "fortress_ok": {
+    "one": "{0} app van je vesting heeft geantwoord. Hij is niet bezig met werk dat een herstart zou afbreken.",
+    "other": "{0} apps van je vesting hebben geantwoord. Geen enkele is bezig met werk dat een herstart zou afbreken."
+  },
   "fortress_alone": "Er is nu geen andere app van je vesting bereikbaar.",
   "fortress_skip": "FireSquire kon de vesting niet bereiken en heeft de apps overgeslagen.",
   "zfs_degraded": "ZFS-pool {0} is {1}. Los dat op voor je herstart.",
   "zfs_dev_errors": "ZFS-pool {0}: {1} heeft {2} lees-, {3} schrijf- en {4} checksumfouten.",
   "zfs_dev_state": "ZFS-pool {0}: {1} is {2}.",
-  "zfs_ok": "{0} ZFS-pool(s) online, geen apparaatfouten.",
+  "zfs_ok": {
+    "one": "{0} ZFS-pool online, geen apparaatfouten.",
+    "other": "{0} ZFS-pools online, geen apparaatfouten."
+  },
   "btrfs_dev_errors": "btrfs op {0}: {1} meldt fouten ({2}).",
-  "btrfs_ok": "{0} btrfs-bestandssyste(e)m(en) zonder apparaatfouten.",
-  "crc_found": "{0} heeft {1} CRC-fouten. Dat wijst meestal op de kabel of de poort. FireSquire onthoudt de stand en waarschuwt opnieuw als die stijgt.",
+  "btrfs_ok": {
+    "one": "{0} btrfs-bestandssysteem zonder apparaatfouten.",
+    "other": "{0} btrfs-bestandssystemen zonder apparaatfouten."
+  },
+  "crc_found": {
+    "one": "{0} heeft {1} CRC-fout. Dat wijst meestal op de kabel of de poort. FireSquire onthoudt de stand en waarschuwt opnieuw als die stijgt.",
+    "other": "{0} heeft {1} CRC-fouten. Dat wijst meestal op de kabel of de poort. FireSquire onthoudt de stand en waarschuwt opnieuw als die stijgt."
+  },
   "crc_rose": "De CRC-fouten op {0} zijn sinds de vorige controle gestegen van {1} naar {2}. Controleer of vervang de kabel op deze poort.",
   "scrutiny_link": "Scrutiny houdt de SMART-geschiedenis van je schijven bij. Open het om te zien sinds wanneer de tellers stijgen.",
   "scrutiny_tip": "Tip: Scrutiny uit Community Apps houdt een SMART-geschiedenis van je schijven bij, zodat je ziet sinds wanneer een teller stijgt.",
   "smart_failing": "SMART-status FALEND op:{0}. Onderzoek vóór het herstarten.",
-  "smart_ok": "SMART-status GESLAAGD op {0} schijf/schijven.",
+  "smart_ok": {
+    "one": "SMART-status GESLAAGD op {0} schijf.",
+    "other": "SMART-status GESLAAGD op {0} schijven."
+  },
   "smart_none": "Geen schijven gevonden voor SMART-controle.",
   "smart_skip": "smartctl niet gevonden, SMART-controle overgeslagen.",
   "smart_attr": "SMART-attribuutwaarschuwingen:{0}",
@@ -178,19 +211,40 @@
   "p_timeouts": "Afsluittijden controleren…",
   "timeouts_ok": "De afsluittijd van Unraid van {0} s dekt containers en VM's ({1} s).",
   "timeouts_short": "Unraid wacht {0} s op een nette afsluiting, maar containers ({1} s) en VM's ({2} s) kunnen samen {3} s nodig hebben. Verhoog de afsluittijd in de schijfinstellingen.",
-  "timeouts_container": "Deze containers vragen meer tijd om te stoppen dan Unraid ze geeft ({1} s in de Docker-instellingen): {0}",
+  "timeouts_container": {
+    "one": "Deze container vraagt meer tijd om te stoppen dan Unraid hem geeft ({1} s in de Docker-instellingen): {0}",
+    "other": "Deze containers vragen meer tijd om te stoppen dan Unraid ze geeft ({1} s in de Docker-instellingen): {0}"
+  },
   "unclean": "De laatste afsluiting was niet netjes. De volgende start van de array voert een pariteitscontrole uit.",
   "p_shares": "Open bestanden op shares controleren…",
-  "share_open": "{2} heeft {3} bestand(en) open op de share {1} via {0}.",
-  "share_writing": "{2} schrijft {3} bestand(en) naar de share {1} via {0}, misschien een kopie.",
+  "share_open": {
+    "one": "{2} heeft {3} bestand open op de share {1} via {0}.",
+    "other": "{2} heeft {3} bestanden open op de share {1} via {0}."
+  },
+  "share_writing": {
+    "one": "{2} schrijft {3} bestand naar de share {1} via {0}, misschien een kopie.",
+    "other": "{2} schrijft {3} bestanden naar de share {1} via {0}, misschien een kopie."
+  },
   "shares_ok": "Geen open bestanden op SMB- of NFS-shares.",
   "p_ups": "De UPS controleren…",
   "ups_ok": "De UPS hangt aan het net, accu op {0}%.",
-  "ups_battery": "De UPS draait op de accu: nog {0}%, ongeveer {1} minuten.",
-  "ups_low": "De UPS-accu is bijna leeg: nog {0}%, ongeveer {1} minuten.",
+  "ups_battery": {
+    "one": "De UPS draait op de accu: nog {0}%, ongeveer {1} minuut.",
+    "other": "De UPS draait op de accu: nog {0}%, ongeveer {1} minuten."
+  },
+  "ups_low": {
+    "one": "De UPS-accu is bijna leeg: nog {0}%, ongeveer {1} minuut.",
+    "other": "De UPS-accu is bijna leeg: nog {0}%, ongeveer {1} minuten."
+  },
   "p_flashbak": "De flash-back-up controleren…",
-  "flash_backup_ok": "De laatste flash-back-up ({1}) is {0} dag(en) oud.",
-  "flash_backup_old": "De laatste flash-back-up ({1}) is {0} dagen oud. Maak een back-up van de flash voor je herstart.",
+  "flash_backup_ok": {
+    "one": "De laatste flash-back-up ({1}) is {0} dag oud.",
+    "other": "De laatste flash-back-up ({1}) is {0} dagen oud."
+  },
+  "flash_backup_old": {
+    "one": "De laatste flash-back-up ({1}) is {0} dag oud. Maak een back-up van de flash voor je herstart.",
+    "other": "De laatste flash-back-up ({1}) is {0} dagen oud. Maak een back-up van de flash voor je herstart."
+  },
   "flash_backup_none": "FireSquire kent geen flash-back-up. BombVault in je vesting of Unraid Connect kan er een bijhouden.",
   "flash_backup_none_connect": "FireSquire kent geen flash-back-up. Unraid Connect kan er een bijhouden.",
   "tools_g_shutdown": "Klaar om af te sluiten",

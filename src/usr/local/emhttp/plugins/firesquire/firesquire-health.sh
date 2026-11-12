@@ -1,7 +1,7 @@
 # Disk health for firesquire-check.sh: ZFS pools, btrfs device counters and
 # the SMART CRC count of every disk. Each finding names the disk with the port
 # it hangs on, so it says which cable to look at. The engine sources this file
-# and brings add() and have().
+# and brings add(), have() and plural().
 # shellcheck shell=bash
 
 FS_BYPATH="${FS_BYPATH:-/dev/disk/by-path}"
@@ -71,7 +71,7 @@ health_zfs() {
     }')
   [ "$bad" -eq 1 ] && FS_DISK_TROUBLE=1
   if [ "$pools" -gt 0 ] && [ "$bad" -eq 0 ]; then
-    add critical zfs pass zfs_ok "$pools" "$pools ZFS pool(s) online, no device errors."
+    add critical zfs pass zfs_ok "$pools" "$pools ZFS $(plural "$pools" pool pools) online, no device errors."
   fi
 }
 
@@ -93,7 +93,7 @@ health_btrfs() {
   done < "$FS_MOUNTS"
   [ "$bad" -eq 1 ] && FS_DISK_TROUBLE=1
   if [ "$filesystems" -gt 0 ] && [ "$bad" -eq 0 ]; then
-    add critical btrfs pass btrfs_ok "$filesystems" "$filesystems btrfs filesystem(s) without device errors."
+    add critical btrfs pass btrfs_ok "$filesystems" "$filesystems btrfs $(plural "$filesystems" filesystem filesystems) without device errors."
   fi
 }
 
@@ -122,7 +122,7 @@ crc_report() {
     old="$(printf '%s\n' "$known" | awk -v k="$key" '$1 == k { print $2; exit }')"
     if [ -z "$old" ] && [ "$val" -gt 0 ]; then
       FS_DISK_TROUBLE=1
-      add warning crc warn crc_found "$(disk_label "$dev")|$val" "$(disk_label "$dev") has $val CRC errors. That usually points to the cable or the port. FireSquire remembers the count and warns again if it rises."
+      add warning crc warn crc_found "$(disk_label "$dev")|$val" "$(disk_label "$dev") has $val CRC $(plural "$val" error errors). That usually points to the cable or the port. FireSquire remembers the count and warns again if it rises."
     elif [ -n "$old" ] && [ "$val" -gt "$old" ]; then
       FS_DISK_TROUBLE=1
       add warning crc warn crc_rose "$(disk_label "$dev")|$old|$val" "The CRC errors on $(disk_label "$dev") rose from $old to $val since the last check. Check or replace the cable on this port."

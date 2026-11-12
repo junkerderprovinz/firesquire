@@ -45,7 +45,12 @@
   "p_info": "Zbieranie informacji o systemie…",
   "p_done": "Gotowe",
   "array_ok": "Array uruchomione i sprawne; wszystkie przypisania urządzeń OK.",
-  "array_bad_devices": "Array w nieczystym stanie, niesprawne dyski danych: {0}",
+  "array_bad_devices": {
+    "one": "Array w nieczystym stanie, niesprawny dysk danych: {0}",
+    "few": "Array w nieczystym stanie, niesprawne dyski danych: {0}",
+    "many": "Array w nieczystym stanie, niesprawne dyski danych: {0}",
+    "other": "Array w nieczystym stanie, niesprawne dyski danych: {0}"
+  },
   "array_counts": "Array w nieczystym stanie: stan={0}, wyłączone={1} nieprawidłowe={2} brakujące={3}",
   "array_not_started": "Array nie jest uruchomione (stan={0}).",
   "array_parity_degraded": "Dysk parzystości wyłączony/brakujący: {0}. Array nadal się uruchomi, ale ochrona parzystości jest ograniczona.",
@@ -54,7 +59,12 @@
   "array_unknown": "Nie znaleziono mdcmd, nie można ustalić stanu array.",
   "mover_running": "Mover jest uruchomiony. Poczekaj na jego zakończenie przed restartem.",
   "mover_ok": "Mover nie jest uruchomiony.",
-  "risky_mount_found": "Kontener(y) montują katalog runtime hosta (może uszkodzić libvirt/docker po restarcie):{0}",
+  "risky_mount_found": {
+    "one": "Kontener montuje katalog runtime hosta (może uszkodzić libvirt/docker po restarcie):{0}",
+    "few": "Kontenery montują katalog runtime hosta (może uszkodzić libvirt/docker po restarcie):{0}",
+    "many": "Kontenery montują katalog runtime hosta (może uszkodzić libvirt/docker po restarcie):{0}",
+    "other": "Kontenery montują katalog runtime hosta (może uszkodzić libvirt/docker po restarcie):{0}"
+  },
   "risky_mount_ok": "Żaden kontener nie montuje katalogu runtime hosta (poza docker.sock).",
   "risky_mount_skip": "Docker niedostępny, pominięto skanowanie montowań kontenerów.",
   "stuck_loop_found": "Zawieszony stan obrazu/pętli{0}.",
@@ -63,14 +73,29 @@
   "flash_ok": "Flash /boot jest zamontowany i zapisywalny.",
   "flash_ro": "Flash /boot jest zamontowany, ale NIE jest zapisywalny (możliwe uszkodzenie FAT). Konfiguracja nie zostanie zachowana.",
   "flash_unmounted": "Flash /boot nie jest zamontowany.",
-  "syslog_crashes": "{0} wierszy o awariach/niestabilności w syslog od rozruchu. Ostatni: {1}",
+  "syslog_crashes": {
+    "one": "{0} wiersz o awariach/niestabilności w syslog od rozruchu. Ostatni: {1}",
+    "few": "{0} wiersze o awariach/niestabilności w syslog od rozruchu. Ostatni: {1}",
+    "many": "{0} wierszy o awariach/niestabilności w syslog od rozruchu. Ostatni: {1}",
+    "other": "{0} wierszy o awariach/niestabilności w syslog od rozruchu. Ostatni: {1}"
+  },
   "syslog_ok": "Brak awarii/OOM/segfaultów w syslog od rozruchu.",
   "syslog_skip": "syslog nieczytelny, pominięto skanowanie awarii.",
-  "io_errors": "{0} wierszy o błędach dysku/IO w syslog od rozruchu. Ostatni: {1}",
+  "io_errors": {
+    "one": "{0} wiersz o błędach dysku/IO w syslog od rozruchu. Ostatni: {1}",
+    "few": "{0} wiersze o błędach dysku/IO w syslog od rozruchu. Ostatni: {1}",
+    "many": "{0} wierszy o błędach dysku/IO w syslog od rozruchu. Ostatni: {1}",
+    "other": "{0} wierszy o błędach dysku/IO w syslog od rozruchu. Ostatni: {1}"
+  },
   "io_ok": "Brak błędów dysku/IO w syslog od rozruchu.",
   "space_full": "{0} jest zajęte w {1}% (>={2}%).",
   "space_ok": "{0} zajęte w {1}%.",
-  "vms_running": "Działa {0} maszyn wirtualnych. Zamknij je poprawnie przed restartem.",
+  "vms_running": {
+    "one": "Działa {0} maszyna wirtualna. Zamknij ją poprawnie przed restartem.",
+    "few": "Działają {0} maszyny wirtualne. Zamknij je poprawnie przed restartem.",
+    "many": "Działa {0} maszyn wirtualnych. Zamknij je poprawnie przed restartem.",
+    "other": "Działa {0} maszyn wirtualnych. Zamknij je poprawnie przed restartem."
+  },
   "vms_ok": "Żadna maszyna wirtualna nie działa.",
   "svc_docker_ok": "dockerd działa.",
   "svc_docker_down": "Magazyn Dockera zamontowany, ale dockerd nie działa.",
@@ -78,26 +103,56 @@
   "svc_libvirt_down": "libvirt włączony, ale libvirtd nie działa.",
   "svc_emhttp_ok": "emhttpd (WebGUI) działa.",
   "svc_emhttp_down": "emhttpd (WebGUI) nie działa.",
-  "binds_missing": "Brak źródeł powiązań kontenerów (nie uruchomią się poprawnie po restarcie):{0}",
+  "binds_missing": {
+    "one": "Brak źródła powiązania kontenera (nie uruchomi się poprawnie po restarcie):{0}",
+    "few": "Brak źródeł powiązań kontenerów (nie uruchomią się poprawnie po restarcie):{0}",
+    "many": "Brak źródeł powiązań kontenerów (nie uruchomią się poprawnie po restarcie):{0}",
+    "other": "Brak źródeł powiązań kontenerów (nie uruchomią się poprawnie po restarcie):{0}"
+  },
   "binds_ok": "Wszystkie źródła powiązań kontenerów w /mnt istnieją.",
   "fortress_busy": "{0} na {1} wciąż pracuje: {2} ({3}). Pozwól mu skończyć przed restartem.",
   "fortress_busy_open": "{0} na {1} wciąż pracuje: {2}. Pozwól mu skończyć przed restartem.",
   "fortress_unanswered": "{0} na {1} nie odpowiedział.",
-  "fortress_ok": "Odpowiedziało aplikacji twojej twierdzy: {0}. Żadna nie wykonuje pracy, którą przerwałby restart.",
+  "fortress_ok": {
+    "one": "Odpowiedziała {0} aplikacja twojej twierdzy. Nie wykonuje pracy, którą przerwałby restart.",
+    "few": "Odpowiedziały {0} aplikacje twojej twierdzy. Żadna nie wykonuje pracy, którą przerwałby restart.",
+    "many": "Odpowiedziało {0} aplikacji twojej twierdzy. Żadna nie wykonuje pracy, którą przerwałby restart.",
+    "other": "Odpowiedziało {0} aplikacji twojej twierdzy. Żadna nie wykonuje pracy, którą przerwałby restart."
+  },
   "fortress_alone": "Żadna inna aplikacja twojej twierdzy nie jest teraz osiągalna.",
   "fortress_skip": "FireSquire nie dotarł do twierdzy i pominął jej aplikacje.",
   "zfs_degraded": "Pula ZFS {0} ma stan {1}. Napraw to przed restartem.",
   "zfs_dev_errors": "Pula ZFS {0}: {1} ma błędy odczytu: {2}, zapisu: {3} i sumy kontrolnej: {4}.",
   "zfs_dev_state": "Pula ZFS {0}: {1} ma stan {2}.",
-  "zfs_ok": "Pule ZFS online: {0}, bez błędów urządzeń.",
+  "zfs_ok": {
+    "one": "{0} pula ZFS online, bez błędów urządzeń.",
+    "few": "{0} pule ZFS online, bez błędów urządzeń.",
+    "many": "{0} pul ZFS online, bez błędów urządzeń.",
+    "other": "{0} pul ZFS online, bez błędów urządzeń."
+  },
   "btrfs_dev_errors": "btrfs na {0}: {1} zgłasza błędy ({2}).",
-  "btrfs_ok": "Systemy plików btrfs bez błędów urządzeń: {0}.",
-  "crc_found": "{0} ma {1} błędów CRC. Zwykle wskazuje to na kabel lub port. FireSquire zapamiętuje licznik i ostrzeże ponownie, jeśli wzrośnie.",
+  "btrfs_ok": {
+    "one": "{0} system plików btrfs bez błędów urządzeń.",
+    "few": "{0} systemy plików btrfs bez błędów urządzeń.",
+    "many": "{0} systemów plików btrfs bez błędów urządzeń.",
+    "other": "{0} systemów plików btrfs bez błędów urządzeń."
+  },
+  "crc_found": {
+    "one": "{0} ma {1} błąd CRC. Zwykle wskazuje to na kabel lub port. FireSquire zapamiętuje licznik i ostrzeże ponownie, jeśli wzrośnie.",
+    "few": "{0} ma {1} błędy CRC. Zwykle wskazuje to na kabel lub port. FireSquire zapamiętuje licznik i ostrzeże ponownie, jeśli wzrośnie.",
+    "many": "{0} ma {1} błędów CRC. Zwykle wskazuje to na kabel lub port. FireSquire zapamiętuje licznik i ostrzeże ponownie, jeśli wzrośnie.",
+    "other": "{0} ma {1} błędów CRC. Zwykle wskazuje to na kabel lub port. FireSquire zapamiętuje licznik i ostrzeże ponownie, jeśli wzrośnie."
+  },
   "crc_rose": "Błędy CRC na {0} wzrosły od ostatniego sprawdzenia z {1} do {2}. Sprawdź lub wymień kabel na tym porcie.",
   "scrutiny_link": "Scrutiny przechowuje historię SMART twoich dysków. Otwórz go, aby zobaczyć, od kiedy liczniki rosną.",
   "scrutiny_tip": "Wskazówka: Scrutiny z Community Apps przechowuje historię SMART twoich dysków, więc widać, od kiedy licznik rośnie.",
   "smart_failing": "Stan SMART BŁĘDNY na:{0}. Sprawdź przed restartem.",
-  "smart_ok": "Stan SMART PRAWIDŁOWY na {0} dyskach.",
+  "smart_ok": {
+    "one": "Stan SMART PRAWIDŁOWY na {0} dysku.",
+    "few": "Stan SMART PRAWIDŁOWY na {0} dyskach.",
+    "many": "Stan SMART PRAWIDŁOWY na {0} dyskach.",
+    "other": "Stan SMART PRAWIDŁOWY na {0} dyskach."
+  },
   "smart_none": "Nie znaleziono dysków do sprawdzenia SMART.",
   "smart_skip": "Nie znaleziono smartctl, pominięto sprawdzenie SMART.",
   "smart_attr": "Ostrzeżenia atrybutów SMART:{0}",
@@ -178,19 +233,54 @@
   "p_timeouts": "Sprawdzam limity czasu wyłączania…",
   "timeouts_ok": "Limit czasu wyłączania Unraid wynoszący {0} s wystarcza na kontenery i maszyny wirtualne ({1} s).",
   "timeouts_short": "Unraid czeka {0} s na czyste wyłączenie, a kontenery ({1} s) i maszyny wirtualne ({2} s) mogą razem potrzebować {3} s. Zwiększ limit czasu w ustawieniach dysków.",
-  "timeouts_container": "Te kontenery chcą więcej czasu na zatrzymanie, niż daje im Unraid ({1} s w ustawieniach Dockera): {0}",
+  "timeouts_container": {
+    "one": "Ten kontener chce więcej czasu na zatrzymanie, niż daje mu Unraid ({1} s w ustawieniach Dockera): {0}",
+    "few": "Te kontenery chcą więcej czasu na zatrzymanie, niż daje im Unraid ({1} s w ustawieniach Dockera): {0}",
+    "many": "Te kontenery chcą więcej czasu na zatrzymanie, niż daje im Unraid ({1} s w ustawieniach Dockera): {0}",
+    "other": "Te kontenery chcą więcej czasu na zatrzymanie, niż daje im Unraid ({1} s w ustawieniach Dockera): {0}"
+  },
   "unclean": "Ostatnie wyłączenie nie było czyste. Przy następnym starcie macierzy ruszy sprawdzanie parzystości.",
   "p_shares": "Sprawdzam otwarte pliki w udziałach…",
-  "share_open": "{2} ma otwartych plików w udziale {1} przez {0}: {3}.",
-  "share_writing": "{2} zapisuje plików do udziału {1} przez {0}: {3}, może to kopiowanie.",
+  "share_open": {
+    "one": "{2} ma {3} otwarty plik w udziale {1} przez {0}.",
+    "few": "{2} ma {3} otwarte pliki w udziale {1} przez {0}.",
+    "many": "{2} ma {3} otwartych plików w udziale {1} przez {0}.",
+    "other": "{2} ma {3} otwartych plików w udziale {1} przez {0}."
+  },
+  "share_writing": {
+    "one": "{2} zapisuje {3} plik do udziału {1} przez {0}, może to kopiowanie.",
+    "few": "{2} zapisuje {3} pliki do udziału {1} przez {0}, może to kopiowanie.",
+    "many": "{2} zapisuje {3} plików do udziału {1} przez {0}, może to kopiowanie.",
+    "other": "{2} zapisuje {3} plików do udziału {1} przez {0}, może to kopiowanie."
+  },
   "shares_ok": "Brak otwartych plików w udziałach SMB i NFS.",
   "p_ups": "Sprawdzam UPS…",
   "ups_ok": "UPS działa z sieci, bateria {0}%.",
-  "ups_battery": "UPS działa na baterii: zostało {0}%, około {1} minut.",
-  "ups_low": "Bateria UPS jest prawie pusta: zostało {0}%, około {1} minut.",
+  "ups_battery": {
+    "one": "UPS działa na baterii: zostało {0}%, około {1} minuty.",
+    "few": "UPS działa na baterii: zostało {0}%, około {1} minut.",
+    "many": "UPS działa na baterii: zostało {0}%, około {1} minut.",
+    "other": "UPS działa na baterii: zostało {0}%, około {1} minut."
+  },
+  "ups_low": {
+    "one": "Bateria UPS jest prawie pusta: zostało {0}%, około {1} minuty.",
+    "few": "Bateria UPS jest prawie pusta: zostało {0}%, około {1} minut.",
+    "many": "Bateria UPS jest prawie pusta: zostało {0}%, około {1} minut.",
+    "other": "Bateria UPS jest prawie pusta: zostało {0}%, około {1} minut."
+  },
   "p_flashbak": "Sprawdzam kopię pendrive’a…",
-  "flash_backup_ok": "Ostatnia kopia pendrive’a ({1}) ma dni: {0}.",
-  "flash_backup_old": "Ostatnia kopia pendrive’a ({1}) ma dni: {0}. Zrób kopię pendrive’a przed restartem.",
+  "flash_backup_ok": {
+    "one": "Ostatnia kopia pendrive’a ({1}) ma {0} dzień.",
+    "few": "Ostatnia kopia pendrive’a ({1}) ma {0} dni.",
+    "many": "Ostatnia kopia pendrive’a ({1}) ma {0} dni.",
+    "other": "Ostatnia kopia pendrive’a ({1}) ma {0} dni."
+  },
+  "flash_backup_old": {
+    "one": "Ostatnia kopia pendrive’a ({1}) ma {0} dzień. Zrób kopię pendrive’a przed restartem.",
+    "few": "Ostatnia kopia pendrive’a ({1}) ma {0} dni. Zrób kopię pendrive’a przed restartem.",
+    "many": "Ostatnia kopia pendrive’a ({1}) ma {0} dni. Zrób kopię pendrive’a przed restartem.",
+    "other": "Ostatnia kopia pendrive’a ({1}) ma {0} dni. Zrób kopię pendrive’a przed restartem."
+  },
   "flash_backup_none": "FireSquire nie zna żadnej kopii pendrive’a. BombVault w twojej twierdzy albo Unraid Connect może ją prowadzić.",
   "flash_backup_none_connect": "FireSquire nie zna żadnej kopii pendrive’a. Unraid Connect może ją prowadzić.",
   "tools_g_shutdown": "Gotowość do wyłączenia",

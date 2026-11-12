@@ -45,7 +45,11 @@
   "p_info": "Se colectează informațiile de sistem…",
   "p_done": "Gata",
   "array_ok": "Array-ul este pornit și sănătos; toate atribuirile de dispozitive sunt OK.",
-  "array_bad_devices": "Array-ul nu este curat, disc(uri) de date defecte: {0}",
+  "array_bad_devices": {
+    "one": "Array-ul nu este curat, disc de date defect: {0}",
+    "few": "Array-ul nu este curat, discuri de date defecte: {0}",
+    "other": "Array-ul nu este curat, discuri de date defecte: {0}"
+  },
   "array_counts": "Array-ul nu este curat: stare={0}, dezactivate={1} nevalide={2} lipsă={3}",
   "array_not_started": "Array-ul nu este pornit (stare={0}).",
   "array_parity_degraded": "Disc de paritate dezactivat/lipsă: {0}. Array-ul pornește în continuare, dar protecția prin paritate este redusă.",
@@ -54,7 +58,11 @@
   "array_unknown": "mdcmd nu a fost găsit, nu se poate determina starea array-ului.",
   "mover_running": "Mover-ul rulează. Așteptați să se termine înainte de repornire.",
   "mover_ok": "Mover-ul nu rulează.",
-  "risky_mount_found": "Container(e) montează un director runtime al gazdei (poate afecta libvirt/docker la repornire):{0}",
+  "risky_mount_found": {
+    "one": "Un container montează un director runtime al gazdei (poate afecta libvirt/docker la repornire):{0}",
+    "few": "Containere montează un director runtime al gazdei (poate afecta libvirt/docker la repornire):{0}",
+    "other": "Containere montează un director runtime al gazdei (poate afecta libvirt/docker la repornire):{0}"
+  },
   "risky_mount_ok": "Niciun container nu montează un director runtime al gazdei (în afară de docker.sock).",
   "risky_mount_skip": "Docker indisponibil, scanarea montărilor de containere a fost omisă.",
   "stuck_loop_found": "Stare de imagine/loop blocată{0}.",
@@ -63,14 +71,26 @@
   "flash_ok": "Flash-ul /boot este montat și inscriptibil.",
   "flash_ro": "Flash-ul /boot este montat, dar NU este inscriptibil (posibilă corupție FAT). Configurația nu va fi păstrată.",
   "flash_unmounted": "Flash-ul /boot nu este montat.",
-  "syslog_crashes": "{0} linie/linii de blocare/instabilitate în syslog de la pornire. Ultima: {1}",
+  "syslog_crashes": {
+    "one": "{0} linie de blocare/instabilitate în syslog de la pornire. Ultima: {1}",
+    "few": "{0} linii de blocare/instabilitate în syslog de la pornire. Ultima: {1}",
+    "other": "{0} de linii de blocare/instabilitate în syslog de la pornire. Ultima: {1}"
+  },
   "syslog_ok": "Niciun crash/OOM/segfault în syslog de la pornire.",
   "syslog_skip": "syslog nu poate fi citit, scanarea blocărilor a fost omisă.",
-  "io_errors": "{0} linie/linii de erori de disc/IO în syslog de la pornire. Ultima: {1}",
+  "io_errors": {
+    "one": "{0} linie de erori de disc/IO în syslog de la pornire. Ultima: {1}",
+    "few": "{0} linii de erori de disc/IO în syslog de la pornire. Ultima: {1}",
+    "other": "{0} de linii de erori de disc/IO în syslog de la pornire. Ultima: {1}"
+  },
   "io_ok": "Nicio eroare de disc/IO în syslog de la pornire.",
   "space_full": "{0} este ocupat în proporție de {1}% (>={2}%).",
   "space_ok": "{0} la {1}% utilizat.",
-  "vms_running": "{0} VM în rulare. Opriți-le corect înainte de repornire.",
+  "vms_running": {
+    "one": "{0} VM în rulare. Opriți-l corect înainte de repornire.",
+    "few": "{0} VM-uri în rulare. Opriți-le corect înainte de repornire.",
+    "other": "{0} de VM-uri în rulare. Opriți-le corect înainte de repornire."
+  },
   "vms_ok": "Niciun VM în rulare.",
   "svc_docker_ok": "dockerd rulează.",
   "svc_docker_down": "Stocarea Docker este montată, dar dockerd nu rulează.",
@@ -78,26 +98,50 @@
   "svc_libvirt_down": "libvirt este activat, dar libvirtd nu rulează.",
   "svc_emhttp_ok": "emhttpd (WebGUI) rulează.",
   "svc_emhttp_down": "emhttpd (WebGUI) nu rulează.",
-  "binds_missing": "Sursă/surse bind de container lipsă (nu vor porni corect după repornire):{0}",
+  "binds_missing": {
+    "one": "Lipsește o sursă bind de container (nu va porni corect după repornire):{0}",
+    "few": "Lipsesc surse bind de container (nu vor porni corect după repornire):{0}",
+    "other": "Lipsesc surse bind de container (nu vor porni corect după repornire):{0}"
+  },
   "binds_ok": "Toate sursele bind de container din /mnt există.",
   "fortress_busy": "{0} pe {1} încă lucrează la {2} ({3}). Lasă-l să termine înainte de repornire.",
   "fortress_busy_open": "{0} pe {1} încă lucrează la {2}. Lasă-l să termine înainte de repornire.",
   "fortress_unanswered": "{0} pe {1} nu a răspuns.",
-  "fortress_ok": "Au răspuns {0} aplicații din fortăreața ta. Niciuna nu are o lucrare pe care o repornire ar întrerupe-o.",
+  "fortress_ok": {
+    "one": "A răspuns {0} aplicație din fortăreața ta. Nu are o lucrare pe care o repornire ar întrerupe-o.",
+    "few": "Au răspuns {0} aplicații din fortăreața ta. Niciuna nu are o lucrare pe care o repornire ar întrerupe-o.",
+    "other": "Au răspuns {0} de aplicații din fortăreața ta. Niciuna nu are o lucrare pe care o repornire ar întrerupe-o."
+  },
   "fortress_alone": "Momentan nicio altă aplicație din fortăreața ta nu poate fi contactată.",
   "fortress_skip": "FireSquire nu a ajuns la fortăreață și i-a sărit aplicațiile.",
   "zfs_degraded": "Pool-ul ZFS {0} este {1}. Rezolvă asta înainte de repornire.",
   "zfs_dev_errors": "Pool ZFS {0}: {1} are {2} erori de citire, {3} de scriere și {4} de sumă de control.",
   "zfs_dev_state": "Pool ZFS {0}: {1} este {2}.",
-  "zfs_ok": "{0} pool(-uri) ZFS online, fără erori de dispozitiv.",
+  "zfs_ok": {
+    "one": "{0} pool ZFS online, fără erori de dispozitiv.",
+    "few": "{0} pool-uri ZFS online, fără erori de dispozitiv.",
+    "other": "{0} de pool-uri ZFS online, fără erori de dispozitiv."
+  },
   "btrfs_dev_errors": "btrfs pe {0}: {1} raportează erori ({2}).",
-  "btrfs_ok": "{0} sistem(e) de fișiere btrfs fără erori de dispozitiv.",
-  "crc_found": "{0} are {1} erori CRC. De obicei e vorba de cablu sau de port. FireSquire reține valoarea și te avertizează din nou dacă crește.",
+  "btrfs_ok": {
+    "one": "{0} sistem de fișiere btrfs fără erori de dispozitiv.",
+    "few": "{0} sisteme de fișiere btrfs fără erori de dispozitiv.",
+    "other": "{0} de sisteme de fișiere btrfs fără erori de dispozitiv."
+  },
+  "crc_found": {
+    "one": "{0} are {1} eroare CRC. De obicei e vorba de cablu sau de port. FireSquire reține valoarea și te avertizează din nou dacă crește.",
+    "few": "{0} are {1} erori CRC. De obicei e vorba de cablu sau de port. FireSquire reține valoarea și te avertizează din nou dacă crește.",
+    "other": "{0} are {1} de erori CRC. De obicei e vorba de cablu sau de port. FireSquire reține valoarea și te avertizează din nou dacă crește."
+  },
   "crc_rose": "Erorile CRC pe {0} au crescut de la {1} la {2} de la ultima verificare. Verifică sau schimbă cablul de pe acest port.",
   "scrutiny_link": "Scrutiny păstrează istoricul SMART al discurilor tale. Deschide-l ca să vezi de când cresc contoarele.",
   "scrutiny_tip": "Sfat: Scrutiny din Community Apps păstrează un istoric SMART al discurilor tale, ca să vezi de când crește un contor.",
   "smart_failing": "Starea SMART EȘUEAZĂ pe:{0}. Investigați înainte de repornire.",
-  "smart_ok": "Starea SMART a TRECUT pe {0} disc(uri).",
+  "smart_ok": {
+    "one": "Starea SMART a TRECUT pe {0} disc.",
+    "few": "Starea SMART a TRECUT pe {0} discuri.",
+    "other": "Starea SMART a TRECUT pe {0} de discuri."
+  },
   "smart_none": "Nu s-au găsit discuri pentru verificarea SMART.",
   "smart_skip": "smartctl nu a fost găsit, verificarea SMART a fost omisă.",
   "smart_attr": "Avertismente privind atributele SMART:{0}",
@@ -178,19 +222,47 @@
   "p_timeouts": "Verific limitele de timp pentru oprire…",
   "timeouts_ok": "Limita de oprire a Unraid de {0} s ajunge pentru containere și VM-uri ({1} s).",
   "timeouts_short": "Unraid așteaptă {0} s pentru o oprire curată, dar containerele ({1} s) și VM-urile ({2} s) pot dura împreună {3} s. Mărește limita de oprire în setările discurilor.",
-  "timeouts_container": "Aceste containere cer mai mult timp ca să se oprească decât le dă Unraid ({1} s în setările Docker): {0}",
+  "timeouts_container": {
+    "one": "Acest container cere mai mult timp ca să se oprească decât îi dă Unraid ({1} s în setările Docker): {0}",
+    "few": "Aceste containere cer mai mult timp ca să se oprească decât le dă Unraid ({1} s în setările Docker): {0}",
+    "other": "Aceste containere cer mai mult timp ca să se oprească decât le dă Unraid ({1} s în setările Docker): {0}"
+  },
   "unclean": "Ultima oprire nu a fost curată. Următoarea pornire a array-ului rulează o verificare de paritate.",
   "p_shares": "Verific fișierele deschise pe partajări…",
-  "share_open": "{2} are {3} fișier(e) deschis(e) pe partajarea {1} prin {0}.",
-  "share_writing": "{2} scrie {3} fișier(e) pe partajarea {1} prin {0}, poate o copiere.",
+  "share_open": {
+    "one": "{2} are {3} fișier deschis pe partajarea {1} prin {0}.",
+    "few": "{2} are {3} fișiere deschise pe partajarea {1} prin {0}.",
+    "other": "{2} are {3} de fișiere deschise pe partajarea {1} prin {0}."
+  },
+  "share_writing": {
+    "one": "{2} scrie {3} fișier pe partajarea {1} prin {0}, poate o copiere.",
+    "few": "{2} scrie {3} fișiere pe partajarea {1} prin {0}, poate o copiere.",
+    "other": "{2} scrie {3} de fișiere pe partajarea {1} prin {0}, poate o copiere."
+  },
   "shares_ok": "Niciun fișier deschis pe partajările SMB sau NFS.",
   "p_ups": "Verific UPS-ul…",
   "ups_ok": "UPS-ul e pe rețea, baterie la {0}%.",
-  "ups_battery": "UPS-ul merge pe baterie: mai are {0}%, cam {1} minute.",
-  "ups_low": "Bateria UPS-ului e aproape goală: mai are {0}%, cam {1} minute.",
+  "ups_battery": {
+    "one": "UPS-ul merge pe baterie: mai are {0}%, cam {1} minut.",
+    "few": "UPS-ul merge pe baterie: mai are {0}%, cam {1} minute.",
+    "other": "UPS-ul merge pe baterie: mai are {0}%, cam {1} de minute."
+  },
+  "ups_low": {
+    "one": "Bateria UPS-ului e aproape goală: mai are {0}%, cam {1} minut.",
+    "few": "Bateria UPS-ului e aproape goală: mai are {0}%, cam {1} minute.",
+    "other": "Bateria UPS-ului e aproape goală: mai are {0}%, cam {1} de minute."
+  },
   "p_flashbak": "Verific copia de rezervă a flash-ului…",
-  "flash_backup_ok": "Ultima copie a flash-ului ({1}) are {0} zi(le).",
-  "flash_backup_old": "Ultima copie a flash-ului ({1}) are {0} zile. Fă o copie a flash-ului înainte de repornire.",
+  "flash_backup_ok": {
+    "one": "Ultima copie a flash-ului ({1}) are {0} zi.",
+    "few": "Ultima copie a flash-ului ({1}) are {0} zile.",
+    "other": "Ultima copie a flash-ului ({1}) are {0} de zile."
+  },
+  "flash_backup_old": {
+    "one": "Ultima copie a flash-ului ({1}) are {0} zi. Fă o copie a flash-ului înainte de repornire.",
+    "few": "Ultima copie a flash-ului ({1}) are {0} zile. Fă o copie a flash-ului înainte de repornire.",
+    "other": "Ultima copie a flash-ului ({1}) are {0} de zile. Fă o copie a flash-ului înainte de repornire."
+  },
   "flash_backup_none": "FireSquire nu știe de nicio copie a flash-ului. BombVault din fortăreața ta sau Unraid Connect poate ține una.",
   "flash_backup_none_connect": "FireSquire nu știe de nicio copie a flash-ului. Unraid Connect poate ține una.",
   "tools_g_shutdown": "Gata de oprire",

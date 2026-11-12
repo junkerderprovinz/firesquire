@@ -45,7 +45,10 @@
   "p_info": "A recolher informações do sistema…",
   "p_done": "Concluído",
   "array_ok": "Array iniciado e saudável; todas as atribuições de dispositivos OK.",
-  "array_bad_devices": "Array não íntegro, disco(s) de dados não saudável(is): {0}",
+  "array_bad_devices": {
+    "one": "Array não íntegro, disco de dados não saudável: {0}",
+    "other": "Array não íntegro, discos de dados não saudáveis: {0}"
+  },
   "array_counts": "Array não íntegro: estado={0}, desativado={1} inválido={2} em falta={3}",
   "array_not_started": "O array não está iniciado (estado={0}).",
   "array_parity_degraded": "Disco de paridade desativado/em falta: {0}. O array ainda arranca, mas a proteção por paridade está reduzida.",
@@ -54,7 +57,10 @@
   "array_unknown": "mdcmd não encontrado, não é possível determinar o estado do array.",
   "mover_running": "O mover está em execução. Aguarde que termine antes de reiniciar.",
   "mover_ok": "O mover não está em execução.",
-  "risky_mount_found": "Contentor(es) montam um diretório de runtime do host (pode danificar libvirt/docker no reinício):{0}",
+  "risky_mount_found": {
+    "one": "Um contentor monta um diretório de runtime do host (pode danificar libvirt/docker no reinício):{0}",
+    "other": "Há contentores que montam um diretório de runtime do host (pode danificar libvirt/docker no reinício):{0}"
+  },
   "risky_mount_ok": "Nenhum contentor monta um diretório de runtime do host (além do docker.sock).",
   "risky_mount_skip": "Docker não disponível, análise de montagens de contentores ignorada.",
   "stuck_loop_found": "Estado de imagem/loop preso{0}.",
@@ -63,14 +69,23 @@
   "flash_ok": "A flash /boot está montada e gravável.",
   "flash_ro": "A flash /boot está montada mas NÃO gravável (possível corrupção FAT). A configuração não será persistida.",
   "flash_unmounted": "A flash /boot não está montada.",
-  "syslog_crashes": "{0} linha(s) de falha/instabilidade no syslog desde o arranque. Última: {1}",
+  "syslog_crashes": {
+    "one": "{0} linha de falha/instabilidade no syslog desde o arranque. Última: {1}",
+    "other": "{0} linhas de falha/instabilidade no syslog desde o arranque. Última: {1}"
+  },
   "syslog_ok": "Sem falhas/OOM/segfaults no syslog desde o arranque.",
   "syslog_skip": "syslog não legível, análise de falhas ignorada.",
-  "io_errors": "{0} linha(s) de erro de disco/IO no syslog desde o arranque. Última: {1}",
+  "io_errors": {
+    "one": "{0} linha de erro de disco/IO no syslog desde o arranque. Última: {1}",
+    "other": "{0} linhas de erro de disco/IO no syslog desde o arranque. Última: {1}"
+  },
   "io_ok": "Sem erros de disco/IO no syslog desde o arranque.",
   "space_full": "{0} está {1}% cheio (>={2}%).",
   "space_ok": "{0} com {1}% utilizado.",
-  "vms_running": "{0} VM(s) em execução. Encerre-as corretamente antes de reiniciar.",
+  "vms_running": {
+    "one": "{0} VM em execução. Encerre-a corretamente antes de reiniciar.",
+    "other": "{0} VMs em execução. Encerre-as corretamente antes de reiniciar."
+  },
   "vms_ok": "Nenhuma VM em execução.",
   "svc_docker_ok": "dockerd em execução.",
   "svc_docker_down": "Armazenamento Docker montado mas o dockerd não está em execução.",
@@ -78,26 +93,44 @@
   "svc_libvirt_down": "libvirt ativado mas o libvirtd não está em execução.",
   "svc_emhttp_ok": "emhttpd (WebGUI) em execução.",
   "svc_emhttp_down": "emhttpd (WebGUI) não está em execução.",
-  "binds_missing": "Origem(ns) de bind de contentor em falta (não arrancará(ão) corretamente após o reinício):{0}",
+  "binds_missing": {
+    "one": "Falta a origem de um bind de contentor (não arrancará corretamente após o reinício):{0}",
+    "other": "Faltam origens de bind de contentores (não arrancarão corretamente após o reinício):{0}"
+  },
   "binds_ok": "Todas as origens de bind de contentores em /mnt existem.",
   "fortress_busy": "{0} em {1} ainda está ocupado com {2} ({3}). Deixa terminar antes de reiniciar.",
   "fortress_busy_open": "{0} em {1} ainda está ocupado com {2}. Deixa terminar antes de reiniciar.",
   "fortress_unanswered": "{0} em {1} não respondeu.",
-  "fortress_ok": "{0} app(s) da tua fortaleza responderam. Nenhuma tem trabalho que um reinício interromperia.",
+  "fortress_ok": {
+    "one": "{0} app da tua fortaleza respondeu. Não tem trabalho que um reinício interromperia.",
+    "other": "{0} apps da tua fortaleza responderam. Nenhuma tem trabalho que um reinício interromperia."
+  },
   "fortress_alone": "Neste momento nenhuma outra app da tua fortaleza está ao alcance.",
   "fortress_skip": "O FireSquire não conseguiu chegar à fortaleza e saltou as suas apps.",
   "zfs_degraded": "O pool ZFS {0} está {1}. Resolve isso antes de reiniciar.",
   "zfs_dev_errors": "Pool ZFS {0}: {1} tem {2} erros de leitura, {3} de escrita e {4} de checksum.",
   "zfs_dev_state": "Pool ZFS {0}: {1} está {2}.",
-  "zfs_ok": "{0} pool(s) ZFS online, sem erros de dispositivo.",
+  "zfs_ok": {
+    "one": "{0} pool ZFS online, sem erros de dispositivo.",
+    "other": "{0} pools ZFS online, sem erros de dispositivo."
+  },
   "btrfs_dev_errors": "btrfs em {0}: {1} indica erros ({2}).",
-  "btrfs_ok": "{0} sistema(s) de ficheiros btrfs sem erros de dispositivo.",
-  "crc_found": "{0} tem {1} erros CRC. Isso costuma apontar para o cabo ou a porta. O FireSquire guarda o valor e avisa de novo se subir.",
+  "btrfs_ok": {
+    "one": "{0} sistema de ficheiros btrfs sem erros de dispositivo.",
+    "other": "{0} sistemas de ficheiros btrfs sem erros de dispositivo."
+  },
+  "crc_found": {
+    "one": "{0} tem {1} erro CRC. Isso costuma apontar para o cabo ou a porta. O FireSquire guarda o valor e avisa de novo se subir.",
+    "other": "{0} tem {1} erros CRC. Isso costuma apontar para o cabo ou a porta. O FireSquire guarda o valor e avisa de novo se subir."
+  },
   "crc_rose": "Os erros CRC em {0} subiram de {1} para {2} desde a última verificação. Verifica ou troca o cabo nesta porta.",
   "scrutiny_link": "O Scrutiny guarda o histórico SMART dos teus discos. Abre-o para ver desde quando os contadores sobem.",
   "scrutiny_tip": "Dica: o Scrutiny, das Community Apps, guarda um histórico SMART dos teus discos, para veres desde quando um contador sobe.",
   "smart_failing": "Estado SMART A FALHAR em:{0}. Investigue antes de reiniciar.",
-  "smart_ok": "Estado SMART APROVADO em {0} disco(s).",
+  "smart_ok": {
+    "one": "Estado SMART APROVADO em {0} disco.",
+    "other": "Estado SMART APROVADO em {0} discos."
+  },
   "smart_none": "Nenhum disco encontrado para verificação SMART.",
   "smart_skip": "smartctl não encontrado, verificação SMART ignorada.",
   "smart_attr": "Avisos de atributos SMART:{0}",
@@ -178,19 +211,40 @@
   "p_timeouts": "A verificar os tempos de encerramento…",
   "timeouts_ok": "O tempo de encerramento do Unraid de {0} s cobre contentores e VMs ({1} s).",
   "timeouts_short": "O Unraid espera {0} s por um encerramento limpo, mas contentores ({1} s) e VMs ({2} s) podem demorar {3} s juntos. Aumenta o tempo de encerramento nas definições dos discos.",
-  "timeouts_container": "Estes contentores pedem mais tempo para parar do que o Unraid lhes dá ({1} s nas definições do Docker): {0}",
+  "timeouts_container": {
+    "one": "Este contentor pede mais tempo para parar do que o Unraid lhe dá ({1} s nas definições do Docker): {0}",
+    "other": "Estes contentores pedem mais tempo para parar do que o Unraid lhes dá ({1} s nas definições do Docker): {0}"
+  },
   "unclean": "O último encerramento não foi limpo. O próximo arranque do array faz uma verificação de paridade.",
   "p_shares": "A verificar ficheiros abertos nas partilhas…",
-  "share_open": "{2} tem {3} ficheiro(s) aberto(s) na partilha {1} por {0}.",
-  "share_writing": "{2} está a escrever {3} ficheiro(s) na partilha {1} por {0}, talvez uma cópia.",
+  "share_open": {
+    "one": "{2} tem {3} ficheiro aberto na partilha {1} por {0}.",
+    "other": "{2} tem {3} ficheiros abertos na partilha {1} por {0}."
+  },
+  "share_writing": {
+    "one": "{2} está a escrever {3} ficheiro na partilha {1} por {0}, talvez uma cópia.",
+    "other": "{2} está a escrever {3} ficheiros na partilha {1} por {0}, talvez uma cópia."
+  },
   "shares_ok": "Nenhum ficheiro aberto em partilhas SMB ou NFS.",
   "p_ups": "A verificar a UPS…",
   "ups_ok": "A UPS está na corrente, bateria a {0} %.",
-  "ups_battery": "A UPS está a usar a bateria: restam {0} %, cerca de {1} minutos.",
-  "ups_low": "A bateria da UPS está quase vazia: restam {0} %, cerca de {1} minutos.",
+  "ups_battery": {
+    "one": "A UPS está a usar a bateria: restam {0} %, cerca de {1} minuto.",
+    "other": "A UPS está a usar a bateria: restam {0} %, cerca de {1} minutos."
+  },
+  "ups_low": {
+    "one": "A bateria da UPS está quase vazia: restam {0} %, cerca de {1} minuto.",
+    "other": "A bateria da UPS está quase vazia: restam {0} %, cerca de {1} minutos."
+  },
   "p_flashbak": "A verificar a cópia do flash…",
-  "flash_backup_ok": "A última cópia do flash ({1}) tem {0} dia(s).",
-  "flash_backup_old": "A última cópia do flash ({1}) tem {0} dias. Faz uma cópia do flash antes de reiniciar.",
+  "flash_backup_ok": {
+    "one": "A última cópia do flash ({1}) tem {0} dia.",
+    "other": "A última cópia do flash ({1}) tem {0} dias."
+  },
+  "flash_backup_old": {
+    "one": "A última cópia do flash ({1}) tem {0} dia. Faz uma cópia do flash antes de reiniciar.",
+    "other": "A última cópia do flash ({1}) tem {0} dias. Faz uma cópia do flash antes de reiniciar."
+  },
   "flash_backup_none": "O FireSquire não conhece nenhuma cópia do flash. O BombVault na tua fortaleza ou o Unraid Connect podem manter uma.",
   "flash_backup_none_connect": "O FireSquire não conhece nenhuma cópia do flash. O Unraid Connect pode manter uma.",
   "tools_g_shutdown": "Pronto para desligar",

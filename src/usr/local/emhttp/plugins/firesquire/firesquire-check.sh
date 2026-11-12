@@ -92,6 +92,8 @@ add() {
 }
 
 have() { command -v "$1" >/dev/null 2>&1; }
+# plural prints the singular or the plural form for a count, for the English message.
+plural() { if [ "$1" = 1 ]; then printf '%s' "$2"; else printf '%s' "$3"; fi; }
 
 . "$HERE/firesquire-health.sh"
 . "$HERE/firesquire-more.sh"
@@ -140,7 +142,8 @@ if [ -x "$MDCMD" ]; then
     add critical array_state fail array_not_started "${mdState:-unknown}" "Array is not started (state=${mdState:-unknown})."
   elif [ "$DISKS_READ" -eq 1 ]; then
     if [ -n "$bad_data" ]; then
-      add critical array_state fail array_bad_devices "$bad_data" "Array not clean, unhealthy data disk(s): $bad_data"
+      nbad=$(wc -w <<< "$bad_data")
+      add critical array_state fail array_bad_devices "$bad_data|$nbad" "Array not clean, unhealthy data $(plural "$nbad" disk disks): $bad_data"
     else
       add critical array_state pass array_ok "" "Array started and healthy; all data disk assignments OK."
     fi
@@ -159,7 +162,8 @@ if [ -x "$MDCMD" ]; then
     add critical array_op pass array_op_ok "" "No parity/sync/rebuild/clear in progress."
   fi
 elif [ -n "$bad_data" ]; then
-  add critical array_state fail array_bad_devices "$bad_data" "Array not clean, unhealthy data disk(s): $bad_data"
+  nbad=$(wc -w <<< "$bad_data")
+  add critical array_state fail array_bad_devices "$bad_data|$nbad" "Array not clean, unhealthy data $(plural "$nbad" disk disks): $bad_data"
   [ -n "$bad_parity" ] && add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity; array still boots, parity protection reduced."
 elif [ -n "$bad_parity" ]; then
   add warning array_parity warn array_parity_degraded "$bad_parity" "Parity disk disabled/missing: $bad_parity; array still boots, parity protection reduced."
@@ -192,7 +196,8 @@ if have docker && docker info >/dev/null 2>&1; then
   done
   risky="${risky//|/ }"
   if [ -n "$risky" ]; then
-    add critical risky_mount fail risky_mount_found "$risky" "Container(s) mount a host runtime dir (can break libvirt/docker on reboot):$risky"
+    nrisky=$(wc -w <<< "$risky")
+    add critical risky_mount fail risky_mount_found "$risky|$nrisky" "$(plural "$nrisky" 'A container mounts' 'Containers mount') a host runtime dir (can break libvirt/docker on reboot):$risky"
   else
     add critical risky_mount pass risky_mount_ok "" "No container mounts a host runtime directory (besides docker.sock)."
   fi
@@ -237,7 +242,7 @@ if [ -r "$SYSLOG" ]; then
   if [ "${n:-0}" -gt 0 ]; then
     last="$(grep -aiE "$pat" "$SYSLOG" 2>/dev/null | tail -n1 | cut -c1-160)"
     last="${last//|/ }"
-    add warning syslog warn syslog_crashes "$n|$last" "$n crash/instability line(s) in syslog since boot. Latest: ${last}"
+    add warning syslog warn syslog_crashes "$n|$last" "$n crash/instability $(plural "$n" line lines) in syslog since boot. Latest: ${last}"
   else
     add warning syslog pass syslog_ok "" "No crashes/OOM/segfaults in syslog since boot."
   fi
@@ -248,7 +253,7 @@ if [ -r "$SYSLOG" ]; then
   if [ "${ni:-0}" -gt 0 ]; then
     lasti="$(grep -aiE "$iopat" "$SYSLOG" 2>/dev/null | tail -n1 | cut -c1-160)"
     lasti="${lasti//|/ }"
-    add warning iodisk warn io_errors "$ni|$lasti" "$ni disk/IO error line(s) in syslog since boot. Latest: ${lasti}"
+    add warning iodisk warn io_errors "$ni|$lasti" "$ni disk/IO error $(plural "$ni" line lines) in syslog since boot. Latest: ${lasti}"
   else
     add warning iodisk pass io_ok "" "No disk/IO errors in syslog since boot."
   fi
@@ -279,7 +284,7 @@ fspush 54 p_vms
 if have virsh; then
   running="$(virsh list --state-running --name 2>/dev/null | grep -c .)"
   if [ "${running:-0}" -gt 0 ]; then
-    add warning vms warn vms_running "$running" "$running VM(s) running; shut them down gracefully before rebooting."
+    add warning vms warn vms_running "$running" "$running $(plural "$running" 'VM running. Shut it' 'VMs running. Shut them') down gracefully before rebooting."
   else
     add warning vms pass vms_ok "" "No VMs running."
   fi
@@ -321,7 +326,8 @@ if have docker && docker info >/dev/null 2>&1; then
   done
   missing="${missing//|/ }"
   if [ -n "$missing" ]; then
-    add warning binds warn binds_missing "$missing" "Container bind source(s) missing (won't start cleanly after reboot):$missing"
+    nmissing=$(wc -w <<< "$missing")
+    add warning binds warn binds_missing "$missing|$nmissing" "$(plural "$nmissing" 'A container bind source is' 'Container bind sources') missing (won't start cleanly after reboot):$missing"
   else
     add warning binds pass binds_ok "" "All container bind sources under /mnt exist."
   fi
@@ -403,7 +409,7 @@ if have smartctl; then
     FS_DISK_TROUBLE=1
     add warning smart warn smart_failing "$bad" "SMART health FAILING on:$bad; investigate before rebooting."
   elif [ "$checked" -gt 0 ]; then
-    add warning smart pass smart_ok "$checked" "SMART health PASSED on $checked disk(s)."
+    add warning smart pass smart_ok "$checked" "SMART health PASSED on $checked $(plural "$checked" disk disks)."
   else
     add warning smart info smart_none "" "No disks found for SMART check."
   fi

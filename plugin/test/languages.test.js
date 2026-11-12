@@ -6,7 +6,8 @@ const { DIR, read, ok, done } = require('./lib');
 
 const langDir = path.join(DIR, 'lang');
 const en = JSON.parse(fs.readFileSync(path.join(langDir, 'en.json'), 'utf8'));
-const holes = (s) => (Array.isArray(s) ? s.join('\n') : String(s)).match(/\{\d+\}/g)?.sort().join('') || '';
+// A text with plural forms counts by its other form, the one every language has.
+const holes = (s) => (Array.isArray(s) ? s.join('\n') : typeof s === 'object' ? s.other : String(s)).match(/\{\d+\}/g)?.sort().join('') || '';
 
 console.log('\nEvery language is complete');
 const files = fs.readdirSync(langDir).filter((f) => f.endsWith('.json'));

@@ -45,7 +45,10 @@
   "p_info": "Collecte des informations système…",
   "p_done": "Terminé",
   "array_ok": "Array démarré et sain ; toutes les affectations de périphériques OK.",
-  "array_bad_devices": "Array non propre, disque(s) de données défaillant(s) : {0}",
+  "array_bad_devices": {
+    "one": "Array non propre, disque de données défaillant : {0}",
+    "other": "Array non propre, disques de données défaillants : {0}"
+  },
   "array_counts": "Array non propre : état={0}, désactivé={1} invalide={2} manquant={3}",
   "array_not_started": "L'array n'est pas démarré (état={0}).",
   "array_parity_degraded": "Disque de parité désactivé/manquant : {0}. L'array démarre quand même, mais la protection par parité est réduite.",
@@ -54,7 +57,10 @@
   "array_unknown": "mdcmd introuvable, impossible de déterminer l'état de l'array.",
   "mover_running": "Le mover est en cours d'exécution. Attendez qu'il se termine avant de redémarrer.",
   "mover_ok": "Le mover n'est pas en cours d'exécution.",
-  "risky_mount_found": "Un ou plusieurs conteneurs montent un répertoire d'exécution de l'hôte (peut casser libvirt/docker au redémarrage) :{0}",
+  "risky_mount_found": {
+    "one": "Un conteneur monte un répertoire d’exécution de l’hôte (peut casser libvirt/docker au redémarrage) :{0}",
+    "other": "Des conteneurs montent un répertoire d’exécution de l’hôte (peut casser libvirt/docker au redémarrage) :{0}"
+  },
   "risky_mount_ok": "Aucun conteneur ne monte un répertoire d'exécution de l'hôte (hormis docker.sock).",
   "risky_mount_skip": "Docker non disponible, analyse des montages des conteneurs ignorée.",
   "stuck_loop_found": "État d'image/boucle bloqué{0}.",
@@ -63,14 +69,23 @@
   "flash_ok": "La clé flash /boot est montée et accessible en écriture.",
   "flash_ro": "La clé flash /boot est montée mais NON accessible en écriture (corruption FAT possible). La configuration ne sera pas conservée.",
   "flash_unmounted": "La clé flash /boot n'est pas montée.",
-  "syslog_crashes": "{0} ligne(s) de plantage/instabilité dans le syslog depuis le démarrage. Dernière : {1}",
+  "syslog_crashes": {
+    "one": "{0} ligne de plantage/instabilité dans le syslog depuis le démarrage. Dernière : {1}",
+    "other": "{0} lignes de plantage/instabilité dans le syslog depuis le démarrage. Dernière : {1}"
+  },
   "syslog_ok": "Aucun plantage/OOM/segfault dans le syslog depuis le démarrage.",
   "syslog_skip": "syslog illisible, analyse des plantages ignorée.",
-  "io_errors": "{0} ligne(s) d'erreur disque/E/S dans le syslog depuis le démarrage. Dernière : {1}",
+  "io_errors": {
+    "one": "{0} ligne d’erreur disque/E/S dans le syslog depuis le démarrage. Dernière : {1}",
+    "other": "{0} lignes d’erreur disque/E/S dans le syslog depuis le démarrage. Dernière : {1}"
+  },
   "io_ok": "Aucune erreur disque/E/S dans le syslog depuis le démarrage.",
   "space_full": "{0} est rempli à {1}% (>={2}%).",
   "space_ok": "{0} utilisé à {1}%.",
-  "vms_running": "{0} VM en cours d'exécution. Arrêtez-les proprement avant de redémarrer.",
+  "vms_running": {
+    "one": "{0} VM en cours d’exécution. Arrêtez-la proprement avant de redémarrer.",
+    "other": "{0} VM en cours d’exécution. Arrêtez-les proprement avant de redémarrer."
+  },
   "vms_ok": "Aucune VM en cours d'exécution.",
   "svc_docker_ok": "dockerd en cours d'exécution.",
   "svc_docker_down": "Stockage Docker monté mais dockerd n'est pas en cours d'exécution.",
@@ -78,26 +93,44 @@
   "svc_libvirt_down": "libvirt activé mais libvirtd n'est pas en cours d'exécution.",
   "svc_emhttp_ok": "emhttpd (WebGUI) en cours d'exécution.",
   "svc_emhttp_down": "emhttpd (WebGUI) n'est pas en cours d'exécution.",
-  "binds_missing": "Source(s) de liaison de conteneur manquante(s) (ne démarreront pas correctement après le redémarrage) :{0}",
+  "binds_missing": {
+    "one": "Source de liaison de conteneur manquante (ne démarrera pas correctement après le redémarrage) :{0}",
+    "other": "Sources de liaison de conteneur manquantes (ne démarreront pas correctement après le redémarrage) :{0}"
+  },
   "binds_ok": "Toutes les sources de liaison de conteneur sous /mnt existent.",
   "fortress_busy": "{0} sur {1} est encore occupé par {2} ({3}). Laisse-le terminer avant de redémarrer.",
   "fortress_busy_open": "{0} sur {1} est encore occupé par {2}. Laisse-le terminer avant de redémarrer.",
   "fortress_unanswered": "{0} sur {1} n’a pas répondu.",
-  "fortress_ok": "{0} app(s) de ta forteresse ont répondu. Aucune n’a de tâche qu’un redémarrage interromprait.",
+  "fortress_ok": {
+    "one": "{0} app de ta forteresse a répondu. Elle n’a pas de tâche qu’un redémarrage interromprait.",
+    "other": "{0} apps de ta forteresse ont répondu. Aucune n’a de tâche qu’un redémarrage interromprait."
+  },
   "fortress_alone": "Aucune autre app de ta forteresse n’est joignable pour le moment.",
   "fortress_skip": "FireSquire n’a pas pu joindre la forteresse et a ignoré ses apps.",
   "zfs_degraded": "Le pool ZFS {0} est {1}. Règle ça avant de redémarrer.",
   "zfs_dev_errors": "Pool ZFS {0} : {1} a {2} erreurs de lecture, {3} d’écriture et {4} de somme de contrôle.",
   "zfs_dev_state": "Pool ZFS {0} : {1} est {2}.",
-  "zfs_ok": "{0} pool(s) ZFS en ligne, aucune erreur de périphérique.",
+  "zfs_ok": {
+    "one": "{0} pool ZFS en ligne, aucune erreur de périphérique.",
+    "other": "{0} pools ZFS en ligne, aucune erreur de périphérique."
+  },
   "btrfs_dev_errors": "btrfs sur {0} : {1} signale des erreurs ({2}).",
-  "btrfs_ok": "{0} système(s) de fichiers btrfs sans erreur de périphérique.",
-  "crc_found": "{0} a {1} erreurs CRC. Cela vient en général du câble ou du port. FireSquire retient le compteur et te prévient à nouveau s’il augmente.",
+  "btrfs_ok": {
+    "one": "{0} système de fichiers btrfs sans erreur de périphérique.",
+    "other": "{0} systèmes de fichiers btrfs sans erreur de périphérique."
+  },
+  "crc_found": {
+    "one": "{0} a {1} erreur CRC. Cela vient en général du câble ou du port. FireSquire retient le compteur et te prévient à nouveau s’il augmente.",
+    "other": "{0} a {1} erreurs CRC. Cela vient en général du câble ou du port. FireSquire retient le compteur et te prévient à nouveau s’il augmente."
+  },
   "crc_rose": "Les erreurs CRC sur {0} sont passées de {1} à {2} depuis la dernière vérification. Vérifie ou remplace le câble sur ce port.",
   "scrutiny_link": "Scrutiny garde l’historique SMART de tes disques. Ouvre-le pour voir depuis quand les compteurs augmentent.",
   "scrutiny_tip": "Astuce : Scrutiny, dans Community Apps, garde un historique SMART de tes disques, pour voir depuis quand un compteur augmente.",
   "smart_failing": "État SMART DÉFAILLANT sur :{0}. À examiner avant de redémarrer.",
-  "smart_ok": "État SMART RÉUSSI sur {0} disque(s).",
+  "smart_ok": {
+    "one": "État SMART RÉUSSI sur {0} disque.",
+    "other": "État SMART RÉUSSI sur {0} disques."
+  },
   "smart_none": "Aucun disque trouvé pour la vérification SMART.",
   "smart_skip": "smartctl introuvable, vérification SMART ignorée.",
   "smart_attr": "Avertissements d'attributs SMART :{0}",
@@ -178,19 +211,40 @@
   "p_timeouts": "Vérification des délais d’arrêt…",
   "timeouts_ok": "Le délai d’arrêt d’Unraid de {0} s couvre les conteneurs et les VM ({1} s).",
   "timeouts_short": "Unraid attend {0} s pour un arrêt propre, mais les conteneurs ({1} s) et les VM ({2} s) peuvent prendre {3} s ensemble. Augmente le délai d’arrêt dans les réglages des disques.",
-  "timeouts_container": "Ces conteneurs demandent plus de temps pour s’arrêter qu’Unraid ne leur en donne ({1} s dans les réglages Docker) : {0}",
+  "timeouts_container": {
+    "one": "Ce conteneur demande plus de temps pour s’arrêter qu’Unraid ne lui en donne ({1} s dans les réglages Docker) : {0}",
+    "other": "Ces conteneurs demandent plus de temps pour s’arrêter qu’Unraid ne leur en donne ({1} s dans les réglages Docker) : {0}"
+  },
   "unclean": "Le dernier arrêt n’a pas été propre. Le prochain démarrage de l’array lancera un contrôle de parité.",
   "p_shares": "Vérification des fichiers ouverts sur les partages…",
-  "share_open": "{2} a {3} fichier(s) ouvert(s) sur le partage {1} via {0}.",
-  "share_writing": "{2} écrit {3} fichier(s) sur le partage {1} via {0}, peut-être une copie.",
+  "share_open": {
+    "one": "{2} a {3} fichier ouvert sur le partage {1} via {0}.",
+    "other": "{2} a {3} fichiers ouverts sur le partage {1} via {0}."
+  },
+  "share_writing": {
+    "one": "{2} écrit {3} fichier sur le partage {1} via {0}, peut-être une copie.",
+    "other": "{2} écrit {3} fichiers sur le partage {1} via {0}, peut-être une copie."
+  },
   "shares_ok": "Aucun fichier ouvert sur les partages SMB ou NFS.",
   "p_ups": "Vérification de l’onduleur…",
   "ups_ok": "L’onduleur est sur secteur, batterie à {0} %.",
-  "ups_battery": "L’onduleur est sur batterie : {0} % restants, environ {1} minutes.",
-  "ups_low": "La batterie de l’onduleur est presque vide : {0} % restants, environ {1} minutes.",
+  "ups_battery": {
+    "one": "L’onduleur est sur batterie : {0} % restants, environ {1} minute.",
+    "other": "L’onduleur est sur batterie : {0} % restants, environ {1} minutes."
+  },
+  "ups_low": {
+    "one": "La batterie de l’onduleur est presque vide : {0} % restants, environ {1} minute.",
+    "other": "La batterie de l’onduleur est presque vide : {0} % restants, environ {1} minutes."
+  },
   "p_flashbak": "Vérification de la sauvegarde de la clé flash…",
-  "flash_backup_ok": "La dernière sauvegarde de la clé flash ({1}) date de {0} jour(s).",
-  "flash_backup_old": "La dernière sauvegarde de la clé flash ({1}) date de {0} jours. Sauvegarde la clé flash avant de redémarrer.",
+  "flash_backup_ok": {
+    "one": "La dernière sauvegarde de la clé flash ({1}) date de {0} jour.",
+    "other": "La dernière sauvegarde de la clé flash ({1}) date de {0} jours."
+  },
+  "flash_backup_old": {
+    "one": "La dernière sauvegarde de la clé flash ({1}) date de {0} jour. Sauvegarde la clé flash avant de redémarrer.",
+    "other": "La dernière sauvegarde de la clé flash ({1}) date de {0} jours. Sauvegarde la clé flash avant de redémarrer."
+  },
   "flash_backup_none": "FireSquire ne connaît aucune sauvegarde de la clé flash. BombVault dans ta forteresse ou Unraid Connect peut en tenir une.",
   "flash_backup_none_connect": "FireSquire ne connaît aucune sauvegarde de la clé flash. Unraid Connect peut en tenir une.",
   "tools_g_shutdown": "Prêt à s’arrêter",

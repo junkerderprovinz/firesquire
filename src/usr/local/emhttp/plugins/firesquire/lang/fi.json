@@ -45,7 +45,10 @@
   "p_info": "Kerätään järjestelmätietoja…",
   "p_done": "Valmis",
   "array_ok": "Array käynnistetty ja kunnossa; kaikki laitemääritykset OK.",
-  "array_bad_devices": "Array ei puhdas, vialliset datalevyt: {0}",
+  "array_bad_devices": {
+    "one": "Array ei puhdas, viallinen datalevy: {0}",
+    "other": "Array ei puhdas, vialliset datalevyt: {0}"
+  },
   "array_counts": "Array ei puhdas: tila={0}, poistettu={1} virheellinen={2} puuttuu={3}",
   "array_not_started": "Array ei ole käynnistetty (tila={0}).",
   "array_parity_degraded": "Parity-levy poistettu/puuttuu: {0}. Array käynnistyy silti, mutta parity-suojaus on heikentynyt.",
@@ -54,7 +57,10 @@
   "array_unknown": "mdcmd ei löytynyt, array-tilaa ei voi määrittää.",
   "mover_running": "Mover on käynnissä. Odota sen valmistumista ennen uudelleenkäynnistystä.",
   "mover_ok": "Mover ei ole käynnissä.",
-  "risky_mount_found": "Kontit liittävät isännän ajonaikaisen hakemiston (voi rikkoa libvirt/docker uudelleenkäynnistyksessä):{0}",
+  "risky_mount_found": {
+    "one": "Kontti liittää isännän ajonaikaisen hakemiston (voi rikkoa libvirt/docker uudelleenkäynnistyksessä):{0}",
+    "other": "Kontit liittävät isännän ajonaikaisen hakemiston (voi rikkoa libvirt/docker uudelleenkäynnistyksessä):{0}"
+  },
   "risky_mount_ok": "Yksikään kontti ei liitä isännän ajonaikaista hakemistoa (docker.sock:ia lukuun ottamatta).",
   "risky_mount_skip": "Docker ei saatavilla, konttien liitosten skannaus ohitettiin.",
   "stuck_loop_found": "Jumittunut image-/loop-tila{0}.",
@@ -63,14 +69,23 @@
   "flash_ok": "Flash /boot on liitetty ja kirjoitettavissa.",
   "flash_ro": "Flash /boot on liitetty mutta EI kirjoitettavissa (mahdollinen FAT-korruptio). Asetukset eivät säily.",
   "flash_unmounted": "Flash /boot ei ole liitetty.",
-  "syslog_crashes": "{0} kaatumis-/epävakausriviä syslogissa käynnistyksen jälkeen. Viimeisin: {1}",
+  "syslog_crashes": {
+    "one": "{0} kaatumis-/epävakausrivi syslogissa käynnistyksen jälkeen. Viimeisin: {1}",
+    "other": "{0} kaatumis-/epävakausriviä syslogissa käynnistyksen jälkeen. Viimeisin: {1}"
+  },
   "syslog_ok": "Ei kaatumisia/OOM/segfaulteja syslogissa käynnistyksen jälkeen.",
   "syslog_skip": "syslog ei luettavissa, kaatumisten skannaus ohitettiin.",
-  "io_errors": "{0} levy-/IO-virheriviä syslogissa käynnistyksen jälkeen. Viimeisin: {1}",
+  "io_errors": {
+    "one": "{0} levy-/IO-virherivi syslogissa käynnistyksen jälkeen. Viimeisin: {1}",
+    "other": "{0} levy-/IO-virheriviä syslogissa käynnistyksen jälkeen. Viimeisin: {1}"
+  },
   "io_ok": "Ei levy-/IO-virheitä syslogissa käynnistyksen jälkeen.",
   "space_full": "{0} on {1}% täynnä (>={2}%).",
   "space_ok": "{0} käytössä {1}%.",
-  "vms_running": "{0} VM:ää käynnissä. Sammuta ne hallitusti ennen uudelleenkäynnistystä.",
+  "vms_running": {
+    "one": "{0} VM käynnissä. Sammuta se hallitusti ennen uudelleenkäynnistystä.",
+    "other": "{0} VM:ää käynnissä. Sammuta ne hallitusti ennen uudelleenkäynnistystä."
+  },
   "vms_ok": "Ei käynnissä olevia VM:iä.",
   "svc_docker_ok": "dockerd käynnissä.",
   "svc_docker_down": "Docker-tallennustila liitetty mutta dockerd ei ole käynnissä.",
@@ -78,21 +93,36 @@
   "svc_libvirt_down": "libvirt käytössä mutta libvirtd ei ole käynnissä.",
   "svc_emhttp_ok": "emhttpd (WebGUI) käynnissä.",
   "svc_emhttp_down": "emhttpd (WebGUI) ei ole käynnissä.",
-  "binds_missing": "Konttien bind-lähteitä puuttuu (ei käynnisty puhtaasti uudelleenkäynnistyksen jälkeen):{0}",
+  "binds_missing": {
+    "one": "Kontin bind-lähde puuttuu (ei käynnisty puhtaasti uudelleenkäynnistyksen jälkeen):{0}",
+    "other": "Konttien bind-lähteitä puuttuu (ei käynnisty puhtaasti uudelleenkäynnistyksen jälkeen):{0}"
+  },
   "binds_ok": "Kaikki konttien bind-lähteet /mnt-hakemistossa ovat olemassa.",
   "fortress_busy": "{0} laitteessa {1} tekee vielä työtä {2} ({3}). Anna sen valmistua ennen uudelleenkäynnistystä.",
   "fortress_busy_open": "{0} laitteessa {1} tekee vielä työtä {2}. Anna sen valmistua ennen uudelleenkäynnistystä.",
   "fortress_unanswered": "{0} laitteessa {1} ei vastannut.",
-  "fortress_ok": "Linnoituksesi sovelluksista vastasi {0}. Millään ei ole työtä, jonka uudelleenkäynnistys katkaisisi.",
+  "fortress_ok": {
+    "one": "Linnoituksesi sovelluksista vastasi {0}. Sillä ei ole työtä, jonka uudelleenkäynnistys katkaisisi.",
+    "other": "Linnoituksesi sovelluksista vastasi {0}. Millään ei ole työtä, jonka uudelleenkäynnistys katkaisisi."
+  },
   "fortress_alone": "Mikään muu linnoituksesi sovellus ei ole juuri nyt tavoitettavissa.",
   "fortress_skip": "FireSquire ei tavoittanut linnoitusta ja ohitti sen sovellukset.",
   "zfs_degraded": "ZFS-pooli {0} on tilassa {1}. Korjaa se ennen uudelleenkäynnistystä.",
   "zfs_dev_errors": "ZFS-pooli {0}: laitteella {1} on {2} luku-, {3} kirjoitus- ja {4} tarkistussummavirhettä.",
   "zfs_dev_state": "ZFS-pooli {0}: {1} on tilassa {2}.",
-  "zfs_ok": "{0} ZFS-poolia verkossa, ei laitevirheitä.",
+  "zfs_ok": {
+    "one": "{0} ZFS-pooli verkossa, ei laitevirheitä.",
+    "other": "{0} ZFS-poolia verkossa, ei laitevirheitä."
+  },
   "btrfs_dev_errors": "btrfs kohteessa {0}: {1} ilmoittaa virheistä ({2}).",
-  "btrfs_ok": "{0} btrfs-tiedostojärjestelmää ilman laitevirheitä.",
-  "crc_found": "Laitteella {0} on {1} CRC-virhettä. Syy on yleensä kaapeli tai portti. FireSquire muistaa lukeman ja varoittaa uudelleen, jos se kasvaa.",
+  "btrfs_ok": {
+    "one": "{0} btrfs-tiedostojärjestelmä ilman laitevirheitä.",
+    "other": "{0} btrfs-tiedostojärjestelmää ilman laitevirheitä."
+  },
+  "crc_found": {
+    "one": "Laitteella {0} on {1} CRC-virhe. Syy on yleensä kaapeli tai portti. FireSquire muistaa lukeman ja varoittaa uudelleen, jos se kasvaa.",
+    "other": "Laitteella {0} on {1} CRC-virhettä. Syy on yleensä kaapeli tai portti. FireSquire muistaa lukeman ja varoittaa uudelleen, jos se kasvaa."
+  },
   "crc_rose": "Laitteen {0} CRC-virheet ovat kasvaneet edellisestä tarkistuksesta {1}:stä {2}:een. Tarkista tai vaihda tämän portin kaapeli.",
   "scrutiny_link": "Scrutiny tallentaa levyjesi SMART-historian. Avaa se nähdäksesi, milloin laskurit alkoivat kasvaa.",
   "scrutiny_tip": "Vinkki: Community Appsin Scrutiny tallentaa levyjesi SMART-historian, joten näet, milloin laskuri alkoi kasvaa.",
@@ -178,19 +208,40 @@
   "p_timeouts": "Tarkistetaan sammutuksen aikarajat…",
   "timeouts_ok": "Unraidin {0} s:n sammutusaikaraja riittää konteille ja virtuaalikoneille ({1} s).",
   "timeouts_short": "Unraid odottaa siistiä sammutusta {0} s, mutta kontit ({1} s) ja virtuaalikoneet ({2} s) voivat viedä yhteensä {3} s. Nosta sammutuksen aikarajaa levyasetuksissa.",
-  "timeouts_container": "Nämä kontit pyytävät pysähtymiseen enemmän aikaa kuin Unraid antaa ({1} s Docker-asetuksissa): {0}",
+  "timeouts_container": {
+    "one": "Tämä kontti pyytää pysähtymiseen enemmän aikaa kuin Unraid antaa ({1} s Docker-asetuksissa): {0}",
+    "other": "Nämä kontit pyytävät pysähtymiseen enemmän aikaa kuin Unraid antaa ({1} s Docker-asetuksissa): {0}"
+  },
   "unclean": "Edellinen sammutus ei ollut siisti. Arrayn seuraava käynnistys tekee pariteettitarkistuksen.",
   "p_shares": "Tarkistetaan avoimia tiedostoja jaoissa…",
-  "share_open": "Laitteella {2} on {3} tiedosto(a) auki jaossa {1} ({0}).",
-  "share_writing": "{2} kirjoittaa {3} tiedostoa jakoon {1} ({0}), ehkä kopio.",
+  "share_open": {
+    "one": "Laitteella {2} on {3} tiedosto auki jaossa {1} ({0}).",
+    "other": "Laitteella {2} on {3} tiedostoa auki jaossa {1} ({0})."
+  },
+  "share_writing": {
+    "one": "{2} kirjoittaa {3} tiedoston jakoon {1} ({0}), ehkä kopio.",
+    "other": "{2} kirjoittaa {3} tiedostoa jakoon {1} ({0}), ehkä kopio."
+  },
   "shares_ok": "Ei avoimia tiedostoja SMB- tai NFS-jaoissa.",
   "p_ups": "Tarkistetaan UPS…",
   "ups_ok": "UPS on verkkovirrassa, akku {0} %.",
-  "ups_battery": "UPS toimii akulla: {0} % jäljellä, noin {1} minuuttia.",
-  "ups_low": "UPS:n akku on melkein tyhjä: {0} % jäljellä, noin {1} minuuttia.",
+  "ups_battery": {
+    "one": "UPS toimii akulla: {0} % jäljellä, noin {1} minuutti.",
+    "other": "UPS toimii akulla: {0} % jäljellä, noin {1} minuuttia."
+  },
+  "ups_low": {
+    "one": "UPS:n akku on melkein tyhjä: {0} % jäljellä, noin {1} minuutti.",
+    "other": "UPS:n akku on melkein tyhjä: {0} % jäljellä, noin {1} minuuttia."
+  },
   "p_flashbak": "Tarkistetaan flash-varmuuskopio…",
-  "flash_backup_ok": "Viimeisin flash-varmuuskopio ({1}) on {0} päivää vanha.",
-  "flash_backup_old": "Viimeisin flash-varmuuskopio ({1}) on {0} päivää vanha. Varmuuskopioi flash ennen uudelleenkäynnistystä.",
+  "flash_backup_ok": {
+    "one": "Viimeisin flash-varmuuskopio ({1}) on {0} päivän vanha.",
+    "other": "Viimeisin flash-varmuuskopio ({1}) on {0} päivää vanha."
+  },
+  "flash_backup_old": {
+    "one": "Viimeisin flash-varmuuskopio ({1}) on {0} päivän vanha. Varmuuskopioi flash ennen uudelleenkäynnistystä.",
+    "other": "Viimeisin flash-varmuuskopio ({1}) on {0} päivää vanha. Varmuuskopioi flash ennen uudelleenkäynnistystä."
+  },
   "flash_backup_none": "FireSquire ei tunne flash-varmuuskopiota. BombVault linnoituksessasi tai Unraid Connect voi pitää sellaista.",
   "flash_backup_none_connect": "FireSquire ei tunne flash-varmuuskopiota. Unraid Connect voi pitää sellaista.",
   "tools_g_shutdown": "Valmis sammutukseen",

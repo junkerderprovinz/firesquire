@@ -11,15 +11,18 @@ const { DIR, read, ok, done } = require('./lib');
 const HEALTH = path.join(DIR, 'firesquire-health.sh').replace(/\\/g, '/');
 const FIX = path.join(__dirname, 'fixtures').replace(/\\/g, '/');
 const en = JSON.parse(read('lang/en.json'));
+const PLURAL = read('firesquire-check.sh').match(/^plural\(\) \{.*\}$/m)[0];
 
-// Runs body after sourcing the health checks, with the engine's add() and have(), the sample
-// link lists in place of /dev/disk, and stand-ins for the commands. Returns the findings.
+// Runs body after sourcing the health checks, with the engine's add(), have() and plural(),
+// the sample link lists in place of /dev/disk, and stand-ins for the commands. Returns the
+// findings.
 function health(body, env = {}) {
   const script = `
 set -u
 source "${HEALTH}"
 add() { local IFS=$'\\x1f'; printf '%s\\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
+${PLURAL}
 links() { case "$1" in *by-path) cat "${FIX}/by-path.txt" ;; *by-id) cat "${FIX}/by-id.txt" ;; esac; }
 ${body}
 `;

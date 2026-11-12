@@ -37,10 +37,10 @@ ok('the support thread names them', /All clear/.test(thread) && /The roof is on 
 
 console.log('\nThe cards');
 function report(themed, checks, verdict = 'NO-GO') {
-  const ctx = { FS_I18N: langs.en, FS_EN: {}, themed: () => themed, location: { hostname: 'tower' } };
+  const ctx = { FS_I18N: langs.en, FS_EN: {}, FS_LANGCODE: 'en', Intl, themed: () => themed, location: { hostname: 'tower' } };
   vm.createContext(ctx);
-  const src = ['fsT', 'esc', 'glyph', 'fsLink', 'ownLink', 'message', 'lampHTML', 'verdictHTML', 'rowHTML', 'reportHTML'].map((n) => grabFn(js, n)).join('\n');
-  const vars = ['VCLASS', 'STATUS', 'QUOTES_LOG', 'LEVELS'].map((n) => (new RegExp(`var ${n} = [^\\n]*;`).exec(js) || [''])[0]).join('\n');
+  const src = ['plural', 'fsT', 'esc', 'glyph', 'fsLink', 'ownLink', 'message', 'lampHTML', 'verdictHTML', 'rowHTML', 'reportHTML'].map((n) => grabFn(js, n)).join('\n');
+  const vars = ['COUNTED', 'VCLASS', 'STATUS', 'QUOTES_LOG', 'LEVELS'].map((n) => (new RegExp(`var ${n} = [^\\n]*;`).exec(js) || [''])[0]).join('\n');
   vm.runInContext(`var GLYPHS = {};\n${vars}\n${src}\nthis.out = reportHTML(${JSON.stringify({ verdict, checks })});`, ctx);
   return ctx.out;
 }
