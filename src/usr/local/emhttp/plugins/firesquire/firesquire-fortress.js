@@ -123,21 +123,22 @@
   function names(list) {
     return new Intl.ListFormat(window.fireSquireLang || "en", { type: "unit" }).format(list.map(memberName));
   }
-  // FireSquire keeps no phrase, so changing it means opening an app that does.
-  function changeAt(at) { window.open(at.address, "_blank", "noopener,noreferrer"); }
+  // FireSquire keeps no phrase, so this names the apps that do.
+  var keepers = [];
+  function changeWhere() {
+    if (!keepers.length) return t("f_change_none");
+    var apps = new Intl.ListFormat(window.fireSquireLang || "en", { type: "disjunction" }).format(keepers.map(memberName));
+    return fill(t("f_change_where"), [apps]);
+  }
 
   // Until the phrase changes, the old one lets the removed back in, so a line
   // says who they are and where the phrase changes.
-  var phraseAt = null;
   function reminder(note, removed) {
     note.textContent = "";
     note.hidden = !removed.length;
     if (!removed.length) return;
     note.appendChild(el("span", null, fill(t("f_removed_note"), [names(removed)])));
-    if (!phraseAt) { note.appendChild(el("span", null, t("f_change_none"))); return; }
-    var at = phraseAt, change = UI.button("fs-fort-change", "Key", t("f_change"));
-    change.addEventListener("click", function () { changeAt(at); });
-    note.appendChild(change);
+    note.appendChild(el("span", null, changeWhere()));
   }
 
   function inside(s) {
@@ -158,7 +159,7 @@
       if (mine !== drawn) return;
       list.textContent = "";
       if (!r.members) { list.appendChild(el("p", "fs-prose", failed(r))); return; }
-      phraseAt = r.phraseAt || null;
+      keepers = r.keepers || [];
       reminder(note, removed);
       if (!r.members.length) list.appendChild(el("p", "fs-prose", t("f_none")));
       r.members.forEach(function (m) {
@@ -178,10 +179,10 @@
   }
 
   // Remove asks first, naming app and device. Once the member is out, the
-  // same window offers to change the phrase, since the old one lets it back in.
+  // same window asks to change the phrase, since the old one lets it back in.
   function askRemove(opener, m) {
     var name = memberName(m);
-    var win = UI.openWindow({
+    UI.openWindow({
       cls: "fs-win-remove", title: fill(t("f_remove_title"), [name]), opener: opener,
       build: function (wbody, w, act) {
         wbody.appendChild(el("p", "fs-win-text", fill(t("f_remove_body"), [name])));
@@ -203,7 +204,7 @@
           post({ "do": "remove", id: m.id }).then(function (r) {
             if (!r.joined) { fail(r.error === "noMember" ? t("f_err_no_member") : failed(r)); return; }
             draw(r);
-            offerChange(win, w, wbody, act, words, go, name);
+            offerChange(w, wbody, words, go, name);
           }, function () { fail(failed()); });
         });
         act.appendChild(go);
@@ -211,24 +212,15 @@
       }
     });
   }
-  function offerChange(win, w, wbody, act, later, go, name) {
+  function offerChange(w, wbody, later, go, name) {
     w.querySelector(".fs-win-title").textContent = t("f_removed_title");
     w.setAttribute("data-glim-title", t("f_removed_title"));
     wbody.textContent = "";
     wbody.appendChild(el("p", "fs-win-text", fill(t("f_removed_body"), [name])));
+    wbody.appendChild(el("p", "fs-win-text fs-win-sub", changeWhere()));
     later.textContent = t("f_later");
     go.remove();
-    var at = phraseAt;
-    if (!at) {
-      wbody.appendChild(el("p", "fs-win-text fs-win-sub", t("f_change_none")));
-      later.parentNode.focus();
-      return;
-    }
-    wbody.appendChild(el("p", "fs-win-text fs-win-sub", fill(t("f_change_where"), [memberName(at)])));
-    var change = UI.button("fs-win-btn fs-key", "Key", t("f_change"));
-    change.addEventListener("click", function () { win.close(); changeAt(at); });
-    act.appendChild(change);
-    change.focus();
+    later.parentNode.focus();
   }
 
   // Leaving asks first and says what ends; the phrase brings FireSquire back.

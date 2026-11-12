@@ -1,7 +1,7 @@
 // Taking another app out of the fortress from the settings page. The helper removes it there and at
 // every member in reach, and FireSquire keeps the names on the flash until the phrase changes,
-// since the old phrase still lets a removed app back in. FireSquire keeps no phrase, so Change
-// phrase leads to an app of the fortress that keeps one.
+// since the old phrase still lets a removed app back in. FireSquire keeps no phrase, so the card
+// names the apps of the fortress that keep one.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -58,15 +58,18 @@ ok('and takes the file away', !fs.existsSync(kept));
 
 console.log('\nThe members');
 const listed = JSON.stringify([
-  { id: 'a', kind: 'instance', app: { id: 'bombvault', name: 'BombVault' }, device: 'Tower', deployment: 'container', address: 'http://192.168.1.5:7877', online: true },
-  { id: 'b', kind: 'instance', app: { id: 'shiplog', name: 'shiplog' }, device: 'Tower', deployment: 'plugin', address: 'http://192.168.1.5', online: true },
-  { id: 'c', kind: 'instance', app: { id: 'knightloader', name: 'KnightLoader' }, device: 'Atlas', deployment: 'container', address: 'javascript:alert(1)', online: true },
+  { id: 'a', kind: 'instance', app: { id: 'arrowloop', name: 'ArrowLoop' }, device: 'Atlas', deployment: 'container', online: false },
+  { id: 'b', kind: 'instance', app: { id: 'shiplog', name: 'shiplog' }, device: 'Tower', deployment: 'plugin', online: true },
+  { id: 'c', kind: 'instance', app: { id: 'bombvault', name: 'BombVault' }, device: 'Tower', deployment: 'container', address: 'http://192.168.1.5:7877', online: true },
+  { id: 'd', kind: 'viewer', app: { id: 'knightloader', name: 'KnightLoader' }, device: 'Phone', online: true },
+  { id: 'e', kind: 'instance', app: { id: 'bombvault', name: 'BombVault' }, device: 'Tower', deployment: 'container', online: false },
 ]);
 x = php(`return fs_fortress_members('${dir}', $run);`, [[0, listed, '']]);
-ok('each carries its id for Remove', x.r.members.map((m) => m.id).join(',') === 'a,b,c', JSON.stringify(x.r));
-ok('the phrase is changed at an app that keeps it, in reach and with a web address', JSON.stringify(x.r.phraseAt) === JSON.stringify({ app: 'BombVault', device: 'Tower', address: 'http://192.168.1.5:7877' }), JSON.stringify(x.r.phraseAt));
-x = php(`return fs_fortress_members('${dir}', $run);`, [[0, JSON.stringify(JSON.parse(listed).slice(1)), '']]);
-ok('a plugin keeps no phrase, and an address that is no web address is never offered', x.r.phraseAt === null, JSON.stringify(x.r.phraseAt));
+ok('each carries its id for Remove', x.r.members.map((m) => m.id).join(',') === 'a,b,c,e', JSON.stringify(x.r));
+ok('the phrase is changed at the apps that keep it, those in reach first and each once', JSON.stringify(x.r.keepers) === JSON.stringify([{ app: 'BombVault', device: 'Tower' }, { app: 'ArrowLoop', device: 'Atlas' }]), JSON.stringify(x.r.keepers));
+ok('no member\'s address reaches the page', !/address|192\.168/.test(JSON.stringify(x.r)), JSON.stringify(x.r));
+x = php(`return fs_fortress_members('${dir}', $run);`, [[0, JSON.stringify(JSON.parse(listed).filter((m) => m.id === 'b' || m.id === 'd')), '']]);
+ok('a plugin or a phone keeps no phrase', Array.isArray(x.r.keepers) && x.r.keepers.length === 0, JSON.stringify(x.r.keepers));
 
 console.log('\nThe endpoint');
 const endpoint = read('include/FireSquireFortress.php');
@@ -79,7 +82,7 @@ fs.rmSync(tmp, { recursive: true, force: true });
 const IN = { helper: true, joined: true, device: 'Tower', removed: [] };
 const MEMBERS = {
   members: [{ id: 'a', app: 'BombVault', device: 'Tower', online: true }, { id: BRAVO, app: 'TollRoll', device: 'Bottich', online: true }],
-  phraseAt: { app: 'BombVault', device: 'Tower', address: 'http://192.168.1.5:7877' },
+  keepers: [{ app: 'BombVault', device: 'Tower' }],
 };
 const buttons = (root, label) => root.all().filter((e) => e.tagName === 'BUTTON' && e.textContent === label);
 
@@ -104,25 +107,23 @@ const buttons = (root, label) => root.all().filter((e) => e.tagName === 'BUTTON'
   ok('Remove sends the member\'s id with the token', p.posts.length === 1 && p.posts[0].do === 'remove' && p.posts[0].id === BRAVO && p.posts[0].csrf_token === 'tok', JSON.stringify(p.posts));
   ok('URL-encoded, as every post of the page', p.bodies[0] instanceof URLSearchParams);
   ok('the same window then asks to change the phrase', !w.closed && w.title.textContent === en.f_removed_title && w.body.textContent.includes(fill(en.f_removed_body, [name])), w.title.textContent + ' | ' + w.body.textContent);
-  ok('and says where, since FireSquire keeps no phrase', w.body.textContent.includes(fill(en.f_change_where, [fill(en.f_member, ['BombVault', 'Tower'])])), w.body.textContent);
-  const change = buttons(w.act, en.f_change)[0];
-  ok('Change phrase and Later, the focus on Change phrase', !!change && buttons(w.act, en.f_later).length === 1 && buttons(w.act, en.g_cancel).length === 0 && p.focused() === change);
+  ok('and names the app and device where that happens, since FireSquire keeps no phrase', w.body.textContent.includes(fill(en.f_change_where, ['BombVault on Tower'])), w.body.textContent);
+  ok('Later is the only way on, with the focus on it', buttons(w.act, en.f_later).length === 1 && buttons(w.act, en.g_cancel).length === 0 && w.act.all().filter((e) => e.tagName === 'BUTTON').length === 1 && p.focused() === buttons(w.act, en.f_later)[0], w.act.textContent);
   ok('the reminder names who is out', p.text().includes(fill(en.f_removed_note, ['TollRoll on Bottich'])), p.text());
-  change.fire('click');
-  ok('Change phrase opens the app that keeps the phrase in a tab of its own', p.opened.length === 1 && p.opened[0].url === 'http://192.168.1.5:7877' && p.opened[0].target === '_blank' && /noopener/.test(p.opened[0].features), JSON.stringify(p.opened));
-  ok('and closes the window', w.closed);
+  ok('and nothing opens a member\'s address', p.opened.length === 0, JSON.stringify(p.opened));
 
   p = fortressCard({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }, { app: 'ShipLog', device: 'Tower' }] }, { members: MEMBERS });
   await p.settle();
   ok('after a restart the reminder is still there', p.text().includes(fill(en.f_removed_note, ['TollRoll on Bottich, ShipLog on Tower'])), p.text());
-  const remind = buttons(p.box, en.f_change)[0];
-  ok('with its own Change phrase', !!remind && remind.glyph === 'Key');
-  remind.fire('click');
-  ok('which opens the same app', p.opened.length === 1 && p.opened[0].url === 'http://192.168.1.5:7877', JSON.stringify(p.opened));
+  ok('and says where the phrase is changed', p.text().includes(fill(en.f_change_where, ['BombVault on Tower'])), p.text());
 
-  p = fortressCard({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }, { members: { members: [], phraseAt: null } });
+  p = fortressCard({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }, { members: { ...MEMBERS, keepers: [{ app: 'BombVault', device: 'Tower' }, { app: 'ArrowLoop', device: 'Atlas' }] } });
   await p.settle();
-  ok('with no app in reach that keeps the phrase, the line says where to change it', p.text().includes(en.f_change_none) && buttons(p.box, en.f_change).length === 0, p.text());
+  ok('several apps that keep the phrase read as a choice', p.text().includes(fill(en.f_change_where, ['BombVault on Tower or ArrowLoop on Atlas'])), p.text());
+
+  p = fortressCard({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }, { members: { members: [], keepers: [] } });
+  await p.settle();
+  ok('with no app that keeps the phrase, the line says where to change it', p.text().includes(en.f_change_none), p.text());
 
   p = fortressCard(IN, { members: MEMBERS, remove: () => ({ error: 'noMember' }) });
   await p.settle();
@@ -131,19 +132,19 @@ const buttons = (root, label) => root.all().filter((e) => e.tagName === 'BUTTON'
   await p.settle();
   ok('a member that is gone already says so in the window', p.windows[0].body.textContent.includes(en.f_err_no_member) && p.windows[0].title.textContent !== en.f_removed_title, p.windows[0].body.textContent);
 
-  p = fortressCard(IN, { members: { ...MEMBERS, phraseAt: null }, remove: () => ({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }) });
+  p = fortressCard(IN, { members: { ...MEMBERS, keepers: [] }, remove: () => ({ ...IN, removed: [{ app: 'TollRoll', device: 'Bottich' }] }) });
   await p.settle();
   buttons(p.box, en.f_remove)[1].fire('click');
   buttons(p.windows[0].act, en.f_remove)[0].fire('click');
   await p.settle();
-  ok('without an app to change it at, the window says where and offers Later alone', p.windows[0].body.textContent.includes(en.f_change_none)
-    && buttons(p.windows[0].act, en.f_change).length === 0 && buttons(p.windows[0].act, en.f_later).length === 1, p.windows[0].body.textContent);
+  ok('without an app that keeps the phrase, the window says where and offers Later alone', p.windows[0].body.textContent.includes(en.f_change_none)
+    && buttons(p.windows[0].act, en.f_later).length === 1, p.windows[0].body.textContent);
 
   console.log('\nThe strings and glyphs');
-  for (const k of ['f_remove', 'f_remove_title', 'f_remove_body', 'f_remove_back', 'f_removed_title', 'f_removed_body', 'f_later', 'f_removed_note', 'f_change', 'f_change_where', 'f_change_none', 'f_err_no_member']) {
+  for (const k of ['f_remove', 'f_remove_title', 'f_remove_body', 'f_remove_back', 'f_removed_title', 'f_removed_body', 'f_later', 'f_removed_note', 'f_change_where', 'f_change_none', 'f_err_no_member']) {
     ok(`${k} is in en.json`, typeof en[k] === 'string', en[k]);
   }
-  ok('Trash and Key are in the table', /^\s+Trash: \["/m.test(read('firesquire-glyphs.js')) && /^\s+Key: \["/m.test(read('firesquire-glyphs.js')));
+  ok('Trash is in the table', /^\s+Trash: \["/m.test(read('firesquire-glyphs.js')));
 
   done();
 })();

@@ -282,8 +282,7 @@
   "f_removed_body": "{0} is out. As long as the phrase stays the same, the way back in is still open.",
   "f_later": "Later",
   "f_removed_note": "Removed: {0}. Change the phrase to close the way back in.",
-  "f_change": "Change phrase",
-  "f_change_where": "FireSquire keeps only its own keys, never the phrase, so you change it in {0}.",
+  "f_change_where": "You change the phrase in {0}.",
   "f_change_none": "FireSquire keeps only its own keys, never the phrase. Change it in an app of your fortress that keeps it, such as BombVault.",
   "f_err_no_member": "That app is not in your fortress anymore.",
   "flash_probe_left": "FireSquire could not delete its test file {0} on the flash. Please delete it yourself."

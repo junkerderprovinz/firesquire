@@ -282,8 +282,7 @@
   "f_removed_body": "{0} já está fora. Enquanto a frase se mantiver, o caminho de volta continua aberto.",
   "f_later": "Mais tarde",
   "f_removed_note": "Removidos: {0}. Altera a frase para fechar o caminho de volta.",
-  "f_change": "Alterar frase",
-  "f_change_where": "O FireSquire só guarda as suas próprias chaves, nunca a frase, por isso alteras a frase em {0}.",
+  "f_change_where": "Alteras a frase em {0}.",
   "f_change_none": "O FireSquire só guarda as suas próprias chaves, nunca a frase. Altera-a numa app da tua fortaleza que a guarde, como o BombVault.",
   "f_err_no_member": "Essa app já não está na tua fortaleza.",
   "flash_probe_left": "O FireSquire não conseguiu apagar o seu ficheiro de teste {0} no flash. Apaga-o tu, por favor."

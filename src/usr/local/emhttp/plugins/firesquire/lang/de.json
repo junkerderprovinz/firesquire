@@ -279,8 +279,7 @@
   "f_removed_body": "{0} ist draußen. Solange die Phrase gleich bleibt, steht der Weg zurück aber noch offen.",
   "f_later": "Später",
   "f_removed_note": "Herausgenommen: {0}. Ändere die Phrase, dann ist der Weg zurück zu.",
-  "f_change": "Phrase ändern",
-  "f_change_where": "FireSquire behält nur seine eigenen Schlüssel, nie die Phrase. Ändern kannst du sie in {0}.",
+  "f_change_where": "Die Phrase änderst du in {0}.",
   "f_change_none": "FireSquire behält nur seine eigenen Schlüssel, nie die Phrase. Ändere sie in einer App deiner Festung, die sie kennt, etwa in BombVault.",
   "f_err_no_member": "Diese App ist nicht mehr in deiner Festung.",
   "flash_probe_left": "FireSquire konnte seine Testdatei {0} auf dem Flash nicht löschen. Lösch sie bitte selbst."

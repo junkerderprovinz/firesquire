@@ -273,8 +273,7 @@
   "f_removed_body": "{0} è fuori. Finché la frase resta la stessa, la via per rientrare è ancora aperta.",
   "f_later": "Più tardi",
   "f_removed_note": "Rimossi: {0}. Cambia la frase per chiudere la via del ritorno.",
-  "f_change": "Cambia la frase",
-  "f_change_where": "FireSquire tiene solo le sue chiavi, mai la frase, quindi la cambi in {0}.",
+  "f_change_where": "La frase la cambi in {0}.",
   "f_change_none": "FireSquire tiene solo le sue chiavi, mai la frase. Cambiala in un'app della tua fortezza che la conserva, come BombVault.",
   "f_err_no_member": "Questa app non è più nella tua fortezza.",
   "flash_probe_left": "FireSquire non è riuscito a cancellare il suo file di prova {0} sulla chiavetta. Cancellalo tu, per favore."

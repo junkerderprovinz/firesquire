@@ -282,8 +282,7 @@
   "f_removed_body": "{0} is eruit. Zolang de frase hetzelfde blijft, staat de weg terug nog open.",
   "f_later": "Later",
   "f_removed_note": "Verwijderd: {0}. Wijzig de frase om de weg terug te sluiten.",
-  "f_change": "Frase wijzigen",
-  "f_change_where": "FireSquire bewaart alleen zijn eigen sleutels, nooit de frase, dus je wijzigt hem in {0}.",
+  "f_change_where": "De frase wijzig je in {0}.",
   "f_change_none": "FireSquire bewaart alleen zijn eigen sleutels, nooit de frase. Wijzig hem in een app van je vesting die hem bewaart, zoals BombVault.",
   "f_err_no_member": "Die app zit niet meer in je vesting.",
   "flash_probe_left": "FireSquire kon zijn testbestand {0} op de flash niet verwijderen. Verwijder het alsjeblieft zelf."

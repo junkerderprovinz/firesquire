@@ -228,8 +228,7 @@
   "f_removed_body": "{0} 已被移出。但只要口令不变，回来的路就仍然开着。",
   "f_later": "稍后",
   "f_removed_note": "已移除：{0}。更改口令即可关上回来的路。",
-  "f_change": "更改口令",
-  "f_change_where": "FireSquire 只保存自己的密钥，从不保存口令，所以请在 {0} 中更改口令。",
+  "f_change_where": "请在 {0} 中更改口令。",
   "f_change_none": "FireSquire 只保存自己的密钥，从不保存口令。请在堡垒中保存口令的应用里更改，例如 BombVault。",
   "f_err_no_member": "这个应用已不在你的堡垒中。",
   "flash_probe_left": "FireSquire 无法删除闪存上的测试文件 {0}。请手动删除它。"

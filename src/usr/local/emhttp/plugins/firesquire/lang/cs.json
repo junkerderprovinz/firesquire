@@ -300,8 +300,7 @@
   "f_removed_body": "{0} je venku. Dokud zůstane fráze stejná, cesta zpátky je ale pořád otevřená.",
   "f_later": "Později",
   "f_removed_note": "Odebráno: {0}. Změň frázi a cesta zpátky se zavře.",
-  "f_change": "Změnit frázi",
-  "f_change_where": "FireSquire si ponechává jen vlastní klíče, nikdy frázi, takže ji změníš v {0}.",
+  "f_change_where": "Frázi změníš v {0}.",
   "f_change_none": "FireSquire si ponechává jen vlastní klíče, nikdy frázi. Změň ji v aplikaci své pevnosti, která ji má, třeba v BombVault.",
   "f_err_no_member": "Tahle aplikace už ve tvé pevnosti není.",
   "flash_probe_left": "FireSquire nedokázal smazat svůj testovací soubor {0} na flash disku. Smaž ho prosím sám."

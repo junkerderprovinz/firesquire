@@ -228,8 +228,7 @@
   "f_removed_body": "{0}은(는) 이제 빠졌습니다. 하지만 문구가 그대로인 동안에는 돌아올 길이 열려 있습니다.",
   "f_later": "나중에",
   "f_removed_note": "제거됨: {0}. 문구를 변경하면 돌아올 길이 닫힙니다.",
-  "f_change": "문구 변경",
-  "f_change_where": "FireSquire는 자신의 키만 보관하고 문구는 보관하지 않으므로, 문구는 {0}에서 변경합니다.",
+  "f_change_where": "문구는 {0}에서 바꿔요.",
   "f_change_none": "FireSquire는 자신의 키만 보관하고 문구는 보관하지 않습니다. 문구를 보관하는 요새의 앱(예: BombVault)에서 변경하세요.",
   "f_err_no_member": "이 앱은 더 이상 요새에 없습니다.",
   "flash_probe_left": "FireSquire가 플래시의 테스트 파일 {0}을(를) 지우지 못했습니다. 직접 지워 주세요."

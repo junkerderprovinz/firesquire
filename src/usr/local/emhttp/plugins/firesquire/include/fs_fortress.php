@@ -54,25 +54,24 @@ function fs_fortress_app_name($m) {
 /* The other apps of the fortress: each instance with its device and whether
  * it is in reach. Phones, viewers and an instance that never said which app
  * it runs carry no app, so they stay out. FireSquire keeps no phrase, so
- * phraseAt is an app in reach that does, where the phrase can be changed. Its
- * address comes from another member and opens in the browser, so only a web
- * address counts. */
+ * keepers are the apps that do, where it is changed, those in reach first.
+ * An app the fortress still knows from an earlier install is named once. */
 function fs_fortress_members($dir, $run) {
   list($code, $out, $err) = $run(array('members', '-dir', $dir, '-json', '-wait', '4s'), '');
   $list = $code === 0 ? json_decode($out, true) : null;
   if (!is_array($list)) return array('error' => fs_fortress_reason($err));
   $members = array();
-  $at = null;
+  $keepers = array();
   foreach ($list as $m) {
     if (($m['kind'] ?? '') !== 'instance' || (string) ($m['app']['id'] ?? '') === '') continue;
     $member = array('id' => (string) ($m['id'] ?? ''), 'app' => fs_fortress_app_name($m), 'device' => (string) ($m['device'] ?? ''), 'online' => !empty($m['online']));
     $members[] = $member;
-    $address = (string) ($m['address'] ?? '');
-    if (!$at && $member['online'] && ($m['deployment'] ?? '') !== 'plugin' && preg_match('#^https?://[^\s"\'<>]+$#i', $address)) {
-      $at = array('app' => $member['app'], 'device' => $member['device'], 'address' => $address);
-    }
+    if (($m['deployment'] ?? '') !== 'plugin') $keepers[] = $member;
   }
-  return array('members' => $members, 'phraseAt' => $at);
+  usort($keepers, function ($a, $b) { return $b['online'] <=> $a['online']; });
+  $named = array();
+  foreach ($keepers as $k) $named[$k['app'] . "\n" . $k['device']] = array('app' => $k['app'], 'device' => $k['device']);
+  return array('members' => $members, 'keepers' => array_values($named));
 }
 
 function fs_fortress_group($dir) {
