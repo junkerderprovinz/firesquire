@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.3.1">
+<!ENTITY version   "1.4.0">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -32,7 +32,7 @@
 </ICON>
 
   <CHANGES>
-## 1.3.1
+## 1.4.0
 ✨ **Added**
 - **Your fortress joins the check.** FireSquire downloads its fortress helper from ParleyPort, so the Fortress card finally shows up on the settings page. Join with your phrase, and before a reboot FireSquire asks your other apps whether one of them is still busy with something a reboot would cut short.
 - **Your other apps show FireSquire with its own logo** once it has joined your fortress.
@@ -46,6 +46,8 @@
 - **No more nameless rows on the fortress card.** A member that never said which app it runs, such as FireSquire's own old membership after leaving and joining again, stays off the list.
 - **A tidier flash drive.** An update clears out the packages of earlier versions instead of keeping every one of them on the flash.
 - **"FireSquire is ready!"** The install message had slipped into a bit of German.
+- **Leaving points at the current phrase** as the way back in, since the one you left with may have changed in the meantime.
+- **The name in the banner reads on a phone.** Below 600 px it runs across the watermark instead of shrinking to two letters.
 
 🌐 **Translations**
 - **The same words as the rest of your fortress, in all 26 languages.** The phrase is simply the phrase, a member is Connected or Not reachable, and Danish and Portuguese call a backup what the glossary calls it.
