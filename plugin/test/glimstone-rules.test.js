@@ -3,6 +3,8 @@
 // in its ground and all of it in its glyph, its words in the text colour, and under the rainbow
 // each button its own position. The answers in a foot hug their words and never end in an
 // ellipsis, and the question beside them gives way first. A bar whose work runs carries a sheen.
+// An open window makes the page behind it inert, and every button, card and window carries its
+// GlimStone name.
 const { read, ok, done, rules, keyframes } = require('./lib');
 
 const js = read('firesquire.js');
@@ -50,5 +52,16 @@ ok('not on a bar that waits without a value', runs.every((r) => /:not\(\.fs-inde
 ok('and still at off', runs.every((r) => /:not\(\[data-tt-motion="off"\]\)/.test(r.selector)));
 ok('every level sets the dial', (sheets.match(/--fs-motion-progress-sheen-dur:/g) || []).length === 4);
 ok('the pass crosses the fill', /translate:\s*100% 0/.test(keyframes(sheets)['fs-prog-sheen'] || ''));
+
+console.log('\nAn open window holds the page behind it');
+ok('everything behind it turns inert', /behind = Array\.prototype\.filter\.call\(document\.body\.children/.test(js) && /n\.inert = true/.test(js));
+ok('and wakes up again when it closes', /behind\.forEach\(function\(n\)\{ n\.inert = false; \}\)/.test(js));
+
+console.log('\nEvery element names itself by its GlimStone name');
+ok('a button', /b\.setAttribute\('data-glim', 'Button'\)/.test(js));
+ok('a window, with its title', /win\.setAttribute\('data-glim', 'Window'\)/.test(js) && /win\.setAttribute\('data-glim-title', o\.title\)/.test(js));
+for (const f of ['firesquire-info.js', 'firesquire-notify.js', 'firesquire-fortress.js']) {
+  ok(`a card in ${f}, with its title`, /\.setAttribute\("data-glim", "Card"\)/.test(read(f)) && /\.setAttribute\("data-glim-title", /.test(read(f)));
+}
 
 done();

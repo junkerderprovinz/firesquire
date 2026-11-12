@@ -37,6 +37,8 @@
     var c = el("section", "fs-card"), h = el("h3", "fs-h"), s = el("span", null, title);
     s.id = "fs-n-h-" + (++seq);
     c.setAttribute("aria-labelledby", s.id);
+    c.setAttribute("data-glim", "Card");
+    c.setAttribute("data-glim-title", title);
     h.appendChild(s);
     c.appendChild(h);
     box.appendChild(c);
@@ -110,14 +112,37 @@
       input.value = v == null || v === 0 ? "" : v;
     }
     if (spec[3] && type !== "select") input.placeholder = spec[3];
+    var err = el("p", "fs-field-err");
+    err.id = "fs-n-err-" + (++seq);
+    err.hidden = true;
+    input.setAttribute("aria-describedby", err.id);
+    var mark = { c: c, name: name, input: input, err: err };
+    marks.push(mark);
     input.addEventListener(type === "select" ? "change" : "input", function () {
       block[name] = read(input, type);
+      unmark(mark);
       changed(type === "select");
     });
-    return labelled(t(spec[1]), input);
+    return labelled(t(spec[1]), input).concat(err);
   }
 
-  var channels = [], list, saveMsg, sMsg;
+  var channels = [], marks = [], list, saveMsg, sMsg;
+
+  // A value the server refuses gets a line under its field until it changes.
+  function unmark(m) {
+    m.input.removeAttribute("aria-invalid");
+    m.err.hidden = true;
+    m.err.textContent = "";
+  }
+  function markField(p) {
+    var c = channels[p.index], f = String(p.field || "").split(".").pop(), m = null;
+    marks.forEach(function (x) { if (x.c === c && x.name === f) m = x; });
+    if (!m) return false;
+    m.input.setAttribute("aria-invalid", "true");
+    m.err.textContent = problem(p);
+    m.err.hidden = false;
+    return true;
+  }
 
   // A message under a card: a confirmation that goes away by itself, or a
   // failure that stays until the next save works.
@@ -139,9 +164,12 @@
     if (saving) { again = true; return; }
     saving = true;
     post({ "do": "save", channels: JSON.stringify(channels.map(clean)) }).then(function (r) {
+      marks.forEach(unmark);
       if (r.channels) tell(saveMsg, t("n_saved"), true);
-      else if (r.problems && r.problems.length) tell(saveMsg, problem(r.problems[0]));
-      else tell(saveMsg, fill(t("n_failed"), [r.error || "?"]));
+      else if (r.problems && r.problems.length) {
+        var loose = r.problems.filter(function (p) { return !markField(p); });
+        tell(saveMsg, loose.length ? problem(loose[0]) : "");
+      } else tell(saveMsg, fill(t("n_failed"), [r.error || "?"]));
     }).catch(function () {
       tell(saveMsg, fill(t("n_failed"), ["network"]));
     }).then(function () {
@@ -196,6 +224,7 @@
 
   function draw() {
     list.textContent = "";
+    marks = [];
     if (!channels.length) list.appendChild(el("p", "fs-prose", t("n_none")));
     channels.forEach(function (c) { list.appendChild(channelBox(c)); });
   }

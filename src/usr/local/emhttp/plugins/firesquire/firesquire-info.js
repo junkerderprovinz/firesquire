@@ -72,6 +72,8 @@
     var c = el("section", "fs-card"), h = el("h3", "fs-h"), s = el("span", null, title);
     s.id = "fs-h-" + (++seq);
     c.setAttribute("aria-labelledby", s.id);
+    c.setAttribute("data-glim", "Card");
+    c.setAttribute("data-glim-title", title);
     h.appendChild(s);
     c.appendChild(h);
     (into || root).appendChild(c);

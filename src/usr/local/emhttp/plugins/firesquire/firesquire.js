@@ -224,6 +224,7 @@
   function button(cls, name, label, tag){
     var b = el(tag || 'button', 'fs-btn' + (cls ? ' ' + cls : ''));
     if (b.tagName === 'BUTTON') b.type = 'button';
+    b.setAttribute('data-glim', 'Button');
     var g = el('span', 'fs-btn-g'), l = el('span', 'fs-btn-l', label);
     g.innerHTML = glyph(name);
     b.appendChild(g);
@@ -264,6 +265,8 @@
     var win = el('div', 'fs-win ' + (o.cls || '') + (o.head ? ' fs-win-headed' : ''));
     win.setAttribute('role', 'dialog');
     win.setAttribute('aria-modal', 'true');
+    win.setAttribute('data-glim', 'Window');
+    win.setAttribute('data-glim-title', o.title);
     win.setAttribute('data-fs-labels', labelMode());
     win.tabIndex = -1;
     if (FS_RTL) win.dir = 'rtl';
@@ -278,6 +281,9 @@
     act.appendChild(close);
     win.appendChild(body);
     win.appendChild(act);
+    // The page behind stays out of reach for the pointer and for screen readers alike.
+    var behind = Array.prototype.filter.call(document.body.children, function(n){ return !n.inert; });
+    behind.forEach(function(n){ n.inert = true; });
     document.body.appendChild(scrim);
     document.body.appendChild(win);
 
@@ -298,6 +304,7 @@
       if (!shown || shown.win !== win) return;
       shown = null;
       document.removeEventListener('keydown', onKey, true);
+      behind.forEach(function(n){ n.inert = false; });
       scrim.remove();
       win.remove();
       if (o.onClose) o.onClose();

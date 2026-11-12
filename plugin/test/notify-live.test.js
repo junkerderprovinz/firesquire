@@ -22,6 +22,7 @@ class El {
   addEventListener(type, fn) { (this.listeners[type] = this.listeners[type] || []).push(fn); }
   setAttribute(k, v) { this.attrs[k] = String(v); }
   getAttribute(k) { return this.attrs[k]; }
+  removeAttribute(k) { delete this.attrs[k]; }
   get textContent() { return this.own + this.children.map((c) => c.textContent).join(''); }
   set textContent(v) { this.own = String(v); this.children = []; }
   fire(type) { (this.listeners[type] || []).forEach((fn) => fn({ target: this, preventDefault() {} })); }
@@ -111,9 +112,14 @@ const saved = (d) => ({ channels: JSON.parse(d.channels) });
   const u2 = p.find((e) => e.tagName === 'INPUT' && e.value === 'https://gotify.example.org');
   u2.value = 'gotify'; u2.fire('input'); p.wait(1000);
   await p.settle();
-  ok('a field the server refuses is named', p.msg(0) === fill(en.n_problem, [en.n_f_url, 'Phone']), p.msg(0));
+  const err = p.find((e) => e.className === 'fs-field-err' && u2.getAttribute('aria-describedby') === e.id);
+  ok('a field the server refuses says so right under it', !!err && !err.hidden && err.textContent === fill(en.n_problem, [en.n_f_url, 'Phone']), err && err.textContent);
+  ok('and is marked invalid', u2.getAttribute('aria-invalid') === 'true');
+  ok('while the line under the card stays quiet', p.msg(0) === '', p.msg(0));
   p.wait(5000);
-  ok('and the message stays until it is fixed', p.msg(0) === fill(en.n_problem, [en.n_f_url, 'Phone']), p.msg(0));
+  ok('the line stays until the value changes', !err.hidden && err.textContent !== '');
+  u2.value = 'https://gotify.example.org'; u2.fire('input');
+  ok('and goes once it does', err.hidden && err.textContent === '' && u2.getAttribute('aria-invalid') === undefined);
   p = page(() => 'down');
   await p.settle();
   p.find((e) => e.tagName === 'INPUT' && e.type === 'checkbox').fire('change');

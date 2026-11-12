@@ -25,6 +25,8 @@
   var card = el("section", "fs-card"), h = el("h3", "fs-h"), title = el("span", null, t("f_card"));
   title.id = "fs-f-h";
   card.setAttribute("aria-labelledby", title.id);
+  card.setAttribute("data-glim", "Card");
+  card.setAttribute("data-glim-title", t("f_card"));
   h.appendChild(title);
   card.appendChild(h);
   card.appendChild(el("p", "fs-prose", t("f_lead")));
@@ -112,9 +114,11 @@
     leave.addEventListener("click", function () { ask(leave); });
     row(body, fill(t("f_in"), [s.device])).appendChild(leave);
     var list = el("div", "fs-fort-list"), mine = drawn;
-    list.appendChild(el("p", "fs-prose fs-fort-wait", t("f_looking")));
     body.appendChild(list);
+    // A quick answer never flashes the waiting line.
+    var wait = setTimeout(function () { list.appendChild(el("p", "fs-prose fs-fort-wait", t("f_looking"))); }, 400);
     fetch(ENDPOINT + "?do=members", { credentials: "same-origin" }).then(json).then(function (r) {
+      clearTimeout(wait);
       if (mine !== drawn) return;
       list.textContent = "";
       if (!r.members) { list.appendChild(el("p", "fs-prose", failed(r))); return; }
@@ -124,6 +128,7 @@
         row(list, fill(t("f_member"), [m.app, m.device])).appendChild(state);
       });
     }, function () {
+      clearTimeout(wait);
       if (mine !== drawn) return;
       list.textContent = "";
       list.appendChild(el("p", "fs-prose", failed()));
