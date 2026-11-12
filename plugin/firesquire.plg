@@ -37,6 +37,7 @@
 - **Your fortress joins the check.** FireSquire downloads its fortress helper from ParleyPort, so the Fortress card finally shows up on the settings page. Join with your phrase, and before a reboot FireSquire asks your other apps whether one of them is still busy with something a reboot would cut short.
 - **Your other apps show FireSquire with its own logo** once it has joined your fortress.
 - **Take an app out of your fortress.** Every other app on the Fortress card has a Remove button. FireSquire asks first and then offers to change the phrase in an app that keeps it, because the old phrase would let the removed app straight back in. Until you do, a quiet line names who is out.
+- **When another app takes FireSquire out,** the Fortress card says so, after a restart too, and the current phrase brings it back in.
 - **Notifications and a schedule.** The notify helper comes along too, so you can send the verdict to Unraid, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks, and run the check daily or weekly without lifting a finger.
 
 🎨 **Design**
