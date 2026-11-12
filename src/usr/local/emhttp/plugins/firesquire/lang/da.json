@@ -266,7 +266,7 @@
   "f_none": "Ingen anden app er gået med i din fæstning endnu.",
   "f_member": "{0} på {1}",
   "f_connected": "Forbundet",
-  "f_unreachable": "Kan ikke nås",
+  "f_unreachable": "Ikke tilgængelig",
   "f_leave": "Forlad",
   "f_leave_title": "Forlade fæstningen?",
   "f_leave_body": "Dine andre apps kan ikke se FireSquire længere, og tjekket fortsætter uden dem. Med sætningen kommer FireSquire tilbage når som helst.",

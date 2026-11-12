@@ -215,7 +215,7 @@
   "f_none": "Chưa có ứng dụng nào khác tham gia pháo đài của bạn.",
   "f_member": "{0} trên {1}",
   "f_connected": "Đã kết nối",
-  "f_unreachable": "Không liên lạc được",
+  "f_unreachable": "Không truy cập được",
   "f_leave": "Rời đi",
   "f_leave_title": "Rời pháo đài?",
   "f_leave_body": "Các ứng dụng khác sẽ không còn thấy FireSquire, và việc kiểm tra tiếp tục mà không có chúng. Với cụm từ, FireSquire quay lại bất cứ lúc nào.",

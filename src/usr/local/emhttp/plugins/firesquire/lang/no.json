@@ -263,7 +263,7 @@
   "f_none": "Ingen annen app har blitt med i festningen din ennå.",
   "f_member": "{0} på {1}",
   "f_connected": "Tilkoblet",
-  "f_unreachable": "Kan ikke nås",
+  "f_unreachable": "Ikke tilgjengelig",
   "f_leave": "Forlat",
   "f_leave_title": "Forlate festningen?",
   "f_leave_body": "De andre appene dine ser ikke FireSquire lenger, og sjekken fortsetter uten dem. Med frasen kommer FireSquire tilbake når som helst.",

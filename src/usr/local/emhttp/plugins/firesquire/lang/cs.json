@@ -287,7 +287,7 @@
   "f_none": "K tvé pevnosti se zatím nepřipojila žádná další aplikace.",
   "f_member": "{0} na {1}",
   "f_connected": "Připojeno",
-  "f_unreachable": "Nedosažitelné",
+  "f_unreachable": "Nedostupné",
   "f_leave": "Opustit",
   "f_leave_title": "Opustit pevnost?",
   "f_leave_body": "Tvé ostatní aplikace už FireSquire neuvidí a kontrola poběží dál bez nich. S frází se FireSquire kdykoli vrátí.",
