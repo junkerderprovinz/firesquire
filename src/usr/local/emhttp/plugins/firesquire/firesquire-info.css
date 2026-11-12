@@ -196,12 +196,15 @@ html.tt-popups-on #fs-info a.fs-ver {
      button has rounded corners, the run button keeps the accent at the size
      of a key, and the release notes are a secondary button. */
   html.tt-popups-on #fs-info .fs-btn {
+    --fs-btn-ground: color-mix(in srgb, var(--tt-text, #e6e6e6) 18%, var(--fs-card));
     min-width: 0 !important; height: 32px !important; margin: 0 !important; padding: 0 14px !important;
     border: none !important; border-radius: var(--fs-r-ctl) !important; box-shadow: none !important;
-    background: color-mix(in srgb, var(--tt-text, #e6e6e6) 18%, var(--fs-card)) !important; color: var(--tt-text, #e6e6e6) !important;
+    background: var(--fs-btn-ground) !important; color: var(--tt-text, #e6e6e6) !important;
     font-size: var(--tt-text-body, 14px) !important; font-weight: 600 !important; text-transform: none !important; letter-spacing: normal !important;
   }
-  html.tt-popups-on #fs-info .fs-btn:hover { box-shadow: inset 0 0 0 100vmax var(--tt-hover-wash, rgba(230, 230, 230, .15)) !important; }
+  html.tt-popups-on #fs-info .fs-btn:not(.fs-acc):not(:disabled):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--fs-btn-ground), var(--fs-btn-tint) 22%) !important; color: var(--tt-text, #e6e6e6) !important; }
+  html.tt-popups-on #fs-info .fs-btn:not(.fs-acc):not(:disabled):is(:hover, :focus-visible) .fs-btn-g { color: var(--fs-btn-tint) !important; }
+  html.tt-popups-on #fs-info .fs-btn.fs-acc:hover { box-shadow: inset 0 0 0 100vmax var(--tt-hover-wash, rgba(230, 230, 230, .15)) !important; }
   html.tt-popups-on #fs-info .fs-btn.fs-acc {
     background: var(--tt-rbaccent, var(--tt-accent, #FCC419)) !important; color: var(--tt-rbaccent-text, var(--tt-accent-text, #161616)) !important;
   }

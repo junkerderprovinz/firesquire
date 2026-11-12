@@ -189,6 +189,16 @@
       node.style.removeProperty('--fs-hue-ink');
     }
   }
+  // Under the rainbow every button lights up in a colour of its own, counted in
+  // the order the buttons stand in its window or on the page, so two side by
+  // side never share one.
+  function takeHue(e){
+    var b = e.target.closest && e.target.closest('.fs-btn');
+    if (!b) return;
+    hue(b, Array.prototype.indexOf.call((b.closest('.fs-win') || document).querySelectorAll('.fs-btn'), b));
+  }
+  document.addEventListener('pointerover', takeHue);
+  document.addEventListener('focusin', takeHue);
   // TowerTorch's label mode for the buttons it draws, which FireSquire's buttons follow.
   function labelMode(){
     var m = themed() ? html.getAttribute('data-tt-labels-buttons') : '';

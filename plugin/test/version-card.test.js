@@ -21,7 +21,7 @@ ok('an empty version shows a question mark', version('', 'R').textContent === '?
 ok('a version with anything after the number gets no link', version('3.1.0"><img src=x>', 'R').tagName === 'SPAN');
 
 console.log('\nThe card under TowerTorch');
-ok('GlimStone is 3.8.0', /var GLS_VER = "3\.8\.0";/.test(info));
+ok('GlimStone is 4.3.7', /var GLS_VER = "4\.3\.7";/.test(info));
 ok('GlimStone links to its own repository', /version\(GLS_VER, GLS_REPO\)/.test(info) && /var GLS_REPO = "https:\/\/github\.com\/junkerderprovinz\/glimstone";/.test(info));
 ok('the release notes wear the information glyph', /UI\.button\(null, "Info", t\("rel_notes"\), "a"\)/.test(info));
 ok('the release notes link to the release the card links to', /var rel = release\(ver\);\s*notes\.href = REPO \+ \(rel \? "\/releases\/tag\/v" \+ rel : "\/releases"\);/.test(info));

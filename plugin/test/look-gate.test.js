@@ -1,5 +1,5 @@
 // One markup, two looks: Unraid's own without TowerTorch, GlimStone's with it, switched by
-// html.tt-popups-on, the class TowerTorch sets on every page (GlimStone 3.8.0, "Unraid plugins").
+// html.tt-popups-on, the class TowerTorch sets on every page (GlimStone 4.3.7, "Unraid plugins").
 const { read, ok, done, rules } = require('./lib');
 
 const files = ['firesquire.css', 'firesquire-info.css', 'firesquire.js', 'firesquire-info.js', 'FireSquireTools.page'];

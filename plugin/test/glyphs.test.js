@@ -10,7 +10,8 @@ const sources = {
 };
 
 console.log('\nThe copy names its release');
-ok('copied from GlimStone 3.8.0', /GlimStone 3\.8\.0/.test(table));
+ok('copied from GlimStone 4.3.7', /GlimStone 4\.3\.7/.test(table));
+ok('the drawings name no app as their source', !/KnightLoader|BombVault|TowerTorch|ShipLog/.test(table));
 
 for (const [file, src] of Object.entries(sources)) {
   console.log('\n' + file);
