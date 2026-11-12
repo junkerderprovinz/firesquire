@@ -220,5 +220,17 @@
   "f_leave_title": "要离开堡垒吗？",
   "f_leave_body": "你的其他应用将不再看到 FireSquire，检查会在没有它们的情况下继续。凭当前口令，FireSquire 可以回来。",
   "f_left": "FireSquire 已离开堡垒。",
+  "f_remove": "移除",
+  "f_remove_title": "要移除 {0} 吗？",
+  "f_remove_body": "{0} 会立即失去访问权限，且无法撤销。",
+  "f_remove_back": "在你更改口令之前，知道口令的人都能重新加入。",
+  "f_removed_title": "现在更改口令吗？",
+  "f_removed_body": "{0} 已被移出。但只要口令不变，回来的路就仍然开着。",
+  "f_later": "稍后",
+  "f_removed_note": "已移除：{0}。更改口令即可关上回来的路。",
+  "f_change": "更改口令",
+  "f_change_where": "FireSquire 只保存自己的密钥，从不保存口令，所以请在 {0} 中更改口令。",
+  "f_change_none": "FireSquire 只保存自己的密钥，从不保存口令。请在堡垒中保存口令的应用里更改，例如 BombVault。",
+  "f_err_no_member": "这个应用已不在你的堡垒中。",
   "flash_probe_left": "FireSquire 无法删除闪存上的测试文件 {0}。请手动删除它。"
 }

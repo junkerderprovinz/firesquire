@@ -310,5 +310,17 @@
   "f_leave_title": "Opuścić twierdzę?",
   "f_leave_body": "Twoje inne aplikacje przestaną widzieć FireSquire, a sprawdzanie toczy się dalej bez nich. Z aktualną frazą FireSquire wróci.",
   "f_left": "FireSquire opuścił twierdzę.",
+  "f_remove": "Usuń",
+  "f_remove_title": "Usunąć instancję {0}?",
+  "f_remove_body": "{0} od razu traci dostęp. Tego nie da się cofnąć.",
+  "f_remove_back": "Każdy, kto nadal ma frazę, może wrócić, dopóki jej nie zmienisz.",
+  "f_removed_title": "Zmienić frazę teraz?",
+  "f_removed_body": "{0} jest już poza twierdzą. Dopóki fraza się nie zmieni, droga powrotna wciąż stoi otworem.",
+  "f_later": "Później",
+  "f_removed_note": "Usunięto: {0}. Zmień frazę, aby zamknąć drogę powrotną.",
+  "f_change": "Zmień frazę",
+  "f_change_where": "FireSquire zachowuje tylko własne klucze, nigdy frazę, więc zmienisz ją w {0}.",
+  "f_change_none": "FireSquire zachowuje tylko własne klucze, nigdy frazę. Zmień ją w aplikacji twojej twierdzy, która ją przechowuje, na przykład w BombVault.",
+  "f_err_no_member": "Tej aplikacji nie ma już w twojej twierdzy.",
   "flash_probe_left": "FireSquire nie mógł usunąć swojego pliku testowego {0} z pendrive’a. Usuń go proszę sam."
 }

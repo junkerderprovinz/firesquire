@@ -240,5 +240,8 @@ html.tt-popups-on #fs-info .fs-key .fs-btn-g svg { width: 1rem; height: 1rem; }
 .fs-state::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--fs-dot); }
 .fs-state-on { --fs-dot: var(--fs-ok); }
 .fs-state-off { --fs-dot: var(--fs-dim); }
+/* The removed stay named in a quiet line until the phrase changes. */
+#fs-info .fs-fort-removed { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; color: var(--fs-dim); }
+#fs-info .fs-fort-removed[hidden] { display: none; }
 #fs-info p.fs-n-msg { margin: 4px 0 0; }
 #fs-info p.fs-n-msg:empty { display: none; }

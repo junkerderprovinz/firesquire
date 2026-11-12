@@ -1,8 +1,8 @@
 <?php
 /* FireSquire's place in a fortress, for the settings page: joining with the
- * phrase, the members and leaving. Every call to ParleyPort's fortress helper
- * goes through $run($args, $stdin), which returns its exit code, output and
- * error output. The phrase reaches the helper on its input and nowhere else;
+ * phrase, the members, taking one out and leaving. Every call to ParleyPort's
+ * fortress helper goes through $run($args, $stdin), which returns its exit
+ * code, output and error output. The phrase reaches the helper on its input and nowhere else;
  * the directory keeps only the keys fortress join derives from it. */
 
 /* FireSquire asks BombVault when the flash was last backed up. */
@@ -45,23 +45,79 @@ function fs_fortress_join($dir, $phrase, $device, $run) {
   return array('error' => strpos($reason, 'phrase: ') === 0 ? 'phrase' : $reason);
 }
 
+function fs_fortress_app_name($m) {
+  $id = (string) ($m['app']['id'] ?? '');
+  $name = (string) ($m['app']['name'] ?? '');
+  return $name === '' || $name === $id ? FS_FORTRESS_NAMES[$id] ?? $id : $name;
+}
+
 /* The other apps of the fortress: each instance with its device and whether
  * it is in reach. Phones, viewers and an instance that never said which app
- * it runs carry no app, so they stay out. */
+ * it runs carry no app, so they stay out. FireSquire keeps no phrase, so
+ * phraseAt is an app in reach that does, where the phrase can be changed. Its
+ * address comes from another member and opens in the browser, so only a web
+ * address counts. */
 function fs_fortress_members($dir, $run) {
   list($code, $out, $err) = $run(array('members', '-dir', $dir, '-json', '-wait', '4s'), '');
   $list = $code === 0 ? json_decode($out, true) : null;
   if (!is_array($list)) return array('error' => fs_fortress_reason($err));
   $members = array();
+  $at = null;
   foreach ($list as $m) {
-    if (($m['kind'] ?? '') !== 'instance') continue;
-    $id = (string) ($m['app']['id'] ?? '');
-    if ($id === '') continue;
-    $name = (string) ($m['app']['name'] ?? '');
-    if ($name === '' || $name === $id) $name = FS_FORTRESS_NAMES[$id] ?? $id;
-    $members[] = array('app' => $name, 'device' => (string) ($m['device'] ?? ''), 'online' => !empty($m['online']));
+    if (($m['kind'] ?? '') !== 'instance' || (string) ($m['app']['id'] ?? '') === '') continue;
+    $member = array('id' => (string) ($m['id'] ?? ''), 'app' => fs_fortress_app_name($m), 'device' => (string) ($m['device'] ?? ''), 'online' => !empty($m['online']));
+    $members[] = $member;
+    $address = (string) ($m['address'] ?? '');
+    if (!$at && $member['online'] && ($m['deployment'] ?? '') !== 'plugin' && preg_match('#^https?://[^\s"\'<>]+$#i', $address)) {
+      $at = array('app' => $member['app'], 'device' => $member['device'], 'address' => $address);
+    }
   }
-  return array('members' => $members);
+  return array('members' => $members, 'phraseAt' => $at);
+}
+
+function fs_fortress_group($dir) {
+  $m = json_decode((string) @file_get_contents("$dir/fortress.json"), true);
+  return is_array($m) ? (string) ($m['group'] ?? '') : '';
+}
+
+/* The apps FireSquire took out since the phrase last changed, which the old
+ * phrase still lets back in. The file names the group of the phrase it was
+ * kept under, so a phrase FireSquire followed or joined with clears it. */
+function fs_fortress_removed($dir, $file) {
+  $kept = json_decode((string) @file_get_contents($file), true);
+  $group = fs_fortress_group($dir);
+  if (!is_array($kept) || $group === '') return array();
+  if (($kept['group'] ?? '') !== $group) {
+    @unlink($file);
+    return array();
+  }
+  return array_values(array_filter($kept['removed'] ?? array(), 'is_array'));
+}
+
+/* Takes the member id out of the fortress, here and at every member in
+ * reach, and adds it to the removed. */
+function fs_fortress_remove($dir, $file, $id, $run) {
+  if (!fs_fortress_joined($dir)) return array('error' => 'notMember');
+  if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/', $id)) return array('error' => 'invalid');
+  list($code, $out, $err) = $run(array('remove', '-dir', $dir, '-wait', '4s', $id), '');
+  $gone = $code === 0 ? json_decode($out, true) : null;
+  if (!is_array($gone)) {
+    $reason = fs_fortress_reason($err);
+    return array('error' => strpos($reason, 'no member ') === 0 ? 'noMember' : $reason);
+  }
+  $list = array_values(array_filter(fs_fortress_removed($dir, $file), function ($r) use ($id) { return ($r['id'] ?? '') !== $id; }));
+  $list[] = array('id' => $id, 'app' => fs_fortress_app_name($gone), 'device' => (string) ($gone['device'] ?? ''));
+  $part = "$file.part";
+  if (@file_put_contents($part, json_encode(array('group' => fs_fortress_group($dir), 'removed' => $list))) !== false) {
+    @chmod($part, 0600);
+    @rename($part, $file);
+  }
+  return array('ok' => true, 'removed' => fs_fortress_names($list));
+}
+
+/* The removed as the card shows them, without their ids. */
+function fs_fortress_names($list) {
+  return array_map(function ($r) { return array('app' => (string) ($r['app'] ?? ''), 'device' => (string) ($r['device'] ?? '')); }, $list);
 }
 
 /* Leaving forgets the membership. The others keep FireSquire as away until

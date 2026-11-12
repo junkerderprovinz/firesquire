@@ -274,5 +274,17 @@
   "f_leave_title": "¿Salir de la fortaleza?",
   "f_leave_body": "Tus otras apps ya no verán FireSquire, y la comprobación sigue sin ellas. Con la frase actual, FireSquire vuelve.",
   "f_left": "FireSquire ha salido de la fortaleza.",
+  "f_remove": "Quitar",
+  "f_remove_title": "¿Quitar {0}?",
+  "f_remove_body": "{0} pierde el acceso al momento. Esto no se puede deshacer.",
+  "f_remove_back": "Quien todavía tenga la frase puede volver a entrar hasta que la cambies.",
+  "f_removed_title": "¿Cambiar la frase ahora?",
+  "f_removed_body": "{0} ya está fuera. Mientras la frase siga igual, el camino de vuelta sigue abierto.",
+  "f_later": "Más tarde",
+  "f_removed_note": "Quitados: {0}. Cambia la frase para cerrar el camino de vuelta.",
+  "f_change": "Cambiar frase",
+  "f_change_where": "FireSquire solo guarda sus propias claves, nunca la frase, así que la cambias en {0}.",
+  "f_change_none": "FireSquire solo guarda sus propias claves, nunca la frase. Cámbiala en una app de tu fortaleza que la guarde, como BombVault.",
+  "f_err_no_member": "Esa app ya no está en tu fortaleza.",
   "flash_probe_left": "FireSquire no pudo borrar su archivo de prueba {0} en el flash. Bórralo tú mismo, por favor."
 }

@@ -6,9 +6,8 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const vm = require('vm');
 const { execFileSync } = require('child_process');
-const { DIR, read, ok, done } = require('./lib');
+const { DIR, read, ok, done, fortressCard } = require('./lib');
 
 const en = JSON.parse(read('lang/en.json'));
 const fill = (s, args) => args.reduce((m, a, i) => m.split('{' + i + '}').join(a), s);
@@ -68,8 +67,8 @@ const listed = JSON.stringify([
 ]);
 x = php(`return fs_fortress_members('${dir}', $run);`, [[0, listed, '']]);
 ok('the helper lists them as JSON and waits a moment for them', /^members -dir \S+ -json -wait \d+s$/.test((x.calls[0] || { args: [] }).args.join(' ')), JSON.stringify(x.calls));
-ok('each app shows with its device and whether it is in reach', JSON.stringify(x.r) === JSON.stringify({ members: [
-  { app: 'BombVault', device: 'Tower', online: true }, { app: 'ShipLog', device: 'Mithallia', online: false }] }), JSON.stringify(x.r));
+ok('each app shows with its device and whether it is in reach', JSON.stringify(x.r.members) === JSON.stringify([
+  { id: 'a', app: 'BombVault', device: 'Tower', online: true }, { id: 'b', app: 'ShipLog', device: 'Mithallia', online: false }]), JSON.stringify(x.r));
 ok('a member that never said which app it runs is left out', !x.r.members.some((m) => m.device === 'Bottich'), JSON.stringify(x.r));
 x = php(`return fs_fortress_members('${dir}', $run);`, [[1, '', 'fortress: dial tcp: no route to host']]);
 ok('a helper that fails names why', x.r.error === 'dial tcp: no route to host', JSON.stringify(x.r));
@@ -84,84 +83,17 @@ console.log('\nThe endpoint');
 const endpoint = read('include/FireSquireFortress.php');
 ok('keeps the membership with the other state', /\/boot\/config\/plugins\/firesquire\/fortress/.test(endpoint));
 ok('passes nothing unescaped to the shell', /escapeshellarg/.test(endpoint) && !/shell_exec|passthru|system\(/.test(endpoint));
-ok('writes no file of its own', !/file_put_contents|fwrite\(\$f|fopen\(/.test(endpoint + read('include/fs_fortress.php').replace(/fwrite\(\$pipes\[0\]/g, '')));
+const writes = (endpoint + read('include/fs_fortress.php')).match(/file_put_contents\(\$\w+|fwrite\(\$(?!pipes\[0\])|fopen\(/g) || [];
+ok('writes no file of its own but the list of the removed', writes.join() === 'file_put_contents($part', writes.join(' | '));
 ok('answers join and leave with the codes the card words', /'phrase'/.test(read('include/fs_fortress.php')) && /409/.test(endpoint));
 fs.rmSync(tmp, { recursive: true, force: true });
 
 console.log('\nThe card');
-class El {
-  constructor(tag) {
-    this.tagName = tag.toUpperCase();
-    this.children = [];
-    this.listeners = {};
-    this.attrs = {};
-    this.own = '';
-    this.value = '';
-    this.hidden = false;
-    this.disabled = false;
-    this.className = '';
-  }
-  appendChild(c) { this.children.push(c); c.parentNode = this; return c; }
-  addEventListener(type, fn) { (this.listeners[type] = this.listeners[type] || []).push(fn); }
-  setAttribute(k, v) { this.attrs[k] = String(v); }
-  getAttribute(k) { return this.attrs[k]; }
-  get textContent() { return this.own + this.children.map((c) => c.textContent).join(''); }
-  set textContent(v) { this.own = String(v); this.children = []; }
-  fire(type, extra) { (this.listeners[type] || []).forEach((fn) => fn({ target: this, preventDefault() {}, ...extra })); }
-  all() { return [this].concat(...this.children.map((c) => c.all())); }
-  querySelector(sel) { return this.all().slice(1).find((e) => (' ' + e.className + ' ').includes(' ' + sel.slice(1) + ' ')) || null; }
-}
-
-function page(state, answers) {
-  const box = new El('div');
-  const posts = [], bodies = [], gets = [], windows = [];
-  let timers = [];
-  const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const button = (cls, glyph, label) => { const b = el('button', cls); b.glyph = glyph; b.appendChild(el('span', 'fs-btn-l', label)); return b; };
-  const window = {
-    csrf_token: 'tok',
-    fireSquireI18n: en,
-    fireSquireUI: {
-      el, button, info: (tip) => { const s = el('span', 'fs-info'); s.tip = tip; return s; },
-      openWindow: (o) => {
-        const w = { o, body: el('div'), act: el('div'), closed: false, close() { w.closed = true; } };
-        w.act.appendChild(button('fs-win-btn', 'Close', en.give_close));
-        o.build(w.body, el('div'), w.act);
-        windows.push(w);
-        return w;
-      },
-    },
-  };
-  const json = (a) => (a === 'down' ? Promise.reject(new Error('down')) : Promise.resolve({ json: () => a }));
-  const ctx = {
-    window,
-    document: { getElementById: (id) => (id === 'fs-fortress' ? box : null) },
-    FormData, URLSearchParams,
-    fetch: (url, o) => {
-      if (!o || o.method !== 'POST') { gets.push(url); return json(/do=members/.test(url) ? answers.members : state); }
-      const d = Object.fromEntries(o.body);
-      bodies.push(o.body);
-      posts.push(d);
-      return json(answers[d.do](d));
-    },
-    setTimeout: (fn, ms) => { const t = { fn, ms }; timers.push(t); return t; },
-    clearTimeout: (t) => { timers = timers.filter((x) => x !== t); },
-    JSON, String, Promise, Object,
-  };
-  vm.runInNewContext(read('firesquire-fortress.js'), ctx);
-  return {
-    box, posts, bodies, gets, windows,
-    find: (pred) => box.all().find(pred),
-    text: () => box.textContent,
-    wait: (ms) => { const due = timers.filter((t) => t.ms <= ms); timers = timers.filter((t) => t.ms > ms); due.forEach((t) => t.fn()); },
-    settle: () => new Promise((r) => setImmediate(r)).then(() => new Promise((r) => setImmediate(r))),
-  };
-}
 const field = (p) => p.find((e) => e.tagName === 'INPUT');
 const MEMBERS = { members: [{ app: 'BombVault', device: 'Tower', online: true }, { app: 'ShipLog', device: 'Mithallia', online: false }] };
 
 (async () => {
-  let p = page({ helper: true, joined: false, device: 'Tower' }, { join: () => ({ helper: true, joined: true, device: 'Tower' }), members: MEMBERS });
+  let p = fortressCard({ helper: true, joined: false, device: 'Tower' }, { join: () => ({ helper: true, joined: true, device: 'Tower' }), members: MEMBERS });
   await p.settle();
   const f = field(p);
   ok('outside a fortress there is one field for the phrase', p.box.all().filter((e) => e.tagName === 'INPUT').length === 1);
@@ -186,29 +118,29 @@ const MEMBERS = { members: [{ app: 'BombVault', device: 'Tower', online: true },
   ok('and lists each member with its state', p.text().includes(fill(en.f_member, ['BombVault', 'Tower'])) && p.text().includes(en.f_connected)
     && p.text().includes(fill(en.f_member, ['ShipLog', 'Mithallia'])) && p.text().includes(en.f_unreachable), p.text());
 
-  p = page({ helper: true, joined: false, device: 'Tower' }, { join: () => ({ error: 'phrase' }) });
+  p = fortressCard({ helper: true, joined: false, device: 'Tower' }, { join: () => ({ error: 'phrase' }) });
   await p.settle();
   field(p).value = 'abandon ability'; field(p).fire('keydown', { key: 'Enter' });
   await p.settle();
   ok('Enter joins at once', p.posts.length === 1);
   ok('words that are no phrase say so and stay to be fixed', p.text().includes(en.f_err_phrase) && field(p) && field(p).value === 'abandon ability' && !field(p).disabled, p.text());
-  p = page({ helper: true, joined: false, device: 'Tower' }, { join: () => ({ error: 'member' }) });
+  p = fortressCard({ helper: true, joined: false, device: 'Tower' }, { join: () => ({ error: 'member' }) });
   await p.settle();
   field(p).value = WORDS; field(p).fire('keydown', { key: 'Enter' });
   await p.settle();
   ok('a second join says FireSquire is in already', p.text().includes(en.f_err_member), p.text());
-  p = page({ helper: true, joined: false, device: 'Tower' }, { join: () => 'down' });
+  p = fortressCard({ helper: true, joined: false, device: 'Tower' }, { join: () => 'down' });
   await p.settle();
   field(p).value = WORDS; field(p).fire('keydown', { key: 'Enter' });
   await p.settle();
   ok('a server out of reach is said so', p.text().includes(fill(en.n_failed, ['network'])), p.text());
 
-  p = page({ helper: false, joined: false, device: 'Tower' }, {});
+  p = fortressCard({ helper: false, joined: false, device: 'Tower' }, {});
   await p.settle();
   ok('without the helper the card says so and offers no field', p.text().includes(en.f_nohelper) && !field(p));
 
   console.log('\nIn a fortress');
-  p = page({ helper: true, joined: true, device: 'Tower' }, { members: { members: [] }, leave: () => ({ helper: true, joined: false, device: 'Tower' }) });
+  p = fortressCard({ helper: true, joined: true, device: 'Tower' }, { members: { members: [] }, leave: () => ({ helper: true, joined: false, device: 'Tower' }) });
   await p.settle();
   ok('the members are asked for once', p.gets.filter((u) => /do=members/.test(u)).length === 1, JSON.stringify(p.gets));
   ok('a fortress with nobody else says so', p.text().includes(en.f_none), p.text());
@@ -225,7 +157,7 @@ const MEMBERS = { members: [{ app: 'BombVault', device: 'Tower', online: true },
   ok('Leave closes the window and goes out', w.closed && p.posts.length === 1 && p.posts[0].do === 'leave');
   ok('and the field for the phrase is back', !!field(p) && p.text().includes(en.f_left), p.text());
 
-  p = page({ helper: true, joined: true, device: 'Tower' }, { members: 'down' });
+  p = fortressCard({ helper: true, joined: true, device: 'Tower' }, { members: 'down' });
   await p.settle();
   ok('members out of reach of the page are said so', p.text().includes(fill(en.n_failed, ['network'])), p.text());
 

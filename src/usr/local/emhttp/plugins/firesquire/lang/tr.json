@@ -232,5 +232,17 @@
   "f_leave_title": "Kaleden ayrılsın mı?",
   "f_leave_body": "Diğer uygulamaların FireSquire’ı artık görmez, kontrol de onlarsız sürer. Güncel ifadeyle FireSquire geri döner.",
   "f_left": "FireSquire kaleden ayrıldı.",
+  "f_remove": "Kaldır",
+  "f_remove_title": "{0} kaldırılsın mı?",
+  "f_remove_body": "{0} erişimini hemen kaybeder. Bu geri alınamaz.",
+  "f_remove_back": "İfade hâlâ elinde olan herkes, sen onu değiştirene kadar geri girebilir.",
+  "f_removed_title": "İfade şimdi değiştirilsin mi?",
+  "f_removed_body": "{0} artık dışarıda. Ama ifade aynı kaldıkça geri dönüş yolu hâlâ açık.",
+  "f_later": "Sonra",
+  "f_removed_note": "Kaldırılanlar: {0}. Geri dönüş yolunu kapatmak için ifadeyi değiştir.",
+  "f_change": "İfadeyi değiştir",
+  "f_change_where": "FireSquire yalnızca kendi anahtarlarını saklar, ifadeyi asla; ifadeyi {0} içinde değiştirirsin.",
+  "f_change_none": "FireSquire yalnızca kendi anahtarlarını saklar, ifadeyi asla. İfadeyi, kalendeki onu saklayan bir uygulamada değiştir, örneğin BombVault'ta.",
+  "f_err_no_member": "Bu uygulama artık kalende değil.",
   "flash_probe_left": "FireSquire, flash üzerindeki {0} test dosyasını silemedi. Lütfen kendin sil."
 }

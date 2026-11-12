@@ -292,5 +292,17 @@
   "f_leave_title": "Opustit pevnost?",
   "f_leave_body": "Tvé ostatní aplikace už FireSquire neuvidí a kontrola poběží dál bez nich. S aktuální frází se FireSquire vrátí.",
   "f_left": "FireSquire opustil pevnost.",
+  "f_remove": "Odebrat",
+  "f_remove_title": "Odebrat instanci {0}?",
+  "f_remove_body": "{0} hned přijde o přístup. Nejde to vrátit zpět.",
+  "f_remove_back": "Kdo frázi pořád má, dostane se zpátky, dokud ji nezměníš.",
+  "f_removed_title": "Změnit frázi hned teď?",
+  "f_removed_body": "{0} je venku. Dokud zůstane fráze stejná, cesta zpátky je ale pořád otevřená.",
+  "f_later": "Později",
+  "f_removed_note": "Odebráno: {0}. Změň frázi a cesta zpátky se zavře.",
+  "f_change": "Změnit frázi",
+  "f_change_where": "FireSquire si ponechává jen vlastní klíče, nikdy frázi, takže ji změníš v {0}.",
+  "f_change_none": "FireSquire si ponechává jen vlastní klíče, nikdy frázi. Změň ji v aplikaci své pevnosti, která ji má, třeba v BombVault.",
+  "f_err_no_member": "Tahle aplikace už ve tvé pevnosti není.",
   "flash_probe_left": "FireSquire nedokázal smazat svůj testovací soubor {0} na flash disku. Smaž ho prosím sám."
 }

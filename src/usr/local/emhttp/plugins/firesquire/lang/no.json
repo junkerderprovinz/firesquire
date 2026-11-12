@@ -268,5 +268,17 @@
   "f_leave_title": "Forlate festningen?",
   "f_leave_body": "De andre appene dine ser ikke FireSquire lenger, og sjekken fortsetter uten dem. Med den gjeldende frasen kommer FireSquire tilbake.",
   "f_left": "FireSquire har forlatt festningen.",
+  "f_remove": "Fjern",
+  "f_remove_title": "Fjerne {0}?",
+  "f_remove_body": "{0} mister tilgangen med en gang. Dette kan ikke angres.",
+  "f_remove_back": "Alle som fortsatt har frasen, kan komme inn igjen til du bytter den.",
+  "f_removed_title": "Bytte frasen nå?",
+  "f_removed_body": "{0} er ute. Så lenge frasen er den samme, står veien tilbake fortsatt åpen.",
+  "f_later": "Senere",
+  "f_removed_note": "Fjernet: {0}. Bytt frasen for å stenge veien tilbake.",
+  "f_change": "Bytt frase",
+  "f_change_where": "FireSquire beholder bare sine egne nøkler, aldri frasen, så du bytter den i {0}.",
+  "f_change_none": "FireSquire beholder bare sine egne nøkler, aldri frasen. Bytt den i en app i festningen din som har den, for eksempel BombVault.",
+  "f_err_no_member": "Den appen er ikke lenger i festningen din.",
   "flash_probe_left": "FireSquire klarte ikke å slette testfilen sin {0} på flash-enheten. Slett den gjerne selv."
 }

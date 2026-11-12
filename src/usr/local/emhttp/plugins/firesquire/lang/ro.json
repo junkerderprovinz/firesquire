@@ -292,5 +292,17 @@
   "f_leave_title": "Ieși din fortăreață?",
   "f_leave_body": "Celelalte aplicații nu vor mai vedea FireSquire, iar verificarea merge mai departe fără ele. Cu fraza actuală, FireSquire se întoarce.",
   "f_left": "FireSquire a ieșit din fortăreață.",
+  "f_remove": "Elimină",
+  "f_remove_title": "Elimini {0}?",
+  "f_remove_body": "{0} își pierde accesul imediat. Acțiunea nu poate fi anulată.",
+  "f_remove_back": "Oricine mai are fraza poate intra din nou până când o schimbi.",
+  "f_removed_title": "Schimbi fraza acum?",
+  "f_removed_body": "{0} e afară. Cât timp fraza rămâne aceeași, drumul înapoi e încă deschis.",
+  "f_later": "Mai târziu",
+  "f_removed_note": "Eliminate: {0}. Schimbă fraza ca să închizi drumul înapoi.",
+  "f_change": "Schimbă fraza",
+  "f_change_where": "FireSquire păstrează doar cheile sale, niciodată fraza, așa că o schimbi în {0}.",
+  "f_change_none": "FireSquire păstrează doar cheile sale, niciodată fraza. Schimb-o într-o aplicație din fortăreața ta care o păstrează, de exemplu BombVault.",
+  "f_err_no_member": "Aplicația nu mai este în fortăreața ta.",
   "flash_probe_left": "FireSquire nu a putut șterge fișierul de test {0} de pe flash. Te rog șterge-l tu."
 }

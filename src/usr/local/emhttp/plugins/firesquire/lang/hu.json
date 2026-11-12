@@ -232,5 +232,17 @@
   "f_leave_title": "Kilépsz az erődből?",
   "f_leave_body": "A többi alkalmazásod ezután nem látja a FireSquire-t, és az ellenőrzés nélkülük megy tovább. Az aktuális jelmondattal a FireSquire visszatér.",
   "f_left": "A FireSquire kilépett az erődből.",
+  "f_remove": "Eltávolítás",
+  "f_remove_title": "Eltávolítod: {0}?",
+  "f_remove_body": "{0} azonnal elveszíti a hozzáférését. Ez nem vonható vissza.",
+  "f_remove_back": "Akinél még megvan a jelmondat, visszajuthat, amíg meg nem változtatod.",
+  "f_removed_title": "Megváltoztatod most a jelmondatot?",
+  "f_removed_body": "{0} kint van. Amíg a jelmondat ugyanaz marad, a visszaút még nyitva áll.",
+  "f_later": "Később",
+  "f_removed_note": "Eltávolítva: {0}. Változtasd meg a jelmondatot, és a visszaút bezárul.",
+  "f_change": "Jelmondat módosítása",
+  "f_change_where": "A FireSquire csak a saját kulcsait tartja meg, a jelmondatot soha, ezért itt változtatod meg: {0}.",
+  "f_change_none": "A FireSquire csak a saját kulcsait tartja meg, a jelmondatot soha. Változtasd meg az erődöd egy olyan alkalmazásában, amely megőrzi, például a BombVaultban.",
+  "f_err_no_member": "Ez az alkalmazás már nincs az erődödben.",
   "flash_probe_left": "A FireSquire nem tudta törölni a(z) {0} tesztfájlt a flashről. Kérlek, töröld magad."
 }

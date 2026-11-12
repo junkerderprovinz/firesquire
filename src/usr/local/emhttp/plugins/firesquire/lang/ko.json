@@ -220,5 +220,17 @@
   "f_leave_title": "요새에서 나갈까요?",
   "f_leave_body": "다른 앱에서 더 이상 FireSquire가 보이지 않고, 점검은 그 앱들 없이 계속됩니다. 현재 문구가 있으면 돌아올 수 있습니다.",
   "f_left": "FireSquire가 요새에서 나갔습니다.",
+  "f_remove": "제거",
+  "f_remove_title": "{0}을(를) 제거하시겠습니까?",
+  "f_remove_body": "{0}은(는) 곧바로 접근 권한을 잃습니다. 되돌릴 수 없습니다.",
+  "f_remove_back": "문구를 바꾸기 전까지는 문구를 아는 사람이면 누구나 다시 들어올 수 있습니다.",
+  "f_removed_title": "지금 문구를 변경하시겠습니까?",
+  "f_removed_body": "{0}은(는) 이제 빠졌습니다. 하지만 문구가 그대로인 동안에는 돌아올 길이 열려 있습니다.",
+  "f_later": "나중에",
+  "f_removed_note": "제거됨: {0}. 문구를 변경하면 돌아올 길이 닫힙니다.",
+  "f_change": "문구 변경",
+  "f_change_where": "FireSquire는 자신의 키만 보관하고 문구는 보관하지 않으므로, 문구는 {0}에서 변경합니다.",
+  "f_change_none": "FireSquire는 자신의 키만 보관하고 문구는 보관하지 않습니다. 문구를 보관하는 요새의 앱(예: BombVault)에서 변경하세요.",
+  "f_err_no_member": "이 앱은 더 이상 요새에 없습니다.",
   "flash_probe_left": "FireSquire가 플래시의 테스트 파일 {0}을(를) 지우지 못했습니다. 직접 지워 주세요."
 }

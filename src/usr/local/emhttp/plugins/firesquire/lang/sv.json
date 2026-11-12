@@ -268,5 +268,17 @@
   "f_leave_title": "Lämna fästningen?",
   "f_leave_body": "Dina andra appar ser inte FireSquire längre, och kontrollen fortsätter utan dem. Med den aktuella frasen kommer FireSquire tillbaka.",
   "f_left": "FireSquire har lämnat fästningen.",
+  "f_remove": "Ta bort",
+  "f_remove_title": "Ta bort {0}?",
+  "f_remove_body": "{0} förlorar sin åtkomst direkt. Det går inte att ångra.",
+  "f_remove_back": "Den som fortfarande har frasen kan komma in igen tills du byter den.",
+  "f_removed_title": "Byta frasen nu?",
+  "f_removed_body": "{0} är ute. Så länge frasen är densamma står vägen tillbaka ändå öppen.",
+  "f_later": "Senare",
+  "f_removed_note": "Borttagna: {0}. Byt frasen för att stänga vägen tillbaka.",
+  "f_change": "Byt fras",
+  "f_change_where": "FireSquire behåller bara sina egna nycklar, aldrig frasen, så du byter den i {0}.",
+  "f_change_none": "FireSquire behåller bara sina egna nycklar, aldrig frasen. Byt den i en app i din fästning som har den, till exempel BombVault.",
+  "f_err_no_member": "Den appen är inte längre med i din fästning.",
   "flash_probe_left": "FireSquire kunde inte ta bort sin testfil {0} på flashminnet. Ta gärna bort den själv."
 }

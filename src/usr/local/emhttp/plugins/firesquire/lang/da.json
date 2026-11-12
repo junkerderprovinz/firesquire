@@ -271,5 +271,17 @@
   "f_leave_title": "Forlade fæstningen?",
   "f_leave_body": "Dine andre apps kan ikke se FireSquire længere, og tjekket fortsætter uden dem. Med den aktuelle sætning kommer FireSquire tilbage.",
   "f_left": "FireSquire har forladt fæstningen.",
+  "f_remove": "Fjern",
+  "f_remove_title": "Fjern {0}?",
+  "f_remove_body": "{0} mister sin adgang med det samme. Det kan ikke fortrydes.",
+  "f_remove_back": "Alle, der stadig har sætningen, kan komme ind igen, indtil du skifter den.",
+  "f_removed_title": "Skift sætningen nu?",
+  "f_removed_body": "{0} er ude. Så længe sætningen er den samme, står vejen tilbage dog stadig åben.",
+  "f_later": "Senere",
+  "f_removed_note": "Fjernet: {0}. Skift sætningen for at lukke vejen tilbage.",
+  "f_change": "Skift sætning",
+  "f_change_where": "FireSquire gemmer kun sine egne nøgler, aldrig sætningen, så du skifter den i {0}.",
+  "f_change_none": "FireSquire gemmer kun sine egne nøgler, aldrig sætningen. Skift den i en app i din fæstning, der har den, for eksempel BombVault.",
+  "f_err_no_member": "Den app er ikke længere i din fæstning.",
   "flash_probe_left": "FireSquire kunne ikke slette sin testfil {0} på flashdrevet. Slet den gerne selv."
 }

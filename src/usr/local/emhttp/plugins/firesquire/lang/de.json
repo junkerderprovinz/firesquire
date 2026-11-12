@@ -271,5 +271,17 @@
   "f_leave_title": "Festung verlassen?",
   "f_leave_body": "Deine anderen Apps sehen FireSquire danach nicht mehr, und die Prüfung läuft ohne sie weiter. Mit der aktuellen Phrase kommt FireSquire zurück.",
   "f_left": "FireSquire hat die Festung verlassen.",
+  "f_remove": "Herausnehmen",
+  "f_remove_title": "{0} herausnehmen?",
+  "f_remove_body": "{0} verliert sofort den Zugang. Das lässt sich nicht rückgängig machen.",
+  "f_remove_back": "Wer die Phrase noch kennt, kommt wieder hinein, bis du sie änderst.",
+  "f_removed_title": "Phrase jetzt ändern?",
+  "f_removed_body": "{0} ist draußen. Solange die Phrase gleich bleibt, steht der Weg zurück aber noch offen.",
+  "f_later": "Später",
+  "f_removed_note": "Herausgenommen: {0}. Ändere die Phrase, dann ist der Weg zurück zu.",
+  "f_change": "Phrase ändern",
+  "f_change_where": "FireSquire behält nur seine eigenen Schlüssel, nie die Phrase. Ändern kannst du sie in {0}.",
+  "f_change_none": "FireSquire behält nur seine eigenen Schlüssel, nie die Phrase. Ändere sie in einer App deiner Festung, die sie kennt, etwa in BombVault.",
+  "f_err_no_member": "Diese App ist nicht mehr in deiner Festung.",
   "flash_probe_left": "FireSquire konnte seine Testdatei {0} auf dem Flash nicht löschen. Lösch sie bitte selbst."
 }

@@ -274,5 +274,17 @@
   "f_leave_title": "Leave the fortress?",
   "f_leave_body": "Your other apps will not see FireSquire anymore, and the check goes on without them. The current phrase brings FireSquire back.",
   "f_left": "FireSquire has left the fortress.",
+  "f_remove": "Remove",
+  "f_remove_title": "Remove {0}?",
+  "f_remove_body": "{0} loses its access right away. This can't be undone.",
+  "f_remove_back": "Anyone who still has the phrase can get back in until you change it.",
+  "f_removed_title": "Change the phrase now?",
+  "f_removed_body": "{0} is out. As long as the phrase stays the same, the way back in is still open.",
+  "f_later": "Later",
+  "f_removed_note": "Removed: {0}. Change the phrase to close the way back in.",
+  "f_change": "Change phrase",
+  "f_change_where": "FireSquire keeps only its own keys, never the phrase, so you change it in {0}.",
+  "f_change_none": "FireSquire keeps only its own keys, never the phrase. Change it in an app of your fortress that keeps it, such as BombVault.",
+  "f_err_no_member": "That app is not in your fortress anymore.",
   "flash_probe_left": "FireSquire could not delete its test file {0} on the flash. Please delete it yourself."
 }

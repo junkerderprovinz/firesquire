@@ -265,5 +265,17 @@
   "f_leave_title": "Uscire dalla fortezza?",
   "f_leave_body": "Le tue altre app non vedranno più FireSquire, e il controllo prosegue senza di loro. Con la frase attuale FireSquire torna.",
   "f_left": "FireSquire è uscito dalla fortezza.",
+  "f_remove": "Rimuovi",
+  "f_remove_title": "Rimuovere {0}?",
+  "f_remove_body": "{0} perde subito l'accesso. Non si può annullare.",
+  "f_remove_back": "Chi ha ancora la frase può rientrare finché non la cambi.",
+  "f_removed_title": "Cambiare la frase adesso?",
+  "f_removed_body": "{0} è fuori. Finché la frase resta la stessa, la via per rientrare è ancora aperta.",
+  "f_later": "Più tardi",
+  "f_removed_note": "Rimossi: {0}. Cambia la frase per chiudere la via del ritorno.",
+  "f_change": "Cambia la frase",
+  "f_change_where": "FireSquire tiene solo le sue chiavi, mai la frase, quindi la cambi in {0}.",
+  "f_change_none": "FireSquire tiene solo le sue chiavi, mai la frase. Cambiala in un'app della tua fortezza che la conserva, come BombVault.",
+  "f_err_no_member": "Questa app non è più nella tua fortezza.",
   "flash_probe_left": "FireSquire non è riuscito a cancellare il suo file di prova {0} sulla chiavetta. Cancellalo tu, per favore."
 }
