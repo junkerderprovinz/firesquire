@@ -15,7 +15,7 @@ const ORDER = ['✨ **Added**', '🎨 **Design**', '⚡ **Improved**', '🐛 **F
 const DASHES = new RegExp('[' + String.fromCharCode(0x2013, 0x2014) + ']| - ');
 
 console.log('\nThe CHANGES');
-ok('newest first', versions.join(' ') === '1.3.0 1.2.0 1.1.0 1.0.0', versions.join(' '));
+ok('newest first', versions.join(' ') === '1.3.1 1.3.0 1.2.0 1.1.0 1.0.0', versions.join(' '));
 ok('the version on top is the plugin\'s', (/<!ENTITY version\s+"([^"]+)">/.exec(plg) || [])[1] === versions[0]);
 ok('no note carries the former name', !/smoke\s?signal/i.test(changes));
 ok('no note points at a release of its own', !/\bv?\d+\.\d+\.\d+\b/.test(changes.replace(/^## \d+\.\d+\.\d+$/gm, '').replace(/(GlimStone|TowerTorch) \d+\.\d+\.\d+/g, '')));
