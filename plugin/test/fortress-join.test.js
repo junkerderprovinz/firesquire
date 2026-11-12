@@ -60,11 +60,13 @@ const listed = JSON.stringify([
   { id: 'a', kind: 'instance', app: { id: 'bombvault', name: 'BombVault' }, device: 'Tower', online: true },
   { id: 'b', kind: 'instance', app: { id: 'shiplog', name: 'shiplog' }, device: 'Mithallia', online: false },
   { id: 'c', kind: 'mobile', app: { id: '', name: '' }, device: 'Phone', online: true },
+  { id: 'd', kind: 'instance', app: { id: '', name: '', version: '' }, device: 'Bottich', online: false },
 ]);
 x = php(`return fs_fortress_members('${dir}', $run);`, [[0, listed, '']]);
 ok('the helper lists them as JSON and waits a moment for them', /^members -dir \S+ -json -wait \d+s$/.test((x.calls[0] || { args: [] }).args.join(' ')), JSON.stringify(x.calls));
 ok('each app shows with its device and whether it is in reach', JSON.stringify(x.r) === JSON.stringify({ members: [
   { app: 'BombVault', device: 'Tower', online: true }, { app: 'ShipLog', device: 'Mithallia', online: false }] }), JSON.stringify(x.r));
+ok('a member that never said which app it runs is left out', !x.r.members.some((m) => m.device === 'Bottich'), JSON.stringify(x.r));
 x = php(`return fs_fortress_members('${dir}', $run);`, [[1, '', 'fortress: dial tcp: no route to host']]);
 ok('a helper that fails names why', x.r.error === 'dial tcp: no route to host', JSON.stringify(x.r));
 
