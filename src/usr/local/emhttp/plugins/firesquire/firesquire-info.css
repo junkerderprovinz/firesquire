@@ -60,7 +60,9 @@
 .fs-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; min-height: 44px; padding: 6px 0; }
 .fs-prose { margin: 4px 0 8px; text-align: start; }
 .fs-ver { font-variant-numeric: tabular-nums lining-nums; }
-#fs-info a.fs-ver { margin: 0; }
+/* A version is a plain link to its release. */
+#fs-info a.fs-ver { margin: 0; color: var(--fs-link); text-decoration: none; }
+#fs-info a.fs-ver:hover { text-decoration: underline; }
 
 /* The README's buttons as TowerTorch draws them: the mark and the name at
    rest, the brand's own colour and one sheen under the pointer. */
@@ -219,23 +221,19 @@ html.tt-popups-on .fs-win .fs-copy { align-self: center; }
 #fs-info .fs-row-lbl { display: inline-flex; align-items: center; min-width: 0; }
 #fs-info .fs-row-end { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; margin-inline-start: auto; }
 
-/* A version is a badge that leads to its release. */
-html.tt-popups-on #fs-info a.fs-ver {
-  display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: var(--fs-r-pill);
-  background: color-mix(in srgb, var(--tt-text, #e6e6e6) 12%, var(--fs-card)); font-size: var(--tt-text-meta, 12px); font-weight: 600; text-decoration: none;
-}
-
 /* TowerTorch's sheets reach every link and focus ring on a settings page with
    !important, and only an important rule in a layer outranks them: a tab
-   keeps a visible focus ring, and the README buttons keep their ink against
-   the accent TowerTorch gives every link. */
+   and a version keep a visible focus ring, a version keeps the link colour,
+   and the README buttons keep their ink against the accent TowerTorch gives
+   every link. */
 @layer firesquire-settings {
   #fs-info .fs-tab:focus-visible { outline: 2px solid var(--fs-focus) !important; outline-offset: 2px !important; filter: none !important; }
   #fs-info a.fs-rbtn { color: var(--tt-text, #e6e6e6) !important; filter: none !important; }
   @media (hover: hover) {
     #fs-info .fs-rbtn-unit:hover a.fs-rbtn { color: var(--fs-give-ink) !important; }
   }
-  html.tt-popups-on #fs-info a.fs-ver { color: var(--tt-text, #e6e6e6) !important; }
+  #fs-info a.fs-ver { color: var(--fs-link) !important; filter: none !important; }
+  #fs-info a.fs-ver:focus-visible { outline: 2px solid var(--fs-focus) !important; outline-offset: 2px !important; }
   /* TowerTorch makes every button on a settings page an accent pill. Here a
      button has rounded corners, the run button keeps the accent at the size
      of a key, and the release notes are a secondary button. */

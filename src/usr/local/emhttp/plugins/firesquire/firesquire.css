@@ -70,6 +70,7 @@ html {
   --fs-head-ink: var(--hover-button-text-color, #fff);
   --fs-dim: var(--alt-text-color, #8d8d8d);
   --fs-focus: var(--link-text-color, #486dba);
+  --fs-link: var(--link-text-color, #486dba);
   --fs-ok: #3fae6a;
   --fs-err: #e05252;
   --fs-warn: #ff832b;
@@ -100,6 +101,7 @@ html.tt-popups-on :is(#fs-info, .fs-win, .fs-scrim) {
   --fs-head-ink: var(--tt-accent-text, #161616);
   --fs-dim: var(--tt-text-dim, #8a8a8a);
   --fs-focus: var(--tt-accent, #FCC419);
+  --fs-link: var(--tt-accent-ink, #FCC419);
   --fs-ok: var(--tt-ok-ink, #6fdc8c);
   --fs-err: var(--tt-err-ink, #ff8389);
   --fs-warn: var(--tt-warn-ink, #ff832b);
