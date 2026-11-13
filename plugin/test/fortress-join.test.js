@@ -147,7 +147,7 @@ const refused = (promise) => promise.then(() => null, (e) => e);
 
   console.log('\nThe page');
   ok('the settings page loads the card and the adapter', /fortress-card\.js/.test(read('FireSquireTools.page')) && /firesquire-fortress\.js/.test(read('FireSquireTools.page')));
-  ok('the card stands before the notifications', /"fs-fortress"[\s\S]*"fs-notify"/.test(read('firesquire-info.js')));
+  ok('the card stands after the notifications', /"fs-notify"[\s\S]*"fs-fortress"/.test(read('firesquire-info.js')));
   ok('no texts of the old card are left', !Object.keys(JSON.parse(read('lang/en.json'))).some((k) => /^f_/.test(k)));
 
   done();

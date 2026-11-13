@@ -239,8 +239,8 @@
   var ver = root.getAttribute("data-fs-ver");
   // GlimStone's fortress card draws itself into its place, and
   // firesquire-notify.js fills in the notification and schedule cards.
-  if (withFortress) pane("fortress", t("t_fortress"), "ShieldOn").appendChild(el("div")).id = "fs-fortress";
   if (withNotify) pane("notify", t("n_card"), "Notifications").appendChild(el("div")).id = "fs-notify";
+  if (withFortress) pane("fortress", t("t_fortress"), "ShieldOn").appendChild(el("div")).id = "fs-fortress";
 
   var pInfo = pane("info", t("t_info"), "Info");
   var cVer = card(t("ver_title"), pInfo);

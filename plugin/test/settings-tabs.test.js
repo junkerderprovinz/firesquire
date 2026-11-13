@@ -79,10 +79,10 @@ function page({ themed = true, fortress = true, notify = true, stored = null, na
 
 console.log('\nThe tabs');
 let p = page();
-ok('General, Fortress, Notifications and Info, in that order', p.names.join() === 'general,fortress,notify,info', p.names.join());
-ok('each named in the page\'s words', p.tabs.map((t) => t.querySelector('.fs-tablbl').textContent).join() === [en.t_general, en.t_fortress, en.n_card, en.t_info].join(),
+ok('General, Notifications, Fortress and Info, in that order', p.names.join() === 'general,notify,fortress,info', p.names.join());
+ok('each named in the page\'s words', p.tabs.map((t) => t.querySelector('.fs-tablbl').textContent).join() === [en.t_general, en.n_card, en.t_fortress, en.t_info].join(),
   p.tabs.map((t) => t.textContent).join());
-ok('each wearing its glyph from GlimStone\'s set, the Fortress the shield', p.tabs.map((t) => /data-glyph="(\w+)"/.exec(t.querySelector('.fs-tabico').innerHTML)[1]).join() === 'TabGeneral,ShieldOn,Notifications,Info',
+ok('each wearing its glyph from GlimStone\'s set, the Fortress the shield', p.tabs.map((t) => /data-glyph="(\w+)"/.exec(t.querySelector('.fs-tabico').innerHTML)[1]).join() === 'TabGeneral,Notifications,ShieldOn,Info',
   p.tabs.map((t) => t.querySelector('.fs-tabico').innerHTML).join());
 const list = p.root.all().find((e) => e.getAttribute('role') === 'tablist');
 ok('one vertical tab list', list && list.getAttribute('aria-orientation') === 'vertical' && list.children.length === 4);
@@ -119,7 +119,7 @@ ok('the open tab takes the tab order', p.tabs.map((t) => t.tabIndex).join() === 
 ok('and is kept for the next visit', p.store['firesquire.settings.tab'] === 'info', JSON.stringify(p.store));
 p = page();
 p.tabs[0].fire('keydown', { key: 'ArrowDown' });
-ok('the down arrow opens the next tab and moves the focus there', p.open().join() === 'fortress' && El.focused === p.tabs[1]);
+ok('the down arrow opens the next tab and moves the focus there', p.open().join() === 'notify' && El.focused === p.tabs[1]);
 p.tabs[1].fire('keydown', { key: 'ArrowUp' });
 p.tabs[0].fire('keydown', { key: 'ArrowUp' });
 ok('the up arrow on the first wraps to the last', p.open().join() === 'info' && El.focused === p.tabs[3]);

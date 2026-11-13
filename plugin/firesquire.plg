@@ -42,7 +42,7 @@
 
 🎨 **Design**
 - **The settings page in tabs.** General, Fortress, Notifications and Info sit in a column of tiles beside the cards, just like on ShipLog's and TowerTorch's pages, and FireSquire remembers the one you had open.
-- **The same Fortress card in every plugin.** FireSquire, ShipLog, TowerTorch and TollRoll share one Fortress card, in its own place right after the general part, with each app's logo and version and a status window for your other plugins.
+- **The same Fortress card in every plugin.** FireSquire, ShipLog, TowerTorch and TollRoll share one Fortress card, in its own tab just above Info, with each app's logo and version and a status window for your other plugins.
 - **FireSquire follows GlimStone 4.4.0.** While a window is open, the page behind it is out of reach for the pointer and for screen readers. A value a notification channel cannot take gets a line right under its field, and a quick answer from your fortress no longer flashes a waiting line first.
 
 🐛 **Fixed**

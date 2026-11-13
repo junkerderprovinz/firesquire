@@ -91,7 +91,7 @@ for (const themed of [true, false]) {
   ok(`${look}: with the helpers both come back`, p.ids.includes('fs-fortress') && p.ids.includes('fs-notify') && (themed ? p.text.includes(en.tools_g_fortress) : p.text.includes(fortressLine)));
   // The fortress sits where every plugin of the house has it, in the tab right after General.
   const tabs = p.root.all().filter((e) => e.getAttribute('role') === 'tab').map((e) => e.getAttribute('data-fs-tab'));
-  ok(`${look}: the fortress has the tab right after General`, tabs.indexOf('fortress') === 1 && tabs[0] === 'general', tabs.join(' | '));
+  ok(`${look}: the fortress has the tab just above Info`, tabs[tabs.length - 2] === 'fortress' && tabs[tabs.length - 1] === 'info' && tabs[0] === 'general', tabs.join(' | '));
 }
 
 console.log('\nThe check');
