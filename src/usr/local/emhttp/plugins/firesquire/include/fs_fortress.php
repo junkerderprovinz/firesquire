@@ -42,8 +42,10 @@ function fs_fortress_reason($err) {
   return $err === '' ? 'helper' : preg_replace('/^fortress: /', '', strtok($err, "\n"));
 }
 
+/* Joining again with the new phrase keeps the member key, so the others know
+ * FireSquire as before. */
 function fs_fortress_join($dir, $phrase, $device, $run) {
-  if (fs_fortress_joined($dir)) return array('error' => 'member');
+  if (fs_fortress_joined($dir) && !fs_fortress_phrase_changed($dir)) return array('error' => 'member');
   // fortress join reads one line, and a pasted phrase may come in several.
   $words = trim(preg_replace('/\s+/', ' ', (string) $phrase));
   if ($words === '') return array('error' => 'phrase');
@@ -84,7 +86,7 @@ function fs_fortress_state($dir, $file, $device, $run) {
   $members = array();
   if (fs_fortress_joined($dir)) $members = fs_fortress_members($dir, $run)['members'] ?? array();
   return array('joined' => fs_fortress_joined($dir), 'device' => $device, 'removedHere' => fs_fortress_removed_here($dir),
-    'members' => $members, 'removed' => fs_fortress_names(fs_fortress_removed($dir, $file)));
+    'phraseChanged' => fs_fortress_phrase_changed($dir), 'members' => $members, 'removed' => fs_fortress_names(fs_fortress_removed($dir, $file)));
 }
 
 /* The status report of one member in reach, in the page's language. The
@@ -107,6 +109,19 @@ function fs_fortress_status($dir, $id, $lang, $run) {
 function fs_fortress_group($dir) {
   $m = json_decode((string) @file_get_contents("$dir/fortress.json"), true);
   return is_array($m) ? (string) ($m['group'] ?? '') : '';
+}
+
+/* The fortress took a phrase FireSquire could not follow. An app that took
+ * it answers on the old one as moved, and the helper keeps that in the book
+ * under FireSquire's group; once it follows, the book starts over. */
+function fs_fortress_phrase_changed($dir) {
+  $group = fs_fortress_group($dir);
+  $book = json_decode((string) @file_get_contents("$dir/state.json"), true)['fortress'] ?? null;
+  if ($group === '' || !is_array($book) || ($book['group'] ?? '') !== $group) return false;
+  foreach ($book['members'] ?? array() as $m) {
+    if (!empty($m['moved'])) return true;
+  }
+  return false;
 }
 
 /* The apps FireSquire took out since the phrase last changed, which the old
