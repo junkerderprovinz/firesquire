@@ -49,7 +49,7 @@ switch ($_POST['do'] ?? '') {
   case 'join':
     if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));
     $r = fs_fortress_join($fsDir, (string) ($_POST['phrase'] ?? ''), fs_fortress_device('/boot/config/ident.cfg'), $fsRun);
-    if (isset($r['error'])) fs_answer($r['error'] === 'member' ? 409 : ($r['error'] === 'phrase' ? 400 : 500), $r);
+    if (isset($r['error'])) fs_answer(array('member' => 409, 'phrase' => 400, 'closedUntilNewPhrase' => 403)[$r['error']] ?? 500, $r);
     fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
   case 'remove':
     if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));

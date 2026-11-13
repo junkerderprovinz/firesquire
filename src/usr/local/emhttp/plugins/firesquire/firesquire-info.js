@@ -60,7 +60,7 @@
     { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], rest: "var(--fs-coin-xrp)", networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
   ];
 
-  var GLS_VER = "4.4.0";
+  var GLS_VER = "4.4.1";
   var GLS_REPO = "https://github.com/junkerderprovinz/glimstone";
 
   function t(k) { return L[k] == null ? k : String(L[k]); }

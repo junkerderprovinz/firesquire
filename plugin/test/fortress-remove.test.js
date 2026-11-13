@@ -1,6 +1,6 @@
 // Taking another app out of the fortress from the settings page. The helper removes it there and at
 // every member in reach, and FireSquire keeps the names on the flash until the phrase changes,
-// since the old phrase still lets a removed app back in. FireSquire keeps no phrase, so the card
+// since until then the fortress takes no new app. FireSquire keeps no phrase, so the card
 // names the apps of the fortress that keep one, which it tells by their form.
 const fs = require('fs');
 const os = require('os');

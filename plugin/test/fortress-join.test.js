@@ -43,6 +43,24 @@ x = php(`return fs_fortress_join('${dir}', '${WORDS}', 'Tower', $run);`, [[1, ''
 ok('any other failure names itself', x.r.error === 'mkdir /boot/config: read-only file system', JSON.stringify(x.r));
 x = php(`return fs_fortress_join('${dir}', '', 'Tower', $run);`);
 ok('an empty field calls no helper', x.r.error === 'phrase' && x.calls.length === 0, JSON.stringify(x));
+
+console.log('\nJoining while the fortress takes no new app');
+const SHUT = 'fortress: closedUntilNewPhrase: the fortress takes no new member until its phrase changes; join again with the new phrase once it has';
+// The stand-in writes the membership the way fortress join does.
+const joining = `$join = function ($args, $stdin) use ($run) {
+    if ($args[0] === 'join') { @mkdir('${dir}', 0700, true); touch('${dir}/fortress.json'); }
+    return $run($args, $stdin);
+  };
+  return fs_fortress_join('${dir}', '${WORDS}', 'Tower', $join);`;
+x = php(joining, [[0, '', ''], [3, '[]', SHUT]]);
+ok('the helper asks the members right after joining', (x.calls[1] || { args: [] }).args.join(' ') === `members -dir ${dir} -json -wait 8s`, JSON.stringify(x.calls));
+ok('exit code 3 comes back as closedUntilNewPhrase', x.r.error === 'closedUntilNewPhrase', JSON.stringify(x.r));
+ok('and the membership the members turned away is forgotten', !fs.existsSync(path.join(dir, 'fortress.json')), fs.existsSync(dir) ? fs.readdirSync(dir).join() : 'gone');
+fs.mkdirSync(dir, { recursive: true });
+fs.writeFileSync(path.join(dir, 'removed-here'), '');
+x = php(joining, [[0, '', ''], [3, '[]', SHUT]]);
+ok('a FireSquire another app took out still says so', x.r.error === 'closedUntilNewPhrase' && fs.existsSync(path.join(dir, 'removed-here')), JSON.stringify(x.r));
+fs.rmSync(dir, { recursive: true, force: true });
 fs.mkdirSync(dir);
 fs.writeFileSync(path.join(dir, 'fortress.json'), '{}');
 fs.writeFileSync(path.join(dir, 'state.json'), '{}');
@@ -101,6 +119,7 @@ ok('passes nothing unescaped to the shell', /escapeshellarg/.test(endpoint) && !
 const writes = (endpoint + read('include/fs_fortress.php')).match(/file_put_contents\(\$\w+|fwrite\(\$(?!pipes\[0\])|fopen\(/g) || [];
 ok('writes no file of its own but the list of the removed', writes.join() === 'file_put_contents($part', writes.join(' | '));
 ok('answers join and leave with the codes the card words', /'phrase'/.test(read('include/fs_fortress.php')) && /409/.test(endpoint));
+ok('a join the members turn away answers 403', /'closedUntilNewPhrase' => 403/.test(endpoint));
 ok('answers every step with the whole state', (endpoint.match(/fs_answer\(200, fs_state\(/g) || []).length === 4, (endpoint.match(/fs_answer\(200[^;]*/g) || []).join(' | '));
 fs.rmSync(tmp, { recursive: true, force: true });
 
@@ -128,6 +147,12 @@ const refused = (promise) => promise.then(() => null, (e) => e);
   p = fortressAdapter(OUT, { join: () => ({ error: 'member' }) });
   e = await refused(p.adapter.join(WORDS.split(' ')));
   ok('a second join is refused as member, so the card reloads', e && e.code === 'member', JSON.stringify(e));
+  p = fortressAdapter(OUT, { join: () => ({ error: 'closedUntilNewPhrase' }) });
+  e = await refused(p.adapter.join(WORDS.split(' ')));
+  const card = {};
+  require('vm').runInNewContext(read('fortress-card.js'), card);
+  const en = card.GlimFortressCard.text('en');
+  ok('a fortress closed until its phrase changes shows joinLocked', e && en.joinLocked && card.GlimFortressCard.joinRefusal(en, e.code) === en.joinLocked, JSON.stringify(e));
   p = fortressAdapter(OUT, { join: () => ({ error: 'mkdir /boot/config: read-only file system' }) });
   e = await refused(p.adapter.join(WORDS.split(' ')));
   ok('any other failure is refused too', e && e.code === 'mkdir /boot/config: read-only file system', JSON.stringify(e));

@@ -43,16 +43,34 @@ function fs_fortress_reason($err) {
 }
 
 /* Joining again with the new phrase keeps the member key, so the others know
- * FireSquire as before. */
+ * FireSquire as before. After a removal the members take no new app until
+ * the phrase changes, and the helper exits with 3 on its first command in the
+ * fortress. FireSquire then forgets the membership again. */
 function fs_fortress_join($dir, $phrase, $device, $run) {
   if (fs_fortress_joined($dir) && !fs_fortress_phrase_changed($dir)) return array('error' => 'member');
   // fortress join reads one line, and a pasted phrase may come in several.
   $words = trim(preg_replace('/\s+/', ' ', (string) $phrase));
   if ($words === '') return array('error' => 'phrase');
+  $removed = fs_fortress_removed_here($dir);
   list($code, , $err) = $run(array('join', '-dir', $dir, '-app', 'firesquire', '-name', $device, '-lan', '-uses', FS_FORTRESS_USES, '-icon', FS_FORTRESS_ICON), $words . "\n");
-  if ($code === 0) return array('ok' => true);
-  $reason = fs_fortress_reason($err);
-  return array('error' => strpos($reason, 'phrase: ') === 0 ? 'phrase' : $reason);
+  if ($code !== 0) {
+    $reason = fs_fortress_reason($err);
+    return array('error' => strpos($reason, 'phrase: ') === 0 ? 'phrase' : $reason);
+  }
+  list($code) = $run(array('members', '-dir', $dir, '-json', '-wait', '8s'), '');
+  if ($code !== 3) return array('ok' => true);
+  fs_fortress_forget($dir);
+  if ($removed && @mkdir($dir, 0700, true)) @touch("$dir/removed-here");
+  return array('error' => 'closedUntilNewPhrase');
+}
+
+/* Forgets the membership kept in $dir along with the helper's state. */
+function fs_fortress_forget($dir) {
+  if (!is_dir($dir)) return true;
+  foreach (scandir($dir) as $f) {
+    if ($f !== '.' && $f !== '..') @unlink("$dir/$f");
+  }
+  return @rmdir($dir);
 }
 
 function fs_fortress_app_name($m) {
@@ -124,8 +142,8 @@ function fs_fortress_phrase_changed($dir) {
   return false;
 }
 
-/* The apps FireSquire took out since the phrase last changed, which the old
- * phrase still lets back in. The file names the group of the phrase it was
+/* The apps FireSquire took out since the phrase last changed, which keep the
+ * fortress closed to new apps until it changes. The file names the group of the phrase it was
  * kept under, so a phrase FireSquire followed or joined with clears it. */
 function fs_fortress_removed($dir, $file) {
   $kept = json_decode((string) @file_get_contents($file), true);
@@ -170,9 +188,5 @@ function fs_fortress_names($list) {
 function fs_fortress_leave($dir, $run) {
   if (!fs_fortress_joined($dir)) return array('error' => 'notMember');
   $run(array('leave', '-dir', $dir, '-wait', '8s'), '');
-  if (!is_dir($dir)) return array('ok' => true);
-  foreach (scandir($dir) as $f) {
-    if ($f !== '.' && $f !== '..') @unlink("$dir/$f");
-  }
-  return @rmdir($dir) ? array('ok' => true) : array('error' => 'remove');
+  return fs_fortress_forget($dir) ? array('ok' => true) : array('error' => 'remove');
 }
