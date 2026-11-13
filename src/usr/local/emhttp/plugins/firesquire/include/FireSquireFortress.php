@@ -57,7 +57,7 @@ switch ($_POST['do'] ?? '') {
     if (isset($r['error'])) fs_answer(array('notMember' => 409, 'invalid' => 400, 'noMember' => 404)[$r['error']] ?? 502, $r);
     fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
   case 'leave':
-    $r = fs_fortress_leave($fsDir);
+    $r = fs_fortress_leave($fsDir, $fsRun);
     if (isset($r['error'])) fs_answer($r['error'] === 'notMember' ? 409 : 500, $r);
     fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
 }

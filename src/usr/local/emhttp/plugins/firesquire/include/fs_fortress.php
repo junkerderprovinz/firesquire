@@ -164,10 +164,13 @@ function fs_fortress_names($list) {
   return array_map(function ($r) { return array('app' => (string) ($r['app'] ?? ''), 'name' => (string) ($r['name'] ?? ''), 'device' => (string) ($r['device'] ?? '')); }, $list);
 }
 
-/* Leaving forgets the membership. The others keep FireSquire as away until
- * somebody removes it, and the phrase brings it back. */
-function fs_fortress_leave($dir) {
+/* Leaving tells the apps in reach through the helper, so they drop FireSquire
+ * at once, and forgets the membership even when nobody answers. The phrase
+ * brings it back. */
+function fs_fortress_leave($dir, $run) {
   if (!fs_fortress_joined($dir)) return array('error' => 'notMember');
+  $run(array('leave', '-dir', $dir, '-wait', '8s'), '');
+  if (!is_dir($dir)) return array('ok' => true);
   foreach (scandir($dir) as $f) {
     if ($f !== '.' && $f !== '..') @unlink("$dir/$f");
   }

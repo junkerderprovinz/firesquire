@@ -85,10 +85,12 @@ x = php(`return fs_fortress_state('${dir}', '${kept}', 'Tower', $run);`, [[1, ''
 ok('members out of reach leave the rest of the state standing', x.r.joined === true && x.r.members.length === 0, JSON.stringify(x.r));
 
 console.log('\nLeaving');
-x = php(`return fs_fortress_leave('${dir}');`);
-ok('takes the membership and its state away', x.r.ok === true && !fs.existsSync(dir), JSON.stringify(x.r));
-x = php(`return fs_fortress_leave('${dir}');`);
-ok('outside a fortress there is nothing to leave', x.r.error === 'notMember', JSON.stringify(x.r));
+fs.writeFileSync(path.join(dir, 'fortress.json'), '{}');
+x = php(`return fs_fortress_leave('${dir}', $run);`, [[1, '', 'fortress: dial tcp: no route to host']]);
+ok('the helper tells the apps in reach that FireSquire left', (x.calls[0] || { args: [] }).args.join(' ') === `leave -dir ${dir} -wait 8s`, JSON.stringify(x.calls));
+ok('and with nobody in reach it still takes the membership and its state away', x.r.ok === true && !fs.existsSync(dir), JSON.stringify(x.r));
+x = php(`return fs_fortress_leave('${dir}', $run);`);
+ok('outside a fortress there is nothing to leave', x.r.error === 'notMember' && x.calls.length === 0, JSON.stringify(x));
 x = php(`return fs_fortress_state('${dir}', '${kept}', 'Tower', $run);`);
 ok('and the state asks the helper for nobody', x.r.joined === false && x.r.members.length === 0 && x.calls.length === 0, JSON.stringify(x));
 
