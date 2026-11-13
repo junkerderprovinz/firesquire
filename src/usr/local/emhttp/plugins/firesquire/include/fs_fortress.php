@@ -65,7 +65,7 @@ function fs_fortress_app_name($m) {
  * viewers and an instance that never said which app it runs carry no app, so
  * they stay out. The form tells the card which apps keep the phrase. */
 function fs_fortress_members($dir, $run) {
-  list($code, $out, $err) = $run(array('members', '-dir', $dir, '-json', '-wait', '4s'), '');
+  list($code, $out, $err) = $run(array('members', '-dir', $dir, '-json', '-wait', '8s'), '');
   $list = $code === 0 ? json_decode($out, true) : null;
   if (!is_array($list)) return array('error' => fs_fortress_reason($err));
   $members = array();
@@ -94,7 +94,7 @@ function fs_fortress_state($dir, $file, $device, $run) {
 function fs_fortress_status($dir, $id, $lang, $run) {
   if (!fs_fortress_joined($dir)) return array('error' => 'notMember');
   if (!preg_match(FS_FORTRESS_ID, $id)) return array('error' => 'invalid');
-  $args = array('status', '-dir', $dir, '-json', '-wait', '4s');
+  $args = array('status', '-dir', $dir, '-json', '-wait', '8s');
   if (preg_match('/^[a-z]{2}$/', $lang)) array_push($args, '-lang', $lang);
   list($code, $out, $err) = $run($args, '');
   $list = $code === 0 ? json_decode($out, true) : null;
@@ -143,7 +143,7 @@ function fs_fortress_removed($dir, $file) {
 function fs_fortress_remove($dir, $file, $id, $run) {
   if (!fs_fortress_joined($dir)) return array('error' => 'notMember');
   if (!preg_match(FS_FORTRESS_ID, $id)) return array('error' => 'invalid');
-  list($code, $out, $err) = $run(array('remove', '-dir', $dir, '-wait', '4s', $id), '');
+  list($code, $out, $err) = $run(array('remove', '-dir', $dir, '-wait', '8s', $id), '');
   $gone = $code === 0 ? json_decode($out, true) : null;
   if (!is_array($gone)) {
     $reason = fs_fortress_reason($err);

@@ -6,7 +6,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { DIR, read, ok, done, fortressAdapter } = require('./lib');
+const { DIR, read, ok, done, fortressAdapter, hearsTheNetwork } = require('./lib');
 
 const LIB = path.join(DIR, 'include', 'fs_fortress.php').replace(/\\/g, '/');
 const WORDS = 'abandon ability able about above absent absorb abstract absurd abuse access accident';
@@ -64,7 +64,8 @@ const listed = JSON.stringify([
   { id: 'e', kind: 'instance', app: { id: 'knightloader', name: 'KnightLoader', version: '1.2.0' }, device: 'Laptop', deployment: 'desktop', online: true, direct: false },
 ]);
 x = php(`return fs_fortress_members('${dir}', $run);`, [[0, listed, '']]);
-ok('the helper lists them as JSON and waits a moment for them', /^members -dir \S+ -json -wait \d+s$/.test((x.calls[0] || { args: [] }).args.join(' ')), JSON.stringify(x.calls));
+ok('the helper lists them as JSON', /^members -dir \S+ -json -wait \d+s$/.test((x.calls[0] || { args: [] }).args.join(' ')), JSON.stringify(x.calls));
+ok('and waits long enough to hear the apps on this network', hearsTheNetwork((x.calls[0] || { args: [] }).args.join(' ')), JSON.stringify(x.calls));
 ok('each app shows the way the card draws it', JSON.stringify(x.r.members) === JSON.stringify([
   { id: 'a', app: 'bombvault', name: 'BombVault', device: 'Tower', form: 'container', version: '3.8.0', icon: 'data:image/svg+xml;base64,PHN2Zy8+', online: true, relay: false, lastSeen: '' },
   { id: 'b', app: 'shiplog', name: 'ShipLog', device: 'Mithallia', form: 'plugin', version: '2.4.0', icon: '', online: false, relay: false, lastSeen: '2026-11-12T21:40:00Z' },

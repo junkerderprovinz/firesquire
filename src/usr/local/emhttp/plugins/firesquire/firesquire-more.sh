@@ -164,7 +164,7 @@ boot_git() {
 more_flash() {
   local now="${FS_NOW:-$(date +%s)}" at="" source="" t answer days
   if joined; then
-    answer="$("$FORTRESS" act -dir "$FORTRESS_DIR" -wait 5s bombvault backup.last '{"domain":"flash"}' 2>/dev/null)"
+    answer="$("$FORTRESS" act -dir "$FORTRESS_DIR" -wait 8s bombvault backup.last '{"domain":"flash"}' 2>/dev/null)"
     t="$(printf '%s' "$answer" | sed -n 's/.*"at" *: *"\([^"]*\)".*/\1/p')"
     t="$( [ -n "$t" ] && date -d "$t" +%s 2>/dev/null)"
     if [ -n "$t" ]; then at="$t"; source=BombVault; fi

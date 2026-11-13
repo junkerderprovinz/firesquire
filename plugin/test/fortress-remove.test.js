@@ -33,7 +33,7 @@ joinedUnder('g1');
 x = php(`return fs_fortress_remove('${dir}', '${kept}', '-wait', $run);`);
 ok('an id that reads like a flag reaches no helper', x.r.error === 'invalid' && x.calls.length === 0, JSON.stringify(x));
 x = php(`return fs_fortress_remove('${dir}', '${kept}', '${BRAVO}', $run);`, [gone(BRAVO, 'tollroll', 'tollroll', 'Bottich')]);
-ok('the helper takes the member out by its id', (x.calls[0] || { args: [] }).args.join(' ') === `remove -dir ${dir} -wait 4s ${BRAVO}`, JSON.stringify(x.calls));
+ok('the helper takes the member out by its id', (x.calls[0] || { args: [] }).args.join(' ') === `remove -dir ${dir} -wait 8s ${BRAVO}`, JSON.stringify(x.calls));
 ok('and FireSquire names it the way the house writes it', x.r.ok === true && JSON.stringify(x.r.removed) === JSON.stringify([{ app: 'tollroll', name: 'TollRoll', device: 'Bottich' }]), JSON.stringify(x.r));
 x = php(`return fs_fortress_remove('${dir}', '${kept}', 'ffff0000', $run);`, [[1, '', 'fortress: no member ffff0000 is in reach']]);
 ok('a member the fortress does not know is a clear error', x.r.error === 'noMember', JSON.stringify(x.r));

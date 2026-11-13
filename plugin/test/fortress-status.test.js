@@ -36,7 +36,7 @@ fs.writeFileSync(path.join(dir, 'fortress.json'), '{}');
 x = php(`return fs_fortress_status('${dir}', '-wait', 'de', $run);`);
 ok('an id that reads like a flag reaches no helper', x.r.error === 'invalid' && x.calls.length === 0, JSON.stringify(x));
 x = php(`return fs_fortress_status('${dir}', '${SHIPLOG}', 'de', $run);`, [[0, helperSays, '']]);
-ok('the helper reads the reports in the page\'s language', (x.calls[0] || { args: [] }).args.join(' ') === `status -dir ${dir} -json -wait 4s -lang de`, JSON.stringify(x.calls));
+ok('the helper reads the reports in the page\'s language', (x.calls[0] || { args: [] }).args.join(' ') === `status -dir ${dir} -json -wait 8s -lang de`, JSON.stringify(x.calls));
 ok('and FireSquire answers the one asked for', JSON.stringify(x.r.report) === JSON.stringify(REPORT), JSON.stringify(x.r));
 ok('with an empty log, which the helper does not read', Array.isArray(x.r.log) && x.r.log.length === 0, JSON.stringify(x.r));
 x = php(`return fs_fortress_status('${dir}', '${SHIPLOG}', 'de; rm -rf', $run);`, [[0, helperSays, '']]);

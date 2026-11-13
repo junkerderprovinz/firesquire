@@ -347,7 +347,7 @@ FORTRESS="${FIRESQUIRE_FORTRESS:-$HERE/fortress}"
 FORTRESS_DIR="${FIRESQUIRE_FORTRESS_DIR:-/boot/config/plugins/firesquire/fortress}"
 if [ -x "$FORTRESS" ] && [ -f "$FORTRESS_DIR/fortress.json" ] && have php; then
   fspush 68 p_fortress
-  if fortress_out="$("$FORTRESS" status -dir "$FORTRESS_DIR" -json ${UI_LANG:+-lang "$UI_LANG"} 2>/dev/null)"; then
+  if fortress_out="$("$FORTRESS" status -dir "$FORTRESS_DIR" -json -wait 8s ${UI_LANG:+-lang "$UI_LANG"} 2>/dev/null)"; then
     while IFS=$'\x1f' read -r f_tier f_status f_key f_args f_msg; do
       add "$f_tier" fortress "$f_status" "$f_key" "$f_args" "$f_msg"
     done < <(printf '%s' "$fortress_out" | php "$HERE/firesquire-fortress.php")

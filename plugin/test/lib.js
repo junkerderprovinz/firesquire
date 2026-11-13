@@ -93,4 +93,12 @@ function fortressAdapter(state, answers) {
   return { box, mounts, adapter: m.adapter, opts: m.opts, posts, bodies, gets };
 }
 
-module.exports = { DIR, read, ok, done, rules, keyframes, grabFn, fortressAdapter };
+// hearsTheNetwork says a helper command waits long enough for one round of
+// the apps announcing themselves on this network, which takes them five
+// seconds, and for their answer.
+function hearsTheNetwork(args) {
+  const m = / -wait (\d+)s\b/.exec(' ' + args);
+  return !!m && Number(m[1]) >= 7;
+}
+
+module.exports = { DIR, read, ok, done, rules, keyframes, grabFn, fortressAdapter, hearsTheNetwork };

@@ -6,7 +6,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { DIR, read, ok, done } = require('./lib');
+const { DIR, read, ok, done, hearsTheNetwork } = require('./lib');
 
 const MORE = path.join(DIR, 'firesquire-more.sh').replace(/\\/g, '/');
 const FIX = path.join(__dirname, 'fixtures').replace(/\\/g, '/');
@@ -80,6 +80,8 @@ r = more(`${now}\n${fortress('{"domain":"flash","at":"2026-11-01T03:00:00Z","ok"
 ok('BombVault in the fortress tells the date, ten days is CAUTION', one(r, 'flash_backup_old', 'warn', ['10', 'BombVault']) && r[0].tier === 'warning', JSON.stringify(r));
 r = more(`${now}\n${fortress('{"domain":"flash","at":"2026-11-09T03:00:00Z","ok":true}')}\nFS_BOOT=/nonexistent\nmore_flash`);
 ok('two days passes', one(r, 'flash_backup_ok', 'pass', ['2', 'BombVault']), JSON.stringify(r));
+r = more(`${now}\nASKED="$(mktemp)"; FORTRESS=fortress_stub; FORTRESS_DIR=/x; fortress_stub() { printf '%s' "$*" > "$ASKED"; }; joined() { return 0; }\nFS_BOOT=/nonexistent\nmore_flash >/dev/null\nadd info asked info asked "$(cat "$ASKED")" ""; rm -f "$ASKED"`);
+ok('BombVault is asked after a round on this network', hearsTheNetwork((r.find((f) => f.id === 'asked') || { args: [''] }).args.join('|')), JSON.stringify(r));
 r = more(`${now}\n${fortress('', 1)}\nFS_BOOT="${FIX}"; boot_git() { echo 1794225600; }\nmore_flash`);
 ok('Unraid Connect\'s backup on the flash counts too', one(r, 'flash_backup_ok', 'pass', ['2', 'Unraid Connect']), JSON.stringify(r));
 r = more(`${now}\n${fortress('{"domain":"flash","at":"2026-10-01T03:00:00Z","ok":true}')}\nFS_BOOT="${FIX}"; boot_git() { echo 1794225600; }\nmore_flash`);

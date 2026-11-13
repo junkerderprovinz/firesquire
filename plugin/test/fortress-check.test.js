@@ -6,7 +6,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { DIR, ok, done } = require('./lib');
+const { DIR, ok, done, hearsTheNetwork } = require('./lib');
 
 const ENGINE = path.join(DIR, 'firesquire-check.sh');
 const en = JSON.parse(fs.readFileSync(path.join(DIR, 'lang', 'en.json'), 'utf8'));
@@ -77,6 +77,7 @@ r = engine({
 });
 ok('the helper is asked for the status as JSON in the joined directory',
   /^status -dir \S*membership -json\b/m.test(r.args || ''), r.args);
+ok('and waits long enough to hear the apps on this network', hearsTheNetwork(r.args || ''), r.args);
 const busy = find(r.checks, 'fortress_busy');
 ok('work that blocks a restart is NO-GO with app, device, title and progress',
   busy.length === 1 && busy[0].tier === 'critical' && busy[0].status === 'fail' && same(busy[0].args, ['BombVault', 'Tower', 'Nightly backup', '42%']),
