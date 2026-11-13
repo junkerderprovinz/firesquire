@@ -17,7 +17,7 @@ jobs:
       contents: write
       issues: write
       actions: write
-    uses: junkerderprovinz/junkerderprovinz/.github/workflows/glimstone-update.yml@main
+    uses: junkerderprovinz/junkerderprovinz/.github/workflows/glimstone-update.yml@3537fbabd3876b61093a72ee7c9ebe7f96004754 # main
     with:
       ci-workflow: lint.yml
     secrets: inherit
