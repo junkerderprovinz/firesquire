@@ -42,7 +42,9 @@ class El {
   }
   appendChild(c) { this.children.push(c); return c; }
   addEventListener() {}
+  set innerHTML(v) { this.own = String(v); this.children = []; }
   setAttribute(k, v) { this.attrs[k] = String(v); }
+  removeAttribute(k) { delete this.attrs[k]; }
   getAttribute(k) { return k in this.attrs ? this.attrs[k] : null; }
   hasAttribute(k) { return k in this.attrs; }
   get textContent() { return this.own + this.children.map((c) => c.textContent).join(''); }
@@ -57,10 +59,10 @@ function settings({ themed, fortress, notify }) {
   if (fortress) root.setAttribute('data-fs-fortress', '');
   if (notify) root.setAttribute('data-fs-notify', '');
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const UI = { el, rtl: false, themed: () => themed, hue() {}, button: (cls, glyph, label) => el('button', cls, label), info: (tip) => el('span', 'fs-info', tip) };
+  const UI = { el, rtl: false, themed: () => themed, hue() {}, glyph: () => '', button: (cls, glyph, label) => el('button', cls, label), info: (tip) => el('span', 'fs-info', tip) };
   const html = new El('html');
   const ctx = {
-    window: { fireSquireUI: UI, fireSquireI18n: en, fireSquireMarks: { brand: {}, coin: {} }, addEventListener() {} },
+    window: { fireSquireUI: UI, fireSquireI18n: en, fireSquireMarks: { brand: {}, coin: {} }, addEventListener() {}, matchMedia: () => ({ matches: false, addEventListener() {} }) },
     document: {
       documentElement: html,
       getElementById: (id) => (id === 'fs-info' ? root : id === 'ss-tools' ? list : null),
@@ -68,7 +70,7 @@ function settings({ themed, fortress, notify }) {
       addEventListener() {},
     },
     MutationObserver: class { observe() {} },
-    localStorage: { getItem: () => null },
+    localStorage: { getItem: () => null, setItem() {} },
     getComputedStyle: () => ({ getPropertyValue: () => '' }),
     String, Array, Object,
   };
@@ -87,12 +89,9 @@ for (const themed of [true, false]) {
   ok(`${look}: and names every other group`, en.tools_li.filter((x) => x !== fortressLine).every((x) => themed || p.text.includes(x)));
   p = settings({ themed, fortress: true, notify: true });
   ok(`${look}: with the helpers both come back`, p.ids.includes('fs-fortress') && p.ids.includes('fs-notify') && (themed ? p.text.includes(en.tools_g_fortress) : p.text.includes(fortressLine)));
-  // The fortress sits where every plugin of the house has it, right after the general part:
-  // the card of what the check looks at, or that description above the cards in Unraid's look.
-  const kids = p.root.children;
-  const at = kids.findIndex((e) => e.id === 'fs-fortress');
-  ok(`${look}: the fortress comes right after the first card`, themed ? at === 1 && / fs-card-tools/.test(kids[0].className) : at === 0, kids.map((e) => e.id || e.className).join(' | '));
-  ok(`${look}: in an empty place of its own for GlimStone's card`, kids[at] && kids[at].children.length === 0 && kids[at].textContent === '');
+  // The fortress sits where every plugin of the house has it, in the tab right after General.
+  const tabs = p.root.all().filter((e) => e.getAttribute('role') === 'tab').map((e) => e.getAttribute('data-fs-tab'));
+  ok(`${look}: the fortress has the tab right after General`, tabs.indexOf('fortress') === 1 && tabs[0] === 'general', tabs.join(' | '));
 }
 
 console.log('\nThe check');

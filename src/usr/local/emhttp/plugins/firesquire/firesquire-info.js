@@ -1,9 +1,10 @@
-/* FireSquire's settings page under the banner: what the check looks at, then
- * the Info cards in GlimStone's order, Version, Help and About. The give
- * buttons open their windows inside the page: Buy Me a Coffee's widget,
- * PayPal's buttons under the house's own controls, and the crypto window with
- * an address and a QR code per network. Nothing from a payment provider loads
- * before its window opens. The windows and buttons come from firesquire.js. */
+/* FireSquire's settings page under the banner, in tabs: General with what the
+ * check looks at, the Fortress, the notifications and Info with the cards in
+ * GlimStone's order, Version, Help and About. The give buttons open their
+ * windows inside the page: Buy Me a Coffee's widget, PayPal's buttons under
+ * the house's own controls, and the crypto window with an address and a QR
+ * code per network. Nothing from a payment provider loads before its window
+ * opens. The windows and buttons come from firesquire.js. */
 (function () {
   var root = document.getElementById("fs-info");
   var UI = window.fireSquireUI;
@@ -76,7 +77,7 @@
     c.setAttribute("data-glim-title", title);
     h.appendChild(s);
     c.appendChild(h);
-    (into || root).appendChild(c);
+    into.appendChild(c);
     return c;
   }
   function prose(c, text) { c.appendChild(el("p", "fs-prose", text)); }
@@ -159,6 +160,47 @@
     }
   }
   function get(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }
+  // A private window refuses storage, and the tab then opens without being kept.
+  function put(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  /* The tab column beside the cards, as on ShipLog's and TowerTorch's settings
+     pages. The arrows move between the tabs, and the tab chosen last opens
+     again on the next visit. */
+  var body = el("div", "fs-body"), tabList = el("div", "fs-tabs"), main = el("div", "fs-main"), tabs = [], panes = [];
+  tabList.setAttribute("role", "tablist");
+  tabList.setAttribute("aria-orientation", "vertical");
+  tabList.setAttribute("aria-label", "FireSquire");
+  body.appendChild(tabList);
+  body.appendChild(main);
+  root.appendChild(body);
+  function pane(name, label, glyph) {
+    var tab = el("button", "fs-tab"), ico = el("span", "fs-tabico"), p = el("div", "fs-pane");
+    tab.type = "button";
+    tab.id = "fs-tab-" + name;
+    p.id = "fs-pane-" + name;
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-controls", p.id);
+    tab.setAttribute("data-fs-tab", name);
+    p.setAttribute("role", "tabpanel");
+    p.setAttribute("aria-labelledby", tab.id);
+    ico.innerHTML = UI.glyph(glyph);
+    tab.appendChild(ico);
+    tab.appendChild(el("span", "fs-tablbl", label));
+    tabList.appendChild(tab);
+    main.appendChild(p);
+    tabs.push(tab);
+    panes.push(p);
+    return p;
+  }
+  function openTab(tab, focus) {
+    tabs.forEach(function (x, i) {
+      var on = x === tab;
+      x.setAttribute("aria-selected", on ? "true" : "false");
+      x.tabIndex = on ? 0 : -1;
+      panes[i].hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
 
   /* What the check looks at. Unraid's own look keeps it as prose with a list;
      GlimStone's makes it the first card, a row per group with the detail in
@@ -175,9 +217,10 @@
   var groups = ["tools_g_array", "tools_g_ops", "tools_g_containers", "tools_g_host", "tools_g_fortress", "tools_g_health", "tools_g_shutdown"]
     .map(function (k, i) { return [k, li[i]]; })
     .filter(function (g) { return withFortress || g[0] !== "tools_g_fortress"; });
+  var pGeneral = pane("general", t("t_general"), "TabGeneral");
   if (UI.themed()) {
     if (tools) tools.hidden = true;
-    var cTools = card(t("tools_title"));
+    var cTools = card(t("tools_title"), pGeneral);
     cTools.classList.add("fs-card-tools");
     groups.forEach(function (g) { row(cTools, t(g[0]), g[1]); });
     row(cTools, t("tools_note"), t("tools_lead")).appendChild(runButton("fs-acc fs-key"));
@@ -189,17 +232,18 @@
     groups.forEach(function (g) { if (g[1]) ul.appendChild(el("li", null, g[1])); });
     tools.appendChild(ul);
     tools.appendChild(runButton());
+    pGeneral.appendChild(tools);
   }
 
   if (rtl) root.dir = "rtl";
   var ver = root.getAttribute("data-fs-ver");
-  // The fortress follows the general part, as in every plugin of the house:
-  // GlimStone's fortress card draws itself into this place, and
+  // GlimStone's fortress card draws itself into its place, and
   // firesquire-notify.js fills in the notification and schedule cards.
-  if (withFortress) root.appendChild(el("div")).id = "fs-fortress";
-  if (withNotify) root.appendChild(el("div")).id = "fs-notify";
+  if (withFortress) pane("fortress", t("t_fortress"), "ShieldOn").appendChild(el("div")).id = "fs-fortress";
+  if (withNotify) pane("notify", t("n_card"), "Notifications").appendChild(el("div")).id = "fs-notify";
 
-  var cVer = card(t("ver_title"));
+  var pInfo = pane("info", t("t_info"), "Info");
+  var cVer = card(t("ver_title"), pInfo);
   row(cVer, "FireSquire").appendChild(version(ver, REPO));
   // The GlimStone look names the design language it is drawn in, and the notes of this release.
   if (UI.themed()) {
@@ -210,11 +254,11 @@
     row(cVer, "").appendChild(notes);
   }
 
-  var cHelp = card(t("help_title"));
+  var cHelp = card(t("help_title"), pInfo);
   prose(cHelp, t("help_body"));
   rbtnRow(cHelp, "", [rbtn("github", "GitHub", REPO + "/issues"), rbtn("house", t("help_forum"), FORUM)]);
 
-  var cAbout = card(t("about_title"));
+  var cAbout = card(t("about_title"), pInfo);
   prose(cAbout, t("about_body"));
   prose(cAbout, t("about_coin"));
   // Hosted pages first, the wallet last.
@@ -224,9 +268,40 @@
     rbtn("bitcoin", t("give_crypto"), CRYPTO_PAGE, openCrypto)
   ]);
 
+  var kept = get("firesquire.settings.tab", "general");
+  openTab(tabs.filter(function (x) { return x.getAttribute("data-fs-tab") === kept; })[0] || tabs[0], false);
+  tabs.forEach(function (x, i) {
+    x.addEventListener("click", function () {
+      openTab(x, false);
+      put("firesquire.settings.tab", x.getAttribute("data-fs-tab"));
+    });
+    x.addEventListener("keydown", function (e) {
+      var n = { ArrowDown: i + 1, ArrowRight: i + 1, ArrowUp: i - 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (n === undefined) return;
+      e.preventDefault();
+      var next = tabs[(n + tabs.length) % tabs.length];
+      openTab(next, true);
+      put("firesquire.settings.tab", next.getAttribute("data-fs-tab"));
+    });
+  });
+  // Below 1024 px the tabs show their glyphs alone, and the name moves into the bubble.
+  var narrow = window.matchMedia("(max-width: 1023px)");
+  function tabTips() {
+    tabs.forEach(function (x) {
+      if (narrow.matches) x.setAttribute("data-tip", x.querySelector(".fs-tablbl").textContent);
+      else x.removeAttribute("data-tip");
+    });
+  }
+  narrow.addEventListener("change", tabTips);
+  tabTips();
+
+  // The tabs and the cards of each tab count the rainbow from its start.
   function paint() {
     paintBanner();
-    Array.prototype.forEach.call(root.querySelectorAll(".fs-card"), function (c, i) { hue(c, i); });
+    tabs.forEach(function (x, i) { hue(x, i); });
+    panes.forEach(function (p) {
+      Array.prototype.forEach.call(p.querySelectorAll(".fs-card"), function (c, i) { hue(c, i); });
+    });
   }
   paint();
   // The cards of the scripts after this one join the rainbow once they stand.

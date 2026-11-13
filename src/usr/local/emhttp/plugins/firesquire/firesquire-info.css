@@ -11,13 +11,45 @@
 #ss-tools .fs-tools-list { margin: 6px 0 16px 18px; }
 [dir="rtl"] #ss-tools .fs-tools-list { margin: 6px 18px 16px 0; }
 
-/* The cards stand under the description, as wide as the banner over it. */
+/* The tabs and the cards stand under the banner, as wide as it. */
 #fs-info {
-  box-sizing: border-box; max-width: 1148px; margin-top: 36px; padding: 11px 0 24px;
-  display: flex; flex-direction: column; gap: 40px;
+  --fs-tab: var(--mild-background-color, rgba(128, 128, 128, .08));
+  --fs-tab-ink: var(--text-color, inherit);
+  --fs-tab-hover: var(--hover-table-row-background-color, rgba(128, 128, 128, .14));
+  box-sizing: border-box; max-width: 1148px; padding-bottom: 24px;
   font-size: 14px; line-height: 1.45;
 }
 #fs-info *, #fs-info *::before, #fs-info *::after { box-sizing: border-box; }
+
+/* The tab column beside the cards, as on ShipLog's and TowerTorch's settings pages. */
+.fs-body { display: flex; align-items: flex-start; gap: 24px; margin-top: 12px; }
+.fs-tabs { position: sticky; top: 12px; flex: none; width: 204px; display: flex; flex-direction: column; gap: 4px; }
+#fs-info .fs-tab {
+  display: flex; align-items: center; gap: 12px; width: 100%; height: 66px; min-width: 0; margin: 0; padding: 0 12px;
+  border: none; border-radius: var(--fs-r-ctl); box-shadow: none;
+  background: var(--fs-tab); color: var(--fs-tab-ink);
+  font-family: inherit; font-size: 14px; font-weight: 500; line-height: 20px;
+  letter-spacing: normal; text-transform: none; text-align: start; cursor: pointer;
+}
+#fs-info .fs-tab:hover { background: var(--fs-tab); color: var(--fs-tab-ink); box-shadow: inset 0 0 0 100vmax var(--fs-tab-hover); }
+#fs-info .fs-tab[aria-selected="true"],
+#fs-info .fs-tab[aria-selected="true"]:hover { background: var(--fs-head); color: var(--fs-head-ink); box-shadow: none; }
+.fs-tabico { flex: none; display: inline-flex; width: 20px; height: 20px; }
+.fs-tabico svg { width: 20px; height: 20px; display: block; }
+.fs-tablbl { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+@media (max-width: 1023px) {
+  .fs-tabs { width: 52px; }
+  #fs-info .fs-tab { justify-content: center; padding: 0; }
+  /* hidden from view, still the tab's accessible name */
+  .fs-tablbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+.fs-main { flex: 1 1 auto; min-width: 0; max-width: 920px; }
+/* The top padding is the room the first card's heading takes above it. */
+.fs-pane { display: flex; flex-direction: column; gap: 40px; padding-top: 11px; }
+#fs-info .fs-pane[hidden] { display: none; }
+/* The fortress card keeps its own room above its heading. */
+#fs-pane-fortress { padding-top: 0; }
 .fs-card { position: relative; padding: 22px 18px 12px; border-radius: var(--fs-r-card); background: var(--fs-card); box-shadow: var(--fs-shadow); }
 #fs-info .fs-h {
   position: absolute; top: 0; transform: translateY(-50%); z-index: 1;
@@ -162,7 +194,18 @@ html.tt-popups-on #fs-info .fs-tile-house { --fs-house: var(--tt-accent, #FCC419
 }
 
 /* With TowerTorch. */
-html.tt-popups-on #fs-info { color: var(--tt-text, #e6e6e6); }
+html.tt-popups-on #fs-info {
+  --fs-tab: var(--tt-fm-btn, #353535);
+  --fs-tab-ink: var(--tt-text-chip, #cfcfcf);
+  --fs-tab-hover: var(--tt-hover-wash, rgba(230, 230, 230, .15));
+  color: var(--tt-text, #e6e6e6);
+}
+/* A tab under the rainbow carries its own position as --fs-hue. An idle tab's
+   glyph wears its colour, the open tab wears it as its fill. */
+html.tt-popups-on #fs-info .fs-tab[aria-selected="true"],
+html.tt-popups-on #fs-info .fs-tab[aria-selected="true"]:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
+html.tt-popups-on .fs-tab .fs-tabico { color: var(--fs-hue, var(--tt-accent, #FCC419)); }
+html.tt-popups-on .fs-tab[aria-selected="true"] .fs-tabico { color: inherit; }
 html.tt-popups-on .fs-win input.fs-amount {
   height: 32px; padding: 7px 10px; border: none; border-radius: var(--fs-r-ctl); box-shadow: none;
   background: var(--fs-card); color: var(--fs-text); font-family: inherit; font-size: 13px;
@@ -173,7 +216,6 @@ html.tt-popups-on .fs-win .fs-copy { align-self: center; }
 
 /* The check is the first card, its groups as rows with the detail in their
    bubbles. The page has one accent button, the one that runs it. */
-html.tt-popups-on #fs-info { margin-top: 12px; }
 #fs-info .fs-row-lbl { display: inline-flex; align-items: center; min-width: 0; }
 #fs-info .fs-row-end { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; margin-inline-start: auto; }
 
@@ -184,9 +226,11 @@ html.tt-popups-on #fs-info a.fs-ver {
 }
 
 /* TowerTorch's sheets reach every link and focus ring on a settings page with
-   !important, and only an important rule in a layer outranks them: the README
-   buttons keep their ink against the accent TowerTorch gives every link. */
+   !important, and only an important rule in a layer outranks them: a tab
+   keeps a visible focus ring, and the README buttons keep their ink against
+   the accent TowerTorch gives every link. */
 @layer firesquire-settings {
+  #fs-info .fs-tab:focus-visible { outline: 2px solid var(--fs-focus) !important; outline-offset: 2px !important; filter: none !important; }
   #fs-info a.fs-rbtn { color: var(--tt-text, #e6e6e6) !important; filter: none !important; }
   @media (hover: hover) {
     #fs-info .fs-rbtn-unit:hover a.fs-rbtn { color: var(--fs-give-ink) !important; }

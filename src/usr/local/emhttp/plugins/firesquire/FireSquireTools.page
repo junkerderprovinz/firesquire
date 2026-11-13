@@ -64,7 +64,7 @@ html.tt-popups-on .fs-hero {
    important rule in a layer outranks. The banner names the page, so the strip
    would say it twice. */
 @layer firesquire-settings {
-  .content:has(> #ss-tools) > div.title { display: none !important; }
+  .content:has(#fs-info) > div.title { display: none !important; }
 }
 </style>
 <div class="fs-hero">
