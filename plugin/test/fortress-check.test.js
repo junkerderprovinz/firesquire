@@ -108,6 +108,10 @@ ok('alone, it leaves the fortress as quiet as no app at all', r.checks.length ==
 r = engine({ answer: [member('m3', 'arrowloop', 'ArrowLoop', 'Laptop', { error: 'fortress: refused with "internal" (500)' })] });
 ok('an app that offers one and fails still counts as not answering', r.checks.length === 1 && r.checks[0].key === 'fortress_unanswered', JSON.stringify(r.checks));
 
+console.log('\nA fortress closed to newcomers until its phrase changes');
+r = engine({ answer: [member('m1', 'bombvault', 'BombVault', 'Tower', { report: report({ work: [] }) })], code: 3 });
+ok('the apps that answered still count', r.checks.length === 1 && r.checks[0].key === 'fortress_ok' && r.checks[0].status === 'pass', JSON.stringify(r.checks));
+
 console.log('\nA helper that fails');
 r = engine({ answer: 'relay down', code: 1 });
 ok('is a note, not a verdict', r.checks.length === 1 && r.checks[0].key === 'fortress_skip' && r.checks[0].status === 'info', JSON.stringify(r.checks));
