@@ -1,31 +1,39 @@
 // The fortress card is GlimStone's own, unchanged: every plugin of the house shows the same card, so
-// glimstone.json names the GlimStone commit and the source of each copy, and each copy matches that
-// file byte for byte.
+// glimstone.json keeps it as a copy target, and each copy matches its file at GlimStone's tag
+// v<version> byte for byte, or on rel/<version> until that release is tagged.
 const fs = require('fs');
 const path = require('path');
 const { ok, done } = require('./lib');
 
 const ROOT = path.join(__dirname, '..', '..');
-const vanilla = JSON.parse(fs.readFileSync(path.join(ROOT, 'glimstone.json'), 'utf8')).vanilla || {};
-const files = Object.entries(vanilla.files || {});
+const card = JSON.parse(fs.readFileSync(path.join(ROOT, 'glimstone.json'), 'utf8'))
+  .targets.find((t) => t.mode === 'copy' && t.name === 'fortress card') || { files: [] };
+
+async function glimstoneFile(version, file) {
+  for (const ref of [`v${version}`, `rel/${version}`]) {
+    const url = `https://raw.githubusercontent.com/junkerderprovinz/glimstone/${ref}/${file}`;
+    const res = await fetch(url);
+    if (res.status === 404) continue;
+    if (!res.ok) throw new Error(`${url} answered ${res.status}`);
+    return { ref, body: Buffer.from(await res.arrayBuffer()) };
+  }
+  throw new Error(`GlimStone has ${file} neither at v${version} nor on rel/${version}`);
+}
 
 (async () => {
   console.log('\nThe fortress card is GlimStone\'s own, unchanged');
-  ok('glimstone.json names the GlimStone commit', /^[0-9a-f]{7,40}$/.test(vanilla.ref || ''), vanilla.ref);
-  ok('and both files of the card', files.map(([, src]) => path.basename(src)).sort().join() === 'fortress-card.css,fortress-card.js', files.join(' | '));
-  for (const [copy, src] of files) {
-    const url = `https://raw.githubusercontent.com/junkerderprovinz/glimstone/${vanilla.ref}/${src}`;
+  ok('glimstone.json names the GlimStone version of the card', /^\d+\.\d+\.\d+$/.test(card.version || ''), card.version);
+  ok('and both files of the card', card.files.map((f) => path.basename(f.from)).sort().join() === 'fortress-card.css,fortress-card.js', JSON.stringify(card.files));
+  for (const { from, to } of card.files) {
     let want = null, why = '';
     try {
-      const res = await fetch(url);
-      if (res.ok) want = Buffer.from(await res.arrayBuffer());
-      else why = `${url} answered ${res.status}`;
+      want = await glimstoneFile(card.version, from);
     } catch (e) {
-      why = `${url} could not be fetched: ${e.message}`;
+      why = e.message;
     }
-    const have = fs.existsSync(path.join(ROOT, copy)) ? fs.readFileSync(path.join(ROOT, copy)) : null;
-    ok(`${copy} is GlimStone's ${src} at ${vanilla.ref}`, want !== null && have !== null && have.equals(want),
-      why || (have ? `${copy} differs from GlimStone ${vanilla.ref}; copy ${src} again` : `${copy} is missing`));
+    const have = fs.existsSync(path.join(ROOT, to)) ? fs.readFileSync(path.join(ROOT, to)) : null;
+    ok(`${to} is GlimStone's ${from} at ${card.version}`, want !== null && have !== null && have.equals(want.body),
+      why || (have ? `${to} differs from GlimStone ${want.ref}; copy ${from} again` : `${to} is missing`));
   }
   done();
 })();
