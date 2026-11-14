@@ -2,8 +2,9 @@
 /* FireSquire's place in a fortress, for the settings page: joining with the
  * phrase, the members and their status, taking one out and leaving. Every
  * call to ParleyPort's fortress helper goes through $run($args, $stdin), which
- * returns its exit code, output and error output. The phrase reaches the helper on its input and nowhere else;
- * the directory keeps only the keys fortress join derives from it. */
+ * returns its exit code, output and error output. The phrase reaches the
+ * helper on its input and nowhere else; the directory keeps only the keys
+ * fortress join derives from it. */
 
 /* FireSquire asks BombVault when the flash was last backed up. */
 const FS_FORTRESS_USES = 'backup.last';
@@ -131,7 +132,8 @@ function fs_fortress_group($dir) {
 
 /* The fortress took a phrase FireSquire could not follow. An app that took
  * it answers on the old one as moved, and the helper keeps that in the book
- * under FireSquire's group; once it follows, the book starts over. */
+ * under FireSquire's group; once it follows, the book moves along to the new
+ * group with no member marked as moved. */
 function fs_fortress_phrase_changed($dir) {
   $group = fs_fortress_group($dir);
   $book = json_decode((string) @file_get_contents("$dir/state.json"), true)['fortress'] ?? null;
@@ -143,8 +145,9 @@ function fs_fortress_phrase_changed($dir) {
 }
 
 /* The apps FireSquire took out since the phrase last changed, which keep the
- * fortress closed to new apps until it changes. The file names the group of the phrase it was
- * kept under, so a phrase FireSquire followed or joined with clears it. */
+ * fortress closed to new apps until it changes. The file names the group of
+ * the phrase it was kept under, so a phrase FireSquire followed or joined
+ * with clears it. */
 function fs_fortress_removed($dir, $file) {
   $kept = json_decode((string) @file_get_contents($file), true);
   $group = fs_fortress_group($dir);
