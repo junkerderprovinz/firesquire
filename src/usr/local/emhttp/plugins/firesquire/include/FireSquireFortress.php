@@ -50,6 +50,10 @@ switch ($_POST['do'] ?? '') {
     if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));
     $r = fs_fortress_join($fsDir, (string) ($_POST['phrase'] ?? ''), fs_fortress_device('/boot/config/ident.cfg'), $fsRun);
     if (isset($r['error'])) fs_answer(array('member' => 409, 'phrase' => 400, 'closedUntilNewPhrase' => 403)[$r['error']] ?? 500, $r);
+    // update_cron reads the cron files of registered plugins alone, and Unraid
+    // registers a fresh install only after its script ran, so the follow
+    // schedule starts here.
+    exec('/usr/local/sbin/update_cron');
     fs_answer(200, fs_state($fsDir, $fsHelper, $fsRemoved, $fsRun));
   case 'remove':
     if (!is_executable($fsHelper)) fs_answer(503, array('error' => 'helper'));

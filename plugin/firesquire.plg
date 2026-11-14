@@ -38,6 +38,7 @@
 - **Your other apps show FireSquire with its own logo** once it has joined your fortress.
 - **Take an app out of your fortress.** Every other app on the Fortress card has a Remove button. FireSquire asks first and then offers to change the phrase in an app that keeps it, because until you do, your fortress takes no new app, and one that tries to join is told why. Until then, a quiet line names who is out.
 - **When another app takes FireSquire out,** the Fortress card says so, after a restart too, and once the phrase has changed, the new one brings it back in.
+- **FireSquire follows a new phrase by itself.** Every 15 minutes it checks whether your fortress changed its phrase and stays the same member under the new one, even when nobody opens its page. If it cannot follow, the Fortress card asks for the new words, just like on ShipLog and TowerTorch.
 - **Notifications and a schedule.** The notify helper comes along too, so you can send the verdict to Unraid, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks, and run the check daily or weekly without lifting a finger.
 
 🎨 **Design**
@@ -176,8 +177,12 @@
       }
       helper fortress "&fortressSHA;"
       helper notify "&notifySHA;"
-      # A schedule set on the settings page lives on the flash.
-      if [ -f "&plgPath;/&pkg;.cron" ]; then /usr/local/sbin/update_cron; fi
+      # The fortress is asked for a new phrase every 15 minutes, clear of the
+      # check's half past, and a schedule set on the settings page lives on
+      # the flash next to it.
+      cron="7,22,37,52 * * * * /bin/bash &emhttp;/&pkg;-follow.sh"
+      if [ "$(cat "&plgPath;/fortress.cron" 2>/dev/null)" != "$cron" ]; then echo "$cron" > "&plgPath;/fortress.cron"; fi
+      /usr/local/sbin/update_cron 2>/dev/null
       echo ""
       cat "&emhttp;/banner.txt" 2>/dev/null
       echo ""
@@ -189,8 +194,8 @@
        manager only runs <FILE> elements, so a bare <REMOVE> tag is silently ignored
        and the cleanup never runs. It has to end with exit 0, or Unraid leaves the
        .plg on the flash and it reinstalls on boot. No daemon runs; removing the
-       folder on the flash drops the channels and the schedule, and update_cron
-       takes the schedule out of cron. -->
+       folder on the flash drops the channels and the schedules, and update_cron
+       takes them out of cron. -->
   <FILE Run="/bin/bash" Method="remove">
     <INLINE>
       # goodbye banner first, while the files still exist

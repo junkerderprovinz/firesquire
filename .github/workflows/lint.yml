@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt-get update -qq && sudo apt-get install -y shellcheck
           # fail the build on errors only; style warnings (e.g. SC2155) don't block
-          shellcheck -S error src/usr/local/emhttp/plugins/firesquire/firesquire-check.sh src/usr/local/emhttp/plugins/firesquire/firesquire-health.sh src/usr/local/emhttp/plugins/firesquire/firesquire-more.sh
+          shellcheck -S error src/usr/local/emhttp/plugins/firesquire/firesquire-check.sh src/usr/local/emhttp/plugins/firesquire/firesquire-health.sh src/usr/local/emhttp/plugins/firesquire/firesquire-more.sh src/usr/local/emhttp/plugins/firesquire/firesquire-follow.sh
 
       - name: PHP lint
         run: |
