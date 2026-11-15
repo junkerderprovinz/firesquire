@@ -73,7 +73,7 @@
 #fs-info .fs-rbtn-unit { position: relative; display: inline-flex; border-radius: var(--fs-r-ctl); overflow: hidden; isolation: isolate; --fs-brand-coffee: #ffdd00; --fs-brand-paypal: #4fb5f0; --fs-brand-bitcoin: #f7931a; --fs-brand-discord: #949cf7; }
 #fs-info .fs-rbtn { position: relative; display: block; flex: none; width: 160px; height: 46.6px; padding: 0; background: var(--tt-surface-3, #2e2e2e); text-decoration: none; cursor: pointer; }
 #fs-info .fs-rbtn:hover { text-decoration: none; }
-#fs-info .fs-rbtn:focus-visible { outline: none !important; filter: none !important; box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--tt-accent, #FCC419) 45%, transparent) !important; }
+#fs-info .fs-rbtn:focus-visible { outline: none !important; filter: none !important; box-shadow: inset 0 0 0 var(--tt-focus-ring-width, 2px) var(--fs-focus) !important; }
 #fs-info .fs-rbtn-mark { position: absolute; top: 50%; left: 14px; width: 32px; height: 25px; translate: 0 -50%; display: flex; }
 #fs-info :is(.fs-rbtn-mark, .fs-rbtn-art) svg { display: block; width: 100%; height: 100%; }
 #fs-info .fs-rbtn-art { position: absolute; inset: 0; }
@@ -181,7 +181,7 @@ html.tt-popups-on:is(.Theme--white, .Theme--azure) #fs-info .fs-rbtn-unit:not(:h
     transition: max-height var(--tt-motion-label-dur, 160ms) var(--tt-motion-label-ease, ease-out), opacity var(--tt-motion-label-dur, 160ms) ease-out;
   }
 }
-.fs-win :is(.fs-seg-opt, .fs-net, .fs-coin):focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
+.fs-win :is(.fs-seg-opt, .fs-net, .fs-coin):focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus); outline-offset: 2px; }
 
 /* A typed amount that is no amount, or a copy that failed, shakes once. */
 @keyframes fs-shake {
@@ -225,13 +225,13 @@ html.tt-popups-on .fs-win .fs-copy { align-self: center; }
    and the README buttons keep their ink against the accent TowerTorch gives
    every link. */
 @layer firesquire-settings {
-  #fs-info .fs-tab:focus-visible { outline: 2px solid var(--fs-focus) !important; outline-offset: 2px !important; filter: none !important; }
+  #fs-info .fs-tab:focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus) !important; outline-offset: 2px !important; filter: none !important; }
   #fs-info a.fs-rbtn { color: var(--tt-text, #e6e6e6) !important; filter: none !important; }
   @media (hover: hover) {
     #fs-info .fs-rbtn-unit:hover a.fs-rbtn { color: var(--fs-give-ink) !important; }
   }
   #fs-info a.fs-ver { color: var(--fs-link) !important; filter: none !important; }
-  #fs-info a.fs-ver:focus-visible { outline: 2px solid var(--fs-focus) !important; outline-offset: 2px !important; }
+  #fs-info a.fs-ver:focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus) !important; outline-offset: 2px !important; }
   /* TowerTorch makes every button on a settings page an accent pill. Here a
      button has rounded corners, the run button keeps the accent at the size
      of a key, and the release notes are a secondary button. */

@@ -39,7 +39,7 @@ ok('no badge: no fill, no padding, no rounding', !ver.some((r) => /background|pa
 ok('in the page\'s link colour', ver.some((r) => r.selector === '#fs-info a.fs-ver' && /color: var\(--fs-link\)/.test(r.body)));
 ok('the link colour is Unraid\'s, and TowerTorch\'s accent in its look', /--fs-link: var\(--link-text-color/.test(read('firesquire.css')) && /--fs-link: var\(--tt-accent-ink/.test(read('firesquire.css')));
 ok('underlined under the pointer', ver.some((r) => /a\.fs-ver:hover/.test(r.selector) && /text-decoration: underline/.test(r.body)));
-ok('with the house focus ring, past TowerTorch\'s sheets', ver.some((r) => /a\.fs-ver:focus-visible/.test(r.selector) && r.at.some((a) => /@layer/.test(a)) && /outline: 2px solid var\(--fs-focus\) !important/.test(r.body)));
+ok('with the house focus ring, past TowerTorch\'s sheets', ver.some((r) => /a\.fs-ver:focus-visible/.test(r.selector) && r.at.some((a) => /@layer/.test(a)) && /outline: var\(--tt-focus-ring-width, 2px\) solid var\(--fs-focus\) !important/.test(r.body)));
 ok('and never forced into the text colour', !ver.some((r) => /--tt-text/.test(r.body)));
 
 done();

@@ -100,7 +100,7 @@ html.tt-popups-on :is(#fs-info, .fs-win, .fs-scrim) {
   --fs-head: var(--tt-accent, #FCC419);
   --fs-head-ink: var(--tt-accent-text, #161616);
   --fs-dim: var(--tt-text-dim, #8a8a8a);
-  --fs-focus: var(--tt-accent, #FCC419);
+  --fs-focus: var(--tt-accent-ink, #FCC419);
   --fs-link: var(--tt-accent-ink, #FCC419);
   --fs-ok: var(--tt-ok-ink, #6fdc8c);
   --fs-err: var(--tt-err-ink, #ff8389);
@@ -231,7 +231,7 @@ html.tt-popups-on .fs-scrim { -webkit-backdrop-filter: var(--tt-backdrop-blur, b
   letter-spacing: normal; text-transform: none; cursor: pointer;
 }
 .fs-win button.fs-win-btn:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
-.fs-win button.fs-win-btn:focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
+.fs-win button.fs-win-btn:focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus); outline-offset: 2px; }
 .fs-win-act .fs-btn-g { display: inline-flex; }
 .fs-win-headed .fs-win-body { padding: 22px 22px 4px; }
 
@@ -272,7 +272,7 @@ html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="
 @media (prefers-reduced-motion: no-preference) {
   html.tt-popups-on .fs-win button.fs-win-btn { transition: background-color var(--tt-motion-control-dur, 0s), color var(--tt-motion-control-dur, 0s); }
 }
-html.tt-popups-on .fs-win .fs-btn:focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
+html.tt-popups-on .fs-win .fs-btn:focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus); outline-offset: 2px; }
 
 /* The verdict. Unraid's look keeps the beacon and the word in a box; GlimStone's
    lets the word in its state colour stand on its own. */

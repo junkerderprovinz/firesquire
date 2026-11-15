@@ -76,7 +76,7 @@ ok('its buttons stand at the end, as GlimStone\'s dialog actions do', !!foot && 
 const btn = css.find((r) => r.selector === '.fs-win button.fs-win-btn' && !r.at.length);
 ok('with rounded corners in both looks', !!btn && /border-radius:\s*var\(--fs-r-ctl\)/.test(btn.body));
 ok('their glyphs show in Unraid\'s look too', css.some((r) => /\.fs-win-act \.fs-btn-g/.test(r.selector) && !/tt-popups-on/.test(r.selector) && /display:\s*inline-flex/.test(r.body)));
-ok('with a visible focus ring', css.some((r) => /\.fs-win button\.fs-win-btn:focus-visible/.test(r.selector) && !/tt-popups-on/.test(r.selector) && /outline:\s*2px solid var\(--fs-focus\)/.test(r.body)));
+ok('with a visible focus ring', css.some((r) => /\.fs-win button\.fs-win-btn:focus-visible/.test(r.selector) && !/tt-popups-on/.test(r.selector) && /outline:\s*var\(--tt-focus-ring-width, 2px\) solid var\(--fs-focus\)/.test(r.body)));
 ok('and Escape closes the window', /e\.key === 'Escape'[^\n]*done\(\)/.test(win));
 
 console.log('\nButtons');

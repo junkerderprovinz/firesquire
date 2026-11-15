@@ -24,6 +24,17 @@ for (const [name, sel] of [['a window\'s answers', 'button.fs-win-btn'], ['the w
 }
 const tint = css.find((r) => gated(r) && /--fs-btn-tint:/.test(r.body));
 ok('the tint is the accent as a glyph, on the ramp\'s OKLab step as TowerTorch\'s ink is', !!tint && /--fs-btn-tint:\s*oklab\(from var\(--fs-hue, var\(--tt-accent[^)]*\)\) clamp\(var\(--tt-ink-min, 0\), l, var\(--tt-ink-max, 1\)\)/.test(tint.body), tint && tint.body);
+console.log('\nThe focus ring is opaque, in the accent\'s ink');
+{
+  const all = rules(read('firesquire.css')).concat(rules(read('firesquire-info.css')));
+  const themed = all.find((r) => /html\.tt-popups-on :is\(#fs-info, \.fs-win, \.fs-scrim\)/.test(r.selector) && /--fs-focus:/.test(r.body));
+  ok('under TowerTorch the ring is the accent\'s ink', !!themed && /--fs-focus:\s*var\(--tt-accent-ink, #FCC419\)/.test(themed.body), themed && themed.body.match(/--fs-focus:[^;]*/)[0]);
+  const rings = all.filter((r) => /:focus-visible/.test(r.selector) && /outline:\s*(?!none)\S/.test(r.body));
+  ok('every ring takes TowerTorch\'s width, 3px with more contrast', rings.length > 0 && rings.every((r) => /outline:\s*var\(--tt-focus-ring-width, 2px\) solid var\(--fs-focus\)/.test(r.body)), rings.filter((r) => !/--tt-focus-ring-width/.test(r.body)).map((r) => r.selector).join(' | '));
+  const rbtn = all.find((r) => r.selector === '#fs-info .fs-rbtn:focus-visible');
+  ok('a README button draws the same ring inside its edge', !!rbtn && /box-shadow:\s*inset 0 0 0 var\(--tt-focus-ring-width, 2px\) var\(--fs-focus\) !important/.test(rbtn.body), rbtn && rbtn.body);
+  ok('no translucent halo is left', !all.some((r) => /45%, transparent\)/.test(r.body)));
+}
 ok('and sits on the button, where its rainbow position is set', !!tint && /fs-btn|fs-win-btn|fs-f-go/.test(tint.selector));
 const tinted = css.filter((r) => gated(r) && reached(r) && /var\(--fs-btn-tint\)/.test(r.body) && /button\.fs-win-btn|#fs-info \.fs-btn/.test(r.selector));
 ok('a disabled button stays as it is', tinted.length > 0 && tinted.every((r) => /:not\(:disabled\)/.test(r.selector)), tinted.filter((r) => !/:not\(:disabled\)/.test(r.selector)).map((r) => r.selector).join(' | '));
