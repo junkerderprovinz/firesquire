@@ -1,4 +1,23 @@
 name: GlimStone update
 
 on:
-  repository_disp
+  repository_dispatch:
+    types: [glimstone-release]
+  # Catches a release whose dispatch never arrived.
+  schedule:
+    - cron: "50 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    permissions:
+      contents: write
+      issues: write
+      actions: write
+    uses: junkerderprovinz/junkerderprovinz/.github/workflows/glimstone-update.yml@b782d6b7debacee8893f0b8705b09d95799cc908 # main
+    with:
+      ci-workflow: lint.yml
+    secrets: inherit
