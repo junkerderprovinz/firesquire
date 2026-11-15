@@ -35,6 +35,10 @@ console.log('\nThe focus ring is opaque, in the accent\'s ink');
   ok('a README button draws the same ring inside its edge', !!rbtn && /box-shadow:\s*inset 0 0 0 var\(--tt-focus-ring-width, 2px\) var\(--fs-focus\) !important/.test(rbtn.body), rbtn && rbtn.body);
   ok('no translucent halo is left', !all.some((r) => /45%, transparent\)/.test(r.body)));
 }
+{
+  const ph = rules(read('firesquire-info.css')).find((r) => /input\.fs-amount::placeholder/.test(r.selector));
+  ok('the amount\'s placeholder takes GlimStone\'s placeholder colour through TowerTorch, 4.5:1 on every fill', !!ph && /color:\s*var\(--tt-field-placeholder, #c6c6c6\)/.test(ph.body), ph && ph.body);
+}
 ok('and sits on the button, where its rainbow position is set', !!tint && /fs-btn|fs-win-btn|fs-f-go/.test(tint.selector));
 const tinted = css.filter((r) => gated(r) && reached(r) && /var\(--fs-btn-tint\)/.test(r.body) && /button\.fs-win-btn|#fs-info \.fs-btn/.test(r.selector));
 ok('a disabled button stays as it is', tinted.length > 0 && tinted.every((r) => /:not\(:disabled\)/.test(r.selector)), tinted.filter((r) => !/:not\(:disabled\)/.test(r.selector)).map((r) => r.selector).join(' | '));
