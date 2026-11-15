@@ -23,7 +23,7 @@ for (const [name, sel] of [['a window\'s answers', 'button.fs-win-btn'], ['the w
   ok(`${name}: the glyph takes the tint`, css.some((r) => gated(r) && reached(r) && r.selector.includes(sel) && /\.fs-btn-g/.test(r.selector) && /color:\s*var\(--fs-btn-tint\)/.test(r.body)));
 }
 const tint = css.find((r) => gated(r) && /--fs-btn-tint:/.test(r.body));
-ok('the tint is the accent as a glyph, darker on a light theme', !!tint && /--fs-btn-tint:\s*color-mix\(in srgb, var\(--fs-hue, var\(--tt-accent[^)]*\)\) var\(--tt-ink-mix, 100%\), black\)/.test(tint.body));
+ok('the tint is the accent as a glyph, on the ramp\'s OKLab step as TowerTorch\'s ink is', !!tint && /--fs-btn-tint:\s*oklab\(from var\(--fs-hue, var\(--tt-accent[^)]*\)\) clamp\(var\(--tt-ink-min, 0\), l, var\(--tt-ink-max, 1\)\)/.test(tint.body), tint && tint.body);
 ok('and sits on the button, where its rainbow position is set', !!tint && /fs-btn|fs-win-btn|fs-f-go/.test(tint.selector));
 const tinted = css.filter((r) => gated(r) && reached(r) && /var\(--fs-btn-tint\)/.test(r.body) && /button\.fs-win-btn|#fs-info \.fs-btn/.test(r.selector));
 ok('a disabled button stays as it is', tinted.length > 0 && tinted.every((r) => /:not\(:disabled\)/.test(r.selector)), tinted.filter((r) => !/:not\(:disabled\)/.test(r.selector)).map((r) => r.selector).join(' | '));

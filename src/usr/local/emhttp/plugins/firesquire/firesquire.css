@@ -261,10 +261,10 @@ html.tt-popups-on:not([data-tt-labels-buttons="glyph"]):not([data-tt-labels-butt
 /* A button reached for takes 22% of its tint in its ground and all of it in
    its glyph. Its words keep the text colour, which the accent on a tinted
    ground would not be legible against. The tint is the accent as a glyph,
-   darker on a light theme, or the button's own rainbow position, which is
-   why it sits on the button. */
+   moved onto TowerTorch's ink step for the ramp, or the button's own rainbow
+   position, which is why it sits on the button. */
 html.tt-popups-on :is(.fs-win button.fs-win-btn, .fs-win a.fs-f-go, #fs-info .fs-btn) {
-  --fs-btn-tint: color-mix(in srgb, var(--fs-hue, var(--tt-accent, #FCC419)) var(--tt-ink-mix, 100%), black);
+  --fs-btn-tint: oklab(from var(--fs-hue, var(--tt-accent, #FCC419)) clamp(var(--tt-ink-min, 0), l, var(--tt-ink-max, 1)) calc(a * min(1, var(--tt-ink-max, 1) / l, (1 - var(--tt-ink-min, 0)) / (1 - l))) calc(b * min(1, var(--tt-ink-max, 1) / l, (1 - var(--tt-ink-min, 0)) / (1 - l))));
 }
 html.tt-popups-on .fs-win button.fs-win-btn:not(:disabled):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--fs-chip), var(--fs-btn-tint) 22%); color: var(--fs-text); }
 html.tt-popups-on .fs-win button.fs-win-btn:not(:disabled):is(:hover, :focus-visible) .fs-btn-g { color: var(--fs-btn-tint); }
