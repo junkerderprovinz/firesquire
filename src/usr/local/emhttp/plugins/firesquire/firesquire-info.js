@@ -60,8 +60,9 @@
     { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], rest: "var(--fs-coin-xrp)", networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
   ];
 
-  var GLS_VER = "4.4.1";
+  var GLS_VER = "4.5.2";
   var GLS_REPO = "https://github.com/junkerderprovinz/glimstone";
+  var GLS_RELEASE_URL = GLS_REPO + "/releases/latest";
 
   function t(k) { return L[k] == null ? k : String(L[k]); }
   var el = UI.el;
@@ -105,6 +106,12 @@
     if (!v) return el("span", "fs-ver fs-num", String(ver || "").replace(/^v/, "") || "?");
     var a = blank(el("a", "fs-ver fs-num", v));
     a.href = repo + "/releases/tag/v" + v;
+    return a;
+  }
+  // GlimStone folds its patch tags into the next minor, so its number opens the newest release.
+  function glimstoneVersion(ver) {
+    var a = blank(el("a", "fs-ver fs-num", ver));
+    a.href = GLS_RELEASE_URL;
     return a;
   }
   // A button in the shape of the README's buttons. One with a window to open
@@ -247,7 +254,7 @@
   row(cVer, "FireSquire").appendChild(version(ver, REPO));
   // The GlimStone look names the design language it is drawn in, and the notes of this release.
   if (UI.themed()) {
-    row(cVer, "GlimStone").appendChild(version(GLS_VER, GLS_REPO));
+    row(cVer, "GlimStone").appendChild(glimstoneVersion(GLS_VER));
     var notes = blank(UI.button(null, "Info", t("rel_notes"), "a"));
     var rel = release(ver);
     notes.href = REPO + (rel ? "/releases/tag/v" + rel : "/releases");

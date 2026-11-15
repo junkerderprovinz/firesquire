@@ -3,13 +3,13 @@
     {
       "name": "plugin",
       "mode": "port",
-      "version": "4.4.1",
+      "version": "4.5.2",
       "versionFile": "src/usr/local/emhttp/plugins/firesquire/firesquire-info.js"
     },
     {
       "name": "fortress card",
       "mode": "copy",
-      "version": "4.4.1",
+      "version": "4.5.2",
       "files": [
         {
           "from": "packages/core/vanilla/fortress-card.css",

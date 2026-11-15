@@ -22,9 +22,12 @@ ok('an empty version shows a question mark', version('', 'R').textContent === '?
 ok('a version with anything after the number gets no link', version('3.1.0"><img src=x>', 'R').tagName === 'SPAN');
 
 console.log('\nThe card under TowerTorch');
-ok('GlimStone is the release the plugin ports', /var GLS_VER = "4\.4\.1";/.test(info)
-  && JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'glimstone.json'), 'utf8')).targets[0].version === '4.4.1');
-ok('GlimStone links to its own repository', /version\(GLS_VER, GLS_REPO\)/.test(info) && /var GLS_REPO = "https:\/\/github\.com\/junkerderprovinz\/glimstone";/.test(info));
+const pins = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'glimstone.json'), 'utf8')).targets.map((t) => t.version);
+ok('GlimStone is the release the plugin ports, and both pins name it', /var GLS_VER = "4\.5\.2";/.test(info) && pins.join() === '4.5.2,4.5.2', pins.join());
+// A patch tag folds into the next minor and goes, so the number opens the newest release.
+const gls = new Function('el', 'blank', 'GLS_RELEASE_URL', grabFn(info, 'glimstoneVersion') + '\nreturn glimstoneVersion;')(el, blank, 'https://github.com/junkerderprovinz/glimstone/releases/latest')('4.5.2');
+ok('GlimStone opens its newest release', /var GLS_RELEASE_URL = GLS_REPO \+ "\/releases\/latest";/.test(info) && gls.tagName === 'A' && gls.href === 'https://github.com/junkerderprovinz/glimstone/releases/latest' && gls.textContent === '4.5.2', gls.href);
+ok('the GlimStone row shows it', /row\(cVer, "GlimStone"\)\.appendChild\(glimstoneVersion\(GLS_VER\)\)/.test(info));
 ok('the release notes wear the information glyph', /UI\.button\(null, "Info", t\("rel_notes"\), "a"\)/.test(info));
 ok('the release notes link to the release the card links to', /var rel = release\(ver\);\s*notes\.href = REPO \+ \(rel \? "\/releases\/tag\/v" \+ rel : "\/releases"\);/.test(info));
 ok('no version anywhere is printed with a v', !/"v" \+ v\b|'v' \+ v\b/.test(info + read('firesquire.js')));
