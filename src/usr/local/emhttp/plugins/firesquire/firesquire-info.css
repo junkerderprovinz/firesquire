@@ -70,7 +70,7 @@
 /* The give row is the loudest row on the card, so a line of space sets it
    apart from the sentence above. */
 #fs-info .fs-rbtn-rows.fs-give { margin-top: 21px; }
-#fs-info .fs-rbtn-unit { position: relative; display: inline-flex; border-radius: var(--fs-r-ctl); overflow: hidden; isolation: isolate; --fs-brand-coffee: #ffdd00; --fs-brand-paypal: #4fb5f0; --fs-brand-bitcoin: #f7931a; }
+#fs-info .fs-rbtn-unit { position: relative; display: inline-flex; border-radius: var(--fs-r-ctl); overflow: hidden; isolation: isolate; --fs-brand-coffee: #ffdd00; --fs-brand-paypal: #4fb5f0; --fs-brand-bitcoin: #f7931a; --fs-brand-discord: #949cf7; }
 #fs-info .fs-rbtn { position: relative; display: block; flex: none; width: 160px; height: 46.6px; padding: 0; background: var(--tt-surface-3, #2e2e2e); text-decoration: none; cursor: pointer; }
 #fs-info .fs-rbtn:hover { text-decoration: none; }
 #fs-info .fs-rbtn:focus-visible { outline: none !important; filter: none !important; box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--tt-accent, #FCC419) 45%, transparent) !important; }
@@ -82,15 +82,13 @@
 #fs-info .fs-paypal-mark { color: var(--fs-brand-paypal); }
 #fs-info .fs-bitcoin-mark { color: var(--fs-brand-bitcoin); }
 #fs-info .fs-github-mark { color: #fff; }
+#fs-info .fs-discord-mark { color: var(--fs-brand-discord); }
 /* TowerTorch's light themes put the buttons on a light ground, where the marks
    take their darker brand colours. */
-html.tt-popups-on:is(.Theme--white, .Theme--azure) #fs-info .fs-rbtn-unit { --fs-brand-coffee: #8a6d00; --fs-brand-paypal: #003087; --fs-brand-bitcoin: #a85d00; }
+html.tt-popups-on:is(.Theme--white, .Theme--azure) #fs-info .fs-rbtn-unit { --fs-brand-coffee: #8a6d00; --fs-brand-paypal: #003087; --fs-brand-bitcoin: #a85d00; --fs-brand-discord: #5865f2; }
 html.tt-popups-on:is(.Theme--white, .Theme--azure) #fs-info .fs-rbtn-unit:not(:hover) .fs-github-mark { color: #181717; }
-/* The forum button reaches FireSquire's author, so it wears the page's own colour. */
-#fs-info .fs-house-mark { color: var(--fs-hue, var(--fs-house)); }
 #fs-info .fs-tile-github { --fs-give: #181717; --fs-give-ink: #fff; }
-#fs-info .fs-tile-house { --fs-house: #ff8c2f; --fs-give: var(--fs-hue, var(--fs-house)); --fs-give-ink: var(--fs-hue-ink, #161616); }
-html.tt-popups-on #fs-info .fs-tile-house { --fs-house: var(--tt-accent, #FCC419); --fs-give-ink: var(--fs-hue-ink, var(--tt-accent-text, #161616)); }
+#fs-info .fs-tile-discord { --fs-give: #5865f2; --fs-give-ink: #fff; }
 #fs-info .fs-tile-paypal { --fs-give: #003087; --fs-give-ink: #fff; }
 #fs-info .fs-tile-bitcoin { --fs-give: #f7931a; --fs-give-ink: #161616; }
 #fs-info .fs-tile-coffee { --fs-give: #ffdd00; --fs-give-ink: #0d0c22; }

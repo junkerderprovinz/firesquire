@@ -103,6 +103,15 @@ ok('Info the Version, Help and About cards', p.pane('info').querySelectorAll('.f
 p = page({ themed: false });
 ok('in Unraid\'s look General holds the description of the check', p.pane('general').children.includes(p.tools) && p.pane('general').querySelector('.fs-card-tools') === null);
 
+console.log('\nThe Help card');
+p = page();
+const help = p.pane('info').querySelectorAll('.fs-card').find((c) => c.getAttribute('data-glim-title') === en.help_title);
+const routes = help.querySelectorAll('.fs-rbtn');
+const names = routes.map((a) => a.getAttribute('aria-label')).join();
+ok('offers GitHub and then Discord', names === 'GitHub,Discord', names);
+ok('Discord opens FireSquire\'s invite in Discord\'s tile', routes[1].href === 'https://discord.gg/ZPYM2gfq8V' && help.querySelector('.fs-tile-discord') !== null);
+ok('and the sentence names those two and no other route', help.querySelector('.fs-prose').textContent === en.help_body && /GitHub/.test(en.help_body) && /Discord/.test(en.help_body) && !/forum|e-?mail/i.test(en.help_body), en.help_body);
+
 console.log('\nWithout a helper');
 p = page({ fortress: false });
 ok('no Fortress tab without the fortress helper', p.names.join() === 'general,notify,info', p.names.join());

@@ -17,7 +17,7 @@
   var rtl = UI.rtl;
 
   var REPO = "https://github.com/junkerderprovinz/firesquire";
-  var FORUM = "https://forums.unraid.net/topic/199508-support-junkerderprovinz-firesquire/";
+  var DISCORD = "https://discord.gg/ZPYM2gfq8V";
   var COFFEE_PAGE = "https://buymeacoffee.com/junkerderprovinz";
   // The one Buy Me a Coffee page that may be framed; the profile page answers
   // X-Frame-Options: SAMEORIGIN.
@@ -256,7 +256,7 @@
 
   var cHelp = card(t("help_title"), pInfo);
   prose(cHelp, t("help_body"));
-  rbtnRow(cHelp, "", [rbtn("github", "GitHub", REPO + "/issues"), rbtn("house", t("help_forum"), FORUM)]);
+  rbtnRow(cHelp, "", [rbtn("github", "GitHub", REPO + "/issues"), rbtn("discord", "Discord", DISCORD)]);
 
   var cAbout = card(t("about_title"), pInfo);
   prose(cAbout, t("about_body"));
