@@ -230,6 +230,7 @@
     b.appendChild(g);
     b.appendChild(l);
     labelTip(b);
+    holdOn(b);
     return b;
   }
   function labelTip(b){
@@ -238,7 +239,47 @@
     else if (b.fsTip) { b.removeAttribute('data-tip'); b.fsTip = false; }
   }
   function labelTips(){ Array.prototype.forEach.call(document.querySelectorAll('.fs-btn'), labelTip); }
-  new MutationObserver(labelTips).observe(html, { attributes: true, attributeFilter: ['class', 'data-tt-labels-buttons'] });
+
+  /* In reactive mode a button keeps the width it has with its words open, as
+     TowerTorch's and GlimStone's reactive buttons do, so the words open inside
+     it and a row that wraps never moves it out from under the pointer. The
+     width is read with the words open and no transition running, and held as
+     --fs-btn-w. */
+  function holdWidth(b, reactive){
+    if (!reactive) { b.style.removeProperty('--fs-btn-w'); b.removeAttribute('data-fs-fit'); return; }
+    if (!b.isConnected || !b.getClientRects().length) return;
+    b.setAttribute('data-fs-still', '');
+    b.style.removeProperty('--fs-btn-w');
+    b.setAttribute('data-fs-measure', '');
+    var open = b.offsetWidth;
+    b.removeAttribute('data-fs-measure');
+    var rest = b.offsetWidth, cs = getComputedStyle(b), w = open;
+    if (cs.boxSizing !== 'border-box') {
+      w -= (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0) + (parseFloat(cs.borderLeftWidth) || 0) + (parseFloat(cs.borderRightWidth) || 0);
+    }
+    b.style.setProperty('--fs-btn-w', Math.ceil(w) + 'px');
+    if (open > rest) b.setAttribute('data-fs-fit', ''); else b.removeAttribute('data-fs-fit');
+    // The still mark goes once the button has its resting style, or its words would fade out.
+    void b.offsetWidth;
+    b.removeAttribute('data-fs-still');
+  }
+  function hold(b){
+    var reactive = labelMode() === 'reactive', key = reactive + '\n' + b.textContent;
+    if (b.fsHoldKey === key) return;
+    if (reactive && !b.getClientRects().length) return;
+    b.fsHoldKey = key;
+    holdWidth(b, reactive);
+  }
+  // A button is measured once it is shown and again when its words change.
+  var holdRo = window.ResizeObserver ? new ResizeObserver(function (es) { es.forEach(function (e) { hold(e.target); }); }) : null;
+  function holdOn(b){
+    if (holdRo) holdRo.observe(b);
+    var l = b.querySelector('.fs-btn-l');
+    if (l) new MutationObserver(function () { hold(b); }).observe(l, { characterData: true, childList: true, subtree: true });
+  }
+  function holdAll(){ Array.prototype.forEach.call(document.querySelectorAll('.fs-btn'), function (b) { b.fsHoldKey = ''; hold(b); }); }
+  new MutationObserver(function () { labelTips(); holdAll(); }).observe(html, { attributes: true, attributeFilter: ['class', 'data-tt-labels-buttons'] });
+  if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', holdAll);
 
   // The (i) of GlimStone's info bubble: the letter i set in a ring.
   var INFO_SVG = '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="4.6" r="0.9" fill="currentColor"/><path d="M8 7v4.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';

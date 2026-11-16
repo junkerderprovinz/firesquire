@@ -139,6 +139,14 @@ html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="
 html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) .fs-btn-l { max-width: 0; opacity: 0; }
 html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-visible) { gap: .45em; }
 html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-visible) .fs-btn-l { max-width: 16em; opacity: 1; }
+/* Reactive holds a button at the width firesquire.js measured with its words
+   open, so they open inside it. One that its words widened rests with its
+   glyph in the middle. */
+html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn { min-width: var(--fs-btn-w, auto); }
+html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn[data-fs-fit] { justify-content: center; }
+html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn[data-fs-measure] { gap: .45em; }
+html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn[data-fs-measure] .fs-btn-l { max-width: 16em; opacity: 1; }
+html.tt-popups-on .fs-btn[data-fs-still], html.tt-popups-on .fs-btn[data-fs-still] * { transition: none !important; }
 @media (prefers-reduced-motion: no-preference) {
   html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn-l {
     transition: max-width var(--tt-motion-label-dur, 0s) var(--tt-motion-label-ease, ease-out), opacity calc(var(--tt-motion-label-dur, 0s) * .6) ease-out;
@@ -147,21 +155,21 @@ html.tt-popups-on[data-tt-labels-buttons="reactive"] .fs-btn:is(:hover, :focus-v
 
 /* The Main tab's button stands beside Reboot. TowerTorch pins that row's
    buttons to one width with !important, which only an important rule in a
-   layer outranks: where the label mode hides the words, it is a square like
-   its neighbours, and reactive opens it to their width. */
+   layer outranks: in glyph mode it is a square like its neighbours, and in
+   reactive mode it keeps the width it has with its words, as they do. */
 #ss-reboot-btn { margin-inline-start: 8px; }
 html.tt-popups-on #ss-reboot-btn .fs-btn-g { font-size: 1rem; }
 /* A glyph alone fills half its square, as on the buttons beside it. */
-html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) #ss-reboot-btn .fs-btn-g { font-size: calc(var(--tt-lgb-h, 36px) / 2); }
+html.tt-popups-on[data-tt-labels-buttons="glyph"] #ss-reboot-btn .fs-btn-g,
+html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn:not([data-fs-measure]) .fs-btn-g { font-size: calc(var(--tt-lgb-h, 36px) / 2); }
 html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn:is(:hover, :focus-visible) .fs-btn-g { font-size: 1rem; }
 @layer firesquire-main {
-  html.tt-popups-on:is([data-tt-labels-buttons="glyph"], [data-tt-labels-buttons="reactive"]) #ss-reboot-btn {
+  html.tt-popups-on[data-tt-labels-buttons="glyph"] #ss-reboot-btn {
     width: var(--tt-lgb-h, 36px) !important; min-width: 0 !important; max-width: none !important; padding: 0 !important;
   }
-  html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn:is(:hover, :focus-visible) { width: var(--tt-lgb-w, 200px) !important; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn { transition: width var(--tt-motion-label-dur, 0s) var(--tt-motion-label-ease, ease-out), filter .12s; }
+  html.tt-popups-on[data-tt-labels-buttons="reactive"] #ss-reboot-btn:not([data-fs-measure]) {
+    width: var(--fs-btn-w, var(--tt-lgb-h, 36px)) !important; min-width: 0 !important; max-width: none !important; padding: 0 !important;
+  }
 }
 
 /* The Dashboard's icon: Unraid's flame, or GlimStone's check under TowerTorch. */
