@@ -197,7 +197,6 @@ html.tt-popups-on:is(.Theme--white, .Theme--azure) #fs-info .fs-rbtn-unit:not(:h
 html.tt-popups-on #fs-info {
   --fs-tab: var(--tt-fm-btn, #353535);
   --fs-tab-ink: var(--tt-text-chip, #cfcfcf);
-  --fs-tab-hover: var(--tt-hover-wash, rgba(230, 230, 230, .15));
   color: var(--tt-text, #e6e6e6);
 }
 /* A tab under the rainbow carries its own position as --fs-hue. An idle tab's
@@ -205,6 +204,10 @@ html.tt-popups-on #fs-info {
 html.tt-popups-on #fs-info .fs-tab[aria-selected="true"],
 html.tt-popups-on #fs-info .fs-tab[aria-selected="true"]:hover { background: var(--fs-hue, var(--fs-head)); color: var(--fs-hue-ink, var(--fs-head-ink)); }
 html.tt-popups-on .fs-tab .fs-tabico { color: var(--fs-hue, var(--tt-accent, #FCC419)); }
+/* An idle tab, a choice in a strip and a network lights in TowerTorch's hover,
+   as its own settings tabs and rows do. */
+html.tt-popups-on #fs-info .fs-tab:not([aria-selected="true"]):hover { background: var(--tt-hover, var(--fs-tab)); box-shadow: none; }
+html.tt-popups-on .fs-win :is(.fs-seg-opt:not([aria-checked="true"]), .fs-net:not([aria-selected="true"])):hover { background: var(--tt-hover, var(--fs-chip)); }
 html.tt-popups-on .fs-tab[aria-selected="true"] .fs-tabico { color: inherit; }
 html.tt-popups-on .fs-win input.fs-amount {
   height: 32px; padding: 7px 10px; border: none; border-radius: var(--fs-r-ctl); box-shadow: none;
@@ -242,7 +245,7 @@ html.tt-popups-on .fs-win .fs-copy { align-self: center; }
     background: var(--fs-btn-ground) !important; color: var(--tt-text, #e6e6e6) !important;
     font-size: var(--tt-text-body, 14px) !important; font-weight: 600 !important; text-transform: none !important; letter-spacing: normal !important;
   }
-  html.tt-popups-on #fs-info .fs-btn:not(.fs-acc):not(:disabled):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--fs-btn-ground), var(--fs-btn-tint) 22%) !important; color: var(--tt-text, #e6e6e6) !important; }
+  html.tt-popups-on #fs-info .fs-btn:not(.fs-acc):not(:disabled):is(:hover, :focus-visible) { background: var(--tt-hover, color-mix(in srgb, var(--fs-btn-ground), var(--fs-btn-tint) 22%)) !important; color: var(--tt-text, #e6e6e6) !important; }
   html.tt-popups-on #fs-info .fs-btn:not(.fs-acc):not(:disabled):is(:hover, :focus-visible) .fs-btn-g { color: var(--fs-btn-tint) !important; }
   html.tt-popups-on #fs-info .fs-btn.fs-acc:hover { box-shadow: inset 0 0 0 100vmax var(--tt-hover-wash, rgba(230, 230, 230, .15)) !important; }
   html.tt-popups-on #fs-info .fs-btn.fs-acc {

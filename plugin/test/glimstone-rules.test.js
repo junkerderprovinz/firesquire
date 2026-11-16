@@ -1,10 +1,10 @@
-// GlimStone 4.3.7's rules for the buttons, a window's foot and a running bar, in the look
-// TowerTorch switches on. A button reached by the pointer or the keyboard takes its tint: 22% of it
-// in its ground and all of it in its glyph, its words in the text colour, and under the rainbow
-// each button its own position. The answers in a foot hug their words and never end in an
-// ellipsis, and the question beside them gives way first. A bar whose work runs carries a sheen.
-// An open window makes the page behind it inert, and every button, card and window carries its
-// GlimStone name.
+// GlimStone's rules for the buttons, a window's foot and a running bar, in the look TowerTorch
+// switches on. A button reached by the pointer or the keyboard lights in TowerTorch's --tt-hover,
+// as a row and a tab do, and its glyph takes the tint, its words in the text colour, and under the
+// rainbow each button's glyph its own position. The answers in a foot hug their words and never
+// end in an ellipsis, and the question beside them gives way first. A bar whose work runs carries
+// a sheen. An open window makes the page behind it inert, and every button, card and window
+// carries its GlimStone name.
 const { read, ok, done, rules, keyframes } = require('./lib');
 
 const js = read('firesquire.js');
@@ -14,10 +14,10 @@ const NO_PREF = (r) => r.at.some((a) => /prefers-reduced-motion:\s*no-preference
 const gated = (r) => /tt-popups-on/.test(r.selector);
 const reached = (r) => /:hover/.test(r.selector) && /:focus-visible/.test(r.selector);
 
-console.log('\nA button takes its tint when it is reached for');
+console.log('\nA button lights in the hover when it is reached for');
 for (const [name, sel] of [['a window\'s answers', 'button.fs-win-btn'], ['the way to a finding', 'a.fs-f-go'], ['the settings page\'s buttons', '#fs-info .fs-btn']]) {
-  const ground = css.filter((r) => gated(r) && reached(r) && r.selector.includes(sel) && /background(-color)?:\s*color-mix\(in srgb, var\(--fs-[\w-]+\),? var\(--fs-btn-tint\) 22%\)/.test(r.body));
-  ok(`${name}: 22% of the tint in the ground`, ground.length > 0, sel);
+  const ground = css.filter((r) => gated(r) && reached(r) && r.selector.includes(sel) && /background(-color)?:\s*var\(--tt-hover, color-mix\(in srgb, var\(--fs-[\w-]+\),? var\(--fs-btn-tint\) 22%\)\)/.test(r.body));
+  ok(`${name}: TowerTorch's hover in the ground, 22% of the tint without it`, ground.length > 0, sel);
   const words = ground.every((r) => /(^|;)\s*color:\s*var\(--(fs-text|tt-text)/.test(r.body));
   ok(`${name}: the words keep the text colour`, ground.length > 0 && words);
   ok(`${name}: the glyph takes the tint`, css.some((r) => gated(r) && reached(r) && r.selector.includes(sel) && /\.fs-btn-g/.test(r.selector) && /color:\s*var\(--fs-btn-tint\)/.test(r.body)));
@@ -42,6 +42,11 @@ console.log('\nThe focus ring is opaque, in the accent\'s ink');
 ok('and sits on the button, where its rainbow position is set', !!tint && /fs-btn|fs-win-btn|fs-f-go/.test(tint.selector));
 const tinted = css.filter((r) => gated(r) && reached(r) && /var\(--fs-btn-tint\)/.test(r.body) && /button\.fs-win-btn|#fs-info \.fs-btn/.test(r.selector));
 ok('a disabled button stays as it is', tinted.length > 0 && tinted.every((r) => /:not\(:disabled\)/.test(r.selector)), tinted.filter((r) => !/:not\(:disabled\)/.test(r.selector)).map((r) => r.selector).join(' | '));
+{
+  const lit = css.filter((r) => gated(r) && /:hover/.test(r.selector) && /background:\s*var\(--tt-hover, var\(--fs-(tab|chip)\)\)/.test(r.body)).map((r) => r.selector).join(' | ');
+  ok('an idle tab lights in the hover too', /#fs-info \.fs-tab:not\(\[aria-selected="true"\]\):hover/.test(lit), lit);
+  ok('and so does a choice in a strip and a network', /\.fs-seg-opt:not\(\[aria-checked="true"\]\)/.test(lit) && /\.fs-net:not\(\[aria-selected="true"\]\)/.test(lit), lit);
+}
 ok('Unraid\'s look keeps its own hover', css.some((r) => r.selector === '.fs-win button.fs-win-btn:hover' && /var\(--fs-head\)/.test(r.body)));
 
 console.log('\nUnder the rainbow every button its own colour');
