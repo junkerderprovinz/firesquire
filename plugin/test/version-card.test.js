@@ -23,10 +23,10 @@ ok('a version with anything after the number gets no link', version('3.1.0"><img
 
 console.log('\nThe card under TowerTorch');
 const pins = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'glimstone.json'), 'utf8')).targets.map((t) => t.version);
-ok('GlimStone is the release the plugin ports, and both pins name it', /var GLS_VER = "4\.5\.2";/.test(info) && pins.join() === '4.5.2,4.5.2', pins.join());
+ok('GlimStone is the release the plugin ports, and both pins name it', /var GLS_VER = "4\.5\.4";/.test(info) && pins.join() === '4.5.4,4.5.4', pins.join());
 // A patch tag folds into the next minor and goes, so the number opens the newest release.
-const gls = new Function('el', 'blank', 'GLS_RELEASE_URL', grabFn(info, 'glimstoneVersion') + '\nreturn glimstoneVersion;')(el, blank, 'https://github.com/junkerderprovinz/glimstone/releases/latest')('4.5.2');
-ok('GlimStone opens its newest release', /var GLS_RELEASE_URL = GLS_REPO \+ "\/releases\/latest";/.test(info) && gls.tagName === 'A' && gls.href === 'https://github.com/junkerderprovinz/glimstone/releases/latest' && gls.textContent === '4.5.2', gls.href);
+const gls = new Function('el', 'blank', 'GLS_RELEASE_URL', grabFn(info, 'glimstoneVersion') + '\nreturn glimstoneVersion;')(el, blank, 'https://github.com/junkerderprovinz/glimstone/releases/latest')('4.5.4');
+ok('GlimStone opens its newest release', /var GLS_RELEASE_URL = GLS_REPO \+ "\/releases\/latest";/.test(info) && gls.tagName === 'A' && gls.href === 'https://github.com/junkerderprovinz/glimstone/releases/latest' && gls.textContent === '4.5.4', gls.href);
 ok('the GlimStone row shows it', /row\(cVer, "GlimStone"\)\.appendChild\(glimstoneVersion\(GLS_VER\)\)/.test(info));
 ok('the release notes wear the information glyph', /UI\.button\(null, "Info", t\("rel_notes"\), "a"\)/.test(info));
 ok('the release notes link to the release the card links to', /var rel = release\(ver\);\s*notes\.href = REPO \+ \(rel \? "\/releases\/tag\/v" \+ rel : "\/releases"\);/.test(info));
