@@ -33,7 +33,7 @@ env:
 
 jobs:
   glimstone:
-    uses: junkerderprovinz/junkerderprovinz/.github/workflows/glimstone-current.yml@3537fbabd3876b61093a72ee7c9ebe7f96004754 # main
+    uses: junkerderprovinz/junkerderprovinz/.github/workflows/glimstone-current.yml@d729ef4df900f020afff77fedb52a441b69acfdd # main
 
   release:
     needs: glimstone
