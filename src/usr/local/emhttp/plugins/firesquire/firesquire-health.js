@@ -8,7 +8,7 @@
   var UI = window.fireSquireUI;
   if (!root || !UI) return;
   var URL = "/plugins/firesquire/include/FireSquireHealth.php";
-  var AREAS = ["disks", "array", "docker", "vms", "flash", "network", "fortress"];
+  var AREAS = ["disks", "array", "docker", "vms", "flash", "network", "system", "fortress"];
   var STATUS = { fail: "red", warn: "yellow", pass: "green", info: "grey" };
   var el = UI.el;
   function t(k, args) { var s = UI.t(k, args); return s == null ? k : s; }

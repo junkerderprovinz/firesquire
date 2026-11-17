@@ -316,6 +316,7 @@
   "h_area_vms": "VM",
   "h_area_flash": "Clé flash",
   "h_area_network": "Réseau",
+  "h_area_system": "Système",
   "h_area_fortress": "Forteresse",
   "n_health_title": "FireSquire sur {0} : {1} à regarder de plus près",
   "fortress_app_warning": "{0} sur {1} signale un problème.",

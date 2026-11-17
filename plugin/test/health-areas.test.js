@@ -28,21 +28,25 @@ const report = { verdict: 'CAUTION', checks: [
   { tier: 'health', id: 'cert', status: 'fail', key: 'cert_expired', args: ['Tower_unraid_bundle.pem', '2026-11-01'] },
   { tier: 'info', id: 'fortress', status: 'info', key: 'fortress_unanswered', args: ['ShipLog', 'tower'] },
   { tier: 'warning', id: 'syslog', status: 'warn', key: 'syslog_crashes', args: ['2', 'x'] },
+  { tier: 'warning', id: 'space_rootfs', status: 'pass', key: 'space_ok', args: ['rootfs', '40'] },
+  { tier: 'warning', id: 'svc_emhttp', status: 'pass', key: 'svc_emhttp_ok', args: [] },
+  { tier: 'warning', id: 'svc_docker', status: 'pass', key: 'svc_docker_ok', args: [] },
   { tier: 'config', id: 'plugins', status: 'warn', key: 'cfg_plugin_update', args: ['ca', '1'] },
   { tier: 'health', id: 'smart_trend', status: 'warn', key: 'smart_realloc_rose', args: ['sdc', '0', '8', '2026-11-17'] },
 ] };
 
 console.log('\nThe areas');
 const h = php(`fs_health_areas(json_decode(stream_get_contents(STDIN), true))`, JSON.stringify(report));
-ok('seven areas in their order', Object.keys(h.areas).join() === 'disks,array,docker,vms,flash,network,fortress', Object.keys(h.areas).join());
+ok('eight areas in their order', Object.keys(h.areas).join() === 'disks,array,docker,vms,flash,network,system,fortress', Object.keys(h.areas).join());
 const lights = Object.fromEntries(Object.entries(h.areas).map(([k, v]) => [k, v.light]));
 ok('each takes the light of its worst finding, grey without one',
-  JSON.stringify(lights) === JSON.stringify({ disks: 'yellow', array: 'green', docker: 'grey', vms: 'green', flash: 'green', network: 'red', fortress: 'yellow' }), JSON.stringify(lights));
+  JSON.stringify(lights) === JSON.stringify({ disks: 'yellow', array: 'green', docker: 'grey', vms: 'green', flash: 'green', network: 'red', system: 'yellow', fortress: 'yellow' }), JSON.stringify(lights));
 ok('the worst finding of an area comes first', h.areas.disks.findings[0].key === 'smart_realloc_rose');
 ok('a finding twice in the report shows once', h.areas.disks.findings.filter((f) => f.key === 'smart_realloc_rose').length === 1);
 ok('a running parity check and running VMs say nothing about health', !h.areas.array.findings.some((f) => f.key === 'array_op_running') && !h.areas.vms.findings.some((f) => f.key === 'vms_running'));
 ok('an app that offers a status and does not answer is worth a look', h.areas.fortress.findings[0].status === 'warn');
-ok('a crash line belongs to the reboot alone', !Object.values(h.areas).some((a) => a.findings.some((f) => f.key === 'syslog_crashes')));
+ok('crash lines, the space in RAM and the core services make up System', ['syslog_crashes', 'space_ok', 'svc_emhttp_ok', 'svc_docker_ok'].every((k) => h.areas.system.findings.some((f) => f.key === k)) &&
+  h.areas.system.findings[0].key === 'syslog_crashes', h.areas.system.findings.map((f) => f.key).join());
 ok('the advice on the settings stands apart', h.config.length === 1 && h.config[0].key === 'cfg_plugin_update');
 
 console.log('\nThe history');
@@ -65,11 +69,11 @@ const cli = (r, lang = 'en') => execFileSync('php', [CLI, lang, 'tower', '1.5.0'
 let out = cli(report);
 const last = JSON.parse(fs.readFileSync(path.join(tmp, 'run', 'last.json'), 'utf8'));
 ok('the report with its areas waits in RAM for the Health tab', last.areas.disks.light === 'yellow' && last.config.length === 1 && last.verdict === 'CAUTION');
-ok('the day goes into the history on the flash', /^2026-11-17 disks:yellow array:green docker:grey vms:green flash:green network:red fortress:yellow$/m.test(fs.readFileSync(path.join(tmp, 'state', 'health.history'), 'utf8')));
+ok('the day goes into the history on the flash', /^2026-11-17 disks:yellow array:green docker:grey vms:green flash:green network:red system:yellow fortress:yellow$/m.test(fs.readFileSync(path.join(tmp, 'state', 'health.history'), 'utf8')));
 const ev = JSON.parse(out);
 ok('the areas that got worse go out, the worst as a failure', ev.kind === 'health.worse' && ev.severity === 'failure' &&
-  ev.title === en.n_health_title.replace('{0}', 'tower').replace('{1}', [en.h_area_disks, en.h_area_network, en.h_area_fortress].join(', ')), JSON.stringify(ev));
-ok('with what was found', ev.body.split('\n').length === 3 && ev.body.startsWith('• '), ev.body);
+  ev.title === en.n_health_title.replace('{0}', 'tower').replace('{1}', [en.h_area_disks, en.h_area_network, en.h_area_system, en.h_area_fortress].join(', ')), JSON.stringify(ev));
+ok('with what was found', ev.body.split('\n').length === 4 && ev.body.startsWith('• '), ev.body);
 const hist = path.join(tmp, 'state', 'health.history');
 fs.utimesSync(hist, new Date(2000, 0, 1), new Date(2000, 0, 1));
 out = cli(report);
@@ -81,8 +85,8 @@ const st = JSON.parse(fs.readFileSync(path.join(out_, 'firesquire.json'), 'utf8'
 ok('it waits in RAM where TollRoll reads the plugins of the server', fs.existsSync(path.join(out_, 'firesquire.json')));
 ok('it follows the report format, contract 1', st.contract === 1 && st.app.id === 'firesquire' && st.app.name === 'FireSquire' && st.app.version === '1.5.0' && st.instance.name === 'tower');
 ok('the worst light is the state', st.state === 'failed');
-ok('every area not green is a need, red as an error', st.needsYou.map((n) => n.id + ':' + n.severity).join() === 'health.disks:warn,health.network:error,health.fortress:warn', JSON.stringify(st.needsYou));
-ok('its text names the area and the finding', st.needsYou[0].text.startsWith(en.h_area_disks + ': ') && st.counts.needsYou === 3);
+ok('every area not green is a need, red as an error', st.needsYou.map((n) => n.id + ':' + n.severity).join() === 'health.disks:warn,health.network:error,health.system:warn,health.fortress:warn', JSON.stringify(st.needsYou));
+ok('its text names the area and the finding', st.needsYou[0].text.startsWith(en.h_area_disks + ': ') && st.counts.needsYou === 4);
 ok('a need keeps the time it began', st.needsYou[0].since === new Date(T0 * 1000).toISOString().replace('.000', ''));
 const langs = fs.readdirSync(path.join(DIR, 'lang')).map((f) => f.slice(0, -5));
 ok('every language has a file of its own', langs.every((l) => fs.existsSync(path.join(out_, `firesquire.${l}.json`))));
@@ -117,7 +121,7 @@ ok('an app that is behind or failing is a health finding, never a reboot one',
 console.log('\nThe engine and the texts');
 const engine = read('firesquire-check.sh');
 ok('the engine hands every report to the history', /php "\$HERE\/firesquire-history\.php"/.test(engine));
-const keys = ['h_area_disks', 'h_area_array', 'h_area_docker', 'h_area_vms', 'h_area_flash', 'h_area_network', 'h_area_fortress', 'n_health_title',
+const keys = ['h_area_disks', 'h_area_array', 'h_area_docker', 'h_area_vms', 'h_area_flash', 'h_area_network', 'h_area_system', 'h_area_fortress', 'n_health_title',
   'fortress_app_warning', 'fortress_app_overdue', 'fortress_app_failed'];
 const missing = keys.filter((k) => !(k in en));
 ok('every text is in en.json', missing.length === 0, missing.join(', '));

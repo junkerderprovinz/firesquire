@@ -316,6 +316,7 @@
   "h_area_vms": "VM",
   "h_area_flash": "Flash",
   "h_area_network": "Δίκτυο",
+  "h_area_system": "Σύστημα",
   "h_area_fortress": "Φρούριο",
   "n_health_title": "FireSquire στο {0}: ρίξε μια ματιά σε {1}",
   "fortress_app_warning": "Το {0} στο {1} αναφέρει ένα πρόβλημα.",

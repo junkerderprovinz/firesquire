@@ -342,6 +342,7 @@
   "h_area_vms": "VM-uri",
   "h_area_flash": "Flash",
   "h_area_network": "Rețea",
+  "h_area_system": "Sistem",
   "h_area_fortress": "Fortăreață",
   "n_health_title": "FireSquire pe {0}: {1} merită o privire",
   "fortress_app_warning": "{0} de pe {1} raportează o problemă.",

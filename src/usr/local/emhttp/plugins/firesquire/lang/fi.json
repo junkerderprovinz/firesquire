@@ -313,6 +313,7 @@
   "h_area_vms": "VM:t",
   "h_area_flash": "Flash",
   "h_area_network": "Verkko",
+  "h_area_system": "Järjestelmä",
   "h_area_fortress": "Linnoitus",
   "n_health_title": "FireSquire laitteessa {0}: {1} kannattaa katsoa",
   "fortress_app_warning": "{0} laitteessa {1} ilmoittaa ongelmasta.",

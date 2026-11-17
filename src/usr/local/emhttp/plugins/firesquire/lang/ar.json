@@ -378,6 +378,7 @@
   "h_area_vms": "الأجهزة الافتراضية",
   "h_area_flash": "الفلاش",
   "h_area_network": "الشبكة",
+  "h_area_system": "النظام",
   "h_area_fortress": "الحصن",
   "n_health_title": "FireSquire على {0}: يستحسن إلقاء نظرة على {1}",
   "fortress_app_warning": "{0} على {1} يُبلّغ عن مشكلة.",

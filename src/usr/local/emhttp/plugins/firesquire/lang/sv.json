@@ -310,6 +310,7 @@
   "h_area_vms": "VM:ar",
   "h_area_flash": "Flash",
   "h_area_network": "Nätverk",
+  "h_area_system": "System",
   "h_area_fortress": "Fästning",
   "n_health_title": "FireSquire på {0}: ta en titt på {1}",
   "fortress_app_warning": "{0} på {1} rapporterar ett problem.",

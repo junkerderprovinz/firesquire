@@ -254,6 +254,7 @@
   "h_area_vms": "虚拟机",
   "h_area_flash": "闪存",
   "h_area_network": "网络",
+  "h_area_system": "系统",
   "h_area_fortress": "堡垒",
   "n_health_title": "{0} 上的 FireSquire：{1} 值得一看",
   "fortress_app_warning": "{1} 上的 {0} 报告了一个问题。",

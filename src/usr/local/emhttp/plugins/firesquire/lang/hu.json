@@ -274,6 +274,7 @@
   "h_area_vms": "VM-ek",
   "h_area_flash": "Flash",
   "h_area_network": "Hálózat",
+  "h_area_system": "Rendszer",
   "h_area_fortress": "Erőd",
   "n_health_title": "FireSquire ({0}): {1} megér egy pillantást",
   "fortress_app_warning": "{0} ({1}) problémát jelez.",

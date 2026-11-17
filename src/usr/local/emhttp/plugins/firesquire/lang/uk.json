@@ -368,6 +368,7 @@
   "h_area_vms": "ВМ",
   "h_area_flash": "Флешка",
   "h_area_network": "Мережа",
+  "h_area_system": "Система",
   "h_area_fortress": "Фортеця",
   "n_health_title": "FireSquire на {0}: {1} варто перевірити",
   "fortress_app_warning": "{0} на {1} повідомляє про проблему.",

@@ -254,6 +254,7 @@
   "h_area_vms": "VM",
   "h_area_flash": "แฟลช",
   "h_area_network": "เครือข่าย",
+  "h_area_system": "ระบบ",
   "h_area_fortress": "ป้อมปราการ",
   "n_health_title": "FireSquire บน {0}: {1} ควรดูสักหน่อย",
   "fortress_app_warning": "{0} บน {1} รายงานปัญหา",

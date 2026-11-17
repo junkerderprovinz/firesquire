@@ -1,4 +1,4 @@
-// The Health tab: the seven areas, each with its light in words and colour, the findings behind
+// The Health tab: the eight areas, each with its light in words and colour, the findings behind
 // it a click away, and a strip of the last 30 days. The advice on the settings stands in a card of
 // its own below, without a light. The tab shows the last check and runs one by itself when there
 // is none since the server started, and Check now runs one on request.
@@ -23,7 +23,7 @@ class El {
 }
 
 const fill = (s, a) => (a || []).reduce((m, x, i) => m.split('{' + i + '}').join(x), s);
-const lights = { disks: 'yellow', array: 'green', docker: 'green', vms: 'grey', flash: 'green', network: 'red', fortress: 'grey' };
+const lights = { disks: 'yellow', array: 'green', docker: 'green', vms: 'grey', flash: 'green', network: 'red', system: 'green', fortress: 'grey' };
 const state = {
   last: {
     generated: '2026-11-17 04:30:02', verdict: 'GO',
@@ -59,8 +59,8 @@ function tab(answers) {
   await p.answer();
   ok('the tab asks for the last check', /FireSquireHealth\.php$/.test(p.asked[0]), p.asked.join());
   const areas = p.root.find('fs-area');
-  ok('seven areas in their order, each named', areas.length === 7 && areas.map((a) => a.find('fs-area-name')[0].textContent).join() ===
-    ['disks', 'array', 'docker', 'vms', 'flash', 'network', 'fortress'].map((k) => en['h_area_' + k]).join(), areas.map((a) => a.textContent).join(' | '));
+  ok('eight areas in their order, each named', areas.length === 8 && areas.map((a) => a.find('fs-area-name')[0].textContent).join() ===
+    ['disks', 'array', 'docker', 'vms', 'flash', 'network', 'system', 'fortress'].map((k) => en['h_area_' + k]).join(), areas.map((a) => a.textContent).join(' | '));
   ok('each light in colour and in words', areas.every((a, i) => {
     const l = Object.values(lights)[i];
     return a.className.includes('fs-light-' + l) && a.find('fs-area-word')[0].textContent === en['h_light_' + l];

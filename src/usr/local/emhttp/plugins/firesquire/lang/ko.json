@@ -254,6 +254,7 @@
   "h_area_vms": "VM",
   "h_area_flash": "플래시",
   "h_area_network": "네트워크",
+  "h_area_system": "시스템",
   "h_area_fortress": "요새",
   "n_health_title": "{0}의 FireSquire: {1} 살펴보기 권장",
   "fortress_app_warning": "{1}의 {0}이(가) 문제를 알리고 있습니다.",

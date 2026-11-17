@@ -6,18 +6,19 @@
  * of its own. */
 require_once __DIR__ . '/fs_notify.php';
 
-const FS_AREAS = array('disks', 'array', 'docker', 'vms', 'flash', 'network', 'fortress');
+const FS_AREAS = array('disks', 'array', 'docker', 'vms', 'flash', 'network', 'system', 'fortress');
 
 /* The area of every finding by its id. A finding without one counts for the
- * reboot alone, such as a crash line in the syslog. */
+ * reboot alone, such as the info lines. */
 const FS_AREA_OF = array(
   'smart' => 'disks', 'smart_attr' => 'disks', 'smart_trend' => 'disks', 'crc' => 'disks', 'iodisk' => 'disks', 'scrutiny' => 'disks',
   'array_state' => 'array', 'array_parity' => 'array', 'array_op' => 'array', 'zfs' => 'array', 'btrfs' => 'array',
   'space_cache' => 'array', 'unclean' => 'array', 'last_shutdown' => 'array',
-  'risky_mount' => 'docker', 'stuck_loop' => 'docker', 'binds' => 'docker', 'svc_docker' => 'docker', 'space_docker' => 'docker', 'timeouts' => 'docker',
-  'svc_libvirt' => 'vms', 'vm_state' => 'vms',
+  'risky_mount' => 'docker', 'stuck_loop' => 'docker', 'binds' => 'docker', 'space_docker' => 'docker', 'timeouts' => 'docker',
+  'vm_state' => 'vms',
   'flash' => 'flash', 'flash_probe' => 'flash', 'flash_backup' => 'flash', 'flash_errors' => 'flash', 'flash_space' => 'flash',
   'net' => 'network', 'cert' => 'network',
+  'syslog' => 'system', 'space_rootfs' => 'system', 'space_varlog' => 'system', 'svc_docker' => 'system', 'svc_libvirt' => 'system', 'svc_emhttp' => 'system',
   'fortress' => 'fortress',
 );
 
