@@ -9,6 +9,7 @@ FS_DOCKER_CFG="${FS_DOCKER_CFG:-/boot/config/docker.cfg}"
 FS_DOMAIN_CFG="${FS_DOMAIN_CFG:-/boot/config/domain.cfg}"
 FS_NFSD="${FS_NFSD:-/proc/fs/nfsd/clients}"
 FS_BOOT="${FS_BOOT:-/boot}"
+FS_PREV_SYSLOG="${FS_PREV_SYSLOG:-/boot/logs/syslog-previous}"
 
 # ini_get prints the value of key in an ini file, without its quotes.
 ini_get() {
@@ -68,13 +69,106 @@ more_timeouts() {
   fi
 }
 
+# half_minutes rounds seconds, plus half a minute for unmounting the disks, up
+# to the next half minute, the steps a time-out is worth setting in.
+half_minutes() { echo $(( ($1 + 30 + 29) / 30 * 30 )); }
+
+# shutdown_record reads the last shutdown from the syslog Unraid keeps of it
+# and prints the time-out it had, 1 when Unraid gave up waiting, the seconds
+# the VMs and then the containers took, and the mounts that stayed busy. A
+# phase that never started reads "-", one that had not finished "?" with the
+# seconds it had run by then.
+shutdown_record() {
+  [ -r "$FS_PREV_SYSLOG" ] || return 1
+  awk '
+    function clock(   t, a) {
+      if ($1 ~ /^[0-9][0-9][0-9][0-9]-/) { t = $1; sub(/^[^T]*T/, "", t) } else t = $3
+      split(substr(t, 1, 8), a, ":")
+      return a[1] * 3600 + a[2] * 60 + a[3]
+    }
+    function at(   s) { s = clock(); if (s < start) s += 86400; return s }
+    function span(a, b) { if (a == "") return "-"; if (b != "") return b - a; return "?" ((forced == "" ? a : forced) - a) }
+    /rc\.local_shutdown: Waiting up to [0-9]+ seconds for graceful shutdown/ {
+      start = clock(); n = $0; sub(/.*Waiting up to /, "", n); timeout = n + 0
+      vs = ""; ve = ""; cs = ""; ce = ""; forced = ""; busy = ""; split("", seen); on = 1; next
+    }
+    !on { next }
+    /rc\.libvirt: Stopping libvirt daemon/ { vs = at() }
+    /rc\.libvirt: libvirt daemon\.\.\. +Stopped/ { ve = at() }
+    /rc\.docker: Stopping containers/ { cs = at() }
+    /rc\.docker: Unraid managed containers stopped/ { ce = at() }
+    /umount: [^ ]+: target is busy/ {
+      m = $0; sub(/.*umount: /, "", m); sub(/: target is busy.*/, "", m)
+      if (!(m in seen)) { seen[m] = 1; busy = busy (busy == "" ? "" : ", ") m }
+    }
+    /rc\.local_shutdown: Forcing shutdown/ { forced = at() }
+    END {
+      if (!on) exit 1
+      print timeout, (forced == "" ? 0 : 1), span(vs, ve), span(cs, ce), busy
+    }' "$FS_PREV_SYSLOG"
+}
+
+# phase_need is what a stop phase asks of the time-out: what it took, or
+# for one cut short at least its own time-out.
+phase_need() {
+  case "$1" in
+    -) echo 0 ;;
+    \?*) local ran="${1#\?}"; [ "$ran" -gt "$2" ] && echo "$ran" || echo "$2" ;;
+    *) echo "$1" ;;
+  esac
+}
+
+# more_last_shutdown names the shutdown time-out to set when Unraid gave up
+# waiting the last time, from what the VMs and containers took then. When
+# both had stopped in time, something else held the array, and the busy
+# mounts say where.
+more_last_shutdown() {
+  local rec timeout forced vm ct busy stop vmt need now suggest
+  rec="$(shutdown_record)" || return 0
+  read -r timeout forced vm ct busy <<< "$rec"
+  [ "$forced" = 1 ] || return 0
+  case "$vm$ct" in
+    *\?*) ;;
+    *)
+      add warning last_shutdown warn shutdown_held "$timeout|${busy:-/mnt}" "The last shutdown ran out of its ${timeout}s after the VMs and containers had stopped, because something still held ${busy:-/mnt}. Close what runs there before you reboot."
+      return 0 ;;
+  esac
+  stop="$(ini_get DOCKER_TIMEOUT "$FS_DOCKER_CFG")"; stop="${stop:-10}"
+  vmt="$(ini_get TIMEOUT "$FS_DOMAIN_CFG")"; vmt="${vmt:-60}"
+  # Containers stop after the VMs, so a VM that hung kept them from their turn.
+  if [ "$ct" = - ] && [[ "$vm" == \?* ]] && [ "$(ini_get DOCKER_ENABLED "$FS_DOCKER_CFG")" = yes ]; then ct="?0"; fi
+  need=$(( $(phase_need "$vm" "$vmt") + $(phase_need "$ct" "$stop") ))
+  suggest="$(half_minutes "$need")"
+  now="$(ini_get shutdownTimeout "$FS_VAR_INI")"; now="${now:-90}"
+  if [ "$now" -ge "$suggest" ]; then
+    add warning last_shutdown pass timeout_raised "$timeout|$now" "The last shutdown ran out of its ${timeout}s, and the time-out of ${now}s now covers what the VMs and containers took then."
+  else
+    add warning last_shutdown warn timeout_suggest "$timeout|$need|$suggest" "The last shutdown ran out of its ${timeout}s. The VMs and containers need about ${need}s to stop, so set the shutdown time-out in Disk Settings to $suggest seconds."
+  fi
+}
+
 # more_unclean follows Unraid's own rule for "Unclean shutdown detected": the
-# array stands, its superblock is not clean and a parity check is due.
+# array stands, its superblock is not clean and a parity check is due. Without
+# the log of that shutdown, the time-out to set comes from Docker's and the
+# VMs' own time-outs.
 more_unclean() {
   [ "$(ini_get mdState "$FS_VAR_INI")" = STOPPED ] || return 0
   [ "$(ini_get sbClean "$FS_VAR_INI")" != yes ] || return 0
   case "$(ini_get mdResyncAction "$FS_VAR_INI")" in check*) ;; *) return 0 ;; esac
-  add warning unclean warn unclean "" "The last shutdown was not clean. The next array start runs a parity check."
+  local rec stop=0 vm=0 now suggest
+  if rec="$(shutdown_record)" && [ "$(echo "$rec" | cut -d' ' -f2)" = 1 ]; then
+    add warning unclean warn unclean "" "The last shutdown was not clean. The next array start runs a parity check."
+    return 0
+  fi
+  if [ "$(ini_get DOCKER_ENABLED "$FS_DOCKER_CFG")" = yes ]; then stop="$(ini_get DOCKER_TIMEOUT "$FS_DOCKER_CFG")"; stop="${stop:-10}"; fi
+  if [ "$(ini_get SERVICE "$FS_DOMAIN_CFG")" = enable ]; then vm="$(ini_get TIMEOUT "$FS_DOMAIN_CFG")"; vm="${vm:-60}"; fi
+  suggest="$(half_minutes $((stop + vm)))"
+  now="$(ini_get shutdownTimeout "$FS_VAR_INI")"; now="${now:-90}"
+  if [ $((stop + vm)) -gt 0 ] && [ "$now" -lt "$suggest" ]; then
+    add warning unclean warn unclean_suggest "$stop|$vm|$suggest" "The last shutdown was not clean, so the next array start runs a parity check. Containers may take ${stop}s and VMs ${vm}s to stop: set the shutdown time-out in Disk Settings to $suggest seconds."
+  else
+    add warning unclean warn unclean "" "The last shutdown was not clean. The next array start runs a parity check."
+  fi
 }
 
 share_finding() {

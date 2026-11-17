@@ -382,6 +382,10 @@
         return '/Settings/DockerSettings';
       case 'svc_libvirt_down':
         return '/Settings/VMSettings';
+      case 'timeouts_short':
+      case 'timeout_suggest':
+      case 'unclean_suggest':
+        return '/Settings/DiskSettings';
       case 'risky_mount_found':
       case 'binds_missing':
       case 'stuck_loop_found':

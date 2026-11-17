@@ -179,6 +179,7 @@ else
   add critical array_state info array_unknown "" "mdcmd not found, cannot determine array state."
 fi
 more_unclean
+more_last_shutdown
 
 # Mover.
 fspush 14 p_mover
