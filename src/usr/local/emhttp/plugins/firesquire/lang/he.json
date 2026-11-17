@@ -310,5 +310,19 @@
   "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
   "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
   "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds."
+  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
+  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
+  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
+  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cfg_plugin_update": {
+    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab.",
+    "one": "An update waits for this plugin: {0}. Install it on the Plugins tab.",
+    "two": "Updates wait for these plugins: {0}. Install them on the Plugins tab."
+  },
+  "cfg_plugin_unfit": {
+    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
+    "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
+    "two": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+  },
+  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change."
 }

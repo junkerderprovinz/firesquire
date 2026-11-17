@@ -105,6 +105,7 @@ plural() { if [ "$1" = 1 ]; then printf '%s' "$2"; else printf '%s' "$3"; fi; }
 . "$HERE/firesquire-health.sh"
 . "$HERE/firesquire-more.sh"
 . "$HERE/firesquire-watch.sh"
+. "$HERE/firesquire-config.sh"
 
 # Apps write their texts, and FireSquire its messages, in the language Unraid shows.
 UI_LANG="$(sed -n 's/^locale="\{0,1\}\([a-z][a-z]\).*/\1/p' /boot/config/plugins/dynamix/dynamix.cfg 2>/dev/null | head -n1)"
@@ -443,6 +444,9 @@ fi
 crc_report
 smart_trend_report
 health_hint
+config_shares
+config_plugins
+config_done
 
 # Info.
 fspush 97 p_info
