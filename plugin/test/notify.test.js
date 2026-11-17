@@ -68,7 +68,7 @@ fs.chmodSync(helper, 0o755);
 let raw;
 try {
   raw = execFileSync('bash', [path.join(DIR, 'firesquire-check.sh'), '--json'], {
-    env: { ...process.env, FIRESQUIRE_NOTIFY: helper, FS_STATE: state.replace(/\\/g, '/'), FS_RUN: path.join(tmp, 'run').replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'none') },
+    env: { ...process.env, FIRESQUIRE_NOTIFY: helper, FS_STATE: state.replace(/\\/g, '/'), FS_FORTRESS_OUT: path.join(tmp, 'out'), FS_RUN: path.join(tmp, 'run').replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'none') },
     encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
   });
 } catch (err) {

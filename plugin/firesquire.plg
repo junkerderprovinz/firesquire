@@ -195,6 +195,10 @@
       # the flash next to it.
       cron="7,22,37,52 * * * * /bin/bash &emhttp;/&pkg;-follow.sh"
       if [ "$(cat "&plgPath;/fortress.cron" 2>/dev/null)" != "$cron" ]; then echo "$cron" > "&plgPath;/fortress.cron"; fi
+      # TollRoll counts a plugin whose status is older than an hour as gone, so
+      # the status of the last check is written again every hour.
+      cron="47 * * * * /usr/bin/php &emhttp;/&pkg;-history.php --refresh >/dev/null 2>/dev/null"
+      if [ "$(cat "&plgPath;/status.cron" 2>/dev/null)" != "$cron" ]; then echo "$cron" > "&plgPath;/status.cron"; fi
       /usr/local/sbin/update_cron 2>/dev/null
       echo ""
       cat "&emhttp;/banner.txt" 2>/dev/null
@@ -221,6 +225,7 @@
       removepkg "&pkg;" 2>/dev/null
       rm -rf "&emhttp;"
       rm -rf "&plgPath;" /var/local/firesquire
+      rm -f /var/local/fortress/firesquire.json /var/local/fortress/firesquire.*.json
       /usr/local/sbin/update_cron 2>/dev/null
       exit 0
     </INLINE>

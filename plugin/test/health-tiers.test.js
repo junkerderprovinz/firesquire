@@ -48,22 +48,22 @@ const consts = /var VCLASS[^\n]*\n\s*var STATUS[^\n]*\n[\s\S]*?var QUOTES_LOG[^\
 const reportHTML = vm.runInNewContext(`${consts}\n${fns}\nreportHTML`, ctx);
 const html = reportHTML({ verdict: 'GO', checks: [
   { tier: 'critical', id: 'flash', status: 'pass', key: 'flash_ok', args: [] },
-  { tier: 'health', id: 'smart_trend', status: 'warn', key: 'zz_health', args: [], message: 'HEALTH-ONLY' },
-  { tier: 'config', id: 'share', status: 'warn', key: 'zz_config', args: [], message: 'CONFIG-ONLY' },
+  { tier: 'health', id: 'smart_trend', status: 'warn', key: 'zz_health', args: [], message: 'health finding' },
+  { tier: 'config', id: 'share', status: 'warn', key: 'zz_config', args: [], message: 'config finding' },
 ] });
 ok('shows the reboot findings', html.includes(en.flash_ok));
-ok('and leaves health and configuration out', !html.includes('HEALTH-ONLY') && !html.includes('CONFIG-ONLY'));
+ok('and leaves health and configuration out', !html.includes('health finding') && !html.includes('config finding'));
 
 console.log('\nThe notification');
 const out = execFileSync('php', ['-r', `require '${LIB}'; echo json_encode(fs_event(json_decode(stream_get_contents(STDIN), true), 'GO', 'en', 'tower'));`], {
   encoding: 'utf8',
   input: JSON.stringify({ verdict: 'CAUTION', checks: [
     { tier: 'warning', id: 'crc', status: 'warn', key: 'crc_rose', args: ['sdc', '0', '2'] },
-    { tier: 'health', id: 'smart_trend', status: 'warn', key: 'zz', args: [], message: 'HEALTH-ONLY' },
-    { tier: 'config', id: 'share', status: 'warn', key: 'zz', args: [], message: 'CONFIG-ONLY' },
+    { tier: 'health', id: 'smart_trend', status: 'warn', key: 'zz', args: [], message: 'health finding' },
+    { tier: 'config', id: 'share', status: 'warn', key: 'zz', args: [], message: 'config finding' },
   ] }),
 });
 const ev = JSON.parse(out);
-ok('the reboot notification lists only what stands in the reboot\'s way', ev.body.split('\n').length === 1 && !/ONLY/.test(ev.body), ev.body);
+ok('the reboot notification lists only what stands in the reboot\'s way', ev.body.split('\n').length === 1 && !/finding/.test(ev.body), ev.body);
 
 done();

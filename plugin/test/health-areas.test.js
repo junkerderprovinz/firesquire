@@ -59,7 +59,8 @@ ok('days older than 30 drop out', days[0] === '2026-10-19' && days[days.length -
 
 console.log('\nAfter every check');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'fs-history-'));
-const env = { ...process.env, FS_STATE: path.join(tmp, 'state'), FS_RUN: path.join(tmp, 'run'), FS_NOW: String(T0) };
+const out_ = path.join(tmp, 'fortress');
+const env = { ...process.env, FS_STATE: path.join(tmp, 'state'), FS_RUN: path.join(tmp, 'run'), FS_FORTRESS_OUT: out_, FS_NOW: String(T0) };
 const cli = (r, lang = 'en') => execFileSync('php', [CLI, lang, 'tower', '1.5.0'], { input: JSON.stringify(r), encoding: 'utf8', env });
 let out = cli(report);
 const last = JSON.parse(fs.readFileSync(path.join(tmp, 'run', 'last.json'), 'utf8'));
@@ -76,15 +77,32 @@ ok('the same lights again send nothing', out === '');
 ok('and leave the history on the flash untouched', fs.statSync(hist).mtime.getFullYear() === 2000);
 
 console.log('\nThe status for the fortress');
-const st = JSON.parse(fs.readFileSync(path.join(tmp, 'run', 'status.json'), 'utf8'));
+const st = JSON.parse(fs.readFileSync(path.join(out_, 'firesquire.json'), 'utf8'));
+ok('it waits in RAM where TollRoll reads the plugins of the server', fs.existsSync(path.join(out_, 'firesquire.json')));
 ok('it follows the report format, contract 1', st.contract === 1 && st.app.id === 'firesquire' && st.app.name === 'FireSquire' && st.app.version === '1.5.0' && st.instance.name === 'tower');
 ok('the worst light is the state', st.state === 'failed');
 ok('every area not green is a need, red as an error', st.needsYou.map((n) => n.id + ':' + n.severity).join() === 'health.disks:warn,health.network:error,health.fortress:warn', JSON.stringify(st.needsYou));
 ok('its text names the area and the finding', st.needsYou[0].text.startsWith(en.h_area_disks + ': ') && st.counts.needsYou === 3);
 ok('a need keeps the time it began', st.needsYou[0].since === new Date(T0 * 1000).toISOString().replace('.000', ''));
+const langs = fs.readdirSync(path.join(DIR, 'lang')).map((f) => f.slice(0, -5));
+ok('every language has a file of its own', langs.every((l) => fs.existsSync(path.join(out_, `firesquire.${l}.json`))));
+const stDe = JSON.parse(fs.readFileSync(path.join(out_, 'firesquire.de.json'), 'utf8'));
+ok('in its words', stDe.needsYou[0].text.startsWith(de.h_area_disks + ': ') && stDe.state === st.state, stDe.needsYou[0].text);
+ok('and each is replaced in one rename, no part file left', !fs.readdirSync(out_).some((f) => !/^firesquire(\.[a-z]{2})?\.json$/.test(f)), fs.readdirSync(out_).join());
+
+console.log('\nEvery hour');
+const plain = path.join(out_, 'firesquire.json');
+fs.utimesSync(plain, new Date(2000, 0, 1), new Date(2000, 0, 1));
+execFileSync('php', [CLI, '--refresh'], { encoding: 'utf8', env: { ...env, FS_NOW: String(T0 + 3600) } });
+const again = JSON.parse(fs.readFileSync(plain, 'utf8'));
+ok('the status is written again from the last check', fs.statSync(plain).mtime.getFullYear() > 2000 && again.state === st.state);
+ok('and still says when that check ran', again.sampledAt === st.sampledAt, again.sampledAt);
+ok('it keeps the history on the flash as it is', fs.statSync(hist).mtime.getFullYear() === 2000);
+ok('the plugin asks for it every hour', /^\s*cron="47 \* \* \* \* \/usr\/bin\/php &emhttp;\/&pkg;-history\.php --refresh /m.test(fs.readFileSync(path.join(__dirname, '..', 'firesquire.plg'), 'utf8')));
 cli({ verdict: 'GO', checks: [{ tier: 'critical', id: 'flash', status: 'pass', key: 'flash_ok', args: [] }] }, 'de');
-const calm = JSON.parse(fs.readFileSync(path.join(tmp, 'run', 'status.json'), 'utf8'));
+const calm = JSON.parse(fs.readFileSync(plain, 'utf8'));
 ok('all green is ok', calm.state === 'ok' && calm.needsYou.length === 0);
+ok('the plain file speaks Unraid\'s language', JSON.parse(fs.readFileSync(path.join(out_, 'firesquire.de.json'), 'utf8')).sampledAt === calm.sampledAt);
 fs.rmSync(tmp, { recursive: true, force: true });
 
 console.log('\nThe apps of the fortress');

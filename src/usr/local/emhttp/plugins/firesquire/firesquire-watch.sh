@@ -82,7 +82,7 @@ FS_BONDING="${FS_BONDING:-/proc/net/bonding}"
 # a gigabit or at half duplex usually means a worn cable or a port that fell
 # back, and a bond with a member down has lost its spare.
 watch_network() {
-  local n name speed duplex any=0 found=0 b m
+  local n name speed duplex found=0 b m
   if [ -z "$(ip route show default 2>/dev/null)" ]; then
     found=1
     add health net warn net_noroute "" "The server has no default route, so it cannot reach the internet for updates and notifications."
@@ -94,7 +94,6 @@ watch_network() {
     speed="$(cat "$n/speed" 2>/dev/null)"
     duplex="$(cat "$n/duplex" 2>/dev/null)"
     case "$speed" in ''|-*|*[!0-9]*) continue ;; esac
-    any=1
     if [ "$duplex" = half ]; then
       found=1
       add health net warn net_half "$name" "$name runs at half duplex, usually a worn cable or a port that fell back."

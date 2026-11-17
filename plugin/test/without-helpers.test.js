@@ -103,7 +103,7 @@ fs.writeFileSync(path.join(state, 'notify.json'), '[]');
 let out;
 try {
   out = execFileSync('bash', [ENGINE, '--json', '--progress'], {
-    env: { ...process.env, FIRESQUIRE_FORTRESS: path.join(tmp, 'fortress'), FIRESQUIRE_NOTIFY: path.join(tmp, 'notify'), FS_STATE: state.replace(/\\/g, '/'), FS_RUN: path.join(tmp, 'run').replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'membership') },
+    env: { ...process.env, FIRESQUIRE_FORTRESS: path.join(tmp, 'fortress'), FIRESQUIRE_NOTIFY: path.join(tmp, 'notify'), FS_STATE: state.replace(/\\/g, '/'), FS_FORTRESS_OUT: path.join(tmp, 'out'), FS_RUN: path.join(tmp, 'run').replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'membership') },
     encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
   });
 } catch (e) {
@@ -111,7 +111,9 @@ try {
 }
 fs.rmSync(tmp, { recursive: true, force: true });
 const stages = [...out.matchAll(/^@@FSP \d+ (\w+)$/gm)].map((m) => m[1]);
-const wanted = [...read('firesquire-check.sh').matchAll(/fspush \d+ (p_\w+)/g)].map((m) => m[1]).filter((s) => s !== 'p_fortress');
+// The stages of a full check, after the stop of the array has had its own.
+const full = read('firesquire-check.sh').split('# Critical checks: a fail here means NO-GO.')[1];
+const wanted = [...full.matchAll(/fspush \d+ (p_\w+)/g)].map((m) => m[1]).filter((s) => s !== 'p_fortress');
 ok('walks every stage but the fortress', wanted.every((s) => stages.includes(s)) && !stages.includes('p_fortress'), stages.join(' '));
 const report = JSON.parse(out.split('\n').find((l) => l.startsWith('{')) || '{}');
 ok('and ends in a verdict', ['GO', 'CAUTION', 'NO-GO'].includes(report.verdict));
