@@ -68,6 +68,7 @@ esac
 fs.writeFileSync(path.join(tmp, 'notify-helper'), `#!/bin/bash
 { echo "$*"; cat "$3"; echo; cat; } >> "${T}/sent"
 `);
+for (const h of ['fortress-helper', 'notify-helper']) fs.chmodSync(path.join(tmp, h), 0o755);
 const ev = JSON.stringify({ kind: 'check.caution', severity: 'warning', ping: 'fail', key: 'firesquire.check.caution', title: 'FireSquire on tower: Smouldering', body: '• x',
   hub: { title: 'tower: Smouldering', resolve: ['firesquire.check.nogo'] } });
 function send(hubList, okId) {
