@@ -1,0 +1,8 @@
+/dev/md1p1 /mnt/disk1 xfs rw,noatime 0 0
+cache /mnt/cache zfs rw,xattr 0 0
+cache/appdata /mnt/cache/appdata zfs rw,xattr 0 0
+cache/appdata@daily-2026-11-17 /mnt/cache/.zfs/snapshot/daily-2026-11-17 zfs ro 0 0
+shfs /mnt/user fuse.shfs rw 0 0
+rclone:gdrive /mnt/user/cloud fuse.rclone rw 0 0
+/dev/sdh1 /mnt/disks/usb ext4 rw 0 0
+/dev/loop3 /mnt/disk1/iso-mount iso9660 ro 0 0

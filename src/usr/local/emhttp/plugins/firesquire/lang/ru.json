@@ -388,5 +388,44 @@
   "h_days": "The last 30 days",
   "h_day": "{0}: {1}",
   "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light."
+  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
+  "title_stop": "FireSquire: Before the array stops",
+  "g_ask_stop": "Stop the array anyway?",
+  "g_stop": "Stop anyway",
+  "p_ops": "Checking running work…",
+  "p_open": "Looking for open files…",
+  "stop_open_files": {
+    "many": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
+    "one": "This process keeps files open in the array, so it cannot unmount: {0}. Close it first.",
+    "few": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
+    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first."
+  },
+  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_mounts": {
+    "many": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
+    "one": "This is mounted inside the array and keeps it from unmounting: {0}. Unmount it first.",
+    "few": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
+    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first."
+  },
+  "stop_loops": {
+    "many": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
+    "one": "This image file is attached from the array and keeps it from unmounting: {0}. Detach it first.",
+    "few": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
+    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first."
+  },
+  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_vm_agent": {
+    "many": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
+    "one": "This VM runs without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
+    "few": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
+    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+  },
+  "stop_containers": {
+    "many": "{0} containers run. Unraid stops them before the array, each within {1}s.",
+    "one": "{0} container runs. Unraid stops it before the array, within {1}s.",
+    "few": "{0} containers run. Unraid stops them before the array, each within {1}s.",
+    "other": "{0} containers run. Unraid stops them before the array, each within {1}s."
+  },
+  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
+  "stop_mover": "The mover is running. Stopping the array cuts it short."
 }

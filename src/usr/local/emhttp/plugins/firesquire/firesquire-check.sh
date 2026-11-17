@@ -14,6 +14,7 @@
 # Usage:
 #   firesquire-check.sh            human-readable report (English, colour on TTY)
 #   firesquire-check.sh --json     machine-readable JSON (consumed by the WebGUI)
+#   firesquire-check.sh --stop     only what holds the array, before it is stopped
 #
 # Each JSON finding carries a translation "key" + "args" (the WebGUI localises
 # them, falling back to the English "message"). Exit code mirrors the verdict:
@@ -24,10 +25,12 @@ set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 JSON=0
 PROGRESS=0
+STOP=0
 for _a in "$@"; do
   case "$_a" in
     --json)     JSON=1 ;;
     --progress) PROGRESS=1 ;;
+    --stop)     STOP=1 ;;
   esac
 done
 
@@ -106,9 +109,115 @@ plural() { if [ "$1" = 1 ]; then printf '%s' "$2"; else printf '%s' "$3"; fi; }
 . "$HERE/firesquire-more.sh"
 . "$HERE/firesquire-watch.sh"
 . "$HERE/firesquire-config.sh"
+. "$HERE/firesquire-stop.sh"
 
 # Apps write their texts, and FireSquire its messages, in the language Unraid shows.
 UI_LANG="$(sed -n 's/^locale="\{0,1\}\([a-z][a-z]\).*/\1/p' /boot/config/plugins/dynamix/dynamix.cfg 2>/dev/null | head -n1)"
+
+# fortress_apps asks the apps of the fortress what they are doing: work a
+# reboot or a stop of the array would cut short. Without the helper or a
+# joined directory there is no fortress, and the group stays out.
+FORTRESS="${FIRESQUIRE_FORTRESS:-$HERE/fortress}"
+FORTRESS_DIR="${FIRESQUIRE_FORTRESS_DIR:-/boot/config/plugins/firesquire/fortress}"
+fortress_apps() {
+  [ -x "$FORTRESS" ] && [ -f "$FORTRESS_DIR/fortress.json" ] && have php || return 0
+  fspush 68 p_fortress
+  # 3 is a fortress closed to newcomers until its phrase changes, and the
+  # helper still reports the members that answered.
+  fortress_out="$("$FORTRESS" status -dir "$FORTRESS_DIR" -json -wait 8s ${UI_LANG:+-lang "$UI_LANG"} 2>/dev/null)"
+  fortress_code=$?
+  if [ "$fortress_code" -eq 0 ] || [ "$fortress_code" -eq 3 ]; then
+    while IFS=$'\x1f' read -r f_tier f_status f_key f_args f_msg; do
+      add "$f_tier" fortress "$f_status" "$f_key" "$f_args" "$f_msg"
+    done < <(printf '%s' "$fortress_out" | php "$HERE/firesquire-fortress.php")
+  else
+    add info fortress info fortress_skip "" "FireSquire could not reach the fortress and skipped its apps."
+  fi
+}
+
+# finish names the verdict, hands a full check to the notifications and the
+# Health tab, and prints the report.
+finish() {
+  case "$WORST" in
+    0) VERDICT="GO";      VNAME="All clear";           VCOLOR=32 ;;
+    1) VERDICT="CAUTION"; VNAME="Smouldering";         VCOLOR=33 ;;
+    2) VERDICT="NO-GO";   VNAME="The roof is on fire"; VCOLOR=31 ;;
+  esac
+
+  # A CAUTION or NO-GO goes to the channels on every run, the way back to GO
+  # once. The helper retries for a while, so it sends in the background and the
+  # report does not wait for it.
+  NOTIFY="${FIRESQUIRE_NOTIFY:-$HERE/notify}"
+  FS_RUN="${FS_RUN:-/var/local/firesquire}"
+  REPORT="$(printf '{"verdict":"%s","checks":[%s]}' "$VERDICT" "$JSON_ITEMS")"
+  send() {
+    [ -n "$1" ] || return 0
+    printf '%s\n' "$1" | nohup "$NOTIFY" send -channels "$FS_STATE/notify.json" -source FireSquire >/dev/null 2>&1 &
+  }
+  channels() { [ -x "$NOTIFY" ] && [ -s "$FS_STATE/notify.json" ]; }
+  if [ "$STOP" -eq 0 ] && channels && have php; then
+    last="$(cat "$FS_STATE/last.verdict" 2>/dev/null)"
+    send "$(printf '%s' "$REPORT" | php "$HERE/firesquire-notify.php" "$last" "$UI_LANG" "$(hostname)")"
+    if [ "$last" != "$VERDICT" ]; then printf '%s\n' "$VERDICT" > "$FS_STATE/last.verdict"; fi
+  fi
+
+  # The Health tab and the fortress read how the server stands from here, and
+  # an area that got worse goes to the channels.
+  if [ "$STOP" -eq 0 ] && have php; then
+    fs_ver="$(sed -n 's/.*<!ENTITY *version *"\([^"]*\)".*/\1/p' /var/log/plugins/firesquire.plg 2>/dev/null | head -n1)"
+    health_event="$(printf '%s' "$REPORT" | FS_STATE="$FS_STATE" FS_RUN="$FS_RUN" php "$HERE/firesquire-history.php" "$UI_LANG" "$(hostname)" "$fs_ver")"
+    channels && send "$health_event"
+  fi
+
+  fspush 100 p_done
+  if [ "$JSON" -eq 1 ]; then
+    printf '{"verdict":"%s","worst":%s,"generated":"%s","checks":[%s]}\n' \
+      "$VERDICT" "$WORST" "$(date '+%Y-%m-%d %H:%M:%S')" "$JSON_ITEMS"
+    exit "$WORST"
+  fi
+
+  TTY=0; [ -t 1 ] && TTY=1
+  banner() {
+    if [ "$TTY" -eq 1 ]; then printf '\033[1;%sm%s\033[0m\n' "$VCOLOR" "$1"; else printf '%s\n' "$1"; fi
+  }
+
+  # Brand ASCII banner (the shared "Junker der Provinz" house signature). Human
+  # report only: the --json branch above returns via `exit`, so the WebGUI/JSON
+  # output is never touched by this. banner.txt is shipped in the package next to
+  # this script (see plugin/pkg_build.sh); skip cleanly if it is absent.
+  if [ -f "$HERE/banner.txt" ]; then
+    echo
+    cat "$HERE/banner.txt"
+    echo "   FireSquire  -  advisory pre-reboot health check for your Unraid box"
+  fi
+
+  echo
+  banner "  ===== FIRESQUIRE: $VNAME ====="
+  echo
+  if [ -n "$TXT_CRIT" ]; then echo "  -- Critical (The roof is on fire if failing) --"; printf '%s\n' "$TXT_CRIT"; fi
+  if [ -n "$TXT_WARN" ]; then echo "  -- Warnings (Smouldering if failing) --";        printf '%s\n' "$TXT_WARN"; fi
+  if [ -n "$TXT_INFO" ]; then echo "  -- Info --";                                       printf '%s\n' "$TXT_INFO"; fi
+  if [ -n "$TXT_HEALTH" ]; then echo "  -- Health --";                                   printf '%s\n' "$TXT_HEALTH"; fi
+  if [ -n "$TXT_CONFIG" ]; then echo "  -- Configuration --";                            printf '%s\n' "$TXT_CONFIG"; fi
+  exit "$WORST"
+}
+
+# Stopping the array: only what holds it, and nothing is sent or kept.
+if [ "$STOP" -eq 1 ]; then
+  fspush 10 p_ops
+  stop_ops
+  fspush 30 p_open
+  stop_open_files
+  fspush 50 p_mounts
+  stop_mounts
+  fspush 60 p_vms
+  stop_vm_agents
+  stop_containers
+  fspush 70 p_timeouts
+  more_timeouts
+  fortress_apps
+  finish
+fi
 
 # Critical checks: a fail here means NO-GO.
 
@@ -356,24 +465,7 @@ more_shares
 fspush 65 p_ups
 more_ups
 
-# Apps of the fortress at work that a reboot would cut short. Without the
-# helper or a joined directory there is no fortress, and the group stays out.
-FORTRESS="${FIRESQUIRE_FORTRESS:-$HERE/fortress}"
-FORTRESS_DIR="${FIRESQUIRE_FORTRESS_DIR:-/boot/config/plugins/firesquire/fortress}"
-if [ -x "$FORTRESS" ] && [ -f "$FORTRESS_DIR/fortress.json" ] && have php; then
-  fspush 68 p_fortress
-  # 3 is a fortress closed to newcomers until its phrase changes, and the
-  # helper still reports the members that answered.
-  fortress_out="$("$FORTRESS" status -dir "$FORTRESS_DIR" -json -wait 8s ${UI_LANG:+-lang "$UI_LANG"} 2>/dev/null)"
-  fortress_code=$?
-  if [ "$fortress_code" -eq 0 ] || [ "$fortress_code" -eq 3 ]; then
-    while IFS=$'\x1f' read -r f_tier f_status f_key f_args f_msg; do
-      add "$f_tier" fortress "$f_status" "$f_key" "$f_args" "$f_msg"
-    done < <(printf '%s' "$fortress_out" | php "$HERE/firesquire-fortress.php")
-  else
-    add info fortress info fortress_skip "" "FireSquire could not reach the fortress and skipped its apps."
-  fi
-fi
+fortress_apps
 
 fspush 69 p_flashbak
 more_flash
@@ -459,65 +551,4 @@ add info kernel info info_kernel "$kr" "Kernel: $kr"
 ver="$(cut -d'"' -f2 /etc/unraid-version 2>/dev/null)"
 [ -n "$ver" ] && add info unraid info info_unraid "$ver" "Unraid version: $ver"
 
-case "$WORST" in
-  0) VERDICT="GO";      VNAME="All clear";           VCOLOR=32 ;;
-  1) VERDICT="CAUTION"; VNAME="Smouldering";         VCOLOR=33 ;;
-  2) VERDICT="NO-GO";   VNAME="The roof is on fire"; VCOLOR=31 ;;
-esac
-
-# A CAUTION or NO-GO goes to the channels on every run, the way back to GO
-# once. The helper retries for a while, so it sends in the background and the
-# report does not wait for it.
-NOTIFY="${FIRESQUIRE_NOTIFY:-$HERE/notify}"
-FS_RUN="${FS_RUN:-/var/local/firesquire}"
-REPORT="$(printf '{"verdict":"%s","checks":[%s]}' "$VERDICT" "$JSON_ITEMS")"
-send() {
-  [ -n "$1" ] || return 0
-  printf '%s\n' "$1" | nohup "$NOTIFY" send -channels "$FS_STATE/notify.json" -source FireSquire >/dev/null 2>&1 &
-}
-channels() { [ -x "$NOTIFY" ] && [ -s "$FS_STATE/notify.json" ]; }
-if channels && have php; then
-  last="$(cat "$FS_STATE/last.verdict" 2>/dev/null)"
-  send "$(printf '%s' "$REPORT" | php "$HERE/firesquire-notify.php" "$last" "$UI_LANG" "$(hostname)")"
-  if [ "$last" != "$VERDICT" ]; then printf '%s\n' "$VERDICT" > "$FS_STATE/last.verdict"; fi
-fi
-
-# The Health tab and the fortress read how the server stands from here, and
-# an area that got worse goes to the channels.
-if have php; then
-  fs_ver="$(sed -n 's/.*<!ENTITY *version *"\([^"]*\)".*/\1/p' /var/log/plugins/firesquire.plg 2>/dev/null | head -n1)"
-  health_event="$(printf '%s' "$REPORT" | FS_STATE="$FS_STATE" FS_RUN="$FS_RUN" php "$HERE/firesquire-history.php" "$UI_LANG" "$(hostname)" "$fs_ver")"
-  channels && send "$health_event"
-fi
-
-fspush 100 p_done
-if [ "$JSON" -eq 1 ]; then
-  printf '{"verdict":"%s","worst":%s,"generated":"%s","checks":[%s]}\n' \
-    "$VERDICT" "$WORST" "$(date '+%Y-%m-%d %H:%M:%S')" "$JSON_ITEMS"
-  exit "$WORST"
-fi
-
-TTY=0; [ -t 1 ] && TTY=1
-banner() {
-  if [ "$TTY" -eq 1 ]; then printf '\033[1;%sm%s\033[0m\n' "$VCOLOR" "$1"; else printf '%s\n' "$1"; fi
-}
-
-# Brand ASCII banner (the shared "Junker der Provinz" house signature). Human
-# report only: the --json branch above returns via `exit`, so the WebGUI/JSON
-# output is never touched by this. banner.txt is shipped in the package next to
-# this script (see plugin/pkg_build.sh); skip cleanly if it is absent.
-if [ -f "$HERE/banner.txt" ]; then
-  echo
-  cat "$HERE/banner.txt"
-  echo "   FireSquire  -  advisory pre-reboot health check for your Unraid box"
-fi
-
-echo
-banner "  ===== FIRESQUIRE: $VNAME ====="
-echo
-if [ -n "$TXT_CRIT" ]; then echo "  -- Critical (The roof is on fire if failing) --"; printf '%s\n' "$TXT_CRIT"; fi
-if [ -n "$TXT_WARN" ]; then echo "  -- Warnings (Smouldering if failing) --";        printf '%s\n' "$TXT_WARN"; fi
-if [ -n "$TXT_INFO" ]; then echo "  -- Info --";                                       printf '%s\n' "$TXT_INFO"; fi
-if [ -n "$TXT_HEALTH" ]; then echo "  -- Health --";                                   printf '%s\n' "$TXT_HEALTH"; fi
-if [ -n "$TXT_CONFIG" ]; then echo "  -- Configuration --";                            printf '%s\n' "$TXT_CONFIG"; fi
-exit "$WORST"
+finish

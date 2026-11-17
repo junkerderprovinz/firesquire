@@ -1,10 +1,12 @@
 <?php
 /* Streams the engine's progress markers, then the final JSON, so the WebGUI
- * can show a real progress bar. Each line is one of:
+ * can show a real progress bar, of the pre-reboot check or, with for=stop, of
+ * what holds the array. Each line is one of:
  *   @@FSP <pct> <stagekey>     progress marker (0..100 + i18n label key)
  *   {...}                      the final report JSON (last line)
  * The frontend (firesquire.js) reads this incrementally; if streaming is not
- * available it falls back to FireSquireReport.php. Fixed engine path, no input. */
+ * available it falls back to FireSquireReport.php. Fixed engine path, no
+ * other input. */
 @ini_set('zlib.output_compression', '0');
 header('Content-Type: text/event-stream; charset=utf-8'); // hint nginx: do not gzip/buffer
 header('Cache-Control: no-cache, no-store, must-revalidate');
@@ -17,7 +19,9 @@ $ENGINE = '/usr/local/emhttp/plugins/firesquire/firesquire-check.sh';
 // (without stdbuf the engine still runs, the bar just fills in fewer steps).
 $sb     = trim((string) @shell_exec('command -v stdbuf'));
 $prefix = ($sb !== '') ? 'stdbuf -oL ' : '';
-$cmd    = $prefix . 'bash ' . escapeshellarg($ENGINE) . ' --json --progress 2>/dev/null';
+// for=stop asks only what holds the array, before Unraid stops it.
+$mode   = (($_GET['for'] ?? '') === 'stop') ? ' --stop' : '';
+$cmd    = $prefix . 'bash ' . escapeshellarg($ENGINE) . ' --json --progress' . $mode . ' 2>/dev/null';
 
 $h = @popen($cmd, 'r');
 if ($h === false || $h === null) {

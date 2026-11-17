@@ -74,7 +74,7 @@ const act = {
   querySelectorAll(sel) { return sel === '.fs-ask' ? this.kids.filter((k) => /fs-ask/.test(k.className)) : []; },
   get firstChild() { return this.kids[0]; },
 };
-const ask = new Function('el', 'button', 'fsT', grabFn(js, 'ask') + '\nreturn ask;')(
+const ask = new Function('el', 'button', 'fsT', /var ASK = [^\n]*/.exec(js)[0] + '\n' + grabFn(js, 'ask') + '\nreturn ask;')(
   mk, (cls, glyph, label) => mk('button', cls, label), (k) => en[k]);
 let closed = 0, went = 0;
 ask({ cmd: 'reboot', proceed: () => went++ }, act, () => closed++);

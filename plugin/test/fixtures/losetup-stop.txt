@@ -1,0 +1,2 @@
+/dev/loop2: [0045]:1234 (/mnt/user/system/docker/docker.img)
+/dev/loop3: [2049]:99 (/mnt/disk1/isos/debian.iso)

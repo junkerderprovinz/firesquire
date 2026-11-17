@@ -1,0 +1,101 @@
+// Stopping the array: FireSquire catches Unraid's Stop the way it catches a reboot, and says what
+// holds the array right now. A process with files open on a share or a disk, and a mount inside
+// the array, such as a mounted snapshot or image, keep it from unmounting. A VM without its guest
+// agent may ignore the request and be forced off, and containers and a short time-out are worth
+// knowing. The form to update.htm on Main and the Dashboard's StopArrayNow are held until the
+// check lets them through, and Unraid's files stay as they are.
+const path = require('path');
+const { execFileSync } = require('child_process');
+const { DIR, read, ok, done, grabFn } = require('./lib');
+
+const MORE = path.join(DIR, 'firesquire-more.sh').replace(/\\/g, '/');
+const STOP = path.join(DIR, 'firesquire-stop.sh').replace(/\\/g, '/');
+const FIX = path.join(__dirname, 'fixtures').replace(/\\/g, '/');
+const en = JSON.parse(read('lang/en.json'));
+const PLURAL = read('firesquire-check.sh').match(/^plural\(\) \{.*\}$/m)[0];
+
+function stop(body) {
+  const script = `
+set -u
+source "${MORE}"
+source "${STOP}"
+add() { local IFS=$'\\x1f'; printf '%s\\n' "$*"; }
+have() { declare -F "$1" >/dev/null || command -v "$1" >/dev/null 2>&1; }
+${PLURAL}
+FS_MOUNTS="${FIX}/mounts-stop.txt"; FS_POOLS="${FIX}/pools"; FS_DOMAIN_CFG="${FIX}/domain.cfg"
+${body}
+`;
+  return execFileSync('bash', ['-c', script], { encoding: 'utf8' }).split('\n').filter(Boolean).map((l) => {
+    const [tier, id, status, key, args, message] = l.split('\x1f');
+    return { tier, id, status, key, args: args ? args.split('|') : [], message };
+  });
+}
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const procs = `proc_links() { cat "${FIX}/proc-links.txt"; }
+proc_comm() { case "$1" in 4100) echo bash ;; 5200) echo rsync ;; 6000) echo Plex ;; 7000) echo cp ;; 8000) echo qemu-system-x86 ;; esac; }
+in_container() { [ "$1" = 6000 ]; }`;
+
+console.log('\nOpen files');
+let r = stop(`${procs}\nstop_open_files`);
+ok('a process with files open on a share or a disk holds the array, by name, pid and place',
+  r.length === 1 && r[0].key === 'stop_open_files' && r[0].tier === 'critical' && r[0].status === 'fail' &&
+  same(r[0].args, ['bash (4100) in /mnt/user/media, rsync (5200) in /mnt/disk1/backup', '2']), JSON.stringify(r));
+ok('containers and VMs stay out, Unraid stops them first, and so does a disk outside the array', !/Plex|qemu|cp \(/.test(r[0] && r[0].args[0]));
+r = stop(`proc_links() { :; }\nstop_open_files`);
+ok('nothing open passes', r.length === 1 && r[0].key === 'stop_open_ok' && r[0].status === 'pass', JSON.stringify(r));
+
+console.log('\nMounts inside the array');
+r = stop(`losetup() { cat "${FIX}/losetup-stop.txt"; }\nstop_mounts`);
+const m = r.find((f) => f.key === 'stop_mounts');
+ok('a mounted snapshot, a mount on a share and a mounted image hold it, the pool\'s own datasets do not',
+  m && m.status === 'fail' && same(m.args, ['/mnt/cache/.zfs/snapshot/daily-2026-11-17, /mnt/user/cloud, /mnt/disk1/iso-mount', '3']), JSON.stringify(r));
+ok('docker.img is Unraid\'s to detach, another image is named with its file',
+  r.some((f) => f.key === 'stop_loops' && same(f.args, ['/mnt/disk1/isos/debian.iso', '1'])) && !JSON.stringify(r).includes('docker.img'), JSON.stringify(r));
+
+console.log('\nVMs without their guest agent');
+const virsh = `virsh() { case "$1" in
+  list) printf 'Windows 11\\nDebian\\n' ;;
+  dumpxml) if [ "$2" = Debian ]; then echo "<target type='virtio' name='org.qemu.guest_agent.0' state='connected'/>"; else echo "<domain/>"; fi ;;
+esac; }
+libvirt_up() { return 0; }`;
+r = stop(`${virsh}\nstop_vm_agents`);
+ok('a running VM without a connected guest agent may ignore the request, named with the VMs\' time-out',
+  r.length === 1 && r[0].key === 'stop_vm_agent' && r[0].status === 'warn' && r[0].tier === 'warning' && same(r[0].args, ['Windows 11', '1', '60']), JSON.stringify(r));
+
+console.log('\nThe engine');
+const engine = read('firesquire-check.sh');
+ok('the engine has a mode for the array stop', /--stop\)\s+STOP=1/.test(engine));
+ok('that mode runs the stop checks and the fortress', /stop_open_files/.test(engine) && /stop_mounts/.test(engine) && /stop_vm_agents/.test(engine) && /fortress_apps/.test(engine));
+ok('it neither notifies nor touches the history', /\[ "\$STOP" -eq 1 \] \|\| health_keep/.test(engine) || /if \[ "\$STOP" -eq 0 \]/.test(engine));
+const stream = read('include/FireSquireStream.php');
+ok('the stream runs the stop check on request', /--stop/.test(stream) && /\$_GET\['for'\]/.test(stream));
+
+console.log('\nCatching the Stop button');
+const js = read('firesquire.js');
+function form(action, fields) {
+  return { tagName: 'FORM', sent: 0, getAttribute: (k) => (k === 'action' ? action : null),
+    querySelectorAll: (sel) => { const n = /\[name="(\w+)"\]/.exec(sel); return n && n[1] in fields ? [{ value: fields[n[1]] }] : []; } };
+}
+const listeners = [];
+const proto = { submit() { this.sent++; } };
+const win = { HTMLFormElement: { prototype: proto }, document: { addEventListener: (t, fn) => listeners.push({ t, fn }) } };
+const asked = [];
+const make = new Function('location', 'URL', grabFn(js, 'bootCmd') + '\n' + grabFn(js, 'installGuard') + '\nreturn installGuard;');
+make({ href: 'http://tower/Main' }, URL)(win, (cmd, proceed) => asked.push({ cmd, proceed }));
+const main = form('/update.htm', { cmdStop: 'Stop', startState: 'STARTED' });
+proto.submit.call(main);
+ok('Main\'s Stop waits for the check', main.sent === 0 && asked.length === 1 && asked[0].cmd === 'stop');
+asked[0].proceed();
+ok('and goes out once the check lets it', main.sent === 1);
+const start = form('/update.htm', { cmdStart: 'Start' });
+proto.submit.call(start);
+ok('Start goes out untouched', start.sent === 1 && asked.length === 1);
+ok('the Dashboard\'s StopArrayNow is held the same way', /win\.StopArrayNow = held/.test(js) && /guardStop\(window\)/.test(js));
+ok('the question names the stop', /g_ask_stop/.test(js) && /g_stop/.test(js) && 'g_ask_stop' in en && 'g_stop' in en);
+
+console.log('\nThe texts');
+const missing = ['stop_open_files', 'stop_open_ok', 'stop_mounts', 'stop_loops', 'stop_vm_agent', 'stop_containers', 'title_stop', 'g_ask_stop', 'g_stop'].filter((k) => !(k in en));
+ok('every text is in en.json', missing.length === 0, missing.join(', '));
+ok('ShellCheck covers the new file', /firesquire-stop\.sh/.test(read('../../../../../../.github/workflows/lint.yml')));
+
+done();

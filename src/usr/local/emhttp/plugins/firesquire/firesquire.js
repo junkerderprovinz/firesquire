@@ -155,7 +155,7 @@
 
   // A text that changes with a number holds one form per plural category of
   // the language, and COUNTED names the argument whose number picks the form.
-  var COUNTED = { array_bad_devices: 1, risky_mount_found: 1, binds_missing: 1, timeouts_container: 2, syslog_crashes: 0, io_errors: 0, vms_running: 0, fortress_ok: 0, zfs_ok: 0, btrfs_ok: 0, crc_found: 1, smart_ok: 0, share_open: 3, share_writing: 3, ups_battery: 1, ups_low: 1, flash_backup_ok: 0, flash_backup_old: 0, smart_asleep: 0, smart_disk: 4, smart_disk_short: 2, flash_errors: 0, cert_soon: 2, cfg_plugin_update: 1, cfg_plugin_unfit: 1, vm_paused: 1 };
+  var COUNTED = { array_bad_devices: 1, risky_mount_found: 1, binds_missing: 1, timeouts_container: 2, syslog_crashes: 0, io_errors: 0, vms_running: 0, fortress_ok: 0, zfs_ok: 0, btrfs_ok: 0, crc_found: 1, smart_ok: 0, share_open: 3, share_writing: 3, ups_battery: 1, ups_low: 1, flash_backup_ok: 0, flash_backup_old: 0, smart_asleep: 0, smart_disk: 4, smart_disk_short: 2, flash_errors: 0, cert_soon: 2, cfg_plugin_update: 1, cfg_plugin_unfit: 1, vm_paused: 1, stop_open_files: 1, stop_mounts: 1, stop_loops: 1, stop_vm_agent: 1, stop_containers: 0 };
   function plural(m, key, args){
     if (m == null || typeof m !== 'object' || Array.isArray(m)) return m;
     var n = Number((args || [])[COUNTED[key]]);
@@ -497,9 +497,9 @@
   // Stream the engine's progress markers, driving the bar, then hand the final
   // JSON to onResult. On any streaming failure, call onFail (which falls back to
   // the plain blocking request), so the report always appears.
-  function streamRun(signal, setBar, onResult, onFail){
+  function streamRun(query, signal, setBar, onResult, onFail){
     var got = false;
-    fetch(STREAM_URL, {headers: {'Accept': 'text/event-stream'}, credentials: 'same-origin', signal: signal}).then(function(resp){
+    fetch(STREAM_URL + query, {headers: {'Accept': 'text/event-stream'}, credentials: 'same-origin', signal: signal}).then(function(resp){
       if (!resp.ok || !resp.body || !resp.body.getReader) throw new Error('no stream');
       var reader = resp.body.getReader(), dec = new TextDecoder(), buf = '';
       function pump(){
@@ -523,26 +523,29 @@
     }).catch(function(){ if (!got && !signal.aborted) onFail(); });
   }
 
+  var ASK = { reboot: ['g_ask_reboot', 'g_reboot'], shutdown: ['g_ask_shutdown', 'g_shutdown'], stop: ['g_ask_stop', 'g_stop'] };
   // The question after a CAUTION, a NO-GO or a check that could not run. The
   // findings stay in view, and closing the window keeps the server up.
   function ask(guard, act, close){
-    var reboot = guard.cmd === 'reboot';
+    var words = ASK[guard.cmd] || ASK.shutdown;
     Array.prototype.forEach.call(act.querySelectorAll('.fs-ask'), function(n){ n.remove(); });
-    act.insertBefore(el('span', 'fs-win-ask fs-ask', fsT(reboot ? 'g_ask_reboot' : 'g_ask_shutdown')), act.firstChild);
-    var go = button('fs-win-btn fs-key fs-ask', 'Forward', fsT(reboot ? 'g_reboot' : 'g_shutdown'));
+    act.insertBefore(el('span', 'fs-win-ask fs-ask', fsT(words[0])), act.firstChild);
+    var go = button('fs-win-btn fs-key fs-ask', 'Forward', fsT(words[1]));
     go.addEventListener('click', function(){ close(); guard.proceed(); });
     act.appendChild(go);
     var cancel = act.querySelector('.fs-win-btn .fs-btn-l');
     if (cancel) cancel.textContent = fsT('g_cancel');
   }
 
-  // run opens the report. Under a guard it stands between a reboot or a
-  // shutdown and the server: a GO lets it through at once.
+  // run opens the report. Under a guard it stands between a reboot, a
+  // shutdown or a stop of the array and the server: a GO lets it through at
+  // once. Before a stop it asks only what holds the array.
   function run(e, guard){
+    var stop = !!guard && guard.cmd === 'stop', query = stop ? '?for=stop' : '';
     var opener = e && e.currentTarget && e.currentTarget.focus ? e.currentTarget : document.activeElement;
     var abort = null, retry = null, act = null;
     var win = openWindow({
-      cls: 'fs-win-report' + (guard ? ' fs-win-guard' : ''), title: fsT('title'), head: true, opener: opener,
+      cls: 'fs-win-report' + (guard ? ' fs-win-guard' : ''), title: fsT(stop ? 'title_stop' : 'title'), head: true, opener: opener,
       onClose: function(){ if (abort) abort.abort(); },
       build: function(body, win, foot){ act = foot; start(body); }
     });
@@ -591,11 +594,11 @@
       function fallback(){
         if (finished || ctl !== abort) return;
         indeterminate();
-        $.getJSON(REPORT_URL, onResult).fail(onErr);
+        $.getJSON(REPORT_URL + query, onResult).fail(onErr);
       }
 
       if (window.fetch && window.ReadableStream && window.TextDecoder) {
-        streamRun(ctl.signal, setBar, onResult, fallback);
+        streamRun(query, ctl.signal, setBar, onResult, fallback);
       } else {
         fallback();
       }
@@ -605,11 +608,13 @@
 
   // Unraid sends every reboot and shutdown of the WebGUI as a form to Boot.php,
   // from Main, the Dashboard, the update banner and the boot pool alike, by
-  // form.submit() or by a submit event. Catching that form catches every
+  // form.submit() or by a submit event. Main's Stop sends its form to
+  // update.htm with a cmdStop field. Catching those forms catches every
   // button and leaves Unraid's files as they are.
   function bootCmd(form){
     if (!form || form.tagName !== 'FORM') return null;
     var url = new URL(form.getAttribute('action') || '', location.href);
+    if (/\/update\.htm$/.test(url.pathname)) return form.querySelectorAll('[name="cmdStop"]').length ? 'stop' : null;
     if (!/\/webGui\/include\/Boot\.php$/.test(url.pathname)) return null;
     var c = form.querySelectorAll('[name="cmd"]'), v = c.length ? c[c.length - 1].value : '';
     return v === 'reboot' || v === 'shutdown' ? v : null;
@@ -629,7 +634,22 @@
   }
   installGuard(window, function(cmd, proceed){ run(null, { cmd: cmd, proceed: proceed }); });
 
+  // The Dashboard stops the array by a request of its own in StopArrayNow,
+  // which Unraid calls once its own question is answered.
+  function guardStop(win){
+    var now = win.StopArrayNow;
+    if (typeof now !== 'function' || now.fsHeld) return;
+    var held = function(){
+      var self = this, args = arguments;
+      run(null, { cmd: 'stop', proceed: function(){ now.apply(self, args); } });
+    };
+    held.fsHeld = true;
+    win.StopArrayNow = held;
+  }
+
   $(function(){
+    guardStop(window);
+
     // Dashboard: the check's icon in the server tile's control row, next to Reboot.
     // Unraid's flame without TowerTorch, GlimStone's check glyph with it.
     try {
