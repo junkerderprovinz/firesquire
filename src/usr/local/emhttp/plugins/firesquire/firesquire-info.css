@@ -271,3 +271,32 @@ html.tt-popups-on #fs-info .fs-key .fs-btn-g svg { width: 1rem; height: 1rem; }
 #fs-info .fs-in[aria-invalid="true"] { border-color: var(--fs-err); box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--fs-err) 10%, transparent); }
 #fs-info p.fs-field-err { grid-column: 2; margin: -2px 0 2px; color: var(--fs-err); font-size: 12px; }
 @media (max-width: 600px) { .fs-ch-fields { grid-template-columns: minmax(0, 1fr); } #fs-info p.fs-field-err { grid-column: 1; } }
+
+/* The Health tab: an area per row with its light, its words and the strip of
+   the last 30 days, its findings folded away under it. The lights take the
+   verdict's colours, which follow Unraid's themes and TowerTorch's. */
+.fs-light-green { --fs-l: var(--fs-go); }
+.fs-light-yellow { --fs-l: var(--fs-caution); }
+.fs-light-red { --fs-l: var(--fs-nogo); }
+.fs-light-grey { --fs-l: var(--fs-neutral); }
+#fs-info .fs-areas, #fs-info .fs-findings { margin: 0; padding: 0; list-style: none; }
+#fs-info .fs-area { border-top: 1px solid var(--fs-line, rgba(128, 128, 128, .2)); }
+#fs-info .fs-area-sum { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; min-height: 44px; padding: 6px 0; cursor: pointer; list-style: none; }
+#fs-info .fs-area-sum::-webkit-details-marker { display: none; }
+#fs-info .fs-area-sum:focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus); outline-offset: 2px; border-radius: var(--fs-r-ctl); }
+#fs-info .fs-dot { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--fs-l); }
+#fs-info .fs-area-name { flex: 1 1 140px; min-width: 0; font-weight: 600; }
+#fs-info .fs-area-word { flex: none; min-width: 110px; color: var(--fs-l); font-weight: 600; }
+#fs-info .fs-days { flex: none; display: inline-flex; gap: 2px; }
+#fs-info .fs-day { width: 6px; height: 16px; border-radius: 2px; background: var(--fs-l); }
+#fs-info .fs-day.fs-light-grey { opacity: .35; }
+#fs-info .fs-findings { padding: 0 0 10px 24px; }
+[dir="rtl"] #fs-info .fs-findings { padding: 0 24px 10px 0; }
+#fs-info .fs-finding { position: relative; padding: 3px 0 3px 16px; }
+[dir="rtl"] #fs-info .fs-finding { padding: 3px 16px 3px 0; }
+#fs-info .fs-finding::before { content: ""; position: absolute; inset-inline-start: 0; top: .7em; width: 7px; height: 7px; border-radius: 50%; background: var(--fs-l); }
+#fs-info .fs-card-config .fs-findings { padding-inline-start: 0; }
+@media (max-width: 599px) {
+  #fs-info .fs-days { order: 4; width: 100%; }
+  #fs-info .fs-day { flex: 1 1 0; width: auto; }
+}

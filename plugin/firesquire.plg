@@ -220,7 +220,7 @@
       if [ -n "$pkg" ]; then removepkg "$pkg" 2>/dev/null; fi
       removepkg "&pkg;" 2>/dev/null
       rm -rf "&emhttp;"
-      rm -rf "&plgPath;"
+      rm -rf "&plgPath;" /var/local/firesquire
       /usr/local/sbin/update_cron 2>/dev/null
       exit 0
     </INLINE>

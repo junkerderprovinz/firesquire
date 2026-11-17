@@ -1,6 +1,7 @@
 /* FireSquire's settings page under the banner, in tabs: General with what the
- * check looks at, the Fortress, the notifications and Info with the cards in
- * GlimStone's order, Version, Help and About. The give buttons open their
+ * check looks at, Health with how the server stands, the notifications, the
+ * Fortress and Info with the cards in GlimStone's order, Version, Help and
+ * About. The give buttons open their
  * windows inside the page: Buy Me a Coffee's widget, PayPal's buttons under
  * the house's own controls, and the crypto window with an address and a QR
  * code per network. Nothing from a payment provider loads before its window
@@ -244,8 +245,10 @@
 
   if (rtl) root.dir = "rtl";
   var ver = root.getAttribute("data-fs-ver");
-  // GlimStone's fortress card draws itself into its place, and
-  // firesquire-notify.js fills in the notification and schedule cards.
+  // firesquire-health.js draws the lights, GlimStone's fortress card draws
+  // itself into its place, and firesquire-notify.js fills in the notification
+  // and schedule cards.
+  pane("health", t("t_health"), "Health").appendChild(el("div")).id = "fs-health";
   if (withNotify) pane("notify", t("n_card"), "Notifications").appendChild(el("div")).id = "fs-notify";
   if (withFortress) pane("fortress", t("t_fortress"), "ShieldOn").appendChild(el("div")).id = "fs-fortress";
 

@@ -28,7 +28,7 @@ ok('the way to a finding wears Forward', /button\('fs-f-go', 'Forward', fsT\('go
 ok('the button beside Reboot wears Check', /button\('fs-main-btn', 'Check', 'FireSquire'\)/.test(js));
 ok('running the check wears Check', /UI\.button\(cls, "Check", t\("tools_btn"\)\)/.test(info));
 const tabGlyphs = [...info.matchAll(/pane\("\w+", t\("\w+"\), "(\w+)"\)/g)].map((m) => m[1]);
-ok('every tab wears a glyph of the table', tabGlyphs.length === 4 && tabGlyphs.every((n) => have.has(n)), tabGlyphs.join(' '));
+ok('every tab wears a glyph of the table', tabGlyphs.length === 5 && tabGlyphs.every((n) => have.has(n)), tabGlyphs.join(' '));
 ok('Copy wears Copy', /UI\.button\("fs-win-btn fs-copy", "Copy", t\("crypto_copy"\)\)/.test(info));
 
 done();

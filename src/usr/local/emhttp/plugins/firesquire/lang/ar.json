@@ -382,5 +382,21 @@
   "n_health_title": "FireSquire on {0}: {1} worth a look",
   "fortress_app_warning": "{0} on {1} reports a problem.",
   "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure."
+  "fortress_app_failed": "{0} on {1} reports a failure.",
+  "t_health": "Health",
+  "h_title": "How the server stands",
+  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
+  "h_checked": "Last checked {0}",
+  "h_never": "Not checked since the server started.",
+  "h_check": "Check now",
+  "h_checking": "Checking…",
+  "h_failed": "The check could not run. Try again in a moment.",
+  "h_light_green": "Healthy",
+  "h_light_yellow": "Worth a look",
+  "h_light_red": "Needs you",
+  "h_light_grey": "Nothing to check",
+  "h_days": "The last 30 days",
+  "h_day": "{0}: {1}",
+  "h_config": "Settings worth a look",
+  "h_config_lead": "Advice on how the server is set up. It never changes a light."
 }

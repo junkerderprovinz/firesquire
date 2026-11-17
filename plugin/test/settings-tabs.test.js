@@ -79,24 +79,25 @@ function page({ themed = true, fortress = true, notify = true, stored = null, na
 
 console.log('\nThe tabs');
 let p = page();
-ok('General, Notifications, Fortress and Info, in that order', p.names.join() === 'general,notify,fortress,info', p.names.join());
-ok('each named in the page\'s words', p.tabs.map((t) => t.querySelector('.fs-tablbl').textContent).join() === [en.t_general, en.n_card, en.t_fortress, en.t_info].join(),
+ok('General, Health, Notifications, Fortress and Info, in that order', p.names.join() === 'general,health,notify,fortress,info', p.names.join());
+ok('each named in the page\'s words', p.tabs.map((t) => t.querySelector('.fs-tablbl').textContent).join() === [en.t_general, en.t_health, en.n_card, en.t_fortress, en.t_info].join(),
   p.tabs.map((t) => t.textContent).join());
-ok('each wearing its glyph from GlimStone\'s set, the Fortress the shield', p.tabs.map((t) => /data-glyph="(\w+)"/.exec(t.querySelector('.fs-tabico').innerHTML)[1]).join() === 'TabGeneral,Notifications,ShieldOn,Info',
+ok('each wearing its glyph from GlimStone\'s set, the Fortress the shield', p.tabs.map((t) => /data-glyph="(\w+)"/.exec(t.querySelector('.fs-tabico').innerHTML)[1]).join() === 'TabGeneral,Health,Notifications,ShieldOn,Info',
   p.tabs.map((t) => t.querySelector('.fs-tabico').innerHTML).join());
 const list = p.root.all().find((e) => e.getAttribute('role') === 'tablist');
-ok('one vertical tab list', list && list.getAttribute('aria-orientation') === 'vertical' && list.children.length === 4);
+ok('one vertical tab list', list && list.getAttribute('aria-orientation') === 'vertical' && list.children.length === 5);
 ok('every tab controls its panel and the panel names its tab', p.tabs.every((t) => {
   const q = p.panes.find((x) => x.id === t.getAttribute('aria-controls'));
   return q && q.getAttribute('aria-labelledby') === t.id;
 }));
 ok('General opens first, the others wait', p.open().join() === 'general' && p.shown().join() === 'general', p.shown().join());
-ok('only the open tab is in the tab order', p.tabs.map((t) => t.tabIndex).join() === '0,-1,-1,-1', p.tabs.map((t) => t.tabIndex).join());
+ok('only the open tab is in the tab order', p.tabs.map((t) => t.tabIndex).join() === '0,-1,-1,-1,-1', p.tabs.map((t) => t.tabIndex).join());
 
 console.log('\nWhat each tab holds');
 ok('General holds the card of what the check looks at', p.pane('general').querySelector('.fs-card-tools') !== null);
 const mount = p.pane('fortress').children[0];
 ok('the Fortress an empty place for GlimStone\'s card', p.pane('fortress').children.length === 1 && mount.id === 'fs-fortress' && mount.children.length === 0);
+ok('Health the place of the lights', p.pane('health').children.length === 1 && p.pane('health').children[0].id === 'fs-health');
 ok('Notifications the place of the notification and schedule cards', p.pane('notify').children.length === 1 && p.pane('notify').children[0].id === 'fs-notify');
 ok('Info the Version, Help and About cards', p.pane('info').querySelectorAll('.fs-card').map((c) => c.getAttribute('data-glim-title')).join() === [en.ver_title, en.help_title, en.about_title].join(),
   p.pane('info').querySelectorAll('.fs-card').map((c) => c.getAttribute('data-glim-title')).join());
@@ -114,25 +115,25 @@ ok('and the sentence names those two and no other route', help.querySelector('.f
 
 console.log('\nWithout a helper');
 p = page({ fortress: false });
-ok('no Fortress tab without the fortress helper', p.names.join() === 'general,notify,info', p.names.join());
+ok('no Fortress tab without the fortress helper', p.names.join() === 'general,health,notify,info', p.names.join());
 p = page({ notify: false });
-ok('no Notifications tab without the notify helper', p.names.join() === 'general,fortress,info', p.names.join());
+ok('no Notifications tab without the notify helper', p.names.join() === 'general,health,fortress,info', p.names.join());
 p = page({ fortress: false, notify: false });
-ok('and General and Info without either', p.names.join() === 'general,info', p.names.join());
+ok('and General, Health and Info without either', p.names.join() === 'general,health,info', p.names.join());
 
 console.log('\nSwitching');
 p = page();
-p.tabs[3].fire('click');
+p.tabs[4].fire('click');
 ok('a click opens its tab and hides the others', p.open().join() === 'info' && p.shown().join() === 'info', p.shown().join());
-ok('the open tab takes the tab order', p.tabs.map((t) => t.tabIndex).join() === '-1,-1,-1,0');
+ok('the open tab takes the tab order', p.tabs.map((t) => t.tabIndex).join() === '-1,-1,-1,-1,0');
 ok('and is kept for the next visit', p.store['firesquire.settings.tab'] === 'info', JSON.stringify(p.store));
 p = page();
 p.tabs[0].fire('keydown', { key: 'ArrowDown' });
-ok('the down arrow opens the next tab and moves the focus there', p.open().join() === 'notify' && El.focused === p.tabs[1]);
+ok('the down arrow opens the next tab and moves the focus there', p.open().join() === 'health' && El.focused === p.tabs[1]);
 p.tabs[1].fire('keydown', { key: 'ArrowUp' });
 p.tabs[0].fire('keydown', { key: 'ArrowUp' });
-ok('the up arrow on the first wraps to the last', p.open().join() === 'info' && El.focused === p.tabs[3]);
-p.tabs[3].fire('keydown', { key: 'Home' });
+ok('the up arrow on the first wraps to the last', p.open().join() === 'info' && El.focused === p.tabs[4]);
+p.tabs[4].fire('keydown', { key: 'Home' });
 ok('Home goes to the first', p.open().join() === 'general');
 p.tabs[0].fire('keydown', { key: 'End' });
 ok('End to the last', p.open().join() === 'info');
