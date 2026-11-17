@@ -103,7 +103,7 @@ fs.writeFileSync(path.join(state, 'notify.json'), '[]');
 let out;
 try {
   out = execFileSync('bash', [ENGINE, '--json', '--progress'], {
-    env: { ...process.env, FIRESQUIRE_FORTRESS: path.join(tmp, 'fortress'), FIRESQUIRE_NOTIFY: path.join(tmp, 'notify'), FS_STATE: state.replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'membership') },
+    env: { ...process.env, FIRESQUIRE_FORTRESS: path.join(tmp, 'fortress'), FIRESQUIRE_NOTIFY: path.join(tmp, 'notify'), FS_STATE: state.replace(/\\/g, '/'), FS_RUN: path.join(tmp, 'run').replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'membership') },
     encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
   });
 } catch (e) {

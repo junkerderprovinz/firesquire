@@ -155,7 +155,7 @@
 
   // A text that changes with a number holds one form per plural category of
   // the language, and COUNTED names the argument whose number picks the form.
-  var COUNTED = { array_bad_devices: 1, risky_mount_found: 1, binds_missing: 1, timeouts_container: 2, syslog_crashes: 0, io_errors: 0, vms_running: 0, fortress_ok: 0, zfs_ok: 0, btrfs_ok: 0, crc_found: 1, smart_ok: 0, share_open: 3, share_writing: 3, ups_battery: 1, ups_low: 1, flash_backup_ok: 0, flash_backup_old: 0, smart_asleep: 0, smart_disk: 4, smart_disk_short: 2, flash_errors: 0, cert_soon: 2, cfg_plugin_update: 1, cfg_plugin_unfit: 1 };
+  var COUNTED = { array_bad_devices: 1, risky_mount_found: 1, binds_missing: 1, timeouts_container: 2, syslog_crashes: 0, io_errors: 0, vms_running: 0, fortress_ok: 0, zfs_ok: 0, btrfs_ok: 0, crc_found: 1, smart_ok: 0, share_open: 3, share_writing: 3, ups_battery: 1, ups_low: 1, flash_backup_ok: 0, flash_backup_old: 0, smart_asleep: 0, smart_disk: 4, smart_disk_short: 2, flash_errors: 0, cert_soon: 2, cfg_plugin_update: 1, cfg_plugin_unfit: 1, vm_paused: 1 };
   function plural(m, key, args){
     if (m == null || typeof m !== 'object' || Array.isArray(m)) return m;
     var n = Number((args || [])[COUNTED[key]]);

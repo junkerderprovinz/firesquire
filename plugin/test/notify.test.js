@@ -62,12 +62,13 @@ fs.mkdirSync(state);
 fs.writeFileSync(path.join(state, 'notify.json'), '[{"id":"u","kind":"unraid","enabled":true,"on":"always"}]');
 const helper = path.join(tmp, 'notify');
 const got = path.join(tmp, 'got').replace(/\\/g, '/');
-fs.writeFileSync(helper, `#!/bin/bash\n{ printf '%s\\n' "$*"; cat; } > "${got}.part"\nmv "${got}.part" "${got}"\n`);
+// The verdict's event lands in got; an area of the Health tab that got worse goes out on its own.
+fs.writeFileSync(helper, `#!/bin/bash\nin="$(cat)"\ncase "$in" in *'"kind":"check.'*) to="${got}" ;; *) to="${got}.health" ;; esac\nprintf '%s\\n%s\\n' "$*" "$in" > "$to.$$"\nmv "$to.$$" "$to"\n`);
 fs.chmodSync(helper, 0o755);
 let raw;
 try {
   raw = execFileSync('bash', [path.join(DIR, 'firesquire-check.sh'), '--json'], {
-    env: { ...process.env, FIRESQUIRE_NOTIFY: helper, FS_STATE: state.replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'none') },
+    env: { ...process.env, FIRESQUIRE_NOTIFY: helper, FS_STATE: state.replace(/\\/g, '/'), FS_RUN: path.join(tmp, 'run').replace(/\\/g, '/'), FIRESQUIRE_FORTRESS_DIR: path.join(tmp, 'none') },
     encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
   });
 } catch (err) {
@@ -88,7 +89,7 @@ if (verdict === 'GO') {
   try { ev = JSON.parse(body.join('\n')); } catch (err) { /* reported below */ }
   ok('with the event on its input', ev && ev.title && ev.title.startsWith('FireSquire'), body.join('\n'));
 }
-fs.rmSync(tmp, { recursive: true, force: true });
+fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 20, retryDelay: 250 });
 
 console.log('\nThe settings page');
 const page = read('firesquire-notify.js');

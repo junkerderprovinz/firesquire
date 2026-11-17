@@ -293,5 +293,26 @@
     "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
     "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change."
+  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
+  "net_ok": "{0} links at {1} Mb/s.",
+  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
+  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
+  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
+  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "vm_paused": {
+    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause.",
+    "one": "This VM is paused: {0}. A full virtual disk is the usual cause."
+  },
+  "vm_ok": "No VM stands paused.",
+  "h_area_disks": "Disks",
+  "h_area_array": "Array and pools",
+  "h_area_docker": "Docker",
+  "h_area_vms": "VMs",
+  "h_area_flash": "Flash",
+  "h_area_network": "Network",
+  "h_area_fortress": "Fortress",
+  "n_health_title": "FireSquire on {0}: {1} worth a look",
+  "fortress_app_warning": "{0} on {1} reports a problem.",
+  "fortress_app_overdue": "{0} on {1} is behind with its work.",
+  "fortress_app_failed": "{0} on {1} reports a failure."
 }

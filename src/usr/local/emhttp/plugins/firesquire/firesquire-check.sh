@@ -243,6 +243,8 @@ more_probe
 watch_flash_errors
 watch_flash_space
 watch_cert
+watch_network
+watch_vms
 
 # Warning checks: a warn here means CAUTION.
 
@@ -467,13 +469,25 @@ esac
 # once. The helper retries for a while, so it sends in the background and the
 # report does not wait for it.
 NOTIFY="${FIRESQUIRE_NOTIFY:-$HERE/notify}"
-if [ -x "$NOTIFY" ] && [ -s "$FS_STATE/notify.json" ] && have php; then
+FS_RUN="${FS_RUN:-/var/local/firesquire}"
+REPORT="$(printf '{"verdict":"%s","checks":[%s]}' "$VERDICT" "$JSON_ITEMS")"
+send() {
+  [ -n "$1" ] || return 0
+  printf '%s\n' "$1" | nohup "$NOTIFY" send -channels "$FS_STATE/notify.json" -source FireSquire >/dev/null 2>&1 &
+}
+channels() { [ -x "$NOTIFY" ] && [ -s "$FS_STATE/notify.json" ]; }
+if channels && have php; then
   last="$(cat "$FS_STATE/last.verdict" 2>/dev/null)"
-  event="$(printf '{"verdict":"%s","checks":[%s]}' "$VERDICT" "$JSON_ITEMS" | php "$HERE/firesquire-notify.php" "$last" "$UI_LANG" "$(hostname)")"
-  if [ -n "$event" ]; then
-    printf '%s\n' "$event" | nohup "$NOTIFY" send -channels "$FS_STATE/notify.json" -source FireSquire >/dev/null 2>&1 &
-  fi
+  send "$(printf '%s' "$REPORT" | php "$HERE/firesquire-notify.php" "$last" "$UI_LANG" "$(hostname)")"
   if [ "$last" != "$VERDICT" ]; then printf '%s\n' "$VERDICT" > "$FS_STATE/last.verdict"; fi
+fi
+
+# The Health tab and the fortress read how the server stands from here, and
+# an area that got worse goes to the channels.
+if have php; then
+  fs_ver="$(sed -n 's/.*<!ENTITY *version *"\([^"]*\)".*/\1/p' /var/log/plugins/firesquire.plg 2>/dev/null | head -n1)"
+  health_event="$(printf '%s' "$REPORT" | FS_STATE="$FS_STATE" FS_RUN="$FS_RUN" php "$HERE/firesquire-history.php" "$UI_LANG" "$(hostname)" "$fs_ver")"
+  channels && send "$health_event"
 fi
 
 fspush 100 p_done

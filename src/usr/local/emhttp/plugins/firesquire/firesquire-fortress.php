@@ -33,6 +33,12 @@ foreach ($members as $m) {
     continue;
   }
   $answered++;
+  // How each app stands now goes to the Health tab; what happened is TollRoll's.
+  $state = (string) ($m['report']['state'] ?? '');
+  if (in_array($state, ['warning', 'overdue', 'failed'], true)) {
+    $words = ['warning' => 'reports a problem', 'overdue' => 'is behind with its work', 'failed' => 'reports a failure'];
+    finding('health', $state === 'failed' ? 'fail' : 'warn', "fortress_app_$state", [$app, $device], "$app on $device {$words[$state]}.");
+  }
   foreach ($m['report']['work'] ?? [] as $w) {
     if (empty($w['blocksRestart'])) continue;
     $busy++;

@@ -30,7 +30,7 @@ function engine({ answer, code, joined = true, withHelper = true }) {
   let raw;
   try {
     raw = execFileSync('bash', [ENGINE, '--json'], {
-      env: { ...process.env, FIRESQUIRE_FORTRESS: bin, FIRESQUIRE_FORTRESS_DIR: dir },
+      env: { ...process.env, FIRESQUIRE_FORTRESS: bin, FIRESQUIRE_FORTRESS_DIR: dir, FS_STATE: path.join(tmp, 'state').replace(/\\/g, '/'), FS_RUN: path.join(tmp, 'run').replace(/\\/g, '/') },
       encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
     });
   } catch (e) {
