@@ -187,6 +187,7 @@
   "n_test_body": "Jestli tohle čteš, zprávy od FireSquire k tobě dorazí.",
   "n_card": "Oznámení",
   "n_lead": "FireSquire pošle svůj verdikt, když kontrola skončí na „Doutná to“ nebo „Hoří střecha“, a ještě jednou, když je zase vše na „Vše v pořádku“. Kontrola bez nálezů nic neposílá.",
+  "n_hub_on": "TollRoll ve tvé pevnosti posílá zprávy FireSquire svými vlastními kanály a podle svých tichých hodin. Kanály níže zaskočí, když TollRoll zprávu nepřijme.",
   "n_nohelper": "Pomocník pro oznámení ještě není nainstalovaný, takže FireSquire zatím nic poslat nemůže.",
   "n_none": "Zatím žádný kanál.",
   "n_add": "Přidat kanál",

@@ -152,6 +152,7 @@
   "n_test_body": "Ha ezt olvasod, a FireSquire üzenetei eljutnak hozzád.",
   "n_card": "Értesítések",
   "n_lead": "A FireSquire elküldi az ítéletét, ha egy ellenőrzés „Parázslik” vagy „Ég a ház” eredménnyel zárul, és még egyszer, amikor újra „Minden rendben”. A lelet nélküli ellenőrzés nem küld semmit.",
+  "n_hub_on": "Az erődöd TollRollja küldi a FireSquire üzeneteit, a saját csatornáin és csendes óráival. Az alábbi csatornák akkor lépnek be, ha a TollRoll nem fogad el egy üzenetet.",
   "n_nohelper": "Az értesítési segéd még nincs telepítve, ezért a FireSquire egyelőre nem tud küldeni semmit.",
   "n_none": "Még nincs csatorna.",
   "n_add": "Csatorna hozzáadása",

@@ -143,6 +143,7 @@
   "n_test_body": "Nếu bạn đọc được dòng này, tin nhắn của FireSquire đã đến với bạn.",
   "n_card": "Thông báo",
   "n_lead": "FireSquire gửi kết luận khi một lần kiểm tra kết thúc ở “Đang âm ỉ” hoặc “Nước sôi lửa bỏng”, và gửi thêm một lần khi mọi thứ trở lại “Mọi thứ ổn”. Lần kiểm tra không có phát hiện thì không gửi gì.",
+  "n_hub_on": "TollRoll trong pháo đài của bạn gửi các tin nhắn của FireSquire qua kênh và giờ yên lặng của riêng nó. Các kênh bên dưới sẽ gửi thay khi TollRoll không nhận một tin nhắn.",
   "n_nohelper": "Công cụ thông báo chưa được cài, nên FireSquire tạm thời chưa gửi được gì.",
   "n_none": "Chưa có kênh nào.",
   "n_add": "Thêm kênh",

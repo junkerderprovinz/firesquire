@@ -176,6 +176,7 @@
   "n_test_body": "If you can read this, FireSquire's messages reach you.",
   "n_card": "Notifications",
   "n_lead": "FireSquire sends its verdict when a check ends in \"Smouldering\" or \"The roof is on fire\", and once more when it is back to \"All clear\". A check without findings sends nothing.",
+  "n_hub_on": "TollRoll in your fortress sends FireSquire's messages, with its own channels and quiet hours. The channels below step in when TollRoll does not take a message.",
   "n_nohelper": "The notification helper is not installed yet, so FireSquire cannot send anything for now.",
   "n_none": "No channel yet.",
   "n_add": "Add a channel",

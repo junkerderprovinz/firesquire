@@ -173,6 +173,7 @@
   "n_test_body": "Wenn du das liest, kommen die Meldungen von FireSquire bei dir an.",
   "n_card": "Benachrichtigungen",
   "n_lead": "FireSquire schickt sein Urteil, wenn eine Prüfung mit „Es glimmt“ oder „Feuer am Dach“ endet, und noch einmal, wenn wieder alles auf „Alles klar“ steht. Eine Prüfung ohne Befund schickt nichts.",
+  "n_hub_on": "TollRoll in deiner Festung verschickt die Meldungen von FireSquire, mit seinen eigenen Kanälen und Ruhezeiten. Die Kanäle hier springen ein, wenn TollRoll eine Meldung nicht annimmt.",
   "n_nohelper": "Der Benachrichtigungs-Helfer ist noch nicht installiert, deshalb kann FireSquire vorerst nichts schicken.",
   "n_none": "Noch kein Kanal.",
   "n_add": "Kanal hinzufügen",

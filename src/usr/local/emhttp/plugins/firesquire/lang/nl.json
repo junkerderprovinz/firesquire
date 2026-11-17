@@ -176,6 +176,7 @@
   "n_test_body": "Als je dit leest, komen de berichten van FireSquire bij je aan.",
   "n_card": "Meldingen",
   "n_lead": "FireSquire stuurt zijn oordeel als een controle eindigt op ‘Het smeult’ of ‘Brand in de tent’, en nog een keer als alles weer op ‘Alles rustig’ staat. Een controle zonder bevindingen stuurt niets.",
+  "n_hub_on": "TollRoll in je vesting verstuurt de berichten van FireSquire, met zijn eigen kanalen en stille uren. De kanalen hieronder springen bij als TollRoll een bericht niet aanneemt.",
   "n_nohelper": "De meldingshulp is nog niet geïnstalleerd, dus FireSquire kan voorlopig niets versturen.",
   "n_none": "Nog geen kanaal.",
   "n_add": "Kanaal toevoegen",

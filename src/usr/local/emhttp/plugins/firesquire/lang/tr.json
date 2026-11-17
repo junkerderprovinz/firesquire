@@ -152,6 +152,7 @@
   "n_test_body": "Bunu okuyabiliyorsan, FireSquire'ın mesajları sana ulaşıyor.",
   "n_card": "Bildirimler",
   "n_lead": "FireSquire bir denetim “Tütüyor” ya da “Ortalık yangın yeri” ile bittiğinde kararını gönderir, her şey yeniden “Her şey yolunda” olduğunda bir kez daha gönderir. Bulgusuz bir denetim hiçbir şey göndermez.",
+  "n_hub_on": "Kalendeki TollRoll, FireSquire mesajlarını kendi kanalları ve sessiz saatleriyle gönderiyor. TollRoll bir mesajı almazsa aşağıdaki kanallar devreye girer.",
   "n_nohelper": "Bildirim yardımcısı henüz kurulu değil, bu yüzden FireSquire şimdilik bir şey gönderemiyor.",
   "n_none": "Henüz kanal yok.",
   "n_add": "Kanal ekle",

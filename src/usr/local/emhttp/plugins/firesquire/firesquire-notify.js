@@ -241,6 +241,9 @@
   var missing = el("p", "fs-prose", t("n_nohelper"));
   missing.hidden = true;
   cN.appendChild(missing);
+  var hub = el("p", "fs-prose fs-n-hub", t("n_hub_on"));
+  hub.hidden = true;
+  cN.appendChild(hub);
   list = el("div", "fs-ch-list");
   cN.appendChild(list);
   var bar = el("div", "fs-ch-act");
@@ -284,6 +287,7 @@
   fetch(ENDPOINT, { credentials: "same-origin" }).then(function (r) { return r.json(); }).then(function (d) {
     channels = d.channels || [];
     missing.hidden = !!d.helper;
+    hub.hidden = d.hub !== true;
     if (d.schedule) {
       every.value = d.schedule.every;
       hour.value = String(d.schedule.hour);

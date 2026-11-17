@@ -173,6 +173,7 @@
   "n_test_body": "Jos luet tätä, FireSquiren viestit tavoittavat sinut.",
   "n_card": "Ilmoitukset",
   "n_lead": "FireSquire lähettää arvionsa, kun tarkistus päättyy tilaan ”Kytee” tai ”Katto tulessa”, ja vielä kerran, kun kaikki on taas ”Kaikki selvää”. Tarkistus ilman havaintoja ei lähetä mitään.",
+  "n_hub_on": "Linnoituksesi TollRoll lähettää FireSquiren viestit omilla kanavillaan ja hiljaisten tuntiensa mukaan. Alla olevat kanavat hoitavat viestin, jos TollRoll ei ota sitä vastaan.",
   "n_nohelper": "Ilmoitusten apuohjelmaa ei ole vielä asennettu, joten FireSquire ei voi lähettää mitään toistaiseksi.",
   "n_none": "Ei vielä kanavia.",
   "n_add": "Lisää kanava",

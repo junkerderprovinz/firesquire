@@ -170,6 +170,7 @@
   "n_test_body": "Se leggi questo, i messaggi di FireSquire ti arrivano.",
   "n_card": "Notifiche",
   "n_lead": "FireSquire invia il suo verdetto quando un controllo finisce con «Sta covando» o «Il tetto va a fuoco», e ancora una volta quando torna a «Tutto a posto». Un controllo senza risultati non invia nulla.",
+  "n_hub_on": "TollRoll nella tua fortezza invia i messaggi di FireSquire con i suoi canali e le sue ore di silenzio. I canali qui sotto subentrano quando TollRoll non accetta un messaggio.",
   "n_nohelper": "Lo strumento delle notifiche non è ancora installato, quindi per ora FireSquire non può inviare nulla.",
   "n_none": "Ancora nessun canale.",
   "n_add": "Aggiungi un canale",

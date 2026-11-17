@@ -170,6 +170,7 @@
   "n_test_body": "Om du kan läsa det här når FireSquires meddelanden dig.",
   "n_card": "Aviseringar",
   "n_lead": "FireSquire skickar sitt besked när en kontroll slutar med ”Det pyr” eller ”Taket brinner”, och en gång till när allt är tillbaka på ”Allt lugnt”. En kontroll utan fynd skickar ingenting.",
+  "n_hub_on": "TollRoll i din fästning skickar FireSquires meddelanden, med sina egna kanaler och tysta timmar. Kanalerna nedan tar över när TollRoll inte tar emot ett meddelande.",
   "n_nohelper": "Aviseringsverktyget är inte installerat än, så FireSquire kan inte skicka något just nu.",
   "n_none": "Ingen kanal än.",
   "n_add": "Lägg till en kanal",

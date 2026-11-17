@@ -157,6 +157,11 @@ finish() {
   if [ -n "$fortress_out" ] && have php; then
     HUBS="$(printf '%s' "$fortress_out" | php "$HERE/firesquire-hub.php" hubs | paste -sd, -)"
   fi
+  # The Notifications card says so while a hub takes over, and asking the
+  # fortress while the page opens would take seconds.
+  if [ "$STOP" -eq 0 ]; then
+    if [ -n "$HUBS" ]; then mkdir -p "$FS_RUN" && printf '%s\n' "$HUBS" > "$FS_RUN/hubs"; else rm -f "$FS_RUN/hubs"; fi
+  fi
   send() {
     [ -n "$1" ] || return 0
     ( trap '' HUP; hub_send "$HUBS" "$1" ) >/dev/null 2>&1 &

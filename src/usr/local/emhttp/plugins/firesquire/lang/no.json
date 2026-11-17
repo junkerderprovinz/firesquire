@@ -170,6 +170,7 @@
   "n_test_body": "Hvis du kan lese dette, når meldingene fra FireSquire fram til deg.",
   "n_card": "Varsler",
   "n_lead": "FireSquire sender vurderingen sin når en sjekk ender med «Det ulmer» eller «Taket brenner», og én gang til når alt er tilbake på «Alt klart». En sjekk uten funn sender ingenting.",
+  "n_hub_on": "TollRoll i festningen din sender meldingene fra FireSquire, med sine egne kanaler og stille timer. Kanalene nedenfor tar over når TollRoll ikke tar imot en melding.",
   "n_nohelper": "Varslingshjelperen er ikke installert ennå, så FireSquire kan ikke sende noe foreløpig.",
   "n_none": "Ingen kanal ennå.",
   "n_add": "Legg til en kanal",

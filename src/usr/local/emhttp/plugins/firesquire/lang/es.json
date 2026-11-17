@@ -176,6 +176,7 @@
   "n_test_body": "Si puedes leer esto, los mensajes de FireSquire te llegan.",
   "n_card": "Notificaciones",
   "n_lead": "FireSquire envía su veredicto cuando una comprobación termina en «Echa humo» o «Arde Troya», y otra vez cuando todo vuelve a «Todo en calma». Una comprobación sin hallazgos no envía nada.",
+  "n_hub_on": "TollRoll, en tu fortaleza, envía los mensajes de FireSquire con sus propios canales y horas de silencio. Los canales de abajo toman el relevo cuando TollRoll no acepta un mensaje.",
   "n_nohelper": "La herramienta de notificaciones aún no está instalada, así que FireSquire no puede enviar nada por ahora.",
   "n_none": "Todavía no hay canales.",
   "n_add": "Añadir un canal",

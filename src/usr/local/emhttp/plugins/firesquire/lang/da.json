@@ -173,6 +173,7 @@
   "n_test_body": "Hvis du kan læse dette, når FireSquires beskeder frem til dig.",
   "n_card": "Notifikationer",
   "n_lead": "FireSquire sender sin vurdering, når et tjek ender med “Det ulmer” eller “Taget brænder”, og én gang til, når alt er tilbage på “Alt klart”. Et tjek uden fund sender ingenting.",
+  "n_hub_on": "TollRoll i din fæstning sender FireSquires beskeder med sine egne kanaler og stille timer. Kanalerne herunder træder til, når TollRoll ikke tager imod en besked.",
   "n_nohelper": "Notifikationshjælperen er ikke installeret endnu, så FireSquire kan ikke sende noget lige nu.",
   "n_none": "Ingen kanal endnu.",
   "n_add": "Tilføj en kanal",

@@ -187,6 +187,7 @@
   "n_test_body": "Dacă citești asta, mesajele FireSquire ajung la tine.",
   "n_card": "Notificări",
   "n_lead": "FireSquire trimite verdictul când o verificare se încheie cu „Mocnește” sau „Arde acoperișul” și încă o dată când totul revine la „Totul e în regulă”. O verificare fără constatări nu trimite nimic.",
+  "n_hub_on": "TollRoll din fortăreața ta trimite mesajele FireSquire prin propriile canale și cu orele lui de liniște. Canalele de mai jos preiau un mesaj când TollRoll nu îl acceptă.",
   "n_nohelper": "Ajutorul pentru notificări nu este încă instalat, așa că FireSquire nu poate trimite nimic deocamdată.",
   "n_none": "Încă niciun canal.",
   "n_add": "Adaugă un canal",

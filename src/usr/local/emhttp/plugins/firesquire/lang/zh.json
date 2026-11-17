@@ -143,6 +143,7 @@
   "n_test_body": "如果你能看到这条消息，说明 FireSquire 的消息能送达你。",
   "n_card": "通知",
   "n_lead": "当检查结果为“隐隐冒烟”或“火烧眉毛”时，FireSquire 会发送结论，恢复到“一切正常”时再发送一次。没有发现问题的检查不会发送任何内容。",
+  "n_hub_on": "你堡垒中的 TollRoll 会用它自己的渠道和免打扰时段发送 FireSquire 的消息。TollRoll 不接收某条消息时，由下面的渠道接手发送。",
   "n_nohelper": "通知助手尚未安装，因此 FireSquire 暂时无法发送任何内容。",
   "n_none": "还没有渠道。",
   "n_add": "添加渠道",

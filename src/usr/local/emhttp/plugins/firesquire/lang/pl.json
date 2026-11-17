@@ -198,6 +198,7 @@
   "n_test_body": "Jeśli to czytasz, wiadomości od FireSquire do ciebie docierają.",
   "n_card": "Powiadomienia",
   "n_lead": "FireSquire wysyła swój werdykt, gdy sprawdzenie kończy się na „Tli się” lub „Dach płonie”, i jeszcze raz, gdy wszystko wróci do „Wszystko gra”. Sprawdzenie bez uwag niczego nie wysyła.",
+  "n_hub_on": "TollRoll w twojej twierdzy wysyła wiadomości FireSquire przez swoje kanały i z uwzględnieniem swoich godzin ciszy. Kanały poniżej przejmują wiadomość, gdy TollRoll jej nie przyjmie.",
   "n_nohelper": "Pomocnik powiadomień nie jest jeszcze zainstalowany, więc FireSquire na razie nic nie wyśle.",
   "n_none": "Brak kanałów.",
   "n_add": "Dodaj kanał",

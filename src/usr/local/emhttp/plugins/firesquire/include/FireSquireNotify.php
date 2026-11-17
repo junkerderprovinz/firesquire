@@ -47,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     list($code, $out) = fs_helper($fsHelper, array('show', '-channels', $fsChannels), '');
     if ($code === 0 && $out !== '') $list = $out;
   }
-  fs_answer(200, '{"helper":' . (is_executable($fsHelper) ? 'true' : 'false') . ',"channels":' . $list . ',"schedule":' . json_encode(fs_schedule($fsCron)) . '}');
+  // The last check found a TollRoll that sends the messages.
+  $hub = @filesize('/var/local/firesquire/hubs') > 0;
+  fs_answer(200, '{"helper":' . (is_executable($fsHelper) ? 'true' : 'false') . ',"hub":' . ($hub ? 'true' : 'false') . ',"channels":' . $list . ',"schedule":' . json_encode(fs_schedule($fsCron)) . '}');
 }
 
 switch ($_POST['do'] ?? '') {

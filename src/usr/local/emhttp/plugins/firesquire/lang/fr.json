@@ -176,6 +176,7 @@
   "n_test_body": "Si tu lis ceci, les messages de FireSquire t’arrivent bien.",
   "n_card": "Notifications",
   "n_lead": "FireSquire envoie son verdict quand une vérification se termine en « Ça couve » ou « Il y a le feu », puis une fois encore quand tout repasse à « Tout va bien ». Une vérification sans constat n’envoie rien.",
+  "n_hub_on": "TollRoll, dans ta forteresse, envoie les messages de FireSquire avec ses propres canaux et ses heures de calme. Les canaux ci-dessous prennent le relais quand TollRoll n’accepte pas un message.",
   "n_nohelper": "L’outil de notification n’est pas encore installé, donc FireSquire ne peut rien envoyer pour l’instant.",
   "n_none": "Aucun canal pour l’instant.",
   "n_add": "Ajouter un canal",

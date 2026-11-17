@@ -176,6 +176,7 @@
   "n_test_body": "Se consegues ler isto, as mensagens do FireSquire chegam até ti.",
   "n_card": "Notificações",
   "n_lead": "O FireSquire envia o seu veredito quando uma verificação termina em «Está a fumegar» ou «O telhado está a arder», e mais uma vez quando volta a «Tudo limpo». Uma verificação sem problemas não envia nada.",
+  "n_hub_on": "O TollRoll na tua fortaleza envia as mensagens do FireSquire, com os seus próprios canais e horas de silêncio. Os canais abaixo entram em ação quando o TollRoll não aceita uma mensagem.",
   "n_nohelper": "A ferramenta de notificações ainda não está instalada, por isso o FireSquire ainda não pode enviar nada.",
   "n_none": "Ainda não há canais.",
   "n_add": "Adicionar um canal",
