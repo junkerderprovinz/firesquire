@@ -41,6 +41,8 @@ JSON_ITEMS=""
 TXT_CRIT=""
 TXT_WARN=""
 TXT_INFO=""
+TXT_HEALTH=""
+TXT_CONFIG=""
 
 json_escape() {
   local s="$1"
@@ -53,11 +55,14 @@ json_escape() {
 }
 
 # add <tier> <id> <status> <key> <args(pipe-delimited)> <english-message> [link]
+# The tiers health and config say how the server stands and what its settings
+# could do better, and never move the reboot verdict.
 add() {
   local tier="$1" id="$2" status="$3" key="$4" args="$5" msg="$6" link="${7:-}"
-  case "$status" in
-    fail) [ "$WORST" -lt 2 ] && WORST=2 ;;
-    warn) [ "$WORST" -lt 1 ] && WORST=1 ;;
+  case "$tier:$status" in
+    health:*|config:*) ;;
+    *:fail) [ "$WORST" -lt 2 ] && WORST=2 ;;
+    *:warn) [ "$WORST" -lt 1 ] && WORST=1 ;;
   esac
 
   local argsjson=""
@@ -88,6 +93,8 @@ add() {
     critical) TXT_CRIT="$TXT_CRIT$line" ;;
     warning)  TXT_WARN="$TXT_WARN$line" ;;
     info)     TXT_INFO="$TXT_INFO$line" ;;
+    health)   TXT_HEALTH="$TXT_HEALTH$line" ;;
+    config)   TXT_CONFIG="$TXT_CONFIG$line" ;;
   esac
 }
 
@@ -484,4 +491,6 @@ echo
 if [ -n "$TXT_CRIT" ]; then echo "  -- Critical (The roof is on fire if failing) --"; printf '%s\n' "$TXT_CRIT"; fi
 if [ -n "$TXT_WARN" ]; then echo "  -- Warnings (Smouldering if failing) --";        printf '%s\n' "$TXT_WARN"; fi
 if [ -n "$TXT_INFO" ]; then echo "  -- Info --";                                       printf '%s\n' "$TXT_INFO"; fi
+if [ -n "$TXT_HEALTH" ]; then echo "  -- Health --";                                   printf '%s\n' "$TXT_HEALTH"; fi
+if [ -n "$TXT_CONFIG" ]; then echo "  -- Configuration --";                            printf '%s\n' "$TXT_CONFIG"; fi
 exit "$WORST"

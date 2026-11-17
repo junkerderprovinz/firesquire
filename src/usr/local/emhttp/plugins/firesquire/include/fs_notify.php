@@ -92,6 +92,7 @@ function fs_event($report, $last, $lang, $server) {
   foreach ((array) ($report['checks'] ?? array()) as $c) {
     $status = $c['status'] ?? '';
     if ($status !== 'fail' && $status !== 'warn') continue;
+    if (in_array($c['tier'] ?? '', array('health', 'config'), true)) continue;
     $key = (string) ($c['key'] ?? '');
     $tpl = fs_text($L, $key, (array) ($c['args'] ?? array()), $lang);
     $text = $tpl !== null ? fs_fill($tpl, $c['args'] ?? array()) : (string) ($c['message'] ?? '');

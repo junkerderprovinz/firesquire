@@ -452,8 +452,10 @@
   // The cards stand by level, the worst first, each group under its name. The
   // verdict names its own level at the top, so that group needs no heading.
   var LEVELS = [['fail', 'v_NO-GO'], ['warn', 'v_CAUTION'], ['pass', 'v_GO'], ['info', 'tier_info']];
+  // How the server stands and the advice on its settings belong to the Health tab.
+  var AFTERCARE = { health: 1, config: 1 };
   function reportHTML(data){
-    var checks = data.checks || [];
+    var checks = (data.checks || []).filter(function(x){ return !AFTERCARE[x.tier]; });
     var h = verdictHTML(data);
     LEVELS.forEach(function(l){
       var grp = checks.filter(function(x){ return (STATUS[x.status] ? x.status : 'info') === l[0]; });
