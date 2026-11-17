@@ -139,6 +139,8 @@
     smart_none: 'No disks found for SMART check.',
     smart_skip: 'smartctl not found, skipped SMART check.',
     smart_asleep: { one: '{0} disk was asleep and FireSquire left it alone.', other: '{0} disks were asleep and FireSquire left them alone.' },
+    flash_errors: { one: 'The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.', other: 'The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.' },
+    flash_errors_ok: 'No read errors of the flash drive in the syslog since boot.',
     smart_attr: 'SMART attribute warnings:{0}',
     info_uptime: 'Uptime: {0}', info_kernel: 'Kernel: {0}', info_unraid: 'Unraid version: {0}'
   };
@@ -153,7 +155,7 @@
 
   // A text that changes with a number holds one form per plural category of
   // the language, and COUNTED names the argument whose number picks the form.
-  var COUNTED = { array_bad_devices: 1, risky_mount_found: 1, binds_missing: 1, timeouts_container: 2, syslog_crashes: 0, io_errors: 0, vms_running: 0, fortress_ok: 0, zfs_ok: 0, btrfs_ok: 0, crc_found: 1, smart_ok: 0, share_open: 3, share_writing: 3, ups_battery: 1, ups_low: 1, flash_backup_ok: 0, flash_backup_old: 0, smart_asleep: 0, smart_disk: 4, smart_disk_short: 2 };
+  var COUNTED = { array_bad_devices: 1, risky_mount_found: 1, binds_missing: 1, timeouts_container: 2, syslog_crashes: 0, io_errors: 0, vms_running: 0, fortress_ok: 0, zfs_ok: 0, btrfs_ok: 0, crc_found: 1, smart_ok: 0, share_open: 3, share_writing: 3, ups_battery: 1, ups_low: 1, flash_backup_ok: 0, flash_backup_old: 0, smart_asleep: 0, smart_disk: 4, smart_disk_short: 2, flash_errors: 0, cert_soon: 2 };
   function plural(m, key, args){
     if (m == null || typeof m !== 'object' || Array.isArray(m)) return m;
     var n = Number((args || [])[COUNTED[key]]);

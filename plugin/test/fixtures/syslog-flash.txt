@@ -1,0 +1,6 @@
+Nov 17 08:01:02 Tower kernel: sd 0:0:0:0: [sda] Attached SCSI removable disk
+Nov 17 08:01:03 Tower kernel: FAT-fs (sda1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.
+Nov 17 09:12:44 Tower kernel: I/O error, dev sdc, sector 1234 op 0x0:(READ)
+Nov 17 10:30:00 Tower kernel: critical medium error, dev sda, sector 81920 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 2
+Nov 17 10:30:00 Tower kernel: Buffer I/O error on dev sda1, logical block 10240, async page read
+Nov 17 11:00:00 Tower kernel: sdab: I/O error on a disk that only shares the prefix

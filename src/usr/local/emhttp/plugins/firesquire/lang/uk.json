@@ -295,12 +295,14 @@
   "smart_disk": {
     "many": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
     "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on.",
-    "few": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on."
+    "few": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
+    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on."
   },
   "smart_disk_short": {
     "many": "{0}: {1} °C, {2} hours powered on.",
     "one": "{0}: {1} °C, {2} hour powered on.",
-    "few": "{0}: {1} °C, {2} hours powered on."
+    "few": "{0}: {1} °C, {2} hours powered on.",
+    "other": "{0}: {1} °C, {2} hours powered on."
   },
   "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
   "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
@@ -308,6 +310,24 @@
   "smart_asleep": {
     "many": "{0} disks were asleep and FireSquire left them alone.",
     "one": "{0} disk was asleep and FireSquire left it alone.",
-    "few": "{0} disks were asleep and FireSquire left them alone."
-  }
+    "few": "{0} disks were asleep and FireSquire left them alone.",
+    "other": "{0} disks were asleep and FireSquire left them alone."
+  },
+  "flash_errors": {
+    "many": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
+    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
+    "few": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
+    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+  },
+  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
+  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
+  "flash_space_ok": "{0} GB free on the flash.",
+  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "cert_soon": {
+    "many": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
+    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
+    "few": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
+    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+  },
+  "cert_ok": "Unraid's certificate {0} is good until {1}."
 }

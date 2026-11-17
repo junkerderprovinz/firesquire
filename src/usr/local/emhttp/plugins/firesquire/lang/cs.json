@@ -291,5 +291,20 @@
     "other": "{0} disks were asleep and FireSquire left them alone.",
     "one": "{0} disk was asleep and FireSquire left it alone.",
     "few": "{0} disks were asleep and FireSquire left them alone."
-  }
+  },
+  "flash_errors": {
+    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
+    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
+    "few": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+  },
+  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
+  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
+  "flash_space_ok": "{0} GB free on the flash.",
+  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "cert_soon": {
+    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
+    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
+    "few": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+  },
+  "cert_ok": "Unraid's certificate {0} is good until {1}."
 }

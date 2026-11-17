@@ -1,0 +1,2 @@
+/dev/sda1 /boot vfat rw,noatime,nodiratime,flush,errors=remount-ro 0 0
+/dev/md1p1 /mnt/disk1 xfs rw,noatime 0 0

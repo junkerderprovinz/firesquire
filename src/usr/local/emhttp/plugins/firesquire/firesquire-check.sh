@@ -104,6 +104,7 @@ plural() { if [ "$1" = 1 ]; then printf '%s' "$2"; else printf '%s' "$3"; fi; }
 
 . "$HERE/firesquire-health.sh"
 . "$HERE/firesquire-more.sh"
+. "$HERE/firesquire-watch.sh"
 
 # Apps write their texts, and FireSquire its messages, in the language Unraid shows.
 UI_LANG="$(sed -n 's/^locale="\{0,1\}\([a-z][a-z]\).*/\1/p' /boot/config/plugins/dynamix/dynamix.cfg 2>/dev/null | head -n1)"
@@ -237,6 +238,9 @@ fi
 # Flash (USB boot).
 fspush 32 p_flash
 more_probe
+watch_flash_errors
+watch_flash_space
+watch_cert
 
 # Warning checks: a warn here means CAUTION.
 
