@@ -7,7 +7,7 @@
   "tier_info": "Infó",
   "err": "Az ellenőrző motor nem futtatható.",
   "err_hint": "Próbáld újra egy kicsit később. Ha továbbra sem megy, a syslog talán megmondja, miért.",
-  "tools_lead": "A FireSquire az újraindítás előtt ellenőrzi, hogy a szerver tisztán vissza fog-e állni, és egyetlen ítéletet ad (Minden rendben / Parázslik / Ég a ház) a pontos megállapításokkal. Ez csak tájékoztató jellegű: beolvassa a hostot és jelentést készít. A flashre egy üres tesztfájlt ír, hogy lássa, írható-e a /boot, és azonnal törli. Ott tárolja minden lemez CRC-hibaszámlálóját is, hogy észrevegye, ha valamelyik nő.",
+  "tools_lead": "A FireSquire az újraindítás előtt ellenőrzi, hogy a szerver tisztán vissza fog-e állni, és egyetlen ítéletet ad (Minden rendben / Parázslik / Ég a ház) a pontos megállapításokkal. Ez csak tájékoztató jellegű: beolvassa a hostot és jelentést készít. A flashre egy üres tesztfájlt ír, hogy lássa, írható-e a /boot, és azonnal törli. Ott tárolja minden lemez CRC-hibaszámlálóját és SMART-értékeit is, hogy észrevegye, ha valamelyik nő, valamint az Állapot lap elmúlt 30 napi jelzőfényeit.",
   "tools_intro": "A futó rendszerből felismerhető újraindítási buktatókat keresi:",
   "tools_li": [
     "A tömb elindult és tiszta: minden eszközhozzárendelés rendben (nincs letiltott/érvénytelen/hiányzó lemez)",
@@ -26,7 +26,7 @@
   "tools_g_host": "Flash, tárhely és szolgáltatások",
   "tools_g_fortress": "Az erődöd",
   "tools_g_health": "Lemezállapot",
-  "tools_note": "Csak tanács, egy flash írási próbát és a CRC-számlálókat leszámítva",
+  "tools_note": "Csak tanács, egy flash írási próbát és a flashen tárolt CRC-számlálókat, SMART-értékeket és Állapot-jelzőfényeket leszámítva",
   "goto": "Ugrás a forráshoz",
   "retry": "Ellenőrzés újra",
   "p_array": "Tömb és lemezek ellenőrzése…",
@@ -215,113 +215,113 @@
   "g_cancel": "Mégse",
   "flash_probe_left": "A FireSquire nem tudta törölni a(z) {0} tesztfájlt a flashről. Kérlek, töröld magad.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
-    "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on."
+    "one": "{0}: {1} °C, {2} áthelyezett és {3} függő szektor, {4} üzemóra.",
+    "other": "{0}: {1} °C, {2} áthelyezett és {3} függő szektor, {4} üzemóra."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on.",
-    "one": "{0}: {1} °C, {2} hour powered on."
+    "one": "{0}: {1} °C, {2} üzemóra.",
+    "other": "{0}: {1} °C, {2} üzemóra."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "A(z) {0} áthelyezett szektorai {1} darabról {2} darabra nőttek ekkor: {3}. A lemez kicseréli a kopott részeket, ezért tartsd szemmel, és legyen kéznél mentés.",
+  "smart_pending_rose": "A(z) {0} függő szektorai {1} darabról {2} darabra nőttek ekkor: {3}. Néhány részt nem sikerült beolvasni, ezért győződj meg róla, hogy friss a mentésed.",
+  "smart_temp_rose": "A(z) {0} hőmérséklete {1} °C, jóval a szokásos {2} °C fölött. Nézd meg a ventilátorokat és a légáramlást.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone.",
-    "one": "{0} disk was asleep and FireSquire left it alone."
+    "one": "{0} lemez aludt, és a FireSquire nem ébresztette fel.",
+    "other": "{0} lemez aludt, és a FireSquire nem ébresztette fel őket."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
-    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "one": "A syslogban a rendszerindítás óta {0} olvasási hibasor van a pendrive-ról. Legutóbbi: {1}. Az Unraid erről a pendrive-ról indul, ezért mentsd le újraindítás előtt.",
+    "other": "A syslogban a rendszerindítás óta {0} olvasási hibasor van a pendrive-ról. Legutóbbi: {1}. Az Unraid erről a pendrive-ról indul, ezért mentsd le újraindítás előtt."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "A syslogban a rendszerindítás óta nincs olvasási hiba a pendrive-ról.",
+  "flash_space_low": "Csak {0} GB szabad a flashen, a következő Unraid-frissítésnek pedig kb. {1} GB kell. Elsőként a /boot/logs régi diagnosztikai fájljait érdemes törölni.",
+  "flash_space_ok": "{0} GB szabad a flashen.",
+  "cert_expired": "Az Unraid {0} tanúsítványa lejárt ekkor: {1}. A böngészők figyelmeztetnek a WebGUI-ra, amíg nincs megújítva a Settings, Management Access oldalon.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
-    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "one": "Az Unraid {0} tanúsítványa lejár ekkor: {1}, {2} nap múlva. Az Unraid magától megújítja, így lehet, hogy a megújítás nem sikerült: nézz rá a Settings, Management Access oldalon.",
+    "other": "Az Unraid {0} tanúsítványa lejár ekkor: {1}, {2} nap múlva. Az Unraid magától megújítja, így lehet, hogy a megújítás nem sikerült: nézz rá a Settings, Management Access oldalon."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Az Unraid {0} tanúsítványa eddig érvényes: {1}.",
+  "timeout_suggest": "Az utolsó leállítás elérte az időkorlátját ({0}s). A VM-eknek és a konténereknek kb. {1}s kell a leálláshoz, ezért állítsd a leállítási időkorlátot a lemezbeállításokban {2} másodpercre.",
+  "shutdown_held": "Az utolsó leállítás elérte az időkorlátját ({0}s), miután a VM-ek és a konténerek már leálltak, mert valami még fogta ezt: {1}. Zárd be, ami ott fut, mielőtt újraindítasz.",
+  "timeout_raised": "Az utolsó leállítás elérte az időkorlátját ({0}s). Az időkorlát most {1}s, ami elég annyi időre, amennyit a VM-ek és a konténerek akkor igényeltek.",
+  "unclean_suggest": "Az utolsó leállítás nem volt tiszta, ezért a tömb következő indításakor paritásellenőrzés fut. A konténerek leállása {0}s, a VM-eké {1}s is lehet: állítsd a leállítási időkorlátot a lemezbeállításokban {2} másodpercre.",
+  "cfg_cache_only_array": "A(z) {0} megosztás úgy van beállítva, hogy csak a poolján legyen, mégis vannak fájljai itt: {1}. A Mover ott hagyja őket, ezért mozgasd át kézzel, vagy állítsd be a megosztást úgy, hogy a poolra vigye őket.",
+  "cfg_on_array": "A(z) {0} megosztásban ez van: {1}, de a beállítása ({2}) a tömbre teszi a fájlokat, ahol a konténerek és a VM-ek lassan futnak, és ébren tartják a lemezeket. Tartsd poolon.",
+  "cfg_pool_missing": "A(z) {0} megosztás a(z) {1} poolt használja, ami nem létezik ezen a szerveren. Válassz egyet a poolaid közül a megosztás beállításaiban.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab.",
-    "one": "An update waits for this plugin: {0}. Install it on the Plugins tab."
+    "one": "Frissítés vár erre a bővítményre: {0}. Telepítsd a Plugins lapon.",
+    "other": "Frissítések várnak ezekre a bővítményekre: {0}. Telepítsd őket a Plugins lapon."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
-    "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "one": "Ez a bővítmény nem az Unraid {2} verzióhoz készült: {0}. Keress újabb verziót vagy egy helyettesítőt.",
+    "other": "Ezek a bővítmények nem az Unraid {2} verzióhoz készültek: {0}. Keress újabb verziót vagy egy helyettesítőt."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "A FireSquire által nézett beállítások közül egyiken sem kell változtatni.",
+  "net_ok": "{0}: {1} Mb/s kapcsolat.",
+  "net_slow": "{0}: {1} Mb/s kapcsolat, általában kopott kábel vagy lassabb sebességre visszaesett port miatt.",
+  "net_half": "{0} félduplex módban fut, általában kopott kábel vagy lassabb sebességre visszaesett port miatt.",
+  "net_bond": "{0} elvesztette ezt: {1}, így tartalék kapcsolat nélkül fut.",
+  "net_noroute": "A szervernek nincs alapértelmezett útvonala, így nem éri el az internetet a frissítésekhez és az értesítésekhez.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause.",
-    "one": "This VM is paused: {0}. A full virtual disk is the usual cause."
+    "one": "Ez a VM szüneteltetve van: {0}. Általában egy megtelt virtuális lemez az oka.",
+    "other": "Ezek a VM-ek szüneteltetve vannak: {0}. Általában egy megtelt virtuális lemez az oka."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "Egy VM sincs szüneteltetve.",
+  "h_area_disks": "Lemezek",
+  "h_area_array": "Tömb és poolok",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
+  "h_area_vms": "VM-ek",
   "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_network": "Hálózat",
+  "h_area_fortress": "Erőd",
+  "n_health_title": "FireSquire ({0}): {1} megér egy pillantást",
+  "fortress_app_warning": "{0} ({1}) problémát jelez.",
+  "fortress_app_overdue": "{0} ({1}) le van maradva a munkájával.",
+  "fortress_app_failed": "{0} ({1}) azt jelzi, hogy valami nem sikerült.",
+  "t_health": "Állapot",
+  "h_title": "Hogy áll a szerver",
+  "h_lead": "Minden ellenőrzés, akár ütemezett, akár újraindítás előtti, lámpát állít a szerver minden részéhez. Nyiss meg egy részt, és láthatod, mi van a lámpája mögött.",
+  "h_checked": "Utoljára ellenőrizve: {0}",
+  "h_never": "A szerver indulása óta nem volt ellenőrzés.",
+  "h_check": "Ellenőrzés most",
+  "h_checking": "Ellenőrzés…",
+  "h_failed": "Az ellenőrzés nem tudott lefutni. Próbáld újra egy kicsit később.",
+  "h_light_green": "Rendben",
+  "h_light_yellow": "Érdemes ránézni",
+  "h_light_red": "Rád vár",
+  "h_light_grey": "Nincs mit ellenőrizni",
+  "h_days": "Az elmúlt 30 nap",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "Beállítások, amelyekre érdemes ránézni",
+  "h_config_lead": "Tanácsok a szerver beállításához. Egy lámpát sem változtatnak meg.",
+  "title_stop": "FireSquire: Mielőtt a tömb leáll",
+  "g_ask_stop": "Mégis leállítod a tömböt?",
+  "g_stop": "Leállítás mégis",
+  "p_ops": "Futó munkák ellenőrzése…",
+  "p_open": "Nyitott fájlok keresése…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
-    "one": "This process keeps files open in the array, so it cannot unmount: {0}. Close it first."
+    "one": "Ez a folyamat fájlokat tart nyitva a tömbön, ezért a tömb nem választható le: {0}. Előbb zárd be.",
+    "other": "Ezek a folyamatok fájlokat tartanak nyitva a tömbön, ezért a tömb nem választható le: {0}. Előbb zárd be őket."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "A konténereken és VM-eken kívül egy folyamatnak sincs nyitott fájlja a tömbön.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
-    "one": "This is mounted inside the array and keeps it from unmounting: {0}. Unmount it first."
+    "one": "Ez a tömbön belül van csatolva, és megakadályozza a tömb leválasztását: {0}. Előbb válaszd le.",
+    "other": "Ezek a tömbön belül vannak csatolva, és megakadályozzák a tömb leválasztását: {0}. Előbb válaszd le őket."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
-    "one": "This image file is attached from the array and keeps it from unmounting: {0}. Detach it first."
+    "one": "Ez az image-fájl a tömbről van csatlakoztatva, és megakadályozza a tömb leválasztását: {0}. Előbb válaszd le.",
+    "other": "Ezek az image-fájlok a tömbről vannak csatlakoztatva, és megakadályozzák a tömb leválasztását: {0}. Előbb válaszd le őket."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "Semmi sincs csatolva a tömbön belül.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
-    "one": "This VM runs without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "one": "Ez a VM csatlakoztatott guest agent nélkül fut: {0}. Enélkül egy VM figyelmen kívül hagyhatja a leállítási kérést, és az Unraid {2}s után kényszerítve kapcsolja ki.",
+    "other": "Ezek a VM-ek csatlakoztatott guest agent nélkül futnak: {0}. Enélkül egy VM figyelmen kívül hagyhatja a leállítási kérést, és az Unraid {2}s után kényszerítve kapcsolja ki."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s.",
-    "one": "{0} container runs. Unraid stops it before the array, within {1}s."
+    "one": "{0} konténer fut. Az Unraid leállítja a tömb előtt, legfeljebb {1}s alatt.",
+    "other": "{0} konténer fut. Az Unraid leállítja őket a tömb előtt, mindegyiket legfeljebb {1}s alatt."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "Paritásművelet van folyamatban ({0}). A tömb leállítása megszakítja.",
+  "stop_mover": "A Mover fut. A tömb leállítása félbeszakítja."
 }

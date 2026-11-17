@@ -44,7 +44,7 @@ watch_flash_space() {
   need="$(boot_version_kb)"
   [ "${need:-0}" -gt 0 ] || need=1048576
   if [ "$avail" -lt "$need" ]; then
-    add health flash_space warn flash_space_low "$(gb "$avail")|$(gb "$need")" "Only $(gb "$avail") GB are free on the flash, and the next Unraid update needs about $(gb "$need") GB. Old diagnostics in /boot/logs are a good place to start clearing."
+    add health flash_space warn flash_space_low "$(gb "$avail")|$(gb "$need")" "Only $(gb "$avail") GB are free on the flash, and the next Unraid update needs about $(gb "$need") GB. Old diagnostics in /boot/logs are the first thing to clear."
   else
     add health flash_space pass flash_space_ok "$(gb "$avail")" "$(gb "$avail") GB free on the flash."
   fi
@@ -125,6 +125,6 @@ watch_vms() {
     n="$(virsh list --state-paused --name 2>/dev/null | grep -c .)"
     add health vm_state warn vm_paused "$list|$n" "$(plural "$n" 'This VM is' 'These VMs are') paused: $list. A full virtual disk is the usual cause."
   else
-    add health vm_state pass vm_ok "" "No VM stands paused."
+    add health vm_state pass vm_ok "" "No VM is paused."
   fi
 }

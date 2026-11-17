@@ -7,7 +7,7 @@
   "tier_info": "ข้อมูล",
   "err": "ไม่สามารถเรียกใช้เอนจินการตรวจสอบได้",
   "err_hint": "ลองใหม่อีกครั้งในอีกสักครู่ หากยังล้มเหลว syslog อาจบอกสาเหตุได้",
-  "tools_lead": "FireSquire ตรวจสอบว่าเซิร์ฟเวอร์ของคุณจะกลับมาทำงานได้อย่างสมบูรณ์หรือไม่ก่อนที่คุณจะรีบูต และให้คำตัดสินเดียว (ทุกอย่างเรียบร้อย / เริ่มคุกรุ่น / ไฟลนก้น) พร้อมผลการตรวจสอบที่แม่นยำ เป็นเพียงคำแนะนำเท่านั้น: อ่านสถานะโฮสต์และรายงานผล บนแฟลชจะเขียนไฟล์ทดสอบว่างเพื่อตรวจว่า /boot เขียนได้ แล้วลบทิ้งทันที และเก็บจำนวนข้อผิดพลาด CRC ของแต่ละดิสก์ไว้ที่นั่นด้วย เพื่อรู้เมื่อค่าใดเพิ่มขึ้น",
+  "tools_lead": "FireSquire ตรวจสอบว่าเซิร์ฟเวอร์ของคุณจะกลับมาทำงานได้อย่างสมบูรณ์หรือไม่ก่อนที่คุณจะรีบูต และให้คำตัดสินเดียว (ทุกอย่างเรียบร้อย / เริ่มคุกรุ่น / ไฟลนก้น) พร้อมผลการตรวจสอบที่แม่นยำ เป็นเพียงคำแนะนำเท่านั้น: อ่านสถานะโฮสต์และรายงานผล บนแฟลชจะเขียนไฟล์ทดสอบว่างเพื่อตรวจว่า /boot เขียนได้ แล้วลบทิ้งทันที และเก็บจำนวนข้อผิดพลาด CRC และค่า SMART ของแต่ละดิสก์ไว้ที่นั่นด้วย เพื่อรู้เมื่อค่าใดเพิ่มขึ้น รวมถึงไฟของแท็บ สุขภาพ ย้อนหลัง 30 วัน",
   "tools_intro": "โดยจะมองหากับดักการรีบูตที่สามารถตรวจพบได้จากระบบที่กำลังทำงานอยู่:",
   "tools_li": [
     "Array เริ่มทำงานและสะอาด: การกำหนดอุปกรณ์ทุกตัวปกติ (ไม่มีดิสก์ที่ถูกปิดใช้งาน/ไม่ถูกต้อง/หายไป)",
@@ -26,7 +26,7 @@
   "tools_g_host": "แฟลช พื้นที่ และบริการ",
   "tools_g_fortress": "ป้อมปราการของคุณ",
   "tools_g_health": "สุขภาพดิสก์",
-  "tools_note": "ให้คำแนะนำเท่านั้น ยกเว้นการทดสอบเขียนและตัวนับ CRC บนแฟลช",
+  "tools_note": "ให้คำแนะนำเท่านั้น ยกเว้นการทดสอบเขียน ตัวนับ CRC ค่า SMART และไฟ สุขภาพ ที่เก็บไว้บนแฟลช",
   "goto": "ไปที่ซอร์สโค้ด",
   "retry": "ตรวจสอบอีกครั้ง",
   "p_array": "กำลังตรวจสอบ array และดิสก์…",
@@ -203,100 +203,100 @@
   "g_cancel": "ยกเลิก",
   "flash_probe_left": "FireSquire ลบไฟล์ทดสอบ {0} บนแฟลชไม่ได้ ช่วยลบเองด้วยนะ",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on."
+    "other": "{0}: {1} °C เซกเตอร์ที่จัดสรรใหม่ {2} เซกเตอร์ เซกเตอร์ที่รอดำเนินการ {3} เซกเตอร์ เปิดใช้งานมาแล้ว {4} ชั่วโมง"
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on."
+    "other": "{0}: {1} °C เปิดใช้งานมาแล้ว {2} ชั่วโมง"
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "เซกเตอร์ที่จัดสรรใหม่บน {0} เพิ่มจาก {1} เป็น {2} เมื่อ {3} ดิสก์กำลังแทนที่จุดที่เสื่อม จึงควรจับตาดูไว้และเตรียมข้อมูลสำรองให้พร้อม",
+  "smart_pending_rose": "เซกเตอร์ที่รอดำเนินการบน {0} เพิ่มจาก {1} เป็น {2} เมื่อ {3} บางจุดอ่านไม่ได้ จึงควรตรวจให้แน่ใจว่าข้อมูลสำรองของคุณเป็นปัจจุบัน",
+  "smart_temp_rose": "{0} ทำงานที่ {1} °C สูงกว่าปกติที่ {2} °C ไปมาก ตรวจพัดลมและการไหลเวียนของอากาศ",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone."
+    "other": "ดิสก์ {0} ตัวกำลังหลับอยู่ และ FireSquire ไม่ได้รบกวน"
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "other": "แฟลชไดรฟ์มีบรรทัดข้อผิดพลาดการอ่าน {0} บรรทัดใน syslog ตั้งแต่บูต ล่าสุด: {1} Unraid บูตจากแฟลชไดรฟ์นี้ จึงควรสำรองไว้ก่อนรีบูต"
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "ไม่พบข้อผิดพลาดการอ่านของแฟลชไดรฟ์ใน syslog ตั้งแต่บูต",
+  "flash_space_low": "แฟลชเหลือพื้นที่ว่างเพียง {0} GB แต่การอัปเดต Unraid ครั้งถัดไปต้องใช้ประมาณ {1} GB เริ่มจากลบไฟล์วินิจฉัยเก่าใน /boot/logs ก่อน",
+  "flash_space_ok": "แฟลชมีพื้นที่ว่าง {0} GB",
+  "cert_expired": "ใบรับรอง {0} ของ Unraid หมดอายุเมื่อ {1} เบราว์เซอร์จะเตือนเรื่อง WebGUI จนกว่าจะต่ออายุที่ Management Access ในการตั้งค่า",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "other": "ใบรับรอง {0} ของ Unraid จะหมดอายุวันที่ {1} อีก {2} วัน ปกติ Unraid ต่ออายุเอง การต่ออายุจึงอาจล้มเหลว: ลองดูที่ Management Access ในการตั้งค่า"
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "ใบรับรอง {0} ของ Unraid ใช้ได้ถึง {1}",
+  "timeout_suggest": "การปิดเครื่องครั้งล่าสุดชนเวลาจำกัด {0} วินาที VM และคอนเทนเนอร์ต้องใช้ประมาณ {1} วินาทีในการหยุด จึงควรตั้งเวลาจำกัดการปิดเครื่องในการตั้งค่าดิสก์เป็น {2} วินาที",
+  "shutdown_held": "การปิดเครื่องครั้งล่าสุดชนเวลาจำกัด {0} วินาทีหลังจาก VM และคอนเทนเนอร์หยุดแล้ว เพราะยังมีบางอย่างใช้ {1} อยู่ ปิดสิ่งที่ทำงานอยู่ตรงนั้นก่อนรีบูต",
+  "timeout_raised": "การปิดเครื่องครั้งล่าสุดชนเวลาจำกัด {0} วินาที ตอนนี้เวลาจำกัดเป็น {1} วินาที ซึ่งพอสำหรับเวลาที่ VM และคอนเทนเนอร์ใช้ในครั้งนั้น",
+  "unclean_suggest": "การปิดเครื่องครั้งล่าสุดไม่สะอาด การเริ่มอาเรย์ครั้งถัดไปจึงจะตรวจพาริตี คอนเทนเนอร์อาจใช้ {0} วินาทีและ VM ใช้ {1} วินาทีในการหยุด: ตั้งเวลาจำกัดการปิดเครื่องในการตั้งค่าดิสก์เป็น {2} วินาที",
+  "cfg_cache_only_array": "แชร์ {0} ถูกตั้งให้อยู่บนพูลของตัวเองเท่านั้น แต่กลับมีไฟล์อยู่บน {1} mover จะไม่ย้ายไฟล์เหล่านั้น จึงต้องย้ายเอง หรือตั้งแชร์ให้ย้ายไฟล์ไปที่พูล",
+  "cfg_on_array": "แชร์ {0} เก็บ {1} แต่การตั้งค่าของแชร์ ({2}) วางไฟล์ไว้บนอาเรย์ ซึ่งคอนเทนเนอร์และ VM จะทำงานช้าและดิสก์ไม่ได้พัก เก็บไว้บนพูลดีกว่า",
+  "cfg_pool_missing": "แชร์ {0} ใช้พูล {1} ซึ่งไม่มีอยู่บนเซิร์ฟเวอร์นี้ เลือกพูลของคุณสักพูลในการตั้งค่าของแชร์",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab."
+    "other": "มีอัปเดตสำหรับปลั๊กอินเหล่านี้: {0} ติดตั้งได้ที่แท็บ Plugins"
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "other": "ปลั๊กอินเหล่านี้ไม่ได้ทำมาสำหรับ Unraid {2}: {0} ลองหาเวอร์ชันที่ใหม่กว่าหรือตัวอื่นมาแทน"
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "ไม่มีการตั้งค่าใดที่ FireSquire ตรวจดูแล้วต้องเปลี่ยน",
+  "net_ok": "{0} เชื่อมต่อที่ {1} Mb/s",
+  "net_slow": "{0} เชื่อมต่อที่ {1} Mb/s ส่วนใหญ่เกิดจากสายเสื่อมหรือพอร์ตลดความเร็วลง",
+  "net_half": "{0} ทำงานแบบ half duplex ส่วนใหญ่เกิดจากสายเสื่อมหรือพอร์ตลดความเร็วลง",
+  "net_bond": "{0} เสีย {1} ไป จึงทำงานโดยไม่มีลิงก์สำรอง",
+  "net_noroute": "เซิร์ฟเวอร์ไม่มี default route จึงเชื่อมต่ออินเทอร์เน็ตเพื่ออัปเดตและส่งการแจ้งเตือนไม่ได้",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause."
+    "other": "VM เหล่านี้ถูกหยุดชั่วคราว: {0} สาเหตุที่พบบ่อยคือดิสก์เสมือนเต็ม"
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "ไม่มี VM ที่ถูกหยุดชั่วคราว",
+  "h_area_disks": "ดิสก์",
+  "h_area_array": "อาเรย์และพูล",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
-  "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_vms": "VM",
+  "h_area_flash": "แฟลช",
+  "h_area_network": "เครือข่าย",
+  "h_area_fortress": "ป้อมปราการ",
+  "n_health_title": "FireSquire บน {0}: {1} ควรดูสักหน่อย",
+  "fortress_app_warning": "{0} บน {1} รายงานปัญหา",
+  "fortress_app_overdue": "{0} บน {1} ทำงานล่าช้า",
+  "fortress_app_failed": "{0} บน {1} รายงานความล้มเหลว",
+  "t_health": "สุขภาพ",
+  "h_title": "เซิร์ฟเวอร์เป็นอย่างไรบ้าง",
+  "h_lead": "ทุกการตรวจ ไม่ว่าจะตามกำหนดเวลาหรือก่อนรีบูต จะตั้งไฟให้แต่ละส่วนของเซิร์ฟเวอร์ เปิดส่วนใดส่วนหนึ่งเพื่อดูว่าอะไรอยู่เบื้องหลังไฟนั้น",
+  "h_checked": "ตรวจล่าสุด {0}",
+  "h_never": "ยังไม่ได้ตรวจตั้งแต่เซิร์ฟเวอร์เริ่มทำงาน",
+  "h_check": "ตรวจตอนนี้",
+  "h_checking": "กำลังตรวจ…",
+  "h_failed": "ตรวจไม่ได้ ลองใหม่อีกครั้งในอีกสักครู่",
+  "h_light_green": "ปกติดี",
+  "h_light_yellow": "ควรดูสักหน่อย",
+  "h_light_red": "ต้องให้คุณจัดการ",
+  "h_light_grey": "ไม่มีอะไรให้ตรวจ",
+  "h_days": "30 วันล่าสุด",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "การตั้งค่าที่ควรดูสักหน่อย",
+  "h_config_lead": "คำแนะนำเรื่องการตั้งค่าเซิร์ฟเวอร์ ส่วนนี้ไม่เปลี่ยนสีไฟเลย",
+  "title_stop": "FireSquire: ก่อนหยุดอาเรย์",
+  "g_ask_stop": "ยังจะหยุดอาเรย์ไหม?",
+  "g_stop": "หยุดเลย",
+  "p_ops": "กำลังตรวจงานที่ทำงานอยู่…",
+  "p_open": "กำลังหาไฟล์ที่เปิดอยู่…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first."
+    "other": "โปรเซสเหล่านี้เปิดไฟล์ในอาเรย์ค้างไว้ อาเรย์จึง unmount ไม่ได้: {0} ปิดโปรเซสเหล่านี้ก่อน"
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "ไม่มีโปรเซสนอกคอนเทนเนอร์และ VM ที่เปิดไฟล์ในอาเรย์",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first."
+    "other": "รายการเหล่านี้ถูก mount อยู่ภายในอาเรย์และทำให้อาเรย์ unmount ไม่ได้: {0} unmount รายการเหล่านี้ก่อน"
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first."
+    "other": "ไฟล์อิมเมจเหล่านี้ถูกต่อไว้จากอาเรย์และทำให้อาเรย์ unmount ไม่ได้: {0} ถอดไฟล์เหล่านี้ออกก่อน"
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "ไม่มีอะไรถูก mount อยู่ภายในอาเรย์",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "other": "VM เหล่านี้ทำงานโดยไม่มี guest agent ที่เชื่อมต่ออยู่: {0} หากไม่มี VM อาจเพิกเฉยต่อคำขอปิดเครื่อง และ Unraid จะบังคับปิดหลัง {2} วินาที"
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s."
+    "other": "มีคอนเทนเนอร์ทำงานอยู่ {0} ตัว Unraid จะหยุดคอนเทนเนอร์ก่อนอาเรย์ ตัวละไม่เกิน {1} วินาที"
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "มีการดำเนินการ parity กำลังทำงานอยู่ ({0}) การหยุดอาเรย์จะยกเลิกการดำเนินการนี้",
+  "stop_mover": "mover กำลังทำงานอยู่ การหยุดอาเรย์จะทำให้หยุดกลางคัน"
 }

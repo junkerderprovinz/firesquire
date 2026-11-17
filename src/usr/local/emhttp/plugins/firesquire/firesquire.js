@@ -20,7 +20,7 @@
     tier_info: 'Info',
     err: 'Could not run the check engine.',
     err_hint: 'Try again in a moment. If it keeps failing, the syslog may say why.',
-    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (All clear / Smouldering / The roof is on fire) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count of every disk there, so it can tell when one rises.',
+    tools_lead: 'FireSquire checks whether your server will come back up clean before you reboot, and gives one verdict (All clear / Smouldering / The roof is on fire) with the exact findings. It is advisory only: it reads the host and reports. On the flash it writes an empty test file, to check that /boot is writable, and deletes it right away. It also keeps the CRC error count and the SMART values of every disk there, so it can tell when one rises, and the lights of the Health tab for the last 30 days.',
     tools_intro: 'It looks for the reboot landmines that are detectable from the running system:',
     tools_li: [
       'Array started & clean: every device assignment OK (no disabled/invalid/missing disk)',
@@ -40,7 +40,7 @@
     tools_g_fortress: 'Your fortress',
     tools_g_health: 'Disk health',
     tools_g_shutdown: 'Ready to shut down',
-    tools_note: 'Advisory only, apart from a write test and the CRC counts on the flash',
+    tools_note: 'Advisory only, apart from a write test and the CRC counts, SMART values and health lights it keeps on the flash',
     goto: 'Go to the source',
     retry: 'Check again',
     rel_notes: 'Release notes',

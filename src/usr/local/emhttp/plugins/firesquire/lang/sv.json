@@ -7,7 +7,7 @@
   "tier_info": "Info",
   "err": "Kunde inte köra kontrollmotorn.",
   "err_hint": "Försök igen om en stund. Fortsätter det att misslyckas kan syslog kanske berätta varför.",
-  "tools_lead": "FireSquire kontrollerar om din server kommer att starta upp rent innan du startar om, och ger ett omdöme (Allt lugnt / Det pyr / Taket brinner) med de exakta fynden. Det är endast rådgivande: det läser servern och rapporterar. På flashminnet skriver det en tom testfil för att se om /boot är skrivbart, och tar bort den direkt. Där sparar det också CRC-felräknaren för varje disk, så att det märker när en ökar.",
+  "tools_lead": "FireSquire kontrollerar om din server kommer att starta upp rent innan du startar om, och ger ett omdöme (Allt lugnt / Det pyr / Taket brinner) med de exakta fynden. Det är endast rådgivande: det läser servern och rapporterar. På flashminnet skriver det en tom testfil för att se om /boot är skrivbart, och tar bort den direkt. Där sparar det också CRC-felräknaren och SMART-värdena för varje disk, så att det märker när en ökar, och lamporna från fliken Hälsa för de senaste 30 dagarna.",
   "tools_intro": "Det letar efter de fallgropar vid omstart som går att upptäcka från det körande systemet:",
   "tools_li": [
     "Array startad och ren: alla enhetstilldelningar OK (ingen inaktiverad/ogiltig/saknad disk)",
@@ -26,7 +26,7 @@
   "tools_g_host": "Flash, utrymme och tjänster",
   "tools_g_fortress": "Din fästning",
   "tools_g_health": "Diskhälsa",
-  "tools_note": "Bara ett råd, förutom ett skrivtest och CRC-räknarna på flashminnet",
+  "tools_note": "Bara ett råd, förutom ett skrivtest och CRC-räknarna, SMART-värdena och Hälsa-lamporna på flashminnet",
   "goto": "Gå till källan",
   "retry": "Kontrollera igen",
   "p_array": "Kontrollerar array och diskar…",
@@ -251,113 +251,113 @@
   "g_cancel": "Avbryt",
   "flash_probe_left": "FireSquire kunde inte ta bort sin testfil {0} på flashminnet. Ta gärna bort den själv.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
-    "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on."
+    "one": "{0}: {1} °C, {2} omallokerade och {3} väntande sektorer, {4} timme i drift.",
+    "other": "{0}: {1} °C, {2} omallokerade och {3} väntande sektorer, {4} timmar i drift."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on.",
-    "one": "{0}: {1} °C, {2} hour powered on."
+    "one": "{0}: {1} °C, {2} timme i drift.",
+    "other": "{0}: {1} °C, {2} timmar i drift."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "De omallokerade sektorerna på {0} ökade från {1} till {2} den {3}. Disken ersätter slitna ställen, så håll ett öga på den och ha en säkerhetskopia redo.",
+  "smart_pending_rose": "De väntande sektorerna på {0} ökade från {1} till {2} den {3}. Vissa ställen gick inte att läsa, så se till att din säkerhetskopia är aktuell.",
+  "smart_temp_rose": "{0} går på {1} °C, långt över de vanliga {2} °C. Kontrollera fläktarna och luftflödet.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone.",
-    "one": "{0} disk was asleep and FireSquire left it alone."
+    "one": "{0} disk sov och FireSquire lät den vara.",
+    "other": "{0} diskar sov och FireSquire lät dem vara."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
-    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "one": "Flashminnet har {0} rad med läsfel i syslog sedan uppstart. Senast: {1}. Unraid startar från den här stickan, så säkerhetskopiera den innan du startar om.",
+    "other": "Flashminnet har {0} rader med läsfel i syslog sedan uppstart. Senast: {1}. Unraid startar från den här stickan, så säkerhetskopiera den innan du startar om."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "Inga läsfel från flashminnet i syslog sedan uppstart.",
+  "flash_space_low": "Bara {0} GB är ledigt på flashminnet, och nästa Unraid-uppdatering behöver ungefär {1} GB. Gamla diagnostikfiler i /boot/logs är det första att rensa.",
+  "flash_space_ok": "{0} GB ledigt på flashminnet.",
+  "cert_expired": "Unraids certifikat {0} gick ut den {1}. Webbläsare varnar för WebGUI tills det förnyas under Settings, Management Access.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
-    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "one": "Unraids certifikat {0} går ut den {1}, om {2} dag. Unraid förnyar det själv, så förnyelsen kan ha misslyckats: titta under Settings, Management Access.",
+    "other": "Unraids certifikat {0} går ut den {1}, om {2} dagar. Unraid förnyar det själv, så förnyelsen kan ha misslyckats: titta under Settings, Management Access."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Unraids certifikat {0} gäller till {1}.",
+  "timeout_suggest": "Den senaste avstängningen nådde sin tidsgräns på {0} s. VM:arna och containrarna behöver ungefär {1} s för att stoppa, så sätt tidsgränsen för avstängning i diskinställningarna till {2} sekunder.",
+  "shutdown_held": "Den senaste avstängningen nådde sin tidsgräns på {0} s efter att VM:arna och containrarna hade stoppat, eftersom något fortfarande höll {1}. Stäng det som körs där innan du startar om.",
+  "timeout_raised": "Den senaste avstängningen nådde sin tidsgräns på {0} s. Tidsgränsen är nu {1} s, tillräckligt för den tid VM:arna och containrarna tog då.",
+  "unclean_suggest": "Den senaste avstängningen var inte ren, så nästa start av arrayen kör en paritetskontroll. Containrar kan ta {0} s och VM:ar {1} s att stoppa: sätt tidsgränsen för avstängning i diskinställningarna till {2} sekunder.",
+  "cfg_cache_only_array": "Utdelningen {0} är inställd på att bara ligga på sin pool, men den har filer på {1}. Mover lämnar dem där, så flytta dem för hand eller ställ in utdelningen så att de flyttas till poolen.",
+  "cfg_on_array": "Utdelningen {0} innehåller {1}, men dess inställning ({2}) lägger filerna på arrayen, där containrar och VM:ar går långsamt och håller diskarna vakna. Låt den ligga på en pool.",
+  "cfg_pool_missing": "Utdelningen {0} använder poolen {1}, som inte finns på den här servern. Välj en av dina pooler i utdelningens inställningar.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab.",
-    "one": "An update waits for this plugin: {0}. Install it on the Plugins tab."
+    "one": "En uppdatering väntar för det här pluginet: {0}. Installera den på fliken Plugins.",
+    "other": "Uppdateringar väntar för de här pluginen: {0}. Installera dem på fliken Plugins."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
-    "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "one": "Det här pluginet är inte gjort för Unraid {2}: {0}. Leta efter en nyare version eller en ersättare.",
+    "other": "De här pluginen är inte gjorda för Unraid {2}: {0}. Leta efter en nyare version eller en ersättare."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "Inget i inställningarna som FireSquire tittar på behöver ändras.",
+  "net_ok": "{0} har länk på {1} Mb/s.",
+  "net_slow": "{0} har länk på {1} Mb/s, oftast en sliten kabel eller en port som har fallit tillbaka.",
+  "net_half": "{0} går i halv duplex, oftast en sliten kabel eller en port som har fallit tillbaka.",
+  "net_bond": "{0} har tappat {1}, så den går utan sin reservlänk.",
+  "net_noroute": "Servern har ingen standardväg, så den når inte internet för uppdateringar och meddelanden.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause.",
-    "one": "This VM is paused: {0}. A full virtual disk is the usual cause."
+    "one": "Den här VM:en är pausad: {0}. En full virtuell disk är den vanliga orsaken.",
+    "other": "De här VM:arna är pausade: {0}. En full virtuell disk är den vanliga orsaken."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "Ingen VM är pausad.",
+  "h_area_disks": "Diskar",
+  "h_area_array": "Array och pooler",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
+  "h_area_vms": "VM:ar",
   "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_network": "Nätverk",
+  "h_area_fortress": "Fästning",
+  "n_health_title": "FireSquire på {0}: ta en titt på {1}",
+  "fortress_app_warning": "{0} på {1} rapporterar ett problem.",
+  "fortress_app_overdue": "{0} på {1} ligger efter med sitt arbete.",
+  "fortress_app_failed": "{0} på {1} rapporterar ett fel.",
+  "t_health": "Hälsa",
+  "h_title": "Så står det till med servern",
+  "h_lead": "Varje kontroll, schemalagd eller före en omstart, tänder en lampa för varje del av servern. Öppna en del för att se vad som ligger bakom dess lampa.",
+  "h_checked": "Senast kontrollerad {0}",
+  "h_never": "Inte kontrollerad sedan servern startade.",
+  "h_check": "Kontrollera nu",
+  "h_checking": "Kontrollerar…",
+  "h_failed": "Kontrollen kunde inte köras. Försök igen om en stund.",
+  "h_light_green": "Frisk",
+  "h_light_yellow": "Värd en titt",
+  "h_light_red": "Behöver dig",
+  "h_light_grey": "Inget att kontrollera",
+  "h_days": "De senaste 30 dagarna",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "Inställningar värda en titt",
+  "h_config_lead": "Råd om hur servern är uppsatt. Det ändrar aldrig en lampa.",
+  "title_stop": "FireSquire: Innan arrayen stoppas",
+  "g_ask_stop": "Stoppa arrayen ändå?",
+  "g_stop": "Stoppa ändå",
+  "p_ops": "Kontrollerar pågående arbete…",
+  "p_open": "Letar efter öppna filer…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
-    "one": "This process keeps files open in the array, so it cannot unmount: {0}. Close it first."
+    "one": "Den här processen håller filer öppna i arrayen, så arrayen kan inte avmonteras: {0}. Stäng den först.",
+    "other": "De här processerna håller filer öppna i arrayen, så arrayen kan inte avmonteras: {0}. Stäng dem först."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "Ingen process utanför containrar och VM:ar har filer öppna i arrayen.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
-    "one": "This is mounted inside the array and keeps it from unmounting: {0}. Unmount it first."
+    "one": "Det här är monterat inne i arrayen och hindrar den från att avmonteras: {0}. Avmontera det först.",
+    "other": "De här är monterade inne i arrayen och hindrar den från att avmonteras: {0}. Avmontera dem först."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
-    "one": "This image file is attached from the array and keeps it from unmounting: {0}. Detach it first."
+    "one": "Den här image-filen är ansluten från arrayen och hindrar den från att avmonteras: {0}. Koppla loss den först.",
+    "other": "De här image-filerna är anslutna från arrayen och hindrar den från att avmonteras: {0}. Koppla loss dem först."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "Inget är monterat inne i arrayen.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
-    "one": "This VM runs without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "one": "Den här VM:en körs utan ansluten guest agent: {0}. Utan den kan en VM strunta i begäran om att stänga av, och Unraid tvingar av den efter {2} s.",
+    "other": "De här VM:arna körs utan ansluten guest agent: {0}. Utan den kan en VM strunta i begäran om att stänga av, och Unraid tvingar av den efter {2} s."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s.",
-    "one": "{0} container runs. Unraid stops it before the array, within {1}s."
+    "one": "{0} container körs. Unraid stoppar den före arrayen, inom {1} s.",
+    "other": "{0} containrar körs. Unraid stoppar dem före arrayen, var och en inom {1} s."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "En paritetsoperation pågår ({0}). Om du stoppar arrayen avbryts den.",
+  "stop_mover": "Mover körs. Om du stoppar arrayen avbryts den i förtid."
 }

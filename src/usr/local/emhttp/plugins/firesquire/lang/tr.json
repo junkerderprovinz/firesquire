@@ -7,7 +7,7 @@
   "tier_info": "Bilgi",
   "err": "Kontrol motoru çalıştırılamadı.",
   "err_hint": "Birazdan tekrar dene. Hata sürerse nedenini syslog söyleyebilir.",
-  "tools_lead": "FireSquire, yeniden başlatmadan önce sunucunuzun temiz bir şekilde açılıp açılmayacağını denetler ve kesin bulgularla birlikte tek bir karar verir (Her şey yolunda / Tütüyor / Ortalık yangın yeri). Yalnızca bilgilendirme amaçlıdır: ana sistemi okur ve raporlar. Flash belleğe, /boot'un yazılabilir olduğunu görmek için boş bir test dosyası yazar ve onu hemen siler. Orada her diskin CRC hata sayacını da tutar, böylece biri arttığında fark eder.",
+  "tools_lead": "FireSquire, yeniden başlatmadan önce sunucunuzun temiz bir şekilde açılıp açılmayacağını denetler ve kesin bulgularla birlikte tek bir karar verir (Her şey yolunda / Tütüyor / Ortalık yangın yeri). Yalnızca bilgilendirme amaçlıdır: ana sistemi okur ve raporlar. Flash belleğe, /boot'un yazılabilir olduğunu görmek için boş bir test dosyası yazar ve onu hemen siler. Orada her diskin CRC hata sayacını ve SMART değerlerini de tutar, böylece biri arttığında fark eder, ayrıca Sağlık sekmesinin son 30 günlük ışıklarını da saklar.",
   "tools_intro": "Çalışan sistemden tespit edilebilen yeniden başlatma tuzaklarını arar:",
   "tools_li": [
     "Array başlatılmış ve temiz: tüm cihaz atamaları sorunsuz (devre dışı/geçersiz/eksik disk yok)",
@@ -26,7 +26,7 @@
   "tools_g_host": "Flash, alan ve servisler",
   "tools_g_fortress": "Kalen",
   "tools_g_health": "Disk sağlığı",
-  "tools_note": "Yalnızca öneri, flash'a bir yazma testi ve CRC sayaçları dışında",
+  "tools_note": "Yalnızca öneri, flash'a bir yazma testi ile orada tutulan CRC sayaçları, SMART değerleri ve Sağlık ışıkları dışında",
   "goto": "Kaynağa git",
   "retry": "Tekrar kontrol et",
   "p_array": "Array ve diskler kontrol ediliyor…",
@@ -215,113 +215,113 @@
   "g_cancel": "İptal",
   "flash_probe_left": "FireSquire, flash üzerindeki {0} test dosyasını silemedi. Lütfen kendin sil.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
-    "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on."
+    "one": "{0}: {1} °C, {2} yeniden atanmış ve {3} bekleyen sektör, {4} saat çalışma süresi.",
+    "other": "{0}: {1} °C, {2} yeniden atanmış ve {3} bekleyen sektör, {4} saat çalışma süresi."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on.",
-    "one": "{0}: {1} °C, {2} hour powered on."
+    "one": "{0}: {1} °C, {2} saat çalışma süresi.",
+    "other": "{0}: {1} °C, {2} saat çalışma süresi."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "{0} üzerindeki yeniden atanmış sektörler {3} tarihinde {1} değerinden {2} değerine çıktı. Disk yıpranan noktaları değiştiriyor, bu yüzden ona göz kulak ol ve bir yedeği hazır tut.",
+  "smart_pending_rose": "{0} üzerindeki bekleyen sektörler {3} tarihinde {1} değerinden {2} değerine çıktı. Bazı noktalar okunamadı, bu yüzden yedeğinin güncel olduğundan emin ol.",
+  "smart_temp_rose": "{0} {1} °C'de çalışıyor, her zamanki {2} °C'nin epey üstünde. Fanları ve hava akışını kontrol et.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone.",
-    "one": "{0} disk was asleep and FireSquire left it alone."
+    "one": "{0} disk uykudaydı ve FireSquire ona dokunmadı.",
+    "other": "{0} disk uykudaydı ve FireSquire onlara dokunmadı."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
-    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "one": "Flash sürücü için açılıştan bu yana syslog'da {0} okuma hatası satırı var. Son: {1}. Unraid bu bellekten açılıyor, bu yüzden yeniden başlatmadan önce onu yedekle.",
+    "other": "Flash sürücü için açılıştan bu yana syslog'da {0} okuma hatası satırı var. Son: {1}. Unraid bu bellekten açılıyor, bu yüzden yeniden başlatmadan önce onu yedekle."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "Açılıştan bu yana syslog'da flash sürücüye ait okuma hatası yok.",
+  "flash_space_low": "Flash üzerinde yalnızca {0} GB boş ve bir sonraki Unraid güncellemesi yaklaşık {1} GB istiyor. İlk temizlenecek şey /boot/logs içindeki eski tanılama dosyaları.",
+  "flash_space_ok": "Flash üzerinde {0} GB boş.",
+  "cert_expired": "Unraid'in {0} sertifikasının süresi {1} tarihinde doldu. Settings, Management Access altında yenilenene kadar tarayıcılar WebGUI için uyarı verir.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
-    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "one": "Unraid'in {0} sertifikasının süresi {1} tarihinde, {2} gün sonra doluyor. Unraid onu kendisi yeniler, yani yenileme başarısız olmuş olabilir: Settings, Management Access altına bak.",
+    "other": "Unraid'in {0} sertifikasının süresi {1} tarihinde, {2} gün sonra doluyor. Unraid onu kendisi yeniler, yani yenileme başarısız olmuş olabilir: Settings, Management Access altına bak."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Unraid'in {0} sertifikası {1} tarihine kadar geçerli.",
+  "timeout_suggest": "Son kapanış {0}s süre sınırına takıldı. VM'ler ve konteynerler durmak için yaklaşık {1}s istiyor, bu yüzden Disk ayarlarında kapatma süre sınırını {2} saniyeye ayarla.",
+  "shutdown_held": "Son kapanış, VM'ler ve konteynerler durduktan sonra {0}s süre sınırına takıldı, çünkü bir şey {1} konumunu hâlâ tutuyordu. Yeniden başlatmadan önce orada çalışanı kapat.",
+  "timeout_raised": "Son kapanış {0}s süre sınırına takıldı. Süre sınırı artık {1}s, VM'lerin ve konteynerlerin o zaman harcadığı süreye yetiyor.",
+  "unclean_suggest": "Son kapanış temiz değildi, bu yüzden array bir sonraki başlatılışında eşlik denetimi çalıştırır. Konteynerlerin durması {0}s, VM'lerin {1}s sürebilir: Disk ayarlarında kapatma süre sınırını {2} saniyeye ayarla.",
+  "cfg_cache_only_array": "{0} paylaşımı yalnızca havuzunda duracak şekilde ayarlı, ama {1} üzerinde dosyaları var. Mover onlara dokunmaz, bu yüzden onları elle taşı ya da paylaşımı dosyaları havuza taşıyacak şekilde ayarla.",
+  "cfg_on_array": "{0} paylaşımı {1} içeriyor, ama ayarı ({2}) dosyaları array'e koyuyor. Orada konteynerler ve VM'ler yavaş çalışır ve diskleri uyanık tutar. Onu bir havuzda tut.",
+  "cfg_pool_missing": "{0} paylaşımı {1} havuzunu kullanıyor, ama bu havuz bu sunucuda yok. Paylaşımın ayarlarında havuzlarından birini seç.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab.",
-    "one": "An update waits for this plugin: {0}. Install it on the Plugins tab."
+    "one": "Bu eklenti için bir güncelleme bekliyor: {0}. Onu Plugins sekmesinden yükle.",
+    "other": "Bu eklentiler için güncellemeler bekliyor: {0}. Onları Plugins sekmesinden yükle."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
-    "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "one": "Bu eklenti Unraid {2} için yapılmamış: {0}. Daha yeni bir sürüm ya da bir alternatif ara.",
+    "other": "Bu eklentiler Unraid {2} için yapılmamış: {0}. Daha yeni bir sürüm ya da bir alternatif ara."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "FireSquire'ın baktığı ayarlarda değişmesi gereken bir şey yok.",
+  "net_ok": "{0} bağlantısı {1} Mb/s hızında.",
+  "net_slow": "{0} bağlantısı {1} Mb/s hızında, genelde yıpranmış bir kablo ya da daha düşük hıza düşmüş bir port yüzünden.",
+  "net_half": "{0} half duplex çalışıyor, genelde yıpranmış bir kablo ya da daha düşük hıza düşmüş bir port yüzünden.",
+  "net_bond": "{0}, {1} bağlantısını kaybetti, bu yüzden yedek bağlantısı olmadan çalışıyor.",
+  "net_noroute": "Sunucunun varsayılan rotası yok, bu yüzden güncellemeler ve bildirimler için internete ulaşamıyor.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause.",
-    "one": "This VM is paused: {0}. A full virtual disk is the usual cause."
+    "one": "Bu VM duraklatıldı: {0}. Sebebi genelde dolmuş bir sanal disktir.",
+    "other": "Bu VM'ler duraklatıldı: {0}. Sebebi genelde dolmuş bir sanal disktir."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "Duraklatılmış VM yok.",
+  "h_area_disks": "Diskler",
+  "h_area_array": "Array ve havuzlar",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
+  "h_area_vms": "VM'ler",
   "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_network": "Ağ",
+  "h_area_fortress": "Kale",
+  "n_health_title": "{0} üzerinde FireSquire: {1} bir göz atmaya değer",
+  "fortress_app_warning": "{1} üzerindeki {0} bir sorun bildiriyor.",
+  "fortress_app_overdue": "{1} üzerindeki {0} işlerinde geride kaldı.",
+  "fortress_app_failed": "{1} üzerindeki {0} bir işin başarısız olduğunu bildiriyor.",
+  "t_health": "Sağlık",
+  "h_title": "Sunucunun durumu",
+  "h_lead": "Zamanlanmış olsun ya da yeniden başlatmadan önce, her denetim sunucunun her bölümü için bir ışık yakar. Işığın arkasında ne olduğunu görmek için bir bölümü aç.",
+  "h_checked": "Son denetim {0}",
+  "h_never": "Sunucu başladığından beri denetlenmedi.",
+  "h_check": "Şimdi denetle",
+  "h_checking": "Denetleniyor…",
+  "h_failed": "Denetim çalışamadı. Birazdan tekrar dene.",
+  "h_light_green": "Sağlıklı",
+  "h_light_yellow": "Göz atmaya değer",
+  "h_light_red": "Seni bekliyor",
+  "h_light_grey": "Denetlenecek bir şey yok",
+  "h_days": "Son 30 gün",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "Göz atmaya değer ayarlar",
+  "h_config_lead": "Sunucunun nasıl kurulduğuna dair öneriler. Hiçbir ışığı değiştirmez.",
+  "title_stop": "FireSquire: Array Durmadan Önce",
+  "g_ask_stop": "Array yine de durdurulsun mu?",
+  "g_stop": "Yine de durdur",
+  "p_ops": "Süren işler kontrol ediliyor…",
+  "p_open": "Açık dosyalar aranıyor…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
-    "one": "This process keeps files open in the array, so it cannot unmount: {0}. Close it first."
+    "one": "Bu işlem array'de dosyaları açık tutuyor, bu yüzden array'in bağlantısı kaldırılamıyor: {0}. Önce onu kapat.",
+    "other": "Bu işlemler array'de dosyaları açık tutuyor, bu yüzden array'in bağlantısı kaldırılamıyor: {0}. Önce onları kapat."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "Konteynerler ve VM'ler dışında hiçbir işlemin array'de açık dosyası yok.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
-    "one": "This is mounted inside the array and keeps it from unmounting: {0}. Unmount it first."
+    "one": "Bu, array'in içine bağlanmış ve array'in bağlantısının kaldırılmasını engelliyor: {0}. Önce onun bağlantısını kaldır.",
+    "other": "Bunlar array'in içine bağlanmış ve array'in bağlantısının kaldırılmasını engelliyor: {0}. Önce onların bağlantısını kaldır."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
-    "one": "This image file is attached from the array and keeps it from unmounting: {0}. Detach it first."
+    "one": "Bu imaj dosyası array'den eklenmiş ve array'in bağlantısının kaldırılmasını engelliyor: {0}. Önce onu ayır.",
+    "other": "Bu imaj dosyaları array'den eklenmiş ve array'in bağlantısının kaldırılmasını engelliyor: {0}. Önce onları ayır."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "Array'in içine bağlanmış bir şey yok.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
-    "one": "This VM runs without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "one": "Bu VM bağlı bir guest agent olmadan çalışıyor: {0}. Guest agent olmadan bir VM kapanma isteğini yok sayabilir ve Unraid onu {2}s sonra zorla kapatır.",
+    "other": "Bu VM'ler bağlı bir guest agent olmadan çalışıyor: {0}. Guest agent olmadan bir VM kapanma isteğini yok sayabilir ve Unraid onu {2}s sonra zorla kapatır."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s.",
-    "one": "{0} container runs. Unraid stops it before the array, within {1}s."
+    "one": "{0} konteyner çalışıyor. Unraid onu array'den önce, {1}s içinde durdurur.",
+    "other": "{0} konteyner çalışıyor. Unraid onları array'den önce, her birini {1}s içinde durdurur."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "Bir eşlik işlemi sürüyor ({0}). Array'i durdurmak onu iptal eder.",
+  "stop_mover": "Mover çalışıyor. Array'i durdurmak onu yarıda keser."
 }

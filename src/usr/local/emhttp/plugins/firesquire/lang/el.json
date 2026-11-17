@@ -7,7 +7,7 @@
   "tier_info": "Πληροφορίες",
   "err": "Δεν ήταν δυνατή η εκτέλεση του μηχανισμού ελέγχου.",
   "err_hint": "Δοκίμασε ξανά σε λίγο. Αν συνεχίσει να αποτυγχάνει, το syslog ίσως δείξει το γιατί.",
-  "tools_lead": "Το FireSquire ελέγχει αν ο διακομιστής σας θα επανέλθει καθαρά πριν κάνετε επανεκκίνηση και δίνει μία ετυμηγορία (Όλα καλά / Σιγοκαίει / Φωτιά στη στέγη) με τα ακριβή ευρήματα. Είναι μόνο συμβουλευτικό: διαβάζει τον host και αναφέρει. Στο flash γράφει ένα κενό δοκιμαστικό αρχείο, για να δει αν το /boot είναι εγγράψιμο, και το διαγράφει αμέσως. Εκεί κρατά επίσης τον μετρητή σφαλμάτων CRC κάθε δίσκου, για να καταλαβαίνει πότε ανεβαίνει κάποιος.",
+  "tools_lead": "Το FireSquire ελέγχει αν ο διακομιστής σας θα επανέλθει καθαρά πριν κάνετε επανεκκίνηση και δίνει μία ετυμηγορία (Όλα καλά / Σιγοκαίει / Φωτιά στη στέγη) με τα ακριβή ευρήματα. Είναι μόνο συμβουλευτικό: διαβάζει τον host και αναφέρει. Στο flash γράφει ένα κενό δοκιμαστικό αρχείο, για να δει αν το /boot είναι εγγράψιμο, και το διαγράφει αμέσως. Εκεί κρατά επίσης τον μετρητή σφαλμάτων CRC και τις τιμές SMART κάθε δίσκου, για να καταλαβαίνει πότε ανεβαίνει κάποιος, καθώς και τις ενδείξεις της καρτέλας Υγεία για τις τελευταίες 30 ημέρες.",
   "tools_intro": "Ψάχνει για τις παγίδες της επανεκκίνησης που είναι ανιχνεύσιμες από το σύστημα που εκτελείται:",
   "tools_li": [
     "Το array ξεκίνησε & είναι καθαρό: κάθε αντιστοίχιση συσκευής OK (κανένας δίσκος απενεργοποιημένος/μη έγκυρος/ελλείπων)",
@@ -26,7 +26,7 @@
   "tools_g_host": "Flash, χώρος και υπηρεσίες",
   "tools_g_fortress": "Το φρούριό σου",
   "tools_g_health": "Υγεία δίσκων",
-  "tools_note": "Μόνο συμβουλευτικό, εκτός από μια δοκιμή εγγραφής και τους μετρητές CRC στο flash",
+  "tools_note": "Μόνο συμβουλευτικό, εκτός από μια δοκιμή εγγραφής και τους μετρητές CRC, τις τιμές SMART και τις ενδείξεις της καρτέλας Υγεία στο flash",
   "goto": "Μετάβαση στην πηγή",
   "retry": "Έλεγχος ξανά",
   "p_array": "Έλεγχος array & δίσκων…",
@@ -257,113 +257,113 @@
   "g_cancel": "Ακύρωση",
   "flash_probe_left": "Το FireSquire δεν μπόρεσε να διαγράψει το δοκιμαστικό αρχείο {0} στο flash. Διάγραψέ το εσύ, σε παρακαλώ.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
-    "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on."
+    "one": "{0}: {1} °C, {2} ανακατανεμημένοι και {3} εκκρεμείς τομείς, {4} ώρα λειτουργίας.",
+    "other": "{0}: {1} °C, {2} ανακατανεμημένοι και {3} εκκρεμείς τομείς, {4} ώρες λειτουργίας."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on.",
-    "one": "{0}: {1} °C, {2} hour powered on."
+    "one": "{0}: {1} °C, {2} ώρα λειτουργίας.",
+    "other": "{0}: {1} °C, {2} ώρες λειτουργίας."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "Οι ανακατανεμημένοι τομείς στο {0} ανέβηκαν από {1} σε {2} στις {3}. Ο δίσκος αντικαθιστά φθαρμένα σημεία, οπότε έχε τον στο μάτι και κράτα έτοιμο ένα αντίγραφο ασφαλείας.",
+  "smart_pending_rose": "Οι εκκρεμείς τομείς στο {0} ανέβηκαν από {1} σε {2} στις {3}. Κάποια σημεία δεν διαβάστηκαν, οπότε βεβαιώσου ότι το αντίγραφο ασφαλείας σου είναι ενημερωμένο.",
+  "smart_temp_rose": "Το {0} λειτουργεί στους {1} °C, πολύ πάνω από τους συνηθισμένους {2} °C. Έλεγξε τους ανεμιστήρες και τη ροή αέρα.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone.",
-    "one": "{0} disk was asleep and FireSquire left it alone."
+    "one": "{0} δίσκος κοιμόταν και το FireSquire δεν τον ενόχλησε.",
+    "other": "{0} δίσκοι κοιμούνταν και το FireSquire δεν τους ενόχλησε."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
-    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "one": "Το flash έχει {0} γραμμή σφάλματος ανάγνωσης στο syslog από την εκκίνηση. Τελευταία: {1}. Το Unraid ξεκινά από αυτό το στικάκι, οπότε κάνε αντίγραφό του πριν την επανεκκίνηση.",
+    "other": "Το flash έχει {0} γραμμές σφάλματος ανάγνωσης στο syslog από την εκκίνηση. Τελευταία: {1}. Το Unraid ξεκινά από αυτό το στικάκι, οπότε κάνε αντίγραφό του πριν την επανεκκίνηση."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "Κανένα σφάλμα ανάγνωσης του flash στο syslog από την εκκίνηση.",
+  "flash_space_low": "Μόνο {0} GB είναι ελεύθερα στο flash, και η επόμενη ενημέρωση του Unraid χρειάζεται περίπου {1} GB. Τα παλιά διαγνωστικά στο /boot/logs είναι τα πρώτα που μπορείς να σβήσεις.",
+  "flash_space_ok": "{0} GB ελεύθερα στο flash.",
+  "cert_expired": "Το πιστοποιητικό {0} του Unraid έληξε στις {1}. Τα προγράμματα περιήγησης προειδοποιούν για το WebGUI μέχρι να ανανεωθεί στο Settings, Management Access.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
-    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "one": "Το πιστοποιητικό {0} του Unraid λήγει στις {1}, σε {2} ημέρα. Το Unraid το ανανεώνει μόνο του, οπότε η ανανέωση ίσως απέτυχε: δες στο Settings, Management Access.",
+    "other": "Το πιστοποιητικό {0} του Unraid λήγει στις {1}, σε {2} ημέρες. Το Unraid το ανανεώνει μόνο του, οπότε η ανανέωση ίσως απέτυχε: δες στο Settings, Management Access."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Το πιστοποιητικό {0} του Unraid ισχύει μέχρι {1}.",
+  "timeout_suggest": "Ο τελευταίος τερματισμός έφτασε στο όριο των {0}s. Τα VM και τα containers χρειάζονται περίπου {1}s για να σταματήσουν, οπότε όρισε το όριο τερματισμού στις ρυθμίσεις δίσκων σε {2} δευτερόλεπτα.",
+  "shutdown_held": "Ο τελευταίος τερματισμός έφτασε στο όριο των {0}s αφού είχαν σταματήσει τα VM και τα containers, επειδή κάτι κρατούσε ακόμα το {1}. Κλείσε ό,τι τρέχει εκεί πριν την επανεκκίνηση.",
+  "timeout_raised": "Ο τελευταίος τερματισμός έφτασε στο όριο των {0}s. Το όριο είναι τώρα {1}s, αρκετό για όσο χρειάστηκαν τότε τα VM και τα containers.",
+  "unclean_suggest": "Ο τελευταίος τερματισμός δεν ήταν καθαρός, οπότε η επόμενη εκκίνηση του array θα τρέξει έλεγχο ισοτιμίας. Τα containers μπορεί να χρειαστούν {0}s και τα VM {1}s για να σταματήσουν: όρισε το όριο τερματισμού στις ρυθμίσεις δίσκων σε {2} δευτερόλεπτα.",
+  "cfg_cache_only_array": "Ο φάκελος {0} είναι ρυθμισμένος να μένει μόνο στο pool του, όμως έχει αρχεία στο {1}. Το mover τα αφήνει εκεί, οπότε μετακίνησέ τα με το χέρι ή ρύθμισε τον φάκελο να τα μεταφέρει στο pool.",
+  "cfg_on_array": "Ο φάκελος {0} περιέχει {1}, αλλά η ρύθμισή του ({2}) βάζει τα αρχεία στο array, όπου containers και VM τρέχουν αργά και κρατούν τους δίσκους ξύπνιους. Κράτα τον σε ένα pool.",
+  "cfg_pool_missing": "Ο φάκελος {0} χρησιμοποιεί το pool {1}, που δεν υπάρχει σε αυτόν τον διακομιστή. Διάλεξε ένα από τα pools σου στις ρυθμίσεις του φακέλου.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab.",
-    "one": "An update waits for this plugin: {0}. Install it on the Plugins tab."
+    "one": "Υπάρχει ενημέρωση για αυτό το πρόσθετο: {0}. Εγκατάστησέ την από την καρτέλα Plugins.",
+    "other": "Υπάρχουν ενημερώσεις για αυτά τα πρόσθετα: {0}. Εγκατάστησέ τες από την καρτέλα Plugins."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
-    "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "one": "Αυτό το πρόσθετο δεν είναι φτιαγμένο για το Unraid {2}: {0}. Ψάξε για νεότερη έκδοση ή κάποια αντικατάσταση.",
+    "other": "Αυτά τα πρόσθετα δεν είναι φτιαγμένα για το Unraid {2}: {0}. Ψάξε για νεότερη έκδοση ή κάποια αντικατάσταση."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "Τίποτα στις ρυθμίσεις που ελέγχει το FireSquire δεν χρειάζεται αλλαγή.",
+  "net_ok": "Το {0} συνδέεται στα {1} Mb/s.",
+  "net_slow": "Το {0} συνδέεται στα {1} Mb/s, συνήθως λόγω φθαρμένου καλωδίου ή θύρας που έπεσε σε χαμηλότερη ταχύτητα.",
+  "net_half": "Το {0} λειτουργεί σε half duplex, συνήθως λόγω φθαρμένου καλωδίου ή θύρας που έπεσε σε χαμηλότερη ταχύτητα.",
+  "net_bond": "Το {0} έχασε το {1}, οπότε λειτουργεί χωρίς την εφεδρική του σύνδεση.",
+  "net_noroute": "Ο διακομιστής δεν έχει προεπιλεγμένη διαδρομή, οπότε δεν φτάνει στο διαδίκτυο για ενημερώσεις και ειδοποιήσεις.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause.",
-    "one": "This VM is paused: {0}. A full virtual disk is the usual cause."
+    "one": "Αυτό το VM είναι σε παύση: {0}. Συνήθως φταίει ένας γεμάτος εικονικός δίσκος.",
+    "other": "Αυτά τα VM είναι σε παύση: {0}. Συνήθως φταίει ένας γεμάτος εικονικός δίσκος."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "Κανένα VM δεν είναι σε παύση.",
+  "h_area_disks": "Δίσκοι",
+  "h_area_array": "Array και pools",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
+  "h_area_vms": "VM",
   "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_network": "Δίκτυο",
+  "h_area_fortress": "Φρούριο",
+  "n_health_title": "FireSquire στο {0}: ρίξε μια ματιά σε {1}",
+  "fortress_app_warning": "Το {0} στο {1} αναφέρει ένα πρόβλημα.",
+  "fortress_app_overdue": "Το {0} στο {1} έχει μείνει πίσω με τη δουλειά του.",
+  "fortress_app_failed": "Το {0} στο {1} αναφέρει μια αποτυχία.",
+  "t_health": "Υγεία",
+  "h_title": "Πώς είναι ο διακομιστής",
+  "h_lead": "Κάθε έλεγχος, προγραμματισμένος ή πριν από επανεκκίνηση, ανάβει ένα φως για κάθε μέρος του διακομιστή. Άνοιξε ένα μέρος για να δεις τι κρύβεται πίσω από το φως του.",
+  "h_checked": "Τελευταίος έλεγχος {0}",
+  "h_never": "Δεν έχει ελεγχθεί από την εκκίνηση του διακομιστή.",
+  "h_check": "Έλεγχος τώρα",
+  "h_checking": "Έλεγχος…",
+  "h_failed": "Ο έλεγχος δεν μπόρεσε να τρέξει. Δοκίμασε ξανά σε λίγο.",
+  "h_light_green": "Υγιές",
+  "h_light_yellow": "Αξίζει μια ματιά",
+  "h_light_red": "Σε χρειάζεται",
+  "h_light_grey": "Τίποτα για έλεγχο",
+  "h_days": "Οι τελευταίες 30 ημέρες",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "Ρυθμίσεις που αξίζουν μια ματιά",
+  "h_config_lead": "Συμβουλές για το πώς είναι στημένος ο διακομιστής. Δεν αλλάζουν ποτέ κανένα φως.",
+  "title_stop": "FireSquire: Πριν σταματήσει το array",
+  "g_ask_stop": "Να σταματήσει το array παρ’ όλα αυτά;",
+  "g_stop": "Διακοπή παρ’ όλα αυτά",
+  "p_ops": "Έλεγχος εργασιών σε εξέλιξη…",
+  "p_open": "Αναζήτηση ανοιχτών αρχείων…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
-    "one": "This process keeps files open in the array, so it cannot unmount: {0}. Close it first."
+    "one": "Αυτή η διεργασία κρατά ανοιχτά αρχεία στο array, οπότε δεν μπορεί να γίνει αποπροσάρτηση: {0}. Κλείσε την πρώτα.",
+    "other": "Αυτές οι διεργασίες κρατούν ανοιχτά αρχεία στο array, οπότε δεν μπορεί να γίνει αποπροσάρτηση: {0}. Κλείσε τες πρώτα."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "Καμία διεργασία εκτός containers και VM δεν έχει ανοιχτά αρχεία στο array.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
-    "one": "This is mounted inside the array and keeps it from unmounting: {0}. Unmount it first."
+    "one": "Αυτό είναι προσαρτημένο μέσα στο array και εμποδίζει την αποπροσάρτησή του: {0}. Αποπροσάρτησέ το πρώτα.",
+    "other": "Αυτά είναι προσαρτημένα μέσα στο array και εμποδίζουν την αποπροσάρτησή του: {0}. Αποπροσάρτησέ τα πρώτα."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
-    "one": "This image file is attached from the array and keeps it from unmounting: {0}. Detach it first."
+    "one": "Αυτό το αρχείο image είναι συνδεδεμένο από το array και εμποδίζει την αποπροσάρτησή του: {0}. Αποσύνδεσέ το πρώτα.",
+    "other": "Αυτά τα αρχεία image είναι συνδεδεμένα από το array και εμποδίζουν την αποπροσάρτησή του: {0}. Αποσύνδεσέ τα πρώτα."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "Τίποτα δεν είναι προσαρτημένο μέσα στο array.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
-    "one": "This VM runs without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "one": "Αυτό το VM τρέχει χωρίς συνδεδεμένο guest agent: {0}. Χωρίς αυτόν ένα VM μπορεί να αγνοήσει το αίτημα τερματισμού, και το Unraid το κλείνει αναγκαστικά μετά από {2}s.",
+    "other": "Αυτά τα VM τρέχουν χωρίς συνδεδεμένο guest agent: {0}. Χωρίς αυτόν ένα VM μπορεί να αγνοήσει το αίτημα τερματισμού, και το Unraid το κλείνει αναγκαστικά μετά από {2}s."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s.",
-    "one": "{0} container runs. Unraid stops it before the array, within {1}s."
+    "one": "{0} container τρέχει. Το Unraid το σταματά πριν από το array, μέσα σε {1}s.",
+    "other": "{0} containers τρέχουν. Το Unraid τα σταματά πριν από το array, το καθένα μέσα σε {1}s."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "Μια λειτουργία ισοτιμίας είναι σε εξέλιξη ({0}). Η διακοπή του array την ακυρώνει.",
+  "stop_mover": "Το mover εκτελείται. Η διακοπή του array το κόβει στη μέση."
 }

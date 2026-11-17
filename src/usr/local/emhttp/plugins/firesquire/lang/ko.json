@@ -7,7 +7,7 @@
   "tier_info": "정보",
   "err": "점검 엔진을 실행할 수 없습니다.",
   "err_hint": "잠시 후 다시 시도해 보세요. 계속 실패하면 syslog에서 이유를 찾을 수 있을지도 몰라요.",
-  "tools_lead": "FireSquire은 재부팅하기 전에 서버가 정상적으로 다시 켜질지 점검하고, 정확한 발견 사항과 함께 하나의 판정(이상 없음 / 연기 나는 중 / 발등에 불 떨어짐)을 제시합니다. 안내용일 뿐입니다: 호스트를 읽고 보고합니다. 플래시에는 /boot에 쓸 수 있는지 확인하려고 빈 테스트 파일을 만들고 바로 삭제합니다. 또 디스크마다 CRC 오류 수를 그곳에 기록해 두어 늘어나면 알아챕니다.",
+  "tools_lead": "FireSquire은 재부팅하기 전에 서버가 정상적으로 다시 켜질지 점검하고, 정확한 발견 사항과 함께 하나의 판정(이상 없음 / 연기 나는 중 / 발등에 불 떨어짐)을 제시합니다. 안내용일 뿐입니다: 호스트를 읽고 보고합니다. 플래시에는 /boot에 쓸 수 있는지 확인하려고 빈 테스트 파일을 만들고 바로 삭제합니다. 또 디스크마다 CRC 오류 수와 SMART 값을 그곳에 기록해 두어 늘어나면 알아채고, 상태 탭의 최근 30일 표시등도 저장합니다.",
   "tools_intro": "실행 중인 시스템에서 감지할 수 있는 재부팅 지뢰를 찾습니다:",
   "tools_li": [
     "Array 시작됨 및 정상: 모든 장치 할당 정상 (비활성화/유효하지 않음/누락된 디스크 없음)",
@@ -26,7 +26,7 @@
   "tools_g_host": "플래시, 공간, 서비스",
   "tools_g_fortress": "내 요새",
   "tools_g_health": "디스크 상태",
-  "tools_note": "조언만 하며, 플래시 쓰기 테스트와 CRC 기록만 해요",
+  "tools_note": "조언만 하며, 플래시 쓰기 테스트와 CRC, SMART 값, 상태 표시등 기록만 해요",
   "goto": "소스로 이동",
   "retry": "다시 점검",
   "p_array": "Array 및 디스크 점검 중…",
@@ -203,100 +203,100 @@
   "g_cancel": "취소",
   "flash_probe_left": "FireSquire가 플래시의 테스트 파일 {0}을(를) 지우지 못했습니다. 직접 지워 주세요.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on."
+    "other": "{0}: {1} °C, 재할당 섹터 {2}개, 보류 섹터 {3}개, 전원 켜진 시간 {4}시간."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on."
+    "other": "{0}: {1} °C, 전원 켜진 시간 {2}시간."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "{3}에 {0}의 재할당 섹터가 {1}개에서 {2}개로 늘었습니다. 디스크가 닳은 부분을 바꾸고 있으니 계속 지켜보면서 백업을 준비해 두세요.",
+  "smart_pending_rose": "{3}에 {0}의 보류 섹터가 {1}개에서 {2}개로 늘었습니다. 읽지 못한 부분이 있으니 백업이 최신인지 확인하세요.",
+  "smart_temp_rose": "{0}이(가) {1} °C로 동작해 평소의 {2} °C보다 훨씬 뜨겁습니다. 팬과 공기 흐름을 확인하세요.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone."
+    "other": "디스크 {0}개가 절전 중이어서 FireSquire가 건드리지 않았습니다."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "other": "부팅 후 syslog에 플래시 드라이브 읽기 오류 줄이 {0}개 있습니다. 최근 항목: {1}. Unraid는 이 USB에서 부팅하므로 재부팅 전에 백업하세요."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "부팅 후 syslog에 플래시 드라이브 읽기 오류가 없습니다.",
+  "flash_space_low": "플래시 여유 공간이 {0} GB뿐인데, 다음 Unraid 업데이트에는 약 {1} GB가 필요합니다. /boot/logs의 오래된 진단 파일부터 지우세요.",
+  "flash_space_ok": "플래시 여유 공간 {0} GB.",
+  "cert_expired": "Unraid 인증서 {0}이(가) {1}에 만료되었습니다. Settings, Management Access에서 갱신할 때까지 브라우저가 WebGUI에 대해 경고합니다.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "other": "Unraid 인증서 {0}이(가) {1}, {2}일 후에 만료됩니다. Unraid가 알아서 갱신하므로 갱신이 실패했을 수 있습니다. Settings, Management Access를 확인하세요."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Unraid 인증서 {0}은(는) {1}까지 유효합니다.",
+  "timeout_suggest": "지난 종료가 {0}s 제한 시간에 걸렸습니다. VM과 컨테이너가 멈추는 데 약 {1}s가 필요하니 디스크 설정에서 종료 제한 시간을 {2}초로 설정하세요.",
+  "shutdown_held": "지난 종료는 VM과 컨테이너가 멈춘 뒤에 {0}s 제한 시간에 걸렸습니다. 무언가가 아직 {1}을(를) 붙잡고 있었기 때문입니다. 재부팅 전에 그곳에서 실행 중인 것을 닫으세요.",
+  "timeout_raised": "지난 종료가 {0}s 제한 시간에 걸렸습니다. 지금 제한 시간은 {1}s로, 그때 VM과 컨테이너가 걸린 시간에는 충분합니다.",
+  "unclean_suggest": "지난 종료가 깨끗하지 않아서 다음 어레이 시작 때 패리티 검사가 실행됩니다. 멈추는 데 컨테이너는 {0}s, VM은 {1}s가 걸릴 수 있으니 디스크 설정에서 종료 제한 시간을 {2}초로 설정하세요.",
+  "cfg_cache_only_array": "공유 {0}은(는) 풀에만 두도록 설정되어 있지만 {1}에 파일이 있습니다. mover는 이 파일을 그대로 두므로 직접 옮기거나, 공유가 파일을 풀로 옮기도록 설정하세요.",
+  "cfg_on_array": "공유 {0}에 {1}이(가) 있지만, 설정({2}) 때문에 파일이 어레이에 놓입니다. 어레이에서는 컨테이너와 VM이 느리게 돌고 디스크가 잠들지 못합니다. 풀에 두세요.",
+  "cfg_pool_missing": "공유 {0}이(가) 쓰는 풀 {1}이(가) 이 서버에 없습니다. 공유 설정에서 가지고 있는 풀 중 하나를 고르세요.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab."
+    "other": "다음 플러그인에 업데이트가 있습니다: {0}. Plugins 탭에서 설치하세요."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "other": "다음 플러그인은 Unraid {2}용이 아닙니다: {0}. 새 버전이나 대체 플러그인을 찾아보세요."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "FireSquire가 살펴보는 설정 중에 바꿀 것이 없습니다.",
+  "net_ok": "{0}이(가) {1} Mb/s로 연결되어 있습니다.",
+  "net_slow": "{0}이(가) {1} Mb/s로 연결되어 있습니다. 보통 케이블이 낡았거나 포트가 낮은 속도로 떨어진 경우입니다.",
+  "net_half": "{0}이(가) 반이중으로 동작합니다. 보통 케이블이 낡았거나 포트가 낮은 모드로 떨어진 경우입니다.",
+  "net_bond": "{0}이(가) {1}을(를) 잃어서 예비 링크 없이 동작합니다.",
+  "net_noroute": "서버에 기본 경로가 없어서 업데이트와 알림을 위해 인터넷에 연결할 수 없습니다.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause."
+    "other": "다음 VM이 일시 중지되었습니다: {0}. 보통 가상 디스크가 가득 찬 것이 원인입니다."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "일시 중지된 VM이 없습니다.",
+  "h_area_disks": "디스크",
+  "h_area_array": "어레이와 풀",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
-  "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_vms": "VM",
+  "h_area_flash": "플래시",
+  "h_area_network": "네트워크",
+  "h_area_fortress": "요새",
+  "n_health_title": "{0}의 FireSquire: {1} 살펴보기 권장",
+  "fortress_app_warning": "{1}의 {0}이(가) 문제를 알리고 있습니다.",
+  "fortress_app_overdue": "{1}의 {0}이(가) 작업이 밀려 있습니다.",
+  "fortress_app_failed": "{1}의 {0}이(가) 실패를 알리고 있습니다.",
+  "t_health": "상태",
+  "h_title": "서버 상태",
+  "h_lead": "예약 점검이든 재부팅 전 점검이든, 점검할 때마다 서버의 각 부분에 표시등이 켜집니다. 부분을 열면 그 표시등의 이유를 볼 수 있습니다.",
+  "h_checked": "마지막 점검 {0}",
+  "h_never": "서버가 시작된 뒤로 점검하지 않았습니다.",
+  "h_check": "지금 점검",
+  "h_checking": "점검 중…",
+  "h_failed": "점검을 실행하지 못했습니다. 잠시 후 다시 시도해 보세요.",
+  "h_light_green": "정상",
+  "h_light_yellow": "살펴볼 만함",
+  "h_light_red": "조치 필요",
+  "h_light_grey": "점검할 것 없음",
+  "h_days": "최근 30일",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "살펴볼 만한 설정",
+  "h_config_lead": "서버 설정 방식에 대한 조언입니다. 표시등은 바꾸지 않습니다.",
+  "title_stop": "FireSquire: 어레이를 멈추기 전에",
+  "g_ask_stop": "그래도 어레이를 멈출까요?",
+  "g_stop": "그래도 멈추기",
+  "p_ops": "실행 중인 작업 확인 중…",
+  "p_open": "열린 파일 찾는 중…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first."
+    "other": "다음 프로세스가 어레이의 파일을 열고 있어 어레이를 마운트 해제할 수 없습니다: {0}. 먼저 닫으세요."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "컨테이너와 VM 밖에서 어레이의 파일을 연 프로세스가 없습니다.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first."
+    "other": "다음 항목이 어레이 안에 마운트되어 있어 마운트 해제를 막고 있습니다: {0}. 먼저 마운트 해제하세요."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first."
+    "other": "다음 이미지 파일이 어레이에서 연결되어 있어 마운트 해제를 막고 있습니다: {0}. 먼저 분리하세요."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "어레이 안에 마운트된 것이 없습니다.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "other": "다음 VM은 게스트 에이전트가 연결되지 않은 채 실행 중입니다: {0}. 게스트 에이전트가 없으면 VM이 종료 요청을 무시할 수 있고, 그러면 Unraid가 {2}s 후에 강제로 끕니다."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s."
+    "other": "컨테이너 {0}개가 실행 중입니다. Unraid는 어레이보다 먼저 각각 {1}s 안에 멈춥니다."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "패리티 작업이 실행 중입니다({0}). 어레이를 멈추면 취소됩니다.",
+  "stop_mover": "mover가 실행 중입니다. 어레이를 멈추면 중간에 끊깁니다."
 }

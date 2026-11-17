@@ -130,7 +130,7 @@ more_last_shutdown() {
   case "$vm$ct" in
     *\?*) ;;
     *)
-      add warning last_shutdown warn shutdown_held "$timeout|${busy:-/mnt}" "The last shutdown ran out of its ${timeout}s after the VMs and containers had stopped, because something still held ${busy:-/mnt}. Close what runs there before you reboot."
+      add warning last_shutdown warn shutdown_held "$timeout|${busy:-/mnt}" "The last shutdown hit its ${timeout}s time-out after the VMs and containers had stopped, because something still held ${busy:-/mnt}. Close what runs there before you reboot."
       return 0 ;;
   esac
   stop="$(ini_get DOCKER_TIMEOUT "$FS_DOCKER_CFG")"; stop="${stop:-10}"
@@ -141,9 +141,9 @@ more_last_shutdown() {
   suggest="$(half_minutes "$need")"
   now="$(ini_get shutdownTimeout "$FS_VAR_INI")"; now="${now:-90}"
   if [ "$now" -ge "$suggest" ]; then
-    add warning last_shutdown pass timeout_raised "$timeout|$now" "The last shutdown ran out of its ${timeout}s, and the time-out of ${now}s now covers what the VMs and containers took then."
+    add warning last_shutdown pass timeout_raised "$timeout|$now" "The last shutdown hit its ${timeout}s time-out. The time-out is ${now}s now, enough for what the VMs and containers took then."
   else
-    add warning last_shutdown warn timeout_suggest "$timeout|$need|$suggest" "The last shutdown ran out of its ${timeout}s. The VMs and containers need about ${need}s to stop, so set the shutdown time-out in Disk Settings to $suggest seconds."
+    add warning last_shutdown warn timeout_suggest "$timeout|$need|$suggest" "The last shutdown hit its ${timeout}s time-out. The VMs and containers need about ${need}s to stop, so set the shutdown time-out in Disk Settings to $suggest seconds."
   fi
 }
 

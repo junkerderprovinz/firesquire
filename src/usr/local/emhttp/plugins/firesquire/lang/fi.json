@@ -7,7 +7,7 @@
   "tier_info": "Info",
   "err": "Tarkistusmoottoria ei voitu suorittaa.",
   "err_hint": "Yritä hetken päästä uudelleen. Jos se epäonnistuu yhä, syslog voi kertoa syyn.",
-  "tools_lead": "FireSquire tarkistaa ennen uudelleenkäynnistystä, käynnistyykö palvelimesi puhtaasti takaisin, ja antaa yhden verdiktin (Kaikki selvää / Kytee / Katto tulessa) tarkkojen havaintojen kera. Se on vain suositus: se lukee isäntäkoneen ja raportoi. Flash-muistiin se kirjoittaa tyhjän testitiedoston nähdäkseen, onko /boot kirjoitettavissa, ja poistaa sen heti. Sinne se tallentaa myös jokaisen levyn CRC-virhelaskurin, jotta se huomaa, kun jokin kasvaa.",
+  "tools_lead": "FireSquire tarkistaa ennen uudelleenkäynnistystä, käynnistyykö palvelimesi puhtaasti takaisin, ja antaa yhden verdiktin (Kaikki selvää / Kytee / Katto tulessa) tarkkojen havaintojen kera. Se on vain suositus: se lukee isäntäkoneen ja raportoi. Flash-muistiin se kirjoittaa tyhjän testitiedoston nähdäkseen, onko /boot kirjoitettavissa, ja poistaa sen heti. Sinne se tallentaa myös jokaisen levyn CRC-virhelaskurin ja SMART-arvot, jotta se huomaa, kun jokin kasvaa, sekä Kunto-välilehden valot viimeisen 30 päivän ajalta.",
   "tools_intro": "Se etsii uudelleenkäynnistyksen sudenkuopat, jotka ovat havaittavissa käynnissä olevasta järjestelmästä:",
   "tools_li": [
     "Array käynnistetty ja puhdas: kaikki laitemääritykset OK (ei poistettuja/virheellisiä/puuttuvia levyjä)",
@@ -26,7 +26,7 @@
   "tools_g_host": "Flash, tila ja palvelut",
   "tools_g_fortress": "Linnoituksesi",
   "tools_g_health": "Levyjen kunto",
-  "tools_note": "Vain neuvoa antava, paitsi flash-muistin kirjoitustesti ja CRC-laskurit",
+  "tools_note": "Vain neuvoa antava, paitsi flash-muistin kirjoitustesti sekä sinne tallennetut CRC-laskurit, SMART-arvot ja Kunto-valot",
   "goto": "Siirry lähdekoodiin",
   "retry": "Tarkista uudelleen",
   "p_array": "Tarkistetaan array ja levyt…",
@@ -254,113 +254,113 @@
   "g_cancel": "Peruuta",
   "flash_probe_left": "FireSquire ei voinut poistaa testitiedostoaan {0} flash-muistista. Poista se itse, kiitos.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
-    "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on."
+    "one": "{0}: {1} °C, uudelleenkohdistettuja sektoreita {2}, odottavia sektoreita {3}, käytössä {4} tunti.",
+    "other": "{0}: {1} °C, uudelleenkohdistettuja sektoreita {2}, odottavia sektoreita {3}, käytössä {4} tuntia."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on.",
-    "one": "{0}: {1} °C, {2} hour powered on."
+    "one": "{0}: {1} °C, käytössä {2} tunti.",
+    "other": "{0}: {1} °C, käytössä {2} tuntia."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "Levyn {0} uudelleenkohdistettujen sektorien määrä nousi {3} arvosta {1} arvoon {2}. Levy korvaa kuluneita kohtia, joten pidä sitä silmällä ja pidä varmuuskopio valmiina.",
+  "smart_pending_rose": "Levyn {0} odottavien sektorien määrä nousi {3} arvosta {1} arvoon {2}. Joitakin kohtia ei voitu lukea, joten varmista, että varmuuskopiosi on ajan tasalla.",
+  "smart_temp_rose": "Levyn {0} lämpötila on {1} °C, selvästi yli tavallisen {2} °C:n. Tarkista tuulettimet ja ilmankierto.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone.",
-    "one": "{0} disk was asleep and FireSquire left it alone."
+    "one": "{0} levy oli lepotilassa, eikä FireSquire herättänyt sitä.",
+    "other": "{0} levyä oli lepotilassa, eikä FireSquire herättänyt niitä."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
-    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "one": "Flash-asemalla on syslogissa {0} lukuvirherivi käynnistyksen jälkeen. Viimeisin: {1}. Unraid käynnistyy tältä tikulta, joten varmuuskopioi se ennen uudelleenkäynnistystä.",
+    "other": "Flash-asemalla on syslogissa {0} lukuvirheriviä käynnistyksen jälkeen. Viimeisin: {1}. Unraid käynnistyy tältä tikulta, joten varmuuskopioi se ennen uudelleenkäynnistystä."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "Ei flash-aseman lukuvirheitä syslogissa käynnistyksen jälkeen.",
+  "flash_space_low": "Flash-muistissa on vapaana vain {0} GB, ja seuraava Unraid-päivitys tarvitsee noin {1} GB. Vanhat diagnostiikat hakemistossa /boot/logs kannattaa siivota ensimmäisinä.",
+  "flash_space_ok": "Flash-muistissa {0} GB vapaana.",
+  "cert_expired": "Unraidin varmenne {0} vanheni {1}. Selaimet varoittavat WebGUI:sta, kunnes se uusitaan kohdassa Settings, Management Access.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
-    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "one": "Unraidin varmenne {0} vanhenee {1}, {2} päivän päästä. Unraid uusii sen itse, joten uusinta on ehkä epäonnistunut: katso kohta Settings, Management Access.",
+    "other": "Unraidin varmenne {0} vanhenee {1}, {2} päivän päästä. Unraid uusii sen itse, joten uusinta on ehkä epäonnistunut: katso kohta Settings, Management Access."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Unraidin varmenne {0} on voimassa {1} asti.",
+  "timeout_suggest": "Edellinen sammutus törmäsi aikarajaansa {0}s. VM:t ja kontit tarvitsevat pysähtymiseen noin {1}s, joten aseta sammutuksen aikaraja levyasetuksissa {2} sekuntiin.",
+  "shutdown_held": "Edellinen sammutus törmäsi aikarajaansa {0}s, vaikka VM:t ja kontit olivat jo pysähtyneet, koska jokin piti yhä kiinni kohteesta {1}. Sulje siellä käynnissä oleva ennen uudelleenkäynnistystä.",
+  "timeout_raised": "Edellinen sammutus törmäsi aikarajaansa {0}s. Aikaraja on nyt {1}s, mikä riittää siihen, mitä VM:t ja kontit silloin tarvitsivat.",
+  "unclean_suggest": "Edellinen sammutus ei ollut siisti, joten arrayn seuraava käynnistys tekee pariteettitarkistuksen. Konttien pysähtyminen voi viedä {0}s ja VM:ien {1}s: aseta sammutuksen aikaraja levyasetuksissa {2} sekuntiin.",
+  "cfg_cache_only_array": "Jako {0} on asetettu pysymään vain poolillaan, mutta sillä on tiedostoja kohteessa {1}. Mover jättää ne paikalleen, joten siirrä ne käsin tai aseta jako siirtämään ne pooliin.",
+  "cfg_on_array": "Jako {0} sisältää kohteen {1}, mutta sen asetus ({2}) sijoittaa tiedostot arrayhin, jossa kontit ja VM:t toimivat hitaasti ja levyt pysyvät hereillä. Pidä se poolilla.",
+  "cfg_pool_missing": "Jako {0} käyttää poolia {1}, jota ei ole tällä palvelimella. Valitse jokin pooleistasi jaon asetuksista.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab.",
-    "one": "An update waits for this plugin: {0}. Install it on the Plugins tab."
+    "one": "Tälle laajennukselle on päivitys: {0}. Asenna se Plugins-välilehdellä.",
+    "other": "Näille laajennuksille on päivityksiä: {0}. Asenna ne Plugins-välilehdellä."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
-    "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "one": "Tätä laajennusta ei ole tehty Unraidin versiolle {2}: {0}. Etsi uudempi versio tai korvaaja.",
+    "other": "Näitä laajennuksia ei ole tehty Unraidin versiolle {2}: {0}. Etsi uudempi versio tai korvaaja."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "Mikään FireSquiren tarkistamista asetuksista ei kaipaa muutosta.",
+  "net_ok": "{0}: linkki {1} Mb/s.",
+  "net_slow": "{0}: linkki {1} Mb/s, yleensä kulunut kaapeli tai hitaammalle pudonnut portti.",
+  "net_half": "{0} toimii half duplex -tilassa, yleensä kulunut kaapeli tai hitaammalle pudonnut portti.",
+  "net_bond": "{0} on menettänyt jäsenen {1}, joten se toimii ilman varalinkkiään.",
+  "net_noroute": "Palvelimella ei ole oletusreittiä, joten se ei tavoita internetiä päivityksiä ja ilmoituksia varten.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause.",
-    "one": "This VM is paused: {0}. A full virtual disk is the usual cause."
+    "one": "Tämä VM on keskeytetty: {0}. Syy on yleensä täysi virtuaalilevy.",
+    "other": "Nämä VM:t on keskeytetty: {0}. Syy on yleensä täysi virtuaalilevy."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "Yhtään VM:ää ei ole keskeytetty.",
+  "h_area_disks": "Levyt",
+  "h_area_array": "Array ja poolit",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
+  "h_area_vms": "VM:t",
   "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_network": "Verkko",
+  "h_area_fortress": "Linnoitus",
+  "n_health_title": "FireSquire laitteessa {0}: {1} kannattaa katsoa",
+  "fortress_app_warning": "{0} laitteessa {1} ilmoittaa ongelmasta.",
+  "fortress_app_overdue": "{0} laitteessa {1} on jäljessä töistään.",
+  "fortress_app_failed": "{0} laitteessa {1} ilmoittaa, että jokin epäonnistui.",
+  "t_health": "Kunto",
+  "h_title": "Palvelimen kunto",
+  "h_lead": "Jokainen tarkistus, ajastettu tai uudelleenkäynnistystä edeltävä, sytyttää valon palvelimen jokaiselle osalle. Avaa osa nähdäksesi, mitä sen valon takana on.",
+  "h_checked": "Tarkistettu viimeksi {0}",
+  "h_never": "Ei tarkistettu palvelimen käynnistyksen jälkeen.",
+  "h_check": "Tarkista nyt",
+  "h_checking": "Tarkistetaan…",
+  "h_failed": "Tarkistusta ei voitu suorittaa. Yritä hetken päästä uudelleen.",
+  "h_light_green": "Kunnossa",
+  "h_light_yellow": "Kannattaa katsoa",
+  "h_light_red": "Tarvitsee sinua",
+  "h_light_grey": "Ei tarkistettavaa",
+  "h_days": "Viimeiset 30 päivää",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "Asetukset, jotka kannattaa katsoa",
+  "h_config_lead": "Neuvoja palvelimen asetuksiin. Ne eivät koskaan muuta valoa.",
+  "title_stop": "FireSquire: ennen arrayn pysäyttämistä",
+  "g_ask_stop": "Pysäytetäänkö array silti?",
+  "g_stop": "Pysäytä silti",
+  "p_ops": "Tarkistetaan käynnissä olevat työt…",
+  "p_open": "Etsitään avoimia tiedostoja…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
-    "one": "This process keeps files open in the array, so it cannot unmount: {0}. Close it first."
+    "one": "Tämä prosessi pitää tiedostoja auki arrayssa, joten arrayta ei voi irrottaa: {0}. Sulje se ensin.",
+    "other": "Nämä prosessit pitävät tiedostoja auki arrayssa, joten arrayta ei voi irrottaa: {0}. Sulje ne ensin."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "Yhdelläkään prosessilla konttien ja VM:ien ulkopuolella ei ole tiedostoja auki arrayssa.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
-    "one": "This is mounted inside the array and keeps it from unmounting: {0}. Unmount it first."
+    "one": "Tämä on liitetty arrayn sisälle ja estää sen irrottamisen: {0}. Irrota se ensin.",
+    "other": "Nämä on liitetty arrayn sisälle ja estävät sen irrottamisen: {0}. Irrota ne ensin."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
-    "one": "This image file is attached from the array and keeps it from unmounting: {0}. Detach it first."
+    "one": "Tämä image-tiedosto on liitetty arraysta ja estää sen irrottamisen: {0}. Irrota se ensin.",
+    "other": "Nämä image-tiedostot on liitetty arraysta ja estävät sen irrottamisen: {0}. Irrota ne ensin."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "Arrayn sisälle ei ole liitetty mitään.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
-    "one": "This VM runs without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "one": "Tämä VM toimii ilman yhdistettyä guest agentia: {0}. Ilman sitä VM voi jättää sammutuspyynnön huomiotta, ja Unraid pakottaa sen pois päältä {2}s jälkeen.",
+    "other": "Nämä VM:t toimivat ilman yhdistettyä guest agentia: {0}. Ilman sitä VM voi jättää sammutuspyynnön huomiotta, ja Unraid pakottaa sen pois päältä {2}s jälkeen."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s.",
-    "one": "{0} container runs. Unraid stops it before the array, within {1}s."
+    "one": "{0} kontti on käynnissä. Unraid pysäyttää sen ennen arrayta, {1}s kuluessa.",
+    "other": "{0} konttia on käynnissä. Unraid pysäyttää ne ennen arrayta, kunkin {1}s kuluessa."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "Pariteettioperaatio on käynnissä ({0}). Arrayn pysäyttäminen keskeyttää sen.",
+  "stop_mover": "Mover on käynnissä. Arrayn pysäyttäminen katkaisee sen kesken."
 }

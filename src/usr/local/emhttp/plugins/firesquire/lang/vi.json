@@ -7,7 +7,7 @@
   "tier_info": "Thông tin",
   "err": "Không thể chạy công cụ kiểm tra.",
   "err_hint": "Thử lại sau giây lát. Nếu vẫn lỗi, syslog có thể cho biết lý do.",
-  "tools_lead": "FireSquire kiểm tra xem máy chủ của bạn có khởi động lại sạch sẽ hay không trước khi bạn khởi động lại, và đưa ra một kết luận (Mọi thứ ổn / Đang âm ỉ / Nước sôi lửa bỏng) kèm các phát hiện cụ thể. Nó chỉ mang tính tư vấn: nó đọc host và báo cáo. Trên USB flash, nó ghi một tệp thử rỗng để xem /boot có ghi được không, rồi xóa ngay. Nó cũng lưu bộ đếm lỗi CRC của từng ổ đĩa ở đó, để nhận ra khi một bộ đếm tăng.",
+  "tools_lead": "FireSquire kiểm tra xem máy chủ của bạn có khởi động lại sạch sẽ hay không trước khi bạn khởi động lại, và đưa ra một kết luận (Mọi thứ ổn / Đang âm ỉ / Nước sôi lửa bỏng) kèm các phát hiện cụ thể. Nó chỉ mang tính tư vấn: nó đọc host và báo cáo. Trên USB flash, nó ghi một tệp thử rỗng để xem /boot có ghi được không, rồi xóa ngay. Nó cũng lưu bộ đếm lỗi CRC và các giá trị SMART của từng ổ đĩa ở đó, để nhận ra khi một giá trị tăng, cùng với đèn của thẻ Sức khỏe trong 30 ngày gần nhất.",
   "tools_intro": "Nó tìm những cạm bẫy khởi động lại có thể phát hiện được từ hệ thống đang chạy:",
   "tools_li": [
     "Array đã khởi động & sạch: mọi gán thiết bị đều OK (không có đĩa bị vô hiệu hóa/không hợp lệ/thiếu)",
@@ -26,7 +26,7 @@
   "tools_g_host": "Flash, dung lượng và dịch vụ",
   "tools_g_fortress": "Pháo đài của bạn",
   "tools_g_health": "Sức khỏe ổ đĩa",
-  "tools_note": "Chỉ tư vấn, ngoài một lần thử ghi và bộ đếm CRC trên USB flash",
+  "tools_note": "Chỉ tư vấn, ngoài một lần thử ghi và bộ đếm CRC, giá trị SMART và đèn Sức khỏe trên USB flash",
   "goto": "Xem mã nguồn",
   "retry": "Kiểm tra lại",
   "p_array": "Đang kiểm tra array & đĩa…",
@@ -203,100 +203,100 @@
   "g_cancel": "Hủy",
   "flash_probe_left": "FireSquire không xóa được tệp thử {0} trên flash. Bạn hãy tự xóa giúp nhé.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on."
+    "other": "{0}: {1} °C, {2} sector đã cấp phát lại và {3} sector đang chờ, đã bật nguồn {4} giờ."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on."
+    "other": "{0}: {1} °C, đã bật nguồn {2} giờ."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "Số sector đã cấp phát lại trên {0} tăng từ {1} lên {2} vào {3}. Ổ đĩa đang thay thế những chỗ bị mòn, vậy hãy để mắt đến nó và chuẩn bị sẵn bản sao lưu.",
+  "smart_pending_rose": "Số sector đang chờ trên {0} tăng từ {1} lên {2} vào {3}. Một số chỗ không đọc được, vậy hãy chắc chắn bản sao lưu của bạn là mới nhất.",
+  "smart_temp_rose": "{0} đang chạy ở {1} °C, cao hơn hẳn mức {2} °C thường ngày. Hãy kiểm tra quạt và luồng gió.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone."
+    "other": "{0} ổ đĩa đang ngủ và FireSquire để yên chúng."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "other": "Ổ flash có {0} dòng lỗi đọc trong syslog kể từ khi khởi động. Mới nhất: {1}. Unraid khởi động từ chiếc USB này, vậy hãy sao lưu nó trước khi khởi động lại."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "Không có lỗi đọc nào của ổ flash trong syslog kể từ khi khởi động.",
+  "flash_space_low": "Trên flash chỉ còn trống {0} GB, trong khi bản cập nhật Unraid tới cần khoảng {1} GB. Hãy dọn các bản chẩn đoán cũ trong /boot/logs trước tiên.",
+  "flash_space_ok": "Còn trống {0} GB trên flash.",
+  "cert_expired": "Chứng chỉ {0} của Unraid đã hết hạn vào {1}. Trình duyệt sẽ cảnh báo về WebGUI cho đến khi bạn gia hạn nó ở mục Management Access trong Cài đặt.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "other": "Chứng chỉ {0} của Unraid sẽ hết hạn vào {1}, còn {2} ngày. Unraid tự gia hạn nó, nên có thể việc gia hạn đã thất bại: hãy xem mục Management Access trong Cài đặt."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Chứng chỉ {0} của Unraid còn hiệu lực đến {1}.",
+  "timeout_suggest": "Lần tắt máy trước đã chạm thời gian chờ {0} giây. Các VM và container cần khoảng {1} giây để dừng, vậy hãy đặt thời gian chờ tắt máy trong cài đặt ổ đĩa thành {2} giây.",
+  "shutdown_held": "Lần tắt máy trước đã chạm thời gian chờ {0} giây sau khi các VM và container đã dừng, vì vẫn có thứ đang giữ {1}. Hãy đóng những gì đang chạy ở đó trước khi khởi động lại.",
+  "timeout_raised": "Lần tắt máy trước đã chạm thời gian chờ {0} giây. Giờ thời gian chờ là {1} giây, đủ cho thời gian các VM và container cần lúc đó.",
+  "unclean_suggest": "Lần tắt máy trước không sạch, nên lần khởi động array tới sẽ chạy kiểm tra parity. Container có thể cần {0} giây và VM {1} giây để dừng: hãy đặt thời gian chờ tắt máy trong cài đặt ổ đĩa thành {2} giây.",
+  "cfg_cache_only_array": "Thư mục chia sẻ {0} được đặt chỉ nằm trên pool của nó, nhưng lại có tệp trên {1}. Mover để yên chúng ở đó, vậy hãy tự chuyển chúng hoặc đặt thư mục chia sẻ để chuyển chúng sang pool.",
+  "cfg_on_array": "Thư mục chia sẻ {0} chứa {1}, nhưng cài đặt của nó ({2}) đặt tệp trên array, nơi container và VM chạy chậm và giữ các ổ đĩa luôn thức. Hãy để nó trên một pool.",
+  "cfg_pool_missing": "Thư mục chia sẻ {0} dùng pool {1}, nhưng pool này không có trên máy chủ. Hãy chọn một pool của bạn trong cài đặt của thư mục chia sẻ.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab."
+    "other": "Có bản cập nhật cho các plugin này: {0}. Hãy cài đặt trong thẻ Plugins."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "other": "Các plugin này không dành cho Unraid {2}: {0}. Hãy tìm phiên bản mới hơn hoặc một plugin thay thế."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "Không có cài đặt nào FireSquire xem xét cần thay đổi.",
+  "net_ok": "{0} kết nối ở {1} Mb/s.",
+  "net_slow": "{0} kết nối ở {1} Mb/s, thường do cáp đã cũ hoặc cổng đã tụt tốc độ.",
+  "net_half": "{0} chạy ở chế độ half duplex, thường do cáp đã cũ hoặc cổng đã tụt tốc độ.",
+  "net_bond": "{0} đã mất {1}, nên đang chạy mà không có liên kết dự phòng.",
+  "net_noroute": "Máy chủ không có default route, nên không thể kết nối internet để cập nhật và gửi thông báo.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause."
+    "other": "Các VM này đang tạm dừng: {0}. Nguyên nhân thường là ổ đĩa ảo đã đầy."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "Không có VM nào đang tạm dừng.",
+  "h_area_disks": "Ổ đĩa",
+  "h_area_array": "Array và pool",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
+  "h_area_vms": "VM",
   "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_network": "Mạng",
+  "h_area_fortress": "Pháo đài",
+  "n_health_title": "FireSquire trên {0}: {1} đáng xem qua",
+  "fortress_app_warning": "{0} trên {1} báo có sự cố.",
+  "fortress_app_overdue": "{0} trên {1} đang chậm việc.",
+  "fortress_app_failed": "{0} trên {1} báo bị lỗi.",
+  "t_health": "Sức khỏe",
+  "h_title": "Tình hình máy chủ",
+  "h_lead": "Mỗi lần kiểm tra, theo lịch hay trước khi khởi động lại, đều bật một đèn cho từng phần của máy chủ. Mở một phần để xem điều gì nằm sau đèn của nó.",
+  "h_checked": "Kiểm tra lần cuối {0}",
+  "h_never": "Chưa kiểm tra kể từ khi máy chủ khởi động.",
+  "h_check": "Kiểm tra ngay",
+  "h_checking": "Đang kiểm tra…",
+  "h_failed": "Không chạy được lần kiểm tra. Hãy thử lại sau chốc lát.",
+  "h_light_green": "Khỏe mạnh",
+  "h_light_yellow": "Đáng xem qua",
+  "h_light_red": "Cần bạn xử lý",
+  "h_light_grey": "Không có gì để kiểm tra",
+  "h_days": "30 ngày qua",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "Cài đặt đáng xem qua",
+  "h_config_lead": "Lời khuyên về cách thiết lập máy chủ. Phần này không bao giờ đổi đèn.",
+  "title_stop": "FireSquire: Trước khi dừng array",
+  "g_ask_stop": "Vẫn dừng array?",
+  "g_stop": "Vẫn dừng",
+  "p_ops": "Đang kiểm tra công việc đang chạy…",
+  "p_open": "Đang tìm tệp đang mở…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first."
+    "other": "Các tiến trình này đang giữ tệp mở trong array, nên array không thể unmount: {0}. Hãy đóng chúng trước."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "Không có tiến trình nào ngoài container và VM đang mở tệp trong array.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first."
+    "other": "Những mục này được mount bên trong array và khiến array không thể unmount: {0}. Hãy unmount chúng trước."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first."
+    "other": "Các tệp image này được gắn từ array và khiến array không thể unmount: {0}. Hãy tháo chúng ra trước."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "Không có gì được mount bên trong array.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "other": "Các VM này chạy mà không có guest agent được kết nối: {0}. Thiếu nó, VM có thể bỏ qua yêu cầu tắt máy, và Unraid sẽ buộc tắt sau {2} giây."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s."
+    "other": "{0} container đang chạy. Unraid dừng chúng trước array, mỗi container trong vòng {1} giây."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "Một thao tác parity đang chạy ({0}). Dừng array sẽ hủy nó.",
+  "stop_mover": "Mover đang chạy. Dừng array sẽ cắt ngang nó."
 }

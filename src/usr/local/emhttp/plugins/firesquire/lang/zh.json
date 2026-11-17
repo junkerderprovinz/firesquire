@@ -7,7 +7,7 @@
   "tier_info": "信息",
   "err": "无法运行检查引擎。",
   "err_hint": "请稍后再试。如果仍然失败，syslog 中可能有原因。",
-  "tools_lead": "FireSquire 在你重启前检查服务器是否能干净地重新启动，并给出一个结论（一切正常 / 隐隐冒烟 / 火烧眉毛）以及具体的检查发现。它仅供参考：只读取主机并报告。它在闪存上写入一个空测试文件，用来确认 /boot 可写，随后立即删除。它还在那里记录每块硬盘的 CRC 错误计数，以便发现计数上升。",
+  "tools_lead": "FireSquire 在你重启前检查服务器是否能干净地重新启动，并给出一个结论（一切正常 / 隐隐冒烟 / 火烧眉毛）以及具体的检查发现。它仅供参考：只读取主机并报告。它在闪存上写入一个空测试文件，用来确认 /boot 可写，随后立即删除。它还在那里记录每块硬盘的 CRC 错误计数和 SMART 值，以便发现数值上升，并保存健康标签页最近 30 天的指示灯。",
   "tools_intro": "它会查找可从运行中的系统检测到的重启隐患：",
   "tools_li": [
     "阵列已启动且干净：所有设备分配正常（无禁用/无效/缺失的磁盘）",
@@ -26,7 +26,7 @@
   "tools_g_host": "闪存、空间和服务",
   "tools_g_fortress": "你的堡垒",
   "tools_g_health": "硬盘健康",
-  "tools_note": "仅供参考，只在闪存上做一次写入测试并记录 CRC 计数",
+  "tools_note": "仅供参考，只在闪存上做一次写入测试并记录 CRC 计数、SMART 值和健康指示灯",
   "goto": "访问源代码",
   "retry": "重新检查",
   "p_array": "正在检查阵列和磁盘…",
@@ -203,100 +203,100 @@
   "g_cancel": "取消",
   "flash_probe_left": "FireSquire 无法删除闪存上的测试文件 {0}。请手动删除它。",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on."
+    "other": "{0}：{1} °C，{2} 个重映射扇区和 {3} 个待处理扇区，已通电 {4} 小时。"
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on."
+    "other": "{0}：{1} °C，已通电 {2} 小时。"
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "{0} 的重映射扇区在 {3} 从 {1} 个增加到 {2} 个。硬盘正在替换磨损的区域，请留意它，并备好备份。",
+  "smart_pending_rose": "{0} 的待处理扇区在 {3} 从 {1} 个增加到 {2} 个。有些区域无法读取，请确认你的备份是最新的。",
+  "smart_temp_rose": "{0} 的温度为 {1} °C，远高于平时的 {2} °C。请检查风扇和风道。",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone."
+    "other": "{0} 块硬盘处于休眠状态，FireSquire 没有打扰它们。"
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "other": "自启动以来，syslog 中有 {0} 行闪存盘读取错误。最新：{1}。Unraid 从这个 U 盘启动，请在重启前先备份它。"
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "自启动以来，syslog 中没有闪存盘读取错误。",
+  "flash_space_low": "闪存上只剩 {0} GB 可用，而下一次 Unraid 更新大约需要 {1} GB。可以先清理 /boot/logs 中的旧诊断文件。",
+  "flash_space_ok": "闪存上有 {0} GB 可用。",
+  "cert_expired": "Unraid 的证书 {0} 已于 {1} 过期。在“设置”下的“管理访问”中续期之前，浏览器会对 WebGUI 发出警告。",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "other": "Unraid 的证书 {0} 将于 {1} 过期，还剩 {2} 天。Unraid 会自动续期，所以续期可能失败了：请查看“设置”下的“管理访问”。"
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Unraid 的证书 {0} 有效期至 {1}。",
+  "timeout_suggest": "上次关机触发了 {0} 秒的超时。虚拟机和容器大约需要 {1} 秒才能停止，请在磁盘设置中把关机超时设为 {2} 秒。",
+  "shutdown_held": "上次关机在虚拟机和容器停止之后仍触发了 {0} 秒的超时，因为还有东西占用着 {1}。请在重启前关闭在那里运行的程序。",
+  "timeout_raised": "上次关机触发了 {0} 秒的超时。现在的超时是 {1} 秒，足够应付当时虚拟机和容器所用的时间。",
+  "unclean_suggest": "上次关机不干净，所以下次启动阵列时会进行奇偶校验。容器停止可能需要 {0} 秒，虚拟机需要 {1} 秒：请在磁盘设置中把关机超时设为 {2} 秒。",
+  "cfg_cache_only_array": "共享 {0} 设置为只存放在它的存储池上，但它在 {1} 上有文件。mover 不会动这些文件，请手动移动，或把共享设置为将文件移到存储池。",
+  "cfg_on_array": "共享 {0} 存放着 {1}，但它的设置（{2}）把文件放在阵列上，容器和虚拟机在那里运行很慢，还会让硬盘一直醒着。请把它放在存储池上。",
+  "cfg_pool_missing": "共享 {0} 使用存储池 {1}，但这台服务器上没有这个存储池。请在共享设置中选择你的一个存储池。",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab."
+    "other": "这些插件有更新可用：{0}。请在“插件”标签页安装。"
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "other": "这些插件不适用于 Unraid {2}：{0}。请寻找更新的版本或替代品。"
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "FireSquire 检查的设置中没有需要更改的地方。",
+  "net_ok": "{0} 的连接速度为 {1} Mb/s。",
+  "net_slow": "{0} 的连接速度为 {1} Mb/s，通常是网线老化或端口降速了。",
+  "net_half": "{0} 以半双工运行，通常是网线老化或端口降速了。",
+  "net_bond": "{0} 失去了 {1}，现在没有备用链路。",
+  "net_noroute": "服务器没有默认路由，无法连接互联网来获取更新和发送通知。",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause."
+    "other": "这些虚拟机已暂停：{0}。通常是虚拟磁盘满了。"
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "没有已暂停的虚拟机。",
+  "h_area_disks": "磁盘",
+  "h_area_array": "阵列和存储池",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
-  "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
-  "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_area_vms": "虚拟机",
+  "h_area_flash": "闪存",
+  "h_area_network": "网络",
+  "h_area_fortress": "堡垒",
+  "n_health_title": "{0} 上的 FireSquire：{1} 值得一看",
+  "fortress_app_warning": "{1} 上的 {0} 报告了一个问题。",
+  "fortress_app_overdue": "{1} 上的 {0} 的工作落后了。",
+  "fortress_app_failed": "{1} 上的 {0} 报告了一次失败。",
+  "t_health": "健康",
+  "h_title": "服务器状况如何",
+  "h_lead": "每次检查，无论是定时还是在重启前，都会为服务器的每个部分亮起一盏灯。打开一个部分，就能看到灯背后的原因。",
+  "h_checked": "上次检查：{0}",
+  "h_never": "服务器启动以来尚未检查。",
+  "h_check": "立即检查",
+  "h_checking": "正在检查…",
+  "h_failed": "检查无法运行。请稍后再试。",
+  "h_light_green": "健康",
+  "h_light_yellow": "值得一看",
+  "h_light_red": "需要你处理",
+  "h_light_grey": "无可检查项",
+  "h_days": "最近 30 天",
+  "h_day": "{0}：{1}",
+  "h_config": "值得一看的设置",
+  "h_config_lead": "关于服务器设置方式的建议。它从不改变任何一盏灯。",
+  "title_stop": "FireSquire：阵列停止之前",
+  "g_ask_stop": "仍要停止阵列吗？",
+  "g_stop": "仍然停止",
+  "p_ops": "正在检查运行中的工作…",
+  "p_open": "正在查找打开的文件…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first."
+    "other": "这些进程在阵列中打开着文件，导致阵列无法卸载：{0}。请先关闭它们。"
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "除容器和虚拟机外，没有进程在阵列中打开文件。",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first."
+    "other": "这些挂载位于阵列内部，导致阵列无法卸载：{0}。请先卸载它们。"
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first."
+    "other": "这些镜像文件从阵列挂接，导致阵列无法卸载：{0}。请先分离它们。"
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "阵列内部没有任何挂载。",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "other": "这些虚拟机运行时没有已连接的客户机代理：{0}。没有它，虚拟机可能会忽略关机请求，Unraid 会在 {2} 秒后强制关闭它。"
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s."
+    "other": "有 {0} 个容器正在运行。Unraid 会在阵列之前停止它们，每个最多 {1} 秒。"
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "一项校验操作正在运行（{0}）。停止阵列会取消它。",
+  "stop_mover": "mover 正在运行。停止阵列会让它中途结束。"
 }

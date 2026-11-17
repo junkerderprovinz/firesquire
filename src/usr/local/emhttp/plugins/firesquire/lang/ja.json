@@ -7,7 +7,7 @@
   "tier_info": "情報",
   "err": "チェックエンジンを実行できませんでした。",
   "err_hint": "少し待ってからもう一度試してください。それでも失敗する場合は、syslog に理由が出ているかもしれません。",
-  "tools_lead": "FireSquire は、再起動する前にサーバーが正常に復帰するかどうかをチェックし、正確な検出結果とともに 1 つの判定 (異常なし / くすぶり中 / 屋根が燃えてる) を示します。これは参考情報のみです。ホストを読み取って報告します。フラッシュには、/boot に書き込めるか確かめる空のテストファイルを作り、すぐに削除します。また各ディスクの CRC エラー数をそこに記録し、増えたときに気付けるようにします。",
+  "tools_lead": "FireSquire は、再起動する前にサーバーが正常に復帰するかどうかをチェックし、正確な検出結果とともに 1 つの判定 (異常なし / くすぶり中 / 屋根が燃えてる) を示します。これは参考情報のみです。ホストを読み取って報告します。フラッシュには、/boot に書き込めるか確かめる空のテストファイルを作り、すぐに削除します。また各ディスクの CRC エラー数と SMART 値をそこに記録して増えたときに気付けるようにし、「状態」タブの過去 30 日分のランプも保存します。",
   "tools_intro": "稼働中のシステムから検出できる再起動の落とし穴を探します:",
   "tools_li": [
     "アレイが起動済みで正常: すべてのデバイス割り当てが正常 (無効/不正/欠落ディスクなし)",
@@ -26,7 +26,7 @@
   "tools_g_host": "フラッシュ、空き容量、サービス",
   "tools_g_fortress": "あなたの要塞",
   "tools_g_health": "ディスクの健全性",
-  "tools_note": "助言のみ。フラッシュへの書き込みテストと CRC 数の記録だけ行います",
+  "tools_note": "助言のみ。フラッシュへの書き込みテストと CRC 数、SMART 値、「状態」のランプの記録だけ行います",
   "goto": "ソースを見る",
   "retry": "もう一度チェック",
   "p_array": "アレイとディスクを確認中…",
@@ -203,100 +203,100 @@
   "g_cancel": "キャンセル",
   "flash_probe_left": "FireSquire はフラッシュ上のテストファイル {0} を削除できませんでした。お手数ですが手動で削除してください。",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on."
+    "other": "{0}: {1} °C、代替処理済みセクター {2}、保留中セクター {3}、通電時間 {4} 時間。"
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on."
+    "other": "{0}: {1} °C、通電時間 {2} 時間。"
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "{3} に {0} の代替処理済みセクターが {1} から {2} に増えました。ディスクが傷んだ箇所を置き換えているので、様子を見守りつつバックアップを用意しておいてください。",
+  "smart_pending_rose": "{3} に {0} の保留中セクターが {1} から {2} に増えました。読めなかった箇所があるので、バックアップが最新か確認してください。",
+  "smart_temp_rose": "{0} は {1} °C で動作していて、いつもの {2} °C をかなり上回っています。ファンと風の流れを確認してください。",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone."
+    "other": "{0} 台のディスクがスリープ中だったので、FireSquire はそのままにしておきました。"
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "other": "起動以降、syslog にフラッシュドライブの読み取りエラーの行が {0} 件あります。最新: {1}。Unraid はこの USB メモリから起動するので、再起動の前にバックアップしてください。"
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "起動以降、syslog にフラッシュドライブの読み取りエラーはありません。",
+  "flash_space_low": "フラッシュの空きは {0} GB しかなく、次の Unraid アップデートには約 {1} GB 必要です。まずは /boot/logs の古い診断データを消してください。",
+  "flash_space_ok": "フラッシュの空きは {0} GB です。",
+  "cert_expired": "Unraid の証明書 {0} は {1} に期限が切れました。Settings、Management Access で更新するまで、ブラウザーは WebGUI について警告を出します。",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "other": "Unraid の証明書 {0} は {1} (あと {2} 日) に期限が切れます。Unraid は自動で更新するので、更新に失敗したのかもしれません。Settings、Management Access を見てください。"
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Unraid の証明書 {0} は {1} まで有効です。",
+  "timeout_suggest": "前回のシャットダウンは {0}s のタイムアウトに達しました。VM とコンテナの停止には約 {1}s かかるので、ディスク設定でシャットダウンのタイムアウトを {2} 秒にしてください。",
+  "shutdown_held": "前回のシャットダウンは、VM とコンテナが停止した後に {0}s のタイムアウトに達しました。まだ何かが {1} を使っていたためです。再起動の前に、そこで動いているものを閉じてください。",
+  "timeout_raised": "前回のシャットダウンは {0}s のタイムアウトに達しました。現在のタイムアウトは {1}s で、そのとき VM とコンテナにかかった時間には足ります。",
+  "unclean_suggest": "前回のシャットダウンはクリーンではなかったので、次にアレイを起動するとパリティチェックが実行されます。停止にはコンテナで {0}s、VM で {1}s かかることがあるので、ディスク設定でシャットダウンのタイムアウトを {2} 秒にしてください。",
+  "cfg_cache_only_array": "共有 {0} はプールだけに置く設定ですが、{1} にファイルがあります。mover はそれを動かさないので、手動で移すか、プールへ移す設定に変えてください。",
+  "cfg_on_array": "共有 {0} には {1} が入っていますが、設定 ({2}) によってファイルがアレイに置かれます。アレイ上ではコンテナや VM の動作が遅く、ディスクもスリープできません。プールに置いてください。",
+  "cfg_pool_missing": "共有 {0} はプール {1} を使う設定ですが、このサーバーにそのプールはありません。共有の設定で、お使いのプールを選んでください。",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab."
+    "other": "次のプラグインにアップデートがあります: {0}。Plugins タブからインストールしてください。"
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "other": "次のプラグインは Unraid {2} 向けではありません: {0}。新しいバージョンか代わりのものを探してください。"
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "FireSquire が確認する設定に、変更が必要なものはありません。",
+  "net_ok": "{0} は {1} Mb/s でリンクしています。",
+  "net_slow": "{0} は {1} Mb/s でリンクしています。ケーブルの劣化か、ポートが低い速度に落ちたのがよくある原因です。",
+  "net_half": "{0} は半二重で動作しています。ケーブルの劣化か、ポートが低いモードに落ちたのがよくある原因です。",
+  "net_bond": "{0} は {1} を失ったので、予備のリンクなしで動作しています。",
+  "net_noroute": "サーバーにデフォルトルートがないため、アップデートや通知のためにインターネットへ接続できません。",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause."
+    "other": "次の VM が一時停止しています: {0}。よくある原因は仮想ディスクの容量不足です。"
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "一時停止中の VM はありません。",
+  "h_area_disks": "ディスク",
+  "h_area_array": "アレイとプール",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
-  "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_vms": "VM",
+  "h_area_flash": "フラッシュ",
+  "h_area_network": "ネットワーク",
+  "h_area_fortress": "要塞",
+  "n_health_title": "{0} の FireSquire: {1} の確認をおすすめします",
+  "fortress_app_warning": "{1} の {0} が問題を報告しています。",
+  "fortress_app_overdue": "{1} の {0} の作業が遅れています。",
+  "fortress_app_failed": "{1} の {0} がエラーを報告しています。",
+  "t_health": "状態",
+  "h_title": "サーバーの状態",
+  "h_lead": "定期チェックでも再起動前のチェックでも、チェックのたびにサーバーの各部分にランプが付きます。部分を開くと、そのランプの理由が分かります。",
+  "h_checked": "最終チェック: {0}",
+  "h_never": "サーバーの起動以降、まだチェックしていません。",
+  "h_check": "今すぐチェック",
+  "h_checking": "チェック中…",
+  "h_failed": "チェックを実行できませんでした。少し待ってからもう一度試してください。",
+  "h_light_green": "正常",
+  "h_light_yellow": "要確認",
+  "h_light_red": "対応が必要",
+  "h_light_grey": "チェック対象なし",
+  "h_days": "過去 30 日",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "見直したい設定",
+  "h_config_lead": "サーバーの設定についてのアドバイスです。これでランプが変わることはありません。",
+  "title_stop": "FireSquire: アレイを停止する前に",
+  "g_ask_stop": "それでもアレイを停止しますか？",
+  "g_stop": "それでも停止",
+  "p_ops": "実行中の作業を確認中…",
+  "p_open": "開いているファイルを探しています…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first."
+    "other": "次のプロセスがアレイ内のファイルを開いているため、アレイをアンマウントできません: {0}。先に閉じてください。"
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "コンテナと VM 以外で、アレイ内のファイルを開いているプロセスはありません。",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first."
+    "other": "次のものがアレイ内にマウントされていて、アンマウントの妨げになっています: {0}。先にアンマウントしてください。"
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first."
+    "other": "次のイメージファイルがアレイからアタッチされていて、アンマウントの妨げになっています: {0}。先にデタッチしてください。"
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "アレイ内には何もマウントされていません。",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "other": "次の VM はゲストエージェントが接続されていない状態で動作しています: {0}。ゲストエージェントがないと VM がシャットダウン要求を無視することがあり、その場合 Unraid は {2}s 後に強制的に停止します。"
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s."
+    "other": "{0} 個のコンテナが動作中です。Unraid はアレイより先に、それぞれ {1}s 以内に停止します。"
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "パリティ操作を実行中です ({0})。アレイを停止すると中止されます。",
+  "stop_mover": "mover が実行中です。アレイを停止すると途中で止まります。"
 }

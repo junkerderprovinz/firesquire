@@ -7,7 +7,7 @@
   "tier_info": "Info",
   "err": "Kan de controle-engine niet uitvoeren.",
   "err_hint": "Probeer het zo nog eens. Lukt het nog steeds niet, dan staat de reden misschien in de syslog.",
-  "tools_lead": "FireSquire controleert vóór het herstarten of je server schoon terugkomt en geeft één oordeel (Alles rustig / Het smeult / Brand in de tent) met de precieze bevindingen. Het is alleen advies: het leest de host en rapporteert. Op de flash schrijft het een leeg testbestand, om te zien of /boot beschrijfbaar is, en verwijdert dat meteen weer. Daar bewaart het ook de CRC-foutteller van elke schijf, zodat het merkt wanneer er een stijgt.",
+  "tools_lead": "FireSquire controleert vóór het herstarten of je server schoon terugkomt en geeft één oordeel (Alles rustig / Het smeult / Brand in de tent) met de precieze bevindingen. Het is alleen advies: het leest de host en rapporteert. Op de flash schrijft het een leeg testbestand, om te zien of /boot beschrijfbaar is, en verwijdert dat meteen weer. Daar bewaart het ook de CRC-foutteller en de SMART-waarden van elke schijf, zodat het merkt wanneer er een stijgt, en de lampjes van het tabblad Gezondheid van de laatste 30 dagen.",
   "tools_intro": "Het zoekt naar de herstart-valkuilen die vanuit het draaiende systeem detecteerbaar zijn:",
   "tools_li": [
     "Array gestart & schoon: elke apparaattoewijzing OK (geen uitgeschakelde/ongeldige/ontbrekende schijf)",
@@ -26,7 +26,7 @@
   "tools_g_host": "Flash, ruimte en diensten",
   "tools_g_fortress": "Je vesting",
   "tools_g_health": "Schijfgezondheid",
-  "tools_note": "Alleen advies, op een schrijftest en de CRC-tellers op de flash na",
+  "tools_note": "Alleen advies, op een schrijftest en de CRC-tellers, SMART-waarden en Gezondheid-lampjes op de flash na",
   "goto": "Ga naar de bron",
   "retry": "Opnieuw controleren",
   "p_array": "Array & schijven controleren…",
@@ -257,113 +257,113 @@
   "g_cancel": "Annuleren",
   "flash_probe_left": "FireSquire kon zijn testbestand {0} op de flash niet verwijderen. Verwijder het alsjeblieft zelf.",
   "smart_disk": {
-    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
-    "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on."
+    "one": "{0}: {1} °C, {2} herplaatste en {3} wachtende sectoren, {4} uur in bedrijf.",
+    "other": "{0}: {1} °C, {2} herplaatste en {3} wachtende sectoren, {4} uur in bedrijf."
   },
   "smart_disk_short": {
-    "other": "{0}: {1} °C, {2} hours powered on.",
-    "one": "{0}: {1} °C, {2} hour powered on."
+    "one": "{0}: {1} °C, {2} uur in bedrijf.",
+    "other": "{0}: {1} °C, {2} uur in bedrijf."
   },
-  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
-  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
-  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_realloc_rose": "De herplaatste sectoren op {0} zijn op {3} gestegen van {1} naar {2}. De schijf vervangt versleten plekken, dus houd hem in de gaten en zorg dat je een back-up klaar hebt.",
+  "smart_pending_rose": "De wachtende sectoren op {0} zijn op {3} gestegen van {1} naar {2}. Sommige plekken konden niet gelezen worden, dus zorg dat je back-up actueel is.",
+  "smart_temp_rose": "{0} draait op {1} °C, ruim boven de gebruikelijke {2} °C. Controleer de ventilatoren en de luchtstroom.",
   "smart_asleep": {
-    "other": "{0} disks were asleep and FireSquire left them alone.",
-    "one": "{0} disk was asleep and FireSquire left it alone."
+    "one": "{0} schijf sliep en FireSquire heeft hem met rust gelaten.",
+    "other": "{0} schijven sliepen en FireSquire heeft ze met rust gelaten."
   },
   "flash_errors": {
-    "other": "The flash drive has {0} read error lines in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot.",
-    "one": "The flash drive has {0} read error line in the syslog since boot. Latest: {1}. Unraid boots from this stick, so back it up before you reboot."
+    "one": "De flashdrive heeft sinds de boot {0} leesfoutregel in de syslog. Laatste: {1}. Unraid start van deze stick, dus maak er een back-up van voor je herstart.",
+    "other": "De flashdrive heeft sinds de boot {0} leesfoutregels in de syslog. Laatste: {1}. Unraid start van deze stick, dus maak er een back-up van voor je herstart."
   },
-  "flash_errors_ok": "No read errors of the flash drive in the syslog since boot.",
-  "flash_space_low": "Only {0} GB are free on the flash, and the next Unraid update needs about {1} GB. Old diagnostics in /boot/logs are a good place to start clearing.",
-  "flash_space_ok": "{0} GB free on the flash.",
-  "cert_expired": "Unraid's certificate {0} ran out on {1}. Browsers warn about the WebGUI until it is renewed in Settings, Management Access.",
+  "flash_errors_ok": "Geen leesfouten van de flashdrive in de syslog sinds de boot.",
+  "flash_space_low": "Er is nog maar {0} GB vrij op de flash, en de volgende Unraid-update heeft ongeveer {1} GB nodig. Oude diagnostics in /boot/logs kun je als eerste opruimen.",
+  "flash_space_ok": "{0} GB vrij op de flash.",
+  "cert_expired": "Het certificaat {0} van Unraid is op {1} verlopen. Browsers waarschuwen bij de WebGUI tot het vernieuwd is onder Settings, Management Access.",
   "cert_soon": {
-    "other": "Unraid's certificate {0} runs out on {1}, in {2} days. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access.",
-    "one": "Unraid's certificate {0} runs out on {1}, in {2} day. Unraid renews it by itself, so the renewal may have failed: look at Settings, Management Access."
+    "one": "Het certificaat {0} van Unraid verloopt op {1}, over {2} dag. Unraid vernieuwt het zelf, dus misschien is het vernieuwen mislukt: kijk bij Settings, Management Access.",
+    "other": "Het certificaat {0} van Unraid verloopt op {1}, over {2} dagen. Unraid vernieuwt het zelf, dus misschien is het vernieuwen mislukt: kijk bij Settings, Management Access."
   },
-  "cert_ok": "Unraid's certificate {0} is good until {1}.",
-  "timeout_suggest": "The last shutdown ran out of its {0}s. The VMs and containers need about {1}s to stop, so set the shutdown time-out in Disk Settings to {2} seconds.",
-  "shutdown_held": "The last shutdown ran out of its {0}s after the VMs and containers had stopped, because something still held {1}. Close what runs there before you reboot.",
-  "timeout_raised": "The last shutdown ran out of its {0}s, and the time-out of {1}s now covers what the VMs and containers took then.",
-  "unclean_suggest": "The last shutdown was not clean, so the next array start runs a parity check. Containers may take {0}s and VMs {1}s to stop: set the shutdown time-out in Disk Settings to {2} seconds.",
-  "cfg_cache_only_array": "The share {0} is set to live on its pool only, yet it has files on {1}. The mover leaves them there, so move them by hand or set the share to move them to the pool.",
-  "cfg_on_array": "The share {0} holds {1}, but its setting ({2}) puts the files on the array, where containers and VMs run slowly and keep the disks awake. Keep it on a pool.",
-  "cfg_pool_missing": "The share {0} uses the pool {1}, which does not exist on this server. Pick one of your pools in the share's settings.",
+  "cert_ok": "Het certificaat {0} van Unraid is geldig tot {1}.",
+  "timeout_suggest": "De laatste afsluiting liep tegen zijn time-out van {0} s aan. De VM's en containers hebben ongeveer {1} s nodig om te stoppen, dus zet de afsluittijd in de schijfinstellingen op {2} seconden.",
+  "shutdown_held": "De laatste afsluiting liep tegen zijn time-out van {0} s aan nadat de VM's en containers al gestopt waren, omdat iets {1} nog vasthield. Sluit af wat daar draait voor je herstart.",
+  "timeout_raised": "De laatste afsluiting liep tegen zijn time-out van {0} s aan. De time-out is nu {1} s, genoeg voor wat de VM's en containers toen nodig hadden.",
+  "unclean_suggest": "De laatste afsluiting was niet netjes, dus de volgende start van de array voert een pariteitscontrole uit. Containers kunnen {0} s en VM's {1} s nodig hebben om te stoppen: zet de afsluittijd in de schijfinstellingen op {2} seconden.",
+  "cfg_cache_only_array": "De share {0} hoort alleen op zijn pool te staan, maar heeft bestanden op {1}. De mover laat die staan, dus verplaats ze met de hand of stel de share zo in dat ze naar de pool gaan.",
+  "cfg_on_array": "De share {0} bevat {1}, maar zijn instelling ({2}) zet de bestanden op de array, waar containers en VM's traag draaien en de schijven wakker houden. Houd hem op een pool.",
+  "cfg_pool_missing": "De share {0} gebruikt de pool {1}, maar die bestaat niet op deze server. Kies een van je pools in de instellingen van de share.",
   "cfg_plugin_update": {
-    "other": "Updates wait for these plugins: {0}. Install them on the Plugins tab.",
-    "one": "An update waits for this plugin: {0}. Install it on the Plugins tab."
+    "one": "Er staat een update klaar voor deze plugin: {0}. Installeer hem op het tabblad Plugins.",
+    "other": "Er staan updates klaar voor deze plugins: {0}. Installeer ze op het tabblad Plugins."
   },
   "cfg_plugin_unfit": {
-    "other": "These plugins are not made for Unraid {2}: {0}. Look for a newer version or a replacement.",
-    "one": "This plugin is not made for Unraid {2}: {0}. Look for a newer version or a replacement."
+    "one": "Deze plugin is niet gemaakt voor Unraid {2}: {0}. Zoek een nieuwere versie of een vervanger.",
+    "other": "Deze plugins zijn niet gemaakt voor Unraid {2}: {0}. Zoek een nieuwere versie of een vervanger."
   },
-  "cfg_ok": "Nothing in the settings FireSquire looks at needs a change.",
-  "net_ok": "{0} links at {1} Mb/s.",
-  "net_slow": "{0} links at {1} Mb/s, usually a worn cable or a port that fell back.",
-  "net_half": "{0} runs at half duplex, usually a worn cable or a port that fell back.",
-  "net_bond": "{0} has lost {1}, so it runs without its spare link.",
-  "net_noroute": "The server has no default route, so it cannot reach the internet for updates and notifications.",
+  "cfg_ok": "Niets in de instellingen waar FireSquire naar kijkt hoeft te veranderen.",
+  "net_ok": "{0} verbindt op {1} Mb/s.",
+  "net_slow": "{0} verbindt op {1} Mb/s, meestal door een versleten kabel of een poort die is teruggeschakeld.",
+  "net_half": "{0} draait op half duplex, meestal door een versleten kabel of een poort die is teruggeschakeld.",
+  "net_bond": "{0} is {1} kwijt en draait dus zonder zijn reserveverbinding.",
+  "net_noroute": "De server heeft geen standaardroute, dus hij kan internet niet bereiken voor updates en meldingen.",
   "vm_paused": {
-    "other": "These VMs are paused: {0}. A full virtual disk is the usual cause.",
-    "one": "This VM is paused: {0}. A full virtual disk is the usual cause."
+    "one": "Deze VM is gepauzeerd: {0}. Meestal is een volle virtuele schijf de oorzaak.",
+    "other": "Deze VM's zijn gepauzeerd: {0}. Meestal is een volle virtuele schijf de oorzaak."
   },
-  "vm_ok": "No VM stands paused.",
-  "h_area_disks": "Disks",
-  "h_area_array": "Array and pools",
+  "vm_ok": "Geen enkele VM is gepauzeerd.",
+  "h_area_disks": "Schijven",
+  "h_area_array": "Array en pools",
   "h_area_docker": "Docker",
-  "h_area_vms": "VMs",
+  "h_area_vms": "VM's",
   "h_area_flash": "Flash",
-  "h_area_network": "Network",
-  "h_area_fortress": "Fortress",
-  "n_health_title": "FireSquire on {0}: {1} worth a look",
-  "fortress_app_warning": "{0} on {1} reports a problem.",
-  "fortress_app_overdue": "{0} on {1} is behind with its work.",
-  "fortress_app_failed": "{0} on {1} reports a failure.",
-  "t_health": "Health",
-  "h_title": "How the server stands",
-  "h_lead": "Every check, the scheduled one and the one before a reboot alike, leaves a light for each part of the server. Open a part to see what lies behind its light.",
-  "h_checked": "Last checked {0}",
-  "h_never": "Not checked since the server started.",
-  "h_check": "Check now",
-  "h_checking": "Checking…",
-  "h_failed": "The check could not run. Try again in a moment.",
-  "h_light_green": "Healthy",
-  "h_light_yellow": "Worth a look",
-  "h_light_red": "Needs you",
-  "h_light_grey": "Nothing to check",
-  "h_days": "The last 30 days",
+  "h_area_network": "Netwerk",
+  "h_area_fortress": "Vesting",
+  "n_health_title": "FireSquire op {0}: kijk even naar {1}",
+  "fortress_app_warning": "{0} op {1} meldt een probleem.",
+  "fortress_app_overdue": "{0} op {1} loopt achter met zijn werk.",
+  "fortress_app_failed": "{0} op {1} meldt een fout.",
+  "t_health": "Gezondheid",
+  "h_title": "Hoe de server ervoor staat",
+  "h_lead": "Elke controle, volgens schema of voor een herstart, zet een lampje voor elk deel van de server. Open een deel om te zien wat achter zijn lampje zit.",
+  "h_checked": "Laatst gecontroleerd {0}",
+  "h_never": "Niet gecontroleerd sinds de server is gestart.",
+  "h_check": "Nu controleren",
+  "h_checking": "Bezig met controleren…",
+  "h_failed": "De controle kon niet draaien. Probeer het zo nog eens.",
+  "h_light_green": "Gezond",
+  "h_light_yellow": "Even naar kijken",
+  "h_light_red": "Heeft je nodig",
+  "h_light_grey": "Niets te controleren",
+  "h_days": "De laatste 30 dagen",
   "h_day": "{0}: {1}",
-  "h_config": "Settings worth a look",
-  "h_config_lead": "Advice on how the server is set up. It never changes a light.",
-  "title_stop": "FireSquire: Before the array stops",
-  "g_ask_stop": "Stop the array anyway?",
-  "g_stop": "Stop anyway",
-  "p_ops": "Checking running work…",
-  "p_open": "Looking for open files…",
+  "h_config": "Instellingen om even naar te kijken",
+  "h_config_lead": "Advies over hoe de server is ingericht. Het verandert nooit een lampje.",
+  "title_stop": "FireSquire: Voordat de array stopt",
+  "g_ask_stop": "De array toch stoppen?",
+  "g_stop": "Toch stoppen",
+  "p_ops": "Lopend werk controleren…",
+  "p_open": "Open bestanden zoeken…",
   "stop_open_files": {
-    "other": "These processes keep files open in the array, so it cannot unmount: {0}. Close them first.",
-    "one": "This process keeps files open in the array, so it cannot unmount: {0}. Close it first."
+    "one": "Dit proces houdt bestanden open op de array, dus de array kan niet unmounten: {0}. Sluit het eerst.",
+    "other": "Deze processen houden bestanden open op de array, dus de array kan niet unmounten: {0}. Sluit ze eerst."
   },
-  "stop_open_ok": "No process outside containers and VMs has files open in the array.",
+  "stop_open_ok": "Geen proces buiten containers en VM's heeft bestanden open op de array.",
   "stop_mounts": {
-    "other": "These are mounted inside the array and keep it from unmounting: {0}. Unmount them first.",
-    "one": "This is mounted inside the array and keeps it from unmounting: {0}. Unmount it first."
+    "one": "Dit is gemount binnen de array en verhindert dat die unmount: {0}. Unmount het eerst.",
+    "other": "Deze zijn gemount binnen de array en verhinderen dat die unmount: {0}. Unmount ze eerst."
   },
   "stop_loops": {
-    "other": "These image files are attached from the array and keep it from unmounting: {0}. Detach them first.",
-    "one": "This image file is attached from the array and keeps it from unmounting: {0}. Detach it first."
+    "one": "Dit imagebestand is vanaf de array gekoppeld en verhindert dat die unmount: {0}. Koppel het eerst los.",
+    "other": "Deze imagebestanden zijn vanaf de array gekoppeld en verhinderen dat die unmount: {0}. Koppel ze eerst los."
   },
-  "stop_mounts_ok": "Nothing is mounted inside the array.",
+  "stop_mounts_ok": "Er is niets gemount binnen de array.",
   "stop_vm_agent": {
-    "other": "These VMs run without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s.",
-    "one": "This VM runs without a connected guest agent: {0}. Without it a VM may ignore the request to shut down, and Unraid forces it off after {2}s."
+    "one": "Deze VM draait zonder verbonden guest agent: {0}. Zonder agent kan een VM het verzoek om af te sluiten negeren, en Unraid zet hem na {2} s hard uit.",
+    "other": "Deze VM's draaien zonder verbonden guest agent: {0}. Zonder agent kan een VM het verzoek om af te sluiten negeren, en Unraid zet hem na {2} s hard uit."
   },
   "stop_containers": {
-    "other": "{0} containers run. Unraid stops them before the array, each within {1}s.",
-    "one": "{0} container runs. Unraid stops it before the array, within {1}s."
+    "one": "{0} container draait. Unraid stopt hem voor de array, binnen {1} s.",
+    "other": "{0} containers draaien. Unraid stopt ze voor de array, elk binnen {1} s."
   },
-  "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
-  "stop_mover": "The mover is running. Stopping the array cuts it short."
+  "stop_op_running": "Er loopt een pariteitsbewerking ({0}). Als je de array stopt, wordt die afgebroken.",
+  "stop_mover": "De mover draait. Als je de array stopt, wordt hij onderbroken."
 }
