@@ -15,7 +15,7 @@
 
 <p align="center">
 An Unraid plugin that answers one question before you reboot: <b>will the box come back up clean?</b><br>
-FireSquire reads the live host state and gives you a single verdict (<b>All clear / Smouldering / The roof is on fire</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads the host. On the flash it writes a test file that it deletes right away, and it keeps the CRC error count of each disk there, so it notices when one rises.
+FireSquire reads the live host state and gives you a single verdict (<b>All clear / Smouldering / The roof is on fire</b>) with the exact findings, so you never reboot into a known landmine. Advisory only: it reads the host. On the flash it writes a test file that it deletes right away, and it keeps the CRC error count and the SMART values of each disk there, so it notices when one rises, along with 30 days of the Health tab's lights.
 </p>
 
 <br>
@@ -62,7 +62,7 @@ A reboot is never 100% guaranteed, but a large class of "it didn't come back rig
 - **Smouldering**: non-fatal issues you should know about first
 - **The roof is on fire**: conditions likely to make the reboot come back dirty
 
-It is **advisory only**. It reads the system and reports. It never stops, mounts or unmounts anything, because acting on the host is exactly what tends to cause reboot trouble in the first place. It writes two things to the flash. One is the flash write test, an empty file on `/boot` that it deletes as soon as it has been created. The other is `crc.state` in `/boot/config/plugins/firesquire`, with the CRC error count of each disk, so it can tell when one rises. It rewrites that file only when a count changes.
+It is **advisory only**. It reads the system and reports. It never stops, mounts or unmounts anything, because acting on the host is exactly what tends to cause reboot trouble in the first place. On the flash it writes the flash write test, an empty file on `/boot` that it deletes as soon as it has been created, and three small files in `/boot/config/plugins/firesquire`: `crc.state` with the CRC error count of each disk, `smart.state` with the SMART values of each disk and `health.history` with the Health tab's lights of the last 30 days. It rewrites each one only when a value in it changes. The last report and the status for your fortress live in RAM, in `/var/local/firesquire`.
 
 The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a flame icon next to *Reboot* in the server tile on the **Dashboard**, and a **Settings → User Utilities → FireSquire** page with a short description. Click any of them and a **live progress bar** shows each check as it runs, then read the verdict and reboot. Each problem finding is a **click-through link** straight to the page where you fix it: syslog and disk/IO findings open the System Log viewer, array/parity/SMART/space findings open Main, running VMs open the VMs tab, and so on. The report follows your Unraid light/dark theme and **the language configured in the Unraid UI** (all 26 supported languages, English fallback).
 
@@ -124,8 +124,10 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 - VMs currently running (a reboot force-stops them)
 - A core service down right now (dockerd / libvirtd / emhttpd)
 - Container bind sources under `/mnt` that no longer exist
-- SMART health (`smartctl -H`) on every disk
+- SMART health (`smartctl -H`) on every disk that is awake. A disk that sleeps stays asleep, so a scheduled check never spins up the array
 - A UDMA CRC error count that rose since the last check, which usually means a bad cable or port
+- Read errors of the flash stick in the syslog, since Unraid boots from it
+- A last shutdown that ran out of time, with the shutdown time-out to set in Disk Settings, worked out from how long the VMs and containers took to stop
 - A shutdown time-out (Disk Settings) too short for the containers and VMs together, and containers that ask for more stop time than Docker Settings give them
 - An unclean last shutdown, so the next array start runs a parity check
 - Files open or being written over SMB or NFS, with the share and the machine
@@ -139,6 +141,12 @@ Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-00
 **Info**: uptime, kernel, Unraid version.
 
 **Before every reboot and shutdown**: when you reboot or shut down from the WebGUI, on Main, on the Dashboard or from the update banner, FireSquire runs the check first. All clear goes straight on. With Smouldering or The roof is on fire you see the findings and decide: reboot anyway, or cancel and keep the server up. FireSquire changes none of Unraid's files for this, and removing the plugin removes the check.
+
+**The Health tab**: every check, scheduled or before a reboot, leaves a light for each part of the server: Disks, Array and pools, Docker, VMs, Flash, Network and Fortress. Each light shows what lies behind it and a strip of the last 30 days. On top of the checks above, the tab watches the SMART values of every disk by serial and says as soon as the reallocated or pending sectors rise, or a disk runs much hotter than usual, long before SMART calls it failing. It also watches free room on the flash, Unraid's certificates, network links that fell below a gigabit or to half duplex, bonds that lost a member, paused VMs and the state of the other apps in your fortress. The reboot verdict stays on the General tab: TollRoll tells you what happened, the Health tab how the server stands now. An area that gets worse goes to your notification channels.
+
+**Settings worth a look**: below the lights, in a card of its own that never colours one, FireSquire gives advice on the setup: a share set to its pool alone that still has files on the array, the shares of appdata, docker.img, libvirt and the VM disks set to end up on the array, a share naming a pool that no longer exists, plugins with an update waiting and plugins not made for your Unraid version.
+
+**Before the array stops**: Stop on Main or on the Dashboard runs a short check first, the same way a reboot does: processes with files open in the array, snapshots, mounts and images inside it, VMs without a connected guest agent, a parity operation or the mover that a stop would cut short, the running containers and a shutdown time-out that is too short. With nothing in the way the array stops right away. FireSquire changes none of Unraid's files for this either.
 
 **Notifications and a schedule**: on the settings page you can add channels for Unraid's own notifications, Apprise, ntfy, Gotify, Matrix, Discord, Slack, email, a webhook or Healthchecks. FireSquire sends its verdict when a check ends in Smouldering or The roof is on fire, and once more when it is back to All clear. A check without findings sends nothing. A daily or weekly schedule runs the check without a click. The channels are stored in `/boot/config/plugins/firesquire/notify.json`, and the secrets in them never reach the browser.
 
