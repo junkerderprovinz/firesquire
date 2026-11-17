@@ -242,10 +242,10 @@
     "other": "Az Unraid {0} tanúsítványa lejár ekkor: {1}, {2} nap múlva. Az Unraid magától megújítja, így lehet, hogy a megújítás nem sikerült: nézz rá a Settings, Management Access oldalon."
   },
   "cert_ok": "Az Unraid {0} tanúsítványa eddig érvényes: {1}.",
-  "timeout_suggest": "Az utolsó leállítás elérte az időkorlátját ({0}s). A VM-eknek és a konténereknek kb. {1}s kell a leálláshoz, ezért állítsd a leállítási időkorlátot a lemezbeállításokban {2} másodpercre.",
-  "shutdown_held": "Az utolsó leállítás elérte az időkorlátját ({0}s), miután a VM-ek és a konténerek már leálltak, mert valami még fogta ezt: {1}. Zárd be, ami ott fut, mielőtt újraindítasz.",
-  "timeout_raised": "Az utolsó leállítás elérte az időkorlátját ({0}s). Az időkorlát most {1}s, ami elég annyi időre, amennyit a VM-ek és a konténerek akkor igényeltek.",
-  "unclean_suggest": "Az utolsó leállítás nem volt tiszta, ezért a tömb következő indításakor paritásellenőrzés fut. A konténerek leállása {0}s, a VM-eké {1}s is lehet: állítsd a leállítási időkorlátot a lemezbeállításokban {2} másodpercre.",
+  "timeout_suggest": "Az utolsó leállítás elérte az időkorlátját ({0} mp). A VM-eknek és a konténereknek kb. {1} mp kell a leálláshoz, ezért állítsd a leállítási időkorlátot a lemezbeállításokban {2} mp-re.",
+  "shutdown_held": "Az utolsó leállítás elérte az időkorlátját ({0} mp), miután a VM-ek és a konténerek már leálltak, mert valami még fogta ezt: {1}. Zárd be, ami ott fut, mielőtt újraindítasz.",
+  "timeout_raised": "Az utolsó leállítás elérte az időkorlátját ({0} mp). Az időkorlát most {1} mp, ami elég annyi időre, amennyit a VM-ek és a konténerek akkor igényeltek.",
+  "unclean_suggest": "Az utolsó leállítás nem volt tiszta, ezért a tömb következő indításakor paritásellenőrzés fut. A konténerek leállása {0} mp, a VM-eké {1} mp is lehet: állítsd a leállítási időkorlátot a lemezbeállításokban {2} mp-re.",
   "cfg_cache_only_array": "A(z) {0} megosztás úgy van beállítva, hogy csak a poolján legyen, mégis vannak fájljai itt: {1}. A Mover ott hagyja őket, ezért mozgasd át kézzel, vagy állítsd be a megosztást úgy, hogy a poolra vigye őket.",
   "cfg_on_array": "A(z) {0} megosztásban ez van: {1}, de a beállítása ({2}) a tömbre teszi a fájlokat, ahol a konténerek és a VM-ek lassan futnak, és ébren tartják a lemezeket. Tartsd poolon.",
   "cfg_pool_missing": "A(z) {0} megosztás a(z) {1} poolt használja, ami nem létezik ezen a szerveren. Válassz egyet a poolaid közül a megosztás beállításaiban.",
@@ -315,12 +315,12 @@
   },
   "stop_mounts_ok": "Semmi sincs csatolva a tömbön belül.",
   "stop_vm_agent": {
-    "one": "Ez a VM csatlakoztatott guest agent nélkül fut: {0}. Enélkül egy VM figyelmen kívül hagyhatja a leállítási kérést, és az Unraid {2}s után kényszerítve kapcsolja ki.",
-    "other": "Ezek a VM-ek csatlakoztatott guest agent nélkül futnak: {0}. Enélkül egy VM figyelmen kívül hagyhatja a leállítási kérést, és az Unraid {2}s után kényszerítve kapcsolja ki."
+    "one": "Ez a VM csatlakoztatott guest agent nélkül fut: {0}. Enélkül egy VM figyelmen kívül hagyhatja a leállítási kérést, és az Unraid {2} mp után kényszerítve kapcsolja ki.",
+    "other": "Ezek a VM-ek csatlakoztatott guest agent nélkül futnak: {0}. Enélkül egy VM figyelmen kívül hagyhatja a leállítási kérést, és az Unraid {2} mp után kényszerítve kapcsolja ki."
   },
   "stop_containers": {
-    "one": "{0} konténer fut. Az Unraid leállítja a tömb előtt, legfeljebb {1}s alatt.",
-    "other": "{0} konténer fut. Az Unraid leállítja őket a tömb előtt, mindegyiket legfeljebb {1}s alatt."
+    "one": "{0} konténer fut. Az Unraid leállítja a tömb előtt, legfeljebb {1} mp alatt.",
+    "other": "{0} konténer fut. Az Unraid leállítja őket a tömb előtt, mindegyiket legfeljebb {1} mp alatt."
   },
   "stop_op_running": "Paritásművelet van folyamatban ({0}). A tömb leállítása megszakítja.",
   "stop_mover": "A Mover fut. A tömb leállítása félbeszakítja."

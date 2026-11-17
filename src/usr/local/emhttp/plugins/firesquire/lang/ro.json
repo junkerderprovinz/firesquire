@@ -307,10 +307,10 @@
     "other": "Certificatul Unraid {0} expiră pe {1}, peste {2} de zile. Unraid îl reînnoiește singur, deci reînnoirea poate să fi eșuat: uită-te în Settings, Management Access."
   },
   "cert_ok": "Certificatul Unraid {0} e valabil până la {1}.",
-  "timeout_suggest": "Ultima oprire a atins limita de {0}s. VM-urile și containerele au nevoie de vreo {1}s ca să se oprească, așa că setează limita de oprire din setările discurilor la {2}s.",
-  "shutdown_held": "Ultima oprire a atins limita de {0}s după ce VM-urile și containerele se opriseră, pentru că ceva încă ținea ocupat {1}. Închide ce rulează acolo înainte de repornire.",
-  "timeout_raised": "Ultima oprire a atins limita de {0}s. Acum limita e {1}s, destul pentru cât au durat atunci VM-urile și containerele.",
-  "unclean_suggest": "Ultima oprire nu a fost curată, așa că următoarea pornire a array-ului rulează o verificare de paritate. Containerele pot avea nevoie de {0}s și VM-urile de {1}s ca să se oprească: setează limita de oprire din setările discurilor la {2}s.",
+  "timeout_suggest": "Ultima oprire a atins limita de {0} s. VM-urile și containerele au nevoie de vreo {1} s ca să se oprească, așa că setează limita de oprire din setările discurilor la {2} s.",
+  "shutdown_held": "Ultima oprire a atins limita de {0} s după ce VM-urile și containerele se opriseră, pentru că ceva încă ținea ocupat {1}. Închide ce rulează acolo înainte de repornire.",
+  "timeout_raised": "Ultima oprire a atins limita de {0} s. Acum limita e {1} s, destul pentru cât au durat atunci VM-urile și containerele.",
+  "unclean_suggest": "Ultima oprire nu a fost curată, așa că următoarea pornire a array-ului rulează o verificare de paritate. Containerele pot avea nevoie de {0} s și VM-urile de {1} s ca să se oprească: setează limita de oprire din setările discurilor la {2} s.",
   "cfg_cache_only_array": "Partajarea {0} e setată să stea doar pe pool-ul ei, dar are fișiere pe {1}. Mover-ul le lasă acolo, așa că mută-le de mână sau setează partajarea să le mute pe pool.",
   "cfg_on_array": "Partajarea {0} conține {1}, dar setarea ei ({2}) pune fișierele pe array, unde containerele și VM-urile merg încet și țin discurile treze. Ține-o pe un pool.",
   "cfg_pool_missing": "Partajarea {0} folosește pool-ul {1}, care nu există pe acest server. Alege unul dintre pool-urile tale în setările partajării.",
@@ -386,14 +386,14 @@
   },
   "stop_mounts_ok": "Nimic nu e montat în interiorul array-ului.",
   "stop_vm_agent": {
-    "one": "Acest VM rulează fără un guest agent conectat: {0}. Fără el, un VM poate ignora cererea de oprire, iar Unraid îl oprește forțat după {2}s.",
-    "few": "Aceste VM-uri rulează fără un guest agent conectat: {0}. Fără el, un VM poate ignora cererea de oprire, iar Unraid îl oprește forțat după {2}s.",
-    "other": "Aceste VM-uri rulează fără un guest agent conectat: {0}. Fără el, un VM poate ignora cererea de oprire, iar Unraid îl oprește forțat după {2}s."
+    "one": "Acest VM rulează fără un guest agent conectat: {0}. Fără el, un VM poate ignora cererea de oprire, iar Unraid îl oprește forțat după {2} s.",
+    "few": "Aceste VM-uri rulează fără un guest agent conectat: {0}. Fără el, un VM poate ignora cererea de oprire, iar Unraid îl oprește forțat după {2} s.",
+    "other": "Aceste VM-uri rulează fără un guest agent conectat: {0}. Fără el, un VM poate ignora cererea de oprire, iar Unraid îl oprește forțat după {2} s."
   },
   "stop_containers": {
-    "one": "Rulează {0} container. Unraid îl oprește înaintea array-ului, în cel mult {1}s.",
-    "few": "Rulează {0} containere. Unraid le oprește înaintea array-ului, pe fiecare în cel mult {1}s.",
-    "other": "Rulează {0} de containere. Unraid le oprește înaintea array-ului, pe fiecare în cel mult {1}s."
+    "one": "Rulează {0} container. Unraid îl oprește înaintea array-ului, în cel mult {1} s.",
+    "few": "Rulează {0} containere. Unraid le oprește înaintea array-ului, pe fiecare în cel mult {1} s.",
+    "other": "Rulează {0} de containere. Unraid le oprește înaintea array-ului, pe fiecare în cel mult {1} s."
   },
   "stop_op_running": "Rulează o operațiune de paritate ({0}). Oprirea array-ului o anulează.",
   "stop_mover": "Mover-ul rulează. Oprirea array-ului îl întrerupe."

@@ -284,10 +284,10 @@
     "other": "El certificado de Unraid {0} caduca el {1}, dentro de {2} días. Unraid lo renueva solo, así que puede que la renovación haya fallado: mira en Ajustes, Management Access."
   },
   "cert_ok": "El certificado de Unraid {0} es válido hasta el {1}.",
-  "timeout_suggest": "El último apagado agotó su tiempo de {0}s. Las VM y los contenedores necesitan unos {1}s para pararse, así que pon el tiempo de apagado en {2} segundos en los ajustes de discos.",
-  "shutdown_held": "El último apagado agotó su tiempo de {0}s cuando las VM y los contenedores ya se habían parado, porque algo seguía ocupando {1}. Cierra lo que se ejecuta ahí antes de reiniciar.",
-  "timeout_raised": "El último apagado agotó su tiempo de {0}s. Ahora el tiempo es de {1}s, suficiente para lo que tardaron entonces las VM y los contenedores.",
-  "unclean_suggest": "El último apagado no fue limpio, así que el próximo arranque del array hará una comprobación de paridad. Los contenedores pueden tardar {0}s y las VM {1}s en pararse: pon el tiempo de apagado en {2} segundos en los ajustes de discos.",
+  "timeout_suggest": "El último apagado agotó su tiempo de {0} s. Las VM y los contenedores necesitan unos {1} s para pararse, así que pon el tiempo de apagado en {2} s en los ajustes de discos.",
+  "shutdown_held": "El último apagado agotó su tiempo de {0} s cuando las VM y los contenedores ya se habían parado, porque algo seguía ocupando {1}. Cierra lo que se ejecuta ahí antes de reiniciar.",
+  "timeout_raised": "El último apagado agotó su tiempo de {0} s. Ahora el tiempo es de {1} s, suficiente para lo que tardaron entonces las VM y los contenedores.",
+  "unclean_suggest": "El último apagado no fue limpio, así que el próximo arranque del array hará una comprobación de paridad. Los contenedores pueden tardar {0} s y las VM {1} s en pararse: pon el tiempo de apagado en {2} s en los ajustes de discos.",
   "cfg_cache_only_array": "El recurso {0} está configurado para vivir solo en su pool, pero tiene archivos en {1}. El mover los deja ahí, así que muévelos a mano o configura el recurso para que los mueva al pool.",
   "cfg_on_array": "El recurso {0} contiene {1}, pero su ajuste ({2}) pone los archivos en el array, donde los contenedores y las VM van lentos y mantienen los discos despiertos. Déjalo en un pool.",
   "cfg_pool_missing": "El recurso {0} usa el pool {1}, que no existe en este servidor. Elige uno de tus pools en los ajustes del recurso.",
@@ -357,12 +357,12 @@
   },
   "stop_mounts_ok": "No hay nada montado dentro del array.",
   "stop_vm_agent": {
-    "one": "Esta VM funciona sin un agente invitado conectado: {0}. Sin él, una VM puede ignorar la petición de apagado, y Unraid la apaga a la fuerza pasados {2}s.",
-    "other": "Estas VM funcionan sin un agente invitado conectado: {0}. Sin él, una VM puede ignorar la petición de apagado, y Unraid la apaga a la fuerza pasados {2}s."
+    "one": "Esta VM funciona sin un agente invitado conectado: {0}. Sin él, una VM puede ignorar la petición de apagado, y Unraid la apaga a la fuerza pasados {2} s.",
+    "other": "Estas VM funcionan sin un agente invitado conectado: {0}. Sin él, una VM puede ignorar la petición de apagado, y Unraid la apaga a la fuerza pasados {2} s."
   },
   "stop_containers": {
-    "one": "{0} contenedor en marcha. Unraid lo para antes del array, en {1}s como mucho.",
-    "other": "{0} contenedores en marcha. Unraid los para antes del array, cada uno en {1}s como mucho."
+    "one": "{0} contenedor en marcha. Unraid lo para antes del array, en {1} s como mucho.",
+    "other": "{0} contenedores en marcha. Unraid los para antes del array, cada uno en {1} s como mucho."
   },
   "stop_op_running": "Hay una operación de paridad en curso ({0}). Parar el array la cancela.",
   "stop_mover": "El mover está en marcha. Parar el array lo corta a medias."

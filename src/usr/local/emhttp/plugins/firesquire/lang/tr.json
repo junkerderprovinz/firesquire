@@ -242,10 +242,10 @@
     "other": "Unraid'in {0} sertifikasının süresi {1} tarihinde, {2} gün sonra doluyor. Unraid onu kendisi yeniler, yani yenileme başarısız olmuş olabilir: Settings, Management Access altına bak."
   },
   "cert_ok": "Unraid'in {0} sertifikası {1} tarihine kadar geçerli.",
-  "timeout_suggest": "Son kapanış {0}s süre sınırına takıldı. VM'ler ve konteynerler durmak için yaklaşık {1}s istiyor, bu yüzden Disk ayarlarında kapatma süre sınırını {2} saniyeye ayarla.",
-  "shutdown_held": "Son kapanış, VM'ler ve konteynerler durduktan sonra {0}s süre sınırına takıldı, çünkü bir şey {1} konumunu hâlâ tutuyordu. Yeniden başlatmadan önce orada çalışanı kapat.",
-  "timeout_raised": "Son kapanış {0}s süre sınırına takıldı. Süre sınırı artık {1}s, VM'lerin ve konteynerlerin o zaman harcadığı süreye yetiyor.",
-  "unclean_suggest": "Son kapanış temiz değildi, bu yüzden array bir sonraki başlatılışında eşlik denetimi çalıştırır. Konteynerlerin durması {0}s, VM'lerin {1}s sürebilir: Disk ayarlarında kapatma süre sınırını {2} saniyeye ayarla.",
+  "timeout_suggest": "Son kapanış {0} sn süre sınırına takıldı. VM'ler ve konteynerler durmak için yaklaşık {1} sn istiyor, bu yüzden Disk ayarlarında kapatma süre sınırını {2} sn olarak ayarla.",
+  "shutdown_held": "Son kapanış, VM'ler ve konteynerler durduktan sonra {0} sn süre sınırına takıldı, çünkü bir şey {1} konumunu hâlâ tutuyordu. Yeniden başlatmadan önce orada çalışanı kapat.",
+  "timeout_raised": "Son kapanış {0} sn süre sınırına takıldı. Süre sınırı artık {1} sn, VM'lerin ve konteynerlerin o zaman harcadığı süreye yetiyor.",
+  "unclean_suggest": "Son kapanış temiz değildi, bu yüzden array bir sonraki başlatılışında eşlik denetimi çalıştırır. Konteynerlerin durması {0} sn, VM'lerin {1} sn sürebilir: Disk ayarlarında kapatma süre sınırını {2} sn olarak ayarla.",
   "cfg_cache_only_array": "{0} paylaşımı yalnızca havuzunda duracak şekilde ayarlı, ama {1} üzerinde dosyaları var. Mover onlara dokunmaz, bu yüzden onları elle taşı ya da paylaşımı dosyaları havuza taşıyacak şekilde ayarla.",
   "cfg_on_array": "{0} paylaşımı {1} içeriyor, ama ayarı ({2}) dosyaları array'e koyuyor. Orada konteynerler ve VM'ler yavaş çalışır ve diskleri uyanık tutar. Onu bir havuzda tut.",
   "cfg_pool_missing": "{0} paylaşımı {1} havuzunu kullanıyor, ama bu havuz bu sunucuda yok. Paylaşımın ayarlarında havuzlarından birini seç.",
@@ -315,12 +315,12 @@
   },
   "stop_mounts_ok": "Array'in içine bağlanmış bir şey yok.",
   "stop_vm_agent": {
-    "one": "Bu VM bağlı bir guest agent olmadan çalışıyor: {0}. Guest agent olmadan bir VM kapanma isteğini yok sayabilir ve Unraid onu {2}s sonra zorla kapatır.",
-    "other": "Bu VM'ler bağlı bir guest agent olmadan çalışıyor: {0}. Guest agent olmadan bir VM kapanma isteğini yok sayabilir ve Unraid onu {2}s sonra zorla kapatır."
+    "one": "Bu VM bağlı bir guest agent olmadan çalışıyor: {0}. Guest agent olmadan bir VM kapanma isteğini yok sayabilir ve Unraid onu {2} sn sonra zorla kapatır.",
+    "other": "Bu VM'ler bağlı bir guest agent olmadan çalışıyor: {0}. Guest agent olmadan bir VM kapanma isteğini yok sayabilir ve Unraid onu {2} sn sonra zorla kapatır."
   },
   "stop_containers": {
-    "one": "{0} konteyner çalışıyor. Unraid onu array'den önce, {1}s içinde durdurur.",
-    "other": "{0} konteyner çalışıyor. Unraid onları array'den önce, her birini {1}s içinde durdurur."
+    "one": "{0} konteyner çalışıyor. Unraid onu array'den önce, {1} sn içinde durdurur.",
+    "other": "{0} konteyner çalışıyor. Unraid onları array'den önce, her birini {1} sn içinde durdurur."
   },
   "stop_op_running": "Bir eşlik işlemi sürüyor ({0}). Array'i durdurmak onu iptal eder.",
   "stop_mover": "Mover çalışıyor. Array'i durdurmak onu yarıda keser."

@@ -284,10 +284,10 @@
     "other": "Le certificat d’Unraid {0} expire le {1}, dans {2} jours. Unraid le renouvelle tout seul, donc le renouvellement a peut-être échoué : regarde dans Réglages, Management Access."
   },
   "cert_ok": "Le certificat d’Unraid {0} est valable jusqu’au {1}.",
-  "timeout_suggest": "Le dernier arrêt a atteint son délai de {0}s. Les VM et les conteneurs ont besoin d’environ {1}s pour s’arrêter, alors règle le délai d’arrêt sur {2} secondes dans les réglages des disques.",
-  "shutdown_held": "Le dernier arrêt a atteint son délai de {0}s alors que les VM et les conteneurs étaient déjà arrêtés, parce que quelque chose occupait encore {1}. Ferme ce qui tourne là avant de redémarrer.",
-  "timeout_raised": "Le dernier arrêt a atteint son délai de {0}s. Le délai est maintenant de {1}s, assez pour ce que les VM et les conteneurs ont pris cette fois-là.",
-  "unclean_suggest": "Le dernier arrêt n’a pas été propre, donc le prochain démarrage de l’array lancera un contrôle de parité. Les conteneurs peuvent mettre {0}s et les VM {1}s pour s’arrêter : règle le délai d’arrêt sur {2} secondes dans les réglages des disques.",
+  "timeout_suggest": "Le dernier arrêt a atteint son délai de {0} s. Les VM et les conteneurs ont besoin d’environ {1} s pour s’arrêter, alors règle le délai d’arrêt sur {2} s dans les réglages des disques.",
+  "shutdown_held": "Le dernier arrêt a atteint son délai de {0} s alors que les VM et les conteneurs étaient déjà arrêtés, parce que quelque chose occupait encore {1}. Ferme ce qui tourne là avant de redémarrer.",
+  "timeout_raised": "Le dernier arrêt a atteint son délai de {0} s. Le délai est maintenant de {1} s, assez pour ce que les VM et les conteneurs ont pris cette fois-là.",
+  "unclean_suggest": "Le dernier arrêt n’a pas été propre, donc le prochain démarrage de l’array lancera un contrôle de parité. Les conteneurs peuvent mettre {0} s et les VM {1} s pour s’arrêter : règle le délai d’arrêt sur {2} s dans les réglages des disques.",
   "cfg_cache_only_array": "Le partage {0} est censé vivre uniquement sur son pool, mais il a des fichiers sur {1}. Le mover les laisse là, alors déplace-les à la main ou règle le partage pour qu’il les déplace vers le pool.",
   "cfg_on_array": "Le partage {0} contient {1}, mais son réglage ({2}) place les fichiers sur l’array, où les conteneurs et les VM tournent lentement et empêchent les disques de dormir. Garde-le sur un pool.",
   "cfg_pool_missing": "Le partage {0} utilise le pool {1}, qui n’existe pas sur ce serveur. Choisis l’un de tes pools dans les réglages du partage.",
@@ -357,12 +357,12 @@
   },
   "stop_mounts_ok": "Rien n’est monté dans l’array.",
   "stop_vm_agent": {
-    "one": "Cette VM tourne sans agent invité connecté : {0}. Sans lui, une VM peut ignorer la demande d’arrêt, et Unraid la coupe de force après {2}s.",
-    "other": "Ces VM tournent sans agent invité connecté : {0}. Sans lui, une VM peut ignorer la demande d’arrêt, et Unraid la coupe de force après {2}s."
+    "one": "Cette VM tourne sans agent invité connecté : {0}. Sans lui, une VM peut ignorer la demande d’arrêt, et Unraid la coupe de force après {2} s.",
+    "other": "Ces VM tournent sans agent invité connecté : {0}. Sans lui, une VM peut ignorer la demande d’arrêt, et Unraid la coupe de force après {2} s."
   },
   "stop_containers": {
-    "one": "{0} conteneur tourne. Unraid l’arrête avant l’array, en {1}s au plus.",
-    "other": "{0} conteneurs tournent. Unraid les arrête avant l’array, chacun en {1}s au plus."
+    "one": "{0} conteneur tourne. Unraid l’arrête avant l’array, en {1} s au plus.",
+    "other": "{0} conteneurs tournent. Unraid les arrête avant l’array, chacun en {1} s au plus."
   },
   "stop_op_running": "Une opération de parité est en cours ({0}). Arrêter l’array l’annule.",
   "stop_mover": "Le mover est en cours. Arrêter l’array l’interrompt en plein travail."

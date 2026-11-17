@@ -281,10 +281,10 @@
     "other": "Unraids certifikat {0} udløber den {1}, om {2} dage. Unraid fornyer det selv, så fornyelsen kan være fejlet: se under Settings, Management Access."
   },
   "cert_ok": "Unraids certifikat {0} er gyldigt til {1}.",
-  "timeout_suggest": "Den seneste nedlukning ramte sin tidsgrænse på {0} s. VM'erne og containerne skal bruge omkring {1} s for at stoppe, så sæt tidsgrænsen for nedlukning i diskindstillingerne til {2} sekunder.",
+  "timeout_suggest": "Den seneste nedlukning ramte sin tidsgrænse på {0} s. VM'erne og containerne skal bruge omkring {1} s for at stoppe, så sæt tidsgrænsen for nedlukning i diskindstillingerne til {2} s.",
   "shutdown_held": "Den seneste nedlukning ramte sin tidsgrænse på {0} s, efter at VM'erne og containerne var stoppet, fordi noget stadig holdt fast i {1}. Luk det, der kører der, før du genstarter.",
   "timeout_raised": "Den seneste nedlukning ramte sin tidsgrænse på {0} s. Tidsgrænsen er nu {1} s, nok til det, VM'erne og containerne brugte dengang.",
-  "unclean_suggest": "Den seneste nedlukning var ikke ren, så næste start af arrayet kører et paritetstjek. Containere kan tage {0} s og VM'er {1} s om at stoppe: sæt tidsgrænsen for nedlukning i diskindstillingerne til {2} sekunder.",
+  "unclean_suggest": "Den seneste nedlukning var ikke ren, så næste start af arrayet kører et paritetstjek. Containere kan tage {0} s og VM'er {1} s om at stoppe: sæt tidsgrænsen for nedlukning i diskindstillingerne til {2} s.",
   "cfg_cache_only_array": "Share’et {0} er sat til kun at ligge på sin pool, men det har filer på {1}. Mover lader dem ligge, så flyt dem i hånden, eller indstil share’et til at flytte dem til poolen.",
   "cfg_on_array": "Share’et {0} indeholder {1}, men dets indstilling ({2}) lægger filerne på arrayet, hvor containere og VM'er kører langsomt og holder diskene vågne. Hold det på en pool.",
   "cfg_pool_missing": "Share’et {0} bruger poolen {1}, som ikke findes på denne server. Vælg en af dine pools i share’ets indstillinger.",

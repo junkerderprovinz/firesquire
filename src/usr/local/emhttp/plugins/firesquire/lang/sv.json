@@ -278,10 +278,10 @@
     "other": "Unraids certifikat {0} går ut den {1}, om {2} dagar. Unraid förnyar det själv, så förnyelsen kan ha misslyckats: titta under Settings, Management Access."
   },
   "cert_ok": "Unraids certifikat {0} gäller till {1}.",
-  "timeout_suggest": "Den senaste avstängningen nådde sin tidsgräns på {0} s. VM:arna och containrarna behöver ungefär {1} s för att stoppa, så sätt tidsgränsen för avstängning i diskinställningarna till {2} sekunder.",
+  "timeout_suggest": "Den senaste avstängningen nådde sin tidsgräns på {0} s. VM:arna och containrarna behöver ungefär {1} s för att stoppa, så sätt tidsgränsen för avstängning i diskinställningarna till {2} s.",
   "shutdown_held": "Den senaste avstängningen nådde sin tidsgräns på {0} s efter att VM:arna och containrarna hade stoppat, eftersom något fortfarande höll {1}. Stäng det som körs där innan du startar om.",
   "timeout_raised": "Den senaste avstängningen nådde sin tidsgräns på {0} s. Tidsgränsen är nu {1} s, tillräckligt för den tid VM:arna och containrarna tog då.",
-  "unclean_suggest": "Den senaste avstängningen var inte ren, så nästa start av arrayen kör en paritetskontroll. Containrar kan ta {0} s och VM:ar {1} s att stoppa: sätt tidsgränsen för avstängning i diskinställningarna till {2} sekunder.",
+  "unclean_suggest": "Den senaste avstängningen var inte ren, så nästa start av arrayen kör en paritetskontroll. Containrar kan ta {0} s och VM:ar {1} s att stoppa: sätt tidsgränsen för avstängning i diskinställningarna till {2} s.",
   "cfg_cache_only_array": "Utdelningen {0} är inställd på att bara ligga på sin pool, men den har filer på {1}. Mover lämnar dem där, så flytta dem för hand eller ställ in utdelningen så att de flyttas till poolen.",
   "cfg_on_array": "Utdelningen {0} innehåller {1}, men dess inställning ({2}) lägger filerna på arrayen, där containrar och VM:ar går långsamt och håller diskarna vakna. Låt den ligga på en pool.",
   "cfg_pool_missing": "Utdelningen {0} använder poolen {1}, som inte finns på den här servern. Välj en av dina pooler i utdelningens inställningar.",

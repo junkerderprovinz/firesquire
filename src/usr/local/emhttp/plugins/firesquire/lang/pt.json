@@ -284,10 +284,10 @@
     "other": "O certificado do Unraid {0} expira em {1}, daqui a {2} dias. O Unraid renova-o sozinho, por isso a renovação pode ter falhado: vê em Definições, Management Access."
   },
   "cert_ok": "O certificado do Unraid {0} é válido até {1}.",
-  "timeout_suggest": "O último encerramento atingiu o seu tempo limite de {0}s. As VMs e os contentores precisam de cerca de {1}s para parar, por isso define o tempo de encerramento nas definições dos discos para {2} segundos.",
-  "shutdown_held": "O último encerramento atingiu o seu tempo limite de {0}s depois de as VMs e os contentores já terem parado, porque algo ainda ocupava {1}. Fecha o que corre aí antes de reiniciar.",
-  "timeout_raised": "O último encerramento atingiu o seu tempo limite de {0}s. Agora o tempo limite é de {1}s, o suficiente para o que as VMs e os contentores demoraram nessa altura.",
-  "unclean_suggest": "O último encerramento não foi limpo, por isso o próximo arranque do array faz uma verificação de paridade. Os contentores podem demorar {0}s e as VMs {1}s a parar: define o tempo de encerramento nas definições dos discos para {2} segundos.",
+  "timeout_suggest": "O último encerramento atingiu o seu tempo limite de {0} s. As VMs e os contentores precisam de cerca de {1} s para parar, por isso define o tempo de encerramento nas definições dos discos para {2} s.",
+  "shutdown_held": "O último encerramento atingiu o seu tempo limite de {0} s depois de as VMs e os contentores já terem parado, porque algo ainda ocupava {1}. Fecha o que corre aí antes de reiniciar.",
+  "timeout_raised": "O último encerramento atingiu o seu tempo limite de {0} s. Agora o tempo limite é de {1} s, o suficiente para o que as VMs e os contentores demoraram nessa altura.",
+  "unclean_suggest": "O último encerramento não foi limpo, por isso o próximo arranque do array faz uma verificação de paridade. Os contentores podem demorar {0} s e as VMs {1} s a parar: define o tempo de encerramento nas definições dos discos para {2} s.",
   "cfg_cache_only_array": "A partilha {0} está definida para viver só no seu pool, mas tem ficheiros em {1}. O mover deixa-os lá, por isso move-os à mão ou define a partilha para os mover para o pool.",
   "cfg_on_array": "A partilha {0} contém {1}, mas a sua definição ({2}) põe os ficheiros no array, onde contentores e VMs correm devagar e mantêm os discos acordados. Mantém-na num pool.",
   "cfg_pool_missing": "A partilha {0} usa o pool {1}, que não existe neste servidor. Escolhe um dos teus pools nas definições da partilha.",
@@ -357,12 +357,12 @@
   },
   "stop_mounts_ok": "Nada está montado dentro do array.",
   "stop_vm_agent": {
-    "one": "Esta VM corre sem um guest agent ligado: {0}. Sem ele, uma VM pode ignorar o pedido para encerrar, e o Unraid desliga-a à força ao fim de {2}s.",
-    "other": "Estas VMs correm sem um guest agent ligado: {0}. Sem ele, uma VM pode ignorar o pedido para encerrar, e o Unraid desliga-a à força ao fim de {2}s."
+    "one": "Esta VM corre sem um guest agent ligado: {0}. Sem ele, uma VM pode ignorar o pedido para encerrar, e o Unraid desliga-a à força ao fim de {2} s.",
+    "other": "Estas VMs correm sem um guest agent ligado: {0}. Sem ele, uma VM pode ignorar o pedido para encerrar, e o Unraid desliga-a à força ao fim de {2} s."
   },
   "stop_containers": {
-    "one": "{0} contentor a correr. O Unraid para-o antes do array, em {1}s no máximo.",
-    "other": "{0} contentores a correr. O Unraid para-os antes do array, cada um em {1}s no máximo."
+    "one": "{0} contentor a correr. O Unraid para-o antes do array, em {1} s no máximo.",
+    "other": "{0} contentores a correr. O Unraid para-os antes do array, cada um em {1} s no máximo."
   },
   "stop_op_running": "Está em curso uma operação de paridade ({0}). Parar o array cancela-a.",
   "stop_mover": "O mover está a correr. Parar o array interrompe-o a meio."

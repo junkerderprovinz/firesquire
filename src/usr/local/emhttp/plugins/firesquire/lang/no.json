@@ -278,10 +278,10 @@
     "other": "Unraids sertifikat {0} går ut {1}, om {2} dager. Unraid fornyer det selv, så fornyelsen kan ha feilet: se under Settings, Management Access."
   },
   "cert_ok": "Unraids sertifikat {0} er gyldig til {1}.",
-  "timeout_suggest": "Den siste avslutningen nådde tidsgrensen på {0}s. VM-ene og containerne trenger omtrent {1}s for å stoppe, så sett tidsgrensen for avslutning i diskinnstillingene til {2} sekunder.",
-  "shutdown_held": "Den siste avslutningen nådde tidsgrensen på {0}s etter at VM-ene og containerne hadde stoppet, fordi noe fortsatt holdt {1}. Lukk det som kjører der før du starter på nytt.",
-  "timeout_raised": "Den siste avslutningen nådde tidsgrensen på {0}s. Tidsgrensen er nå {1}s, nok til det VM-ene og containerne brukte da.",
-  "unclean_suggest": "Den siste avslutningen var ikke ren, så neste start av arrayet kjører en paritetssjekk. Containere kan bruke {0}s og VM-er {1}s på å stoppe: sett tidsgrensen for avslutning i diskinnstillingene til {2} sekunder.",
+  "timeout_suggest": "Den siste avslutningen nådde tidsgrensen på {0} s. VM-ene og containerne trenger omtrent {1} s for å stoppe, så sett tidsgrensen for avslutning i diskinnstillingene til {2} s.",
+  "shutdown_held": "Den siste avslutningen nådde tidsgrensen på {0} s etter at VM-ene og containerne hadde stoppet, fordi noe fortsatt holdt {1}. Lukk det som kjører der før du starter på nytt.",
+  "timeout_raised": "Den siste avslutningen nådde tidsgrensen på {0} s. Tidsgrensen er nå {1} s, nok til det VM-ene og containerne brukte da.",
+  "unclean_suggest": "Den siste avslutningen var ikke ren, så neste start av arrayet kjører en paritetssjekk. Containere kan bruke {0} s og VM-er {1} s på å stoppe: sett tidsgrensen for avslutning i diskinnstillingene til {2} s.",
   "cfg_cache_only_array": "Den delte ressursen {0} er satt til å ligge bare på poolen sin, men den har filer på {1}. Mover lar dem ligge, så flytt dem for hånd eller still inn ressursen til å flytte dem til poolen.",
   "cfg_on_array": "Den delte ressursen {0} inneholder {1}, men innstillingen ({2}) legger filene på arrayet, der containere og VM-er går tregt og holder diskene våkne. Hold den på en pool.",
   "cfg_pool_missing": "Den delte ressursen {0} bruker poolen {1}, som ikke finnes på denne serveren. Velg en av poolene dine i innstillingene for ressursen.",
@@ -351,12 +351,12 @@
   },
   "stop_mounts_ok": "Ingenting er montert inne i arrayet.",
   "stop_vm_agent": {
-    "one": "Denne VM-en kjører uten tilkoblet guest agent: {0}. Uten den kan en VM overse forespørselen om å slå seg av, og Unraid tvinger den av etter {2}s.",
-    "other": "Disse VM-ene kjører uten tilkoblet guest agent: {0}. Uten den kan en VM overse forespørselen om å slå seg av, og Unraid tvinger den av etter {2}s."
+    "one": "Denne VM-en kjører uten tilkoblet guest agent: {0}. Uten den kan en VM overse forespørselen om å slå seg av, og Unraid tvinger den av etter {2} s.",
+    "other": "Disse VM-ene kjører uten tilkoblet guest agent: {0}. Uten den kan en VM overse forespørselen om å slå seg av, og Unraid tvinger den av etter {2} s."
   },
   "stop_containers": {
-    "one": "{0} container kjører. Unraid stopper den før arrayet, innen {1}s.",
-    "other": "{0} containere kjører. Unraid stopper dem før arrayet, hver innen {1}s."
+    "one": "{0} container kjører. Unraid stopper den før arrayet, innen {1} s.",
+    "other": "{0} containere kjører. Unraid stopper dem før arrayet, hver innen {1} s."
   },
   "stop_op_running": "En paritetsoperasjon pågår ({0}). Å stoppe arrayet avbryter den.",
   "stop_mover": "Mover kjører. Å stoppe arrayet avbryter den før den er ferdig."

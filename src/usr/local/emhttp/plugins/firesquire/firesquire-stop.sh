@@ -96,7 +96,7 @@ stop_vm_agents() {
     n=$((n + 1))
   done < <(virsh list --state-running --name 2>/dev/null)
   [ -n "$list" ] || return 0
-  add warning stop_vm warn stop_vm_agent "$list|$n|$vmt" "$(plural "$n" 'This VM runs' 'These VMs run') without a connected guest agent: $list. Without it a VM may ignore the request to shut down, and Unraid forces it off after ${vmt}s."
+  add warning stop_vm warn stop_vm_agent "$list|$n|$vmt" "$(plural "$n" 'This VM runs' 'These VMs run') without a connected guest agent: $list. Without it a VM may ignore the request to shut down, and Unraid forces it off after ${vmt} s."
 }
 
 # stop_containers says how many containers Unraid stops before the array.
@@ -106,7 +106,7 @@ stop_containers() {
   n="$(docker ps -q 2>/dev/null | grep -c .)"
   [ "$n" -gt 0 ] || return 0
   stop="$(ini_get DOCKER_TIMEOUT "$FS_DOCKER_CFG")"; stop="${stop:-10}"
-  add info stop_containers info stop_containers "$n|$stop" "$n $(plural "$n" 'container runs. Unraid stops it before the array, within' 'containers run. Unraid stops them before the array, each within') ${stop}s."
+  add info stop_containers info stop_containers "$n|$stop" "$n $(plural "$n" 'container runs. Unraid stops it before the array, within' 'containers run. Unraid stops them before the array, each within') ${stop} s."
 }
 
 # stop_ops names the work a stop would cut short: a parity check, a sync or a

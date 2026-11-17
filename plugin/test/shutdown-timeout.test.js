@@ -35,7 +35,7 @@ console.log('\nThe last shutdown');
 let r = last('syslog-previous-vms.txt');
 ok('VMs still stopping when the time ran out give the time-out to set',
   one(r, 'timeout_suggest', 'warn', ['90', '97', '150']) && r[0].tier === 'warning', JSON.stringify(r));
-ok('in words that name Disk Settings and the seconds', /Disk Settings/.test(r[0] && r[0].message) && /150 seconds/.test(r[0] && r[0].message), r[0] && r[0].message);
+ok('in words that name Disk Settings and the seconds', /Disk Settings/.test(r[0] && r[0].message) && /150 s\./.test(r[0] && r[0].message), r[0] && r[0].message);
 r = last('syslog-previous-held.txt');
 ok('a shutdown held after VMs and containers had stopped names the busy mounts',
   one(r, 'shutdown_held', 'warn', ['90', '/mnt/user, /mnt/cache']), JSON.stringify(r));

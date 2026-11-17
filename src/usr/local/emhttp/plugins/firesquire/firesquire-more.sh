@@ -53,19 +53,19 @@ more_timeouts() {
     while read -r name t; do
       case "$t" in ''|*[!0-9]*) continue ;; esac
       [ "$t" -gt "$stop" ] || continue
-      slow="${slow:+$slow, }${name#/} (${t}s)"
+      slow="${slow:+$slow, }${name#/} (${t} s)"
       nslow=$((nslow + 1))
     done < <(docker inspect -f '{{.Name}} {{.Config.StopTimeout}}' $(docker ps -q 2>/dev/null) 2>/dev/null)
   fi
   libvirt_up && need=$((need + vm))
   [ "$need" -gt 0 ] || return 0
   if [ -n "$slow" ]; then
-    add warning timeouts warn timeouts_container "$slow|$stop|$nslow" "$(plural "$nslow" 'This container asks' 'These containers ask') for more time to stop than Unraid gives $(plural "$nslow" it them) (${stop}s in Docker Settings): $slow"
+    add warning timeouts warn timeouts_container "$slow|$stop|$nslow" "$(plural "$nslow" 'This container asks' 'These containers ask') for more time to stop than Unraid gives $(plural "$nslow" it them) (${stop} s in Docker Settings): $slow"
   fi
   if [ "$need" -ge "$shutdown" ]; then
-    add warning timeouts warn timeouts_short "$shutdown|$((docker_up * stop))|$((need - docker_up * stop))|$need" "Unraid waits ${shutdown}s for a clean shutdown, but containers ($((docker_up * stop))s) and VMs ($((need - docker_up * stop))s) can take ${need}s together. Raise the shutdown time-out in Disk Settings."
+    add warning timeouts warn timeouts_short "$shutdown|$((docker_up * stop))|$((need - docker_up * stop))|$need" "Unraid waits ${shutdown} s for a clean shutdown, but containers ($((docker_up * stop))s) and VMs ($((need - docker_up * stop))s) can take ${need} s together. Raise the shutdown time-out in Disk Settings."
   elif [ -z "$slow" ]; then
-    add warning timeouts pass timeouts_ok "$shutdown|$need" "Unraid's shutdown time-out of ${shutdown}s covers containers and VMs (${need}s)."
+    add warning timeouts pass timeouts_ok "$shutdown|$need" "Unraid's shutdown time-out of ${shutdown} s covers containers and VMs (${need} s)."
   fi
 }
 
@@ -130,7 +130,7 @@ more_last_shutdown() {
   case "$vm$ct" in
     *\?*) ;;
     *)
-      add warning last_shutdown warn shutdown_held "$timeout|${busy:-/mnt}" "The last shutdown hit its ${timeout}s time-out after the VMs and containers had stopped, because something still held ${busy:-/mnt}. Close what runs there before you reboot."
+      add warning last_shutdown warn shutdown_held "$timeout|${busy:-/mnt}" "The last shutdown hit its ${timeout} s time-out after the VMs and containers had stopped, because something still held ${busy:-/mnt}. Close what runs there before you reboot."
       return 0 ;;
   esac
   stop="$(ini_get DOCKER_TIMEOUT "$FS_DOCKER_CFG")"; stop="${stop:-10}"
@@ -141,9 +141,9 @@ more_last_shutdown() {
   suggest="$(half_minutes "$need")"
   now="$(ini_get shutdownTimeout "$FS_VAR_INI")"; now="${now:-90}"
   if [ "$now" -ge "$suggest" ]; then
-    add warning last_shutdown pass timeout_raised "$timeout|$now" "The last shutdown hit its ${timeout}s time-out. The time-out is ${now}s now, enough for what the VMs and containers took then."
+    add warning last_shutdown pass timeout_raised "$timeout|$now" "The last shutdown hit its ${timeout} s time-out. The time-out is ${now} s now, enough for what the VMs and containers took then."
   else
-    add warning last_shutdown warn timeout_suggest "$timeout|$need|$suggest" "The last shutdown hit its ${timeout}s time-out. The VMs and containers need about ${need}s to stop, so set the shutdown time-out in Disk Settings to $suggest seconds."
+    add warning last_shutdown warn timeout_suggest "$timeout|$need|$suggest" "The last shutdown hit its ${timeout} s time-out. The VMs and containers need about ${need} s to stop, so set the shutdown time-out in Disk Settings to $suggest s."
   fi
 }
 
@@ -165,7 +165,7 @@ more_unclean() {
   suggest="$(half_minutes $((stop + vm)))"
   now="$(ini_get shutdownTimeout "$FS_VAR_INI")"; now="${now:-90}"
   if [ $((stop + vm)) -gt 0 ] && [ "$now" -lt "$suggest" ]; then
-    add warning unclean warn unclean_suggest "$stop|$vm|$suggest" "The last shutdown was not clean, so the next array start runs a parity check. Containers may take ${stop}s and VMs ${vm}s to stop: set the shutdown time-out in Disk Settings to $suggest seconds."
+    add warning unclean warn unclean_suggest "$stop|$vm|$suggest" "The last shutdown was not clean, so the next array start runs a parity check. Containers may take ${stop} s and VMs ${vm} s to stop: set the shutdown time-out in Disk Settings to $suggest s."
   else
     add warning unclean warn unclean "" "The last shutdown was not clean. The next array start runs a parity check."
   fi

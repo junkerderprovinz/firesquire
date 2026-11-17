@@ -281,10 +281,10 @@
     "other": "Unraidin varmenne {0} vanhenee {1}, {2} päivän päästä. Unraid uusii sen itse, joten uusinta on ehkä epäonnistunut: katso kohta Settings, Management Access."
   },
   "cert_ok": "Unraidin varmenne {0} on voimassa {1} asti.",
-  "timeout_suggest": "Edellinen sammutus törmäsi aikarajaansa {0}s. VM:t ja kontit tarvitsevat pysähtymiseen noin {1}s, joten aseta sammutuksen aikaraja levyasetuksissa {2} sekuntiin.",
-  "shutdown_held": "Edellinen sammutus törmäsi aikarajaansa {0}s, vaikka VM:t ja kontit olivat jo pysähtyneet, koska jokin piti yhä kiinni kohteesta {1}. Sulje siellä käynnissä oleva ennen uudelleenkäynnistystä.",
-  "timeout_raised": "Edellinen sammutus törmäsi aikarajaansa {0}s. Aikaraja on nyt {1}s, mikä riittää siihen, mitä VM:t ja kontit silloin tarvitsivat.",
-  "unclean_suggest": "Edellinen sammutus ei ollut siisti, joten arrayn seuraava käynnistys tekee pariteettitarkistuksen. Konttien pysähtyminen voi viedä {0}s ja VM:ien {1}s: aseta sammutuksen aikaraja levyasetuksissa {2} sekuntiin.",
+  "timeout_suggest": "Edellinen sammutus törmäsi aikarajaansa {0} s. VM:t ja kontit tarvitsevat pysähtymiseen noin {1} s, joten aseta sammutuksen aikaraja levyasetuksissa arvoon {2} s.",
+  "shutdown_held": "Edellinen sammutus törmäsi aikarajaansa {0} s, vaikka VM:t ja kontit olivat jo pysähtyneet, koska jokin piti yhä kiinni kohteesta {1}. Sulje siellä käynnissä oleva ennen uudelleenkäynnistystä.",
+  "timeout_raised": "Edellinen sammutus törmäsi aikarajaansa {0} s. Aikaraja on nyt {1} s, mikä riittää siihen, mitä VM:t ja kontit silloin tarvitsivat.",
+  "unclean_suggest": "Edellinen sammutus ei ollut siisti, joten arrayn seuraava käynnistys tekee pariteettitarkistuksen. Konttien pysähtyminen voi viedä {0} s ja VM:ien {1} s: aseta sammutuksen aikaraja levyasetuksissa arvoon {2} s.",
   "cfg_cache_only_array": "Jako {0} on asetettu pysymään vain poolillaan, mutta sillä on tiedostoja kohteessa {1}. Mover jättää ne paikalleen, joten siirrä ne käsin tai aseta jako siirtämään ne pooliin.",
   "cfg_on_array": "Jako {0} sisältää kohteen {1}, mutta sen asetus ({2}) sijoittaa tiedostot arrayhin, jossa kontit ja VM:t toimivat hitaasti ja levyt pysyvät hereillä. Pidä se poolilla.",
   "cfg_pool_missing": "Jako {0} käyttää poolia {1}, jota ei ole tällä palvelimella. Valitse jokin pooleistasi jaon asetuksista.",
@@ -354,12 +354,12 @@
   },
   "stop_mounts_ok": "Arrayn sisälle ei ole liitetty mitään.",
   "stop_vm_agent": {
-    "one": "Tämä VM toimii ilman yhdistettyä guest agentia: {0}. Ilman sitä VM voi jättää sammutuspyynnön huomiotta, ja Unraid pakottaa sen pois päältä {2}s jälkeen.",
-    "other": "Nämä VM:t toimivat ilman yhdistettyä guest agentia: {0}. Ilman sitä VM voi jättää sammutuspyynnön huomiotta, ja Unraid pakottaa sen pois päältä {2}s jälkeen."
+    "one": "Tämä VM toimii ilman yhdistettyä guest agentia: {0}. Ilman sitä VM voi jättää sammutuspyynnön huomiotta, ja Unraid pakottaa sen pois päältä {2} s jälkeen.",
+    "other": "Nämä VM:t toimivat ilman yhdistettyä guest agentia: {0}. Ilman sitä VM voi jättää sammutuspyynnön huomiotta, ja Unraid pakottaa sen pois päältä {2} s jälkeen."
   },
   "stop_containers": {
-    "one": "{0} kontti on käynnissä. Unraid pysäyttää sen ennen arrayta, {1}s kuluessa.",
-    "other": "{0} konttia on käynnissä. Unraid pysäyttää ne ennen arrayta, kunkin {1}s kuluessa."
+    "one": "{0} kontti on käynnissä. Unraid pysäyttää sen ennen arrayta, {1} s kuluessa.",
+    "other": "{0} konttia on käynnissä. Unraid pysäyttää ne ennen arrayta, kunkin {1} s kuluessa."
   },
   "stop_op_running": "Pariteettioperaatio on käynnissä ({0}). Arrayn pysäyttäminen keskeyttää sen.",
   "stop_mover": "Mover on käynnissä. Arrayn pysäyttäminen katkaisee sen kesken."

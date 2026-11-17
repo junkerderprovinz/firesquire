@@ -284,10 +284,10 @@
     "other": "Het certificaat {0} van Unraid verloopt op {1}, over {2} dagen. Unraid vernieuwt het zelf, dus misschien is het vernieuwen mislukt: kijk bij Settings, Management Access."
   },
   "cert_ok": "Het certificaat {0} van Unraid is geldig tot {1}.",
-  "timeout_suggest": "De laatste afsluiting liep tegen zijn time-out van {0} s aan. De VM's en containers hebben ongeveer {1} s nodig om te stoppen, dus zet de afsluittijd in de schijfinstellingen op {2} seconden.",
+  "timeout_suggest": "De laatste afsluiting liep tegen zijn time-out van {0} s aan. De VM's en containers hebben ongeveer {1} s nodig om te stoppen, dus zet de afsluittijd in de schijfinstellingen op {2} s.",
   "shutdown_held": "De laatste afsluiting liep tegen zijn time-out van {0} s aan nadat de VM's en containers al gestopt waren, omdat iets {1} nog vasthield. Sluit af wat daar draait voor je herstart.",
   "timeout_raised": "De laatste afsluiting liep tegen zijn time-out van {0} s aan. De time-out is nu {1} s, genoeg voor wat de VM's en containers toen nodig hadden.",
-  "unclean_suggest": "De laatste afsluiting was niet netjes, dus de volgende start van de array voert een pariteitscontrole uit. Containers kunnen {0} s en VM's {1} s nodig hebben om te stoppen: zet de afsluittijd in de schijfinstellingen op {2} seconden.",
+  "unclean_suggest": "De laatste afsluiting was niet netjes, dus de volgende start van de array voert een pariteitscontrole uit. Containers kunnen {0} s en VM's {1} s nodig hebben om te stoppen: zet de afsluittijd in de schijfinstellingen op {2} s.",
   "cfg_cache_only_array": "De share {0} hoort alleen op zijn pool te staan, maar heeft bestanden op {1}. De mover laat die staan, dus verplaats ze met de hand of stel de share zo in dat ze naar de pool gaan.",
   "cfg_on_array": "De share {0} bevat {1}, maar zijn instelling ({2}) zet de bestanden op de array, waar containers en VM's traag draaien en de schijven wakker houden. Houd hem op een pool.",
   "cfg_pool_missing": "De share {0} gebruikt de pool {1}, maar die bestaat niet op deze server. Kies een van je pools in de instellingen van de share.",

@@ -275,10 +275,10 @@
     "other": "Il certificato di Unraid {0} scade il {1}, tra {2} giorni. Unraid lo rinnova da solo, quindi il rinnovo potrebbe non essere riuscito: guarda in Impostazioni, Management Access."
   },
   "cert_ok": "Il certificato di Unraid {0} è valido fino al {1}.",
-  "timeout_suggest": "L’ultimo spegnimento ha raggiunto il suo tempo limite di {0}s. VM e container hanno bisogno di circa {1}s per fermarsi, quindi imposta il tempo di spegnimento a {2} secondi nelle impostazioni dei dischi.",
-  "shutdown_held": "L’ultimo spegnimento ha raggiunto il suo tempo limite di {0}s quando VM e container si erano già fermati, perché qualcosa occupava ancora {1}. Chiudi quello che gira lì prima di riavviare.",
-  "timeout_raised": "L’ultimo spegnimento ha raggiunto il suo tempo limite di {0}s. Ora il tempo limite è di {1}s, abbastanza per quello che VM e container hanno impiegato allora.",
-  "unclean_suggest": "L’ultimo spegnimento non è stato pulito, quindi il prossimo avvio dell’array farà un controllo di parità. I container possono metterci {0}s e le VM {1}s per fermarsi: imposta il tempo di spegnimento a {2} secondi nelle impostazioni dei dischi.",
+  "timeout_suggest": "L’ultimo spegnimento ha raggiunto il suo tempo limite di {0} s. VM e container hanno bisogno di circa {1} s per fermarsi, quindi imposta il tempo di spegnimento a {2} s nelle impostazioni dei dischi.",
+  "shutdown_held": "L’ultimo spegnimento ha raggiunto il suo tempo limite di {0} s quando VM e container si erano già fermati, perché qualcosa occupava ancora {1}. Chiudi quello che gira lì prima di riavviare.",
+  "timeout_raised": "L’ultimo spegnimento ha raggiunto il suo tempo limite di {0} s. Ora il tempo limite è di {1} s, abbastanza per quello che VM e container hanno impiegato allora.",
+  "unclean_suggest": "L’ultimo spegnimento non è stato pulito, quindi il prossimo avvio dell’array farà un controllo di parità. I container possono metterci {0} s e le VM {1} s per fermarsi: imposta il tempo di spegnimento a {2} s nelle impostazioni dei dischi.",
   "cfg_cache_only_array": "La condivisione {0} è impostata per stare solo sul suo pool, eppure ha file su {1}. Il mover li lascia lì, quindi spostali a mano o imposta la condivisione perché li sposti sul pool.",
   "cfg_on_array": "La condivisione {0} contiene {1}, ma la sua impostazione ({2}) mette i file sull’array, dove container e VM vanno lenti e tengono svegli i dischi. Tienila su un pool.",
   "cfg_pool_missing": "La condivisione {0} usa il pool {1}, che su questo server non esiste. Scegli uno dei tuoi pool nelle impostazioni della condivisione.",
@@ -348,12 +348,12 @@
   },
   "stop_mounts_ok": "Nell’array non c’è niente di montato.",
   "stop_vm_agent": {
-    "one": "Questa VM gira senza un guest agent collegato: {0}. Senza, una VM può ignorare la richiesta di spegnimento, e Unraid la spegne forzatamente dopo {2}s.",
-    "other": "Queste VM girano senza un guest agent collegato: {0}. Senza, una VM può ignorare la richiesta di spegnimento, e Unraid la spegne forzatamente dopo {2}s."
+    "one": "Questa VM gira senza un guest agent collegato: {0}. Senza, una VM può ignorare la richiesta di spegnimento, e Unraid la spegne forzatamente dopo {2} s.",
+    "other": "Queste VM girano senza un guest agent collegato: {0}. Senza, una VM può ignorare la richiesta di spegnimento, e Unraid la spegne forzatamente dopo {2} s."
   },
   "stop_containers": {
-    "one": "{0} container è in esecuzione. Unraid lo ferma prima dell’array, entro {1}s.",
-    "other": "{0} container sono in esecuzione. Unraid li ferma prima dell’array, ognuno entro {1}s."
+    "one": "{0} container è in esecuzione. Unraid lo ferma prima dell’array, entro {1} s.",
+    "other": "{0} container sono in esecuzione. Unraid li ferma prima dell’array, ognuno entro {1} s."
   },
   "stop_op_running": "È in corso un’operazione di parità ({0}). Fermare l’array la annulla.",
   "stop_mover": "Il mover è in esecuzione. Fermare l’array lo interrompe a metà."
