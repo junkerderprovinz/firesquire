@@ -14,6 +14,7 @@ Vendor Specific SMART Attributes with Thresholds:
 ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE
   1 Raw_Read_Error_Rate     0x002f   200   200   051    Pre-fail  Always       -       0
   5 Reallocated_Sector_Ct   0x0033   200   200   140    Pre-fail  Always       -       0
+  9 Power_On_Hours          0x0032   071   071   000    Old_age   Always       -       21345
 194 Temperature_Celsius     0x0022   118   107   000    Old_age   Always       -       32
 197 Current_Pending_Sector  0x0032   200   200   000    Old_age   Always       -       0
 198 Offline_Uncorrectable   0x0030   100   253   000    Old_age   Offline      -       0

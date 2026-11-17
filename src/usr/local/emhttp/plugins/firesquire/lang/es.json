@@ -255,5 +255,20 @@
   "g_reboot": "Reiniciar de todos modos",
   "g_shutdown": "Apagar de todos modos",
   "g_cancel": "Cancelar",
-  "flash_probe_left": "FireSquire no pudo borrar su archivo de prueba {0} en el flash. Bórralo tú mismo, por favor."
+  "flash_probe_left": "FireSquire no pudo borrar su archivo de prueba {0} en el flash. Bórralo tú mismo, por favor.",
+  "smart_disk": {
+    "other": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hours powered on.",
+    "one": "{0}: {1} °C, {2} reallocated and {3} pending sectors, {4} hour powered on."
+  },
+  "smart_disk_short": {
+    "other": "{0}: {1} °C, {2} hours powered on.",
+    "one": "{0}: {1} °C, {2} hour powered on."
+  },
+  "smart_realloc_rose": "The reallocated sectors on {0} rose from {1} to {2} on {3}. The disk is replacing worn spots, so keep an eye on it and have a backup ready.",
+  "smart_pending_rose": "The pending sectors on {0} rose from {1} to {2} on {3}. Some spots could not be read, so make sure your backup is current.",
+  "smart_temp_rose": "{0} runs at {1} °C, well above its usual {2} °C. Check the fans and the airflow.",
+  "smart_asleep": {
+    "other": "{0} disks were asleep and FireSquire left them alone.",
+    "one": "{0} disk was asleep and FireSquire left it alone."
+  }
 }

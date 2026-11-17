@@ -8,8 +8,11 @@ FS_BYPATH="${FS_BYPATH:-/dev/disk/by-path}"
 FS_BYID="${FS_BYID:-/dev/disk/by-id}"
 FS_STATE="${FS_STATE:-/boot/config/plugins/firesquire}"
 FS_MOUNTS="${FS_MOUNTS:-/proc/mounts}"
+FS_DISKS_INI="${FS_DISKS_INI:-/var/local/emhttp/disks.ini}"
 FS_DISK_TROUBLE=0
 CRC_SEEN=""
+SMART_SEEN=""
+SMART_ASLEEP=0
 
 # links prints each link in dir with where it points.
 links() {
@@ -131,6 +134,89 @@ crc_report() {
   done <<< "$CRC_SEEN"
   next="$(printf '%s%s\n' "$kept" "$known" | awk 'NF == 2 && !seen[$1]++' | sort)"
   [ "$next" = "$(printf '%s\n' "$known" | awk 'NF == 2' | sort)" ] && return 0
+  mkdir -p "$FS_STATE" && printf '%s\n' "$next" > "$file.tmp" && mv "$file.tmp" "$file"
+}
+
+# spun_down says Unraid spun the disk down, which reading its SMART would undo.
+spun_down() {
+  awk -v d="$1" '
+    /^\[/ { dev = ""; down = "" }
+    /^device=/ { v = $0; sub(/^device="?/, "", v); sub(/"?\r?$/, "", v); dev = v }
+    /^spundown=/ { v = $0; sub(/^spundown="?/, "", v); sub(/"?\r?$/, "", v); down = v }
+    dev == d && down == "1" { found = 1; exit }
+    END { exit !found }' "$FS_DISKS_INI" 2>/dev/null
+}
+
+# smart_read prints the health, the identity and the attributes of a disk in
+# one call, and fails for a disk in standby, which -n standby leaves asleep.
+smart_read() {
+  local out
+  out="$(smartctl -n standby -H -i -A "$1" 2>/dev/null)"
+  printf '%s\n' "$out"
+  ! printf '%s\n' "$out" | grep -qE 'is in (STANDBY|SLEEP) mode'
+}
+
+# smart_trend_note records the serial, the reallocated and pending sectors,
+# the temperature and the power-on hours from `smartctl -i -A`, with "-" for
+# what the disk does not tell, as NVMe drives keep no sector counts.
+smart_trend_note() {
+  local v
+  v="$(printf '%s\n' "$2" | awk '
+    /^Serial [Nn]umber/ { s = $0; sub(/^[^:]*: */, "", s); gsub(/[[:space:]]+/, "_", s) }
+    $2 == "Reallocated_Sector_Ct" { re = $10 + 0 }
+    $2 == "Current_Pending_Sector" { pe = $10 + 0 }
+    $2 == "Power_On_Hours" { poh = $10 + 0 }
+    $2 == "Temperature_Celsius" { tp = $10 + 0 }
+    $2 == "Airflow_Temperature_Cel" && tp == "" { tp = $10 + 0 }
+    /^Temperature:/ { tp = $2 + 0 }
+    /^Power On Hours:/ { h = $4; gsub(/[^0-9]/, "", h); poh = h + 0 }
+    END { if (s != "") print s, (re == "" ? "-" : re), (pe == "" ? "-" : pe), (tp == "" ? "-" : tp), (poh == "" ? "-" : poh) }')"
+  [ -n "$v" ] && SMART_SEEN="$SMART_SEEN$1 $v"$'\n'
+}
+
+num() { case "$1" in ''|*[!0-9]*) return 1 ;; esac; }
+rose() { num "$1" && num "$2" && [ "$1" -gt "$2" ]; }
+
+# smart_trend_report holds every disk against what FireSquire last saw of it.
+# A sector count that rose stays a warning for 30 days, the window of the
+# Health tab's history. A temperature counts as risen 8 degrees over the
+# disk's usual one, which follows slowly, so a hot afternoon does not become
+# the norm. smart.state on the flash keeps one line per serial and is written
+# only when a value changed.
+smart_trend_report() {
+  local file="$FS_STATE/smart.state" now="${FS_NOW:-$(date +%s)}" known kept="" next
+  local dev serial re pe tp poh ore ope otp since kind from to label avg
+  known="$(cat "$file" 2>/dev/null)"
+  while read -r dev serial re pe tp poh; do
+    [ -n "$dev" ] || continue
+    read -r _ ore ope otp _ since kind from to <<< "$(printf '%s\n' "$known" | awk -v k="$serial" '$1 == k && NF == 9 { print; exit }')"
+    since="${since:-0}"; kind="${kind:--}"; from="${from:--}"; to="${to:--}"
+    if rose "$re" "$ore"; then since="$now"; kind=realloc; from="$ore"; to="$re"; fi
+    if rose "$pe" "$ope"; then since="$now"; kind=pending; from="$ope"; to="$pe"; fi
+    label="$(disk_label "$dev")"
+    if [ "$since" -gt 0 ] && [ $((now - since)) -le $((30 * 86400)) ]; then
+      local day; day="$(date -d "@$since" +%F)"
+      if [ "$kind" = realloc ]; then
+        add health smart_trend warn smart_realloc_rose "$label|$from|$to|$day" "The reallocated sectors on $label rose from $from to $to on $day. The disk is replacing worn spots, so keep an eye on it and have a backup ready."
+      else
+        add health smart_trend warn smart_pending_rose "$label|$from|$to|$day" "The pending sectors on $label rose from $from to $to on $day. Some spots could not be read, so make sure your backup is current."
+      fi
+    elif num "$tp" && num "$otp" && [ "$tp" -ge $((otp + 8)) ] && [ "$tp" -ge 40 ]; then
+      add health smart_trend warn smart_temp_rose "$label|$tp|$otp" "$label runs at $tp °C, well above its usual $otp °C. Check the fans and the airflow."
+    elif [ "$re" = - ]; then
+      add health smart_trend pass smart_disk_short "$label|$tp|$poh" "$label: $tp °C, $poh $(plural "$poh" hour hours) powered on."
+    else
+      add health smart_trend pass smart_disk "$label|$tp|$re|$pe|$poh" "$label: $tp °C, $re reallocated and $pe pending sectors, $poh $(plural "$poh" hour hours) powered on."
+    fi
+    avg="${otp:--}"
+    if num "$tp"; then if num "$otp"; then avg=$(( (otp * 3 + tp) / 4 )); else avg="$tp"; fi; fi
+    kept="$kept$serial $re $pe $avg $poh $since $kind $from $to"$'\n'
+  done <<< "$SMART_SEEN"
+  if [ "$SMART_ASLEEP" -gt 0 ]; then
+    add health smart_trend info smart_asleep "$SMART_ASLEEP" "$SMART_ASLEEP $(plural "$SMART_ASLEEP" 'disk was asleep and FireSquire left it' 'disks were asleep and FireSquire left them') alone."
+  fi
+  next="$(printf '%s%s\n' "$kept" "$known" | awk 'NF == 9 && !seen[$1]++' | sort)"
+  [ "$next" = "$(printf '%s\n' "$known" | awk 'NF == 9' | sort)" ] && return 0
   mkdir -p "$FS_STATE" && printf '%s\n' "$next" > "$file.tmp" && mv "$file.tmp" "$file"
 }
 

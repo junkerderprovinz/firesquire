@@ -387,8 +387,9 @@ if have smartctl; then
   fi
   TEMP_MAX=55
   bad=""; attrwarn=""; checked=0
-  # SMART is the slow phase (spins disks up); advance the bar per device so it
-  # does not sit frozen. Interpolate across the 72..96 band.
+  # SMART is the slow phase; advance the bar per device so it does not sit
+  # frozen. Interpolate across the 72..96 band. A disk that sleeps stays
+  # asleep: the scheduled check would otherwise wake the whole array.
   _sstot=$(printf '%s\n' "$devs" | grep -c .); _ssidx=0
   for d in $devs; do
     [ -z "$d" ] && continue
@@ -396,14 +397,14 @@ if have smartctl; then
     [ "$PROGRESS" -eq 1 ] && [ "${_sstot:-0}" -gt 0 ] && fspush $((72 + _ssidx*24/_sstot)) p_smart
     dev="/dev/$d"; [ -b "$dev" ] || dev="$d"
     [ -b "$dev" ] || continue
+    spun_down "$d" && { SMART_ASLEEP=$((SMART_ASLEEP+1)); continue; }
+    A="$(smart_read "$dev")" || { SMART_ASLEEP=$((SMART_ASLEEP+1)); continue; }
     checked=$((checked+1))
-    out="$(smartctl -H "$dev" 2>/dev/null)"
-    if printf '%s' "$out" | grep -qiE 'FAILED|FAILING'; then
+    if printf '%s' "$A" | grep -qiE 'FAILED|FAILING'; then
       bad="$bad $dev"
     fi
-    # attribute-level early warning (SATA table; best-effort)
-    A="$(smartctl -i -A "$dev" 2>/dev/null)"
     smart_crc_note "$d" "$A"
+    smart_trend_note "$d" "$A"
     araw() { printf '%s\n' "$A" | awk -v n="$1" '$2==n{v=$10} END{print v+0}'; }
     re="$(araw Reallocated_Sector_Ct)"; pe="$(araw Current_Pending_Sector)"
     un="$(araw Offline_Uncorrectable)"
@@ -421,6 +422,8 @@ if have smartctl; then
     add warning smart warn smart_failing "$bad" "SMART health FAILING on:$bad; investigate before rebooting."
   elif [ "$checked" -gt 0 ]; then
     add warning smart pass smart_ok "$checked" "SMART health PASSED on $checked $(plural "$checked" disk disks)."
+  elif [ "$SMART_ASLEEP" -gt 0 ]; then
+    add warning smart info smart_asleep "$SMART_ASLEEP" "$SMART_ASLEEP $(plural "$SMART_ASLEEP" 'disk was asleep and FireSquire left it' 'disks were asleep and FireSquire left them') alone."
   else
     add warning smart info smart_none "" "No disks found for SMART check."
   fi
@@ -433,6 +436,7 @@ else
 fi
 
 crc_report
+smart_trend_report
 health_hint
 
 # Info.
