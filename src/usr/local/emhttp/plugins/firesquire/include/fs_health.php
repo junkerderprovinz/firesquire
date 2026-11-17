@@ -141,14 +141,16 @@ function fs_health_status($areas, $prev, $now, $lang, $app, $device) {
 
 /* The notification for the areas that got worse since the check before, or
  * null when none did. A first check after a restart compares with the
- * history's last day. */
+ * history's last day. Its key names the areas, for TollRoll's hub. */
 function fs_health_event($areas, $before, $lang, $server) {
   $L = fs_texts($lang);
   $worse = array();
+  $ids = array();
   $lines = array();
   foreach ($areas as $name => $a) {
     if ((FS_RANK[$a['light']] ?? 0) < 2 || (FS_RANK[$a['light']] ?? 0) <= (FS_RANK[$before[$name] ?? 'green'] ?? 1)) continue;
     $worse[] = $L["h_area_$name"] ?? $name;
+    $ids[] = $name;
     foreach ($a['findings'] as $c) {
       if (in_array($c['status'] ?? '', array('warn', 'fail'), true)) $lines[] = '• ' . fs_finding_text($L, $c, $lang);
     }
@@ -156,6 +158,8 @@ function fs_health_event($areas, $before, $lang, $server) {
   if (!$worse) return null;
   $red = false;
   foreach ($areas as $a) $red = $red || $a['light'] === 'red';
-  return array('kind' => 'health.worse', 'severity' => $red ? 'failure' : 'warning',
-    'title' => fs_fill($L['n_health_title'] ?? '', array($server, implode(', ', $worse))), 'body' => implode("\n", $lines));
+  $words = array($server, implode(', ', $worse));
+  return array('kind' => 'health.worse', 'severity' => $red ? 'failure' : 'warning', 'key' => 'firesquire.health.' . implode('.', $ids),
+    'title' => fs_fill($L['n_health_title'] ?? '', $words), 'body' => implode("\n", $lines),
+    'hub' => array('title' => fs_fill($L['n_hub_health'] ?? '', $words), 'resolve' => array()));
 }

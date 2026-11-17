@@ -166,6 +166,8 @@
   "crypto_copied": "Kopioitu",
   "n_title": "FireSquire laitteessa {0}: {1}",
   "n_title_go": "FireSquire laitteessa {0}: taas {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: taas {1}",
   "n_body_go": "Viimeisimmässä tarkistuksessa mikään ei estä uudelleenkäynnistystä.",
   "n_test_title": "FireSquiren testi",
   "n_test_body": "Jos luet tätä, FireSquiren viestit tavoittavat sinut.",
@@ -363,5 +365,6 @@
     "other": "{0} konttia on käynnissä. Unraid pysäyttää ne ennen arrayta, kunkin {1} s kuluessa."
   },
   "stop_op_running": "Pariteettioperaatio on käynnissä ({0}). Arrayn pysäyttäminen keskeyttää sen.",
-  "stop_mover": "Mover on käynnissä. Arrayn pysäyttäminen katkaisee sen kesken."
+  "stop_mover": "Mover on käynnissä. Arrayn pysäyttäminen katkaisee sen kesken.",
+  "n_hub_health": "{0}: {1} kannattaa katsoa"
 }

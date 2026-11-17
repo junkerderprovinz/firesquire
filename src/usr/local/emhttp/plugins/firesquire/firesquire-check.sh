@@ -26,6 +26,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 JSON=0
 PROGRESS=0
 STOP=0
+fortress_out=""
 for _a in "$@"; do
   case "$_a" in
     --json)     JSON=1 ;;
@@ -110,6 +111,7 @@ plural() { if [ "$1" = 1 ]; then printf '%s' "$2"; else printf '%s' "$3"; fi; }
 . "$HERE/firesquire-watch.sh"
 . "$HERE/firesquire-config.sh"
 . "$HERE/firesquire-stop.sh"
+. "$HERE/firesquire-hub.sh"
 
 # Apps write their texts, and FireSquire its messages, in the language Unraid shows.
 UI_LANG="$(sed -n 's/^locale="\{0,1\}\([a-z][a-z]\).*/\1/p' /boot/config/plugins/dynamix/dynamix.cfg 2>/dev/null | head -n1)"
@@ -144,17 +146,22 @@ finish() {
     2) VERDICT="NO-GO";   VNAME="The roof is on fire"; VCOLOR=31 ;;
   esac
 
-  # A CAUTION or NO-GO goes to the channels on every run, the way back to GO
-  # once. The helper retries for a while, so it sends in the background and the
-  # report does not wait for it.
+  # A CAUTION or NO-GO goes out on every run, the way back to GO once, through
+  # TollRoll's hub when the fortress has one, else to the channels. The helpers
+  # retry for a while, so it sends in the background and the report does not
+  # wait for it.
   NOTIFY="${FIRESQUIRE_NOTIFY:-$HERE/notify}"
   FS_RUN="${FS_RUN:-/var/local/firesquire}"
   REPORT="$(printf '{"verdict":"%s","checks":[%s]}' "$VERDICT" "$JSON_ITEMS")"
+  HUBS=""
+  if [ -n "$fortress_out" ] && have php; then
+    HUBS="$(printf '%s' "$fortress_out" | php "$HERE/firesquire-hub.php" hubs | paste -sd, -)"
+  fi
   send() {
     [ -n "$1" ] || return 0
-    printf '%s\n' "$1" | nohup "$NOTIFY" send -channels "$FS_STATE/notify.json" -source FireSquire >/dev/null 2>&1 &
+    ( trap '' HUP; hub_send "$HUBS" "$1" ) >/dev/null 2>&1 &
   }
-  channels() { [ -x "$NOTIFY" ] && [ -s "$FS_STATE/notify.json" ]; }
+  channels() { [ -n "$HUBS" ] || { [ -x "$NOTIFY" ] && [ -s "$FS_STATE/notify.json" ]; }; }
   if [ "$STOP" -eq 0 ] && channels && have php; then
     last="$(cat "$FS_STATE/last.verdict" 2>/dev/null)"
     send "$(printf '%s' "$REPORT" | php "$HERE/firesquire-notify.php" "$last" "$UI_LANG" "$(hostname)")"

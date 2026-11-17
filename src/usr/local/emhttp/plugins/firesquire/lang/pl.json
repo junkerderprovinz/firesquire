@@ -191,6 +191,8 @@
   "crypto_copied": "Skopiowano",
   "n_title": "FireSquire na {0}: {1}",
   "n_title_go": "FireSquire na {0}: znowu {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: znowu {1}",
   "n_body_go": "Nic w ostatnim sprawdzeniu nie stoi na przeszkodzie restartowi.",
   "n_test_title": "Test FireSquire",
   "n_test_body": "Jeśli to czytasz, wiadomości od FireSquire do ciebie docierają.",
@@ -428,5 +430,6 @@
     "other": "Działa {0} kontenerów. Unraid zatrzyma je przed array, każdy w ciągu {1} s."
   },
   "stop_op_running": "Trwa operacja parzystości ({0}). Zatrzymanie array ją przerwie.",
-  "stop_mover": "Mover jest uruchomiony. Zatrzymanie array przerwie go przed czasem."
+  "stop_mover": "Mover jest uruchomiony. Zatrzymanie array przerwie go przed czasem.",
+  "n_hub_health": "{0}: zerknij na {1}"
 }

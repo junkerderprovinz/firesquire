@@ -74,10 +74,14 @@ function fs_fill($text, $args) {
 }
 
 /* The event for a finished check, or null when there is nothing to tell: a
- * CAUTION or NO-GO goes out on every run, a GO only after one of them. */
+ * CAUTION or NO-GO goes out on every run, a GO only after one of them. Its key
+ * names the level, so TollRoll's hub tells a level once and the way back to GO
+ * closes it; "hub" holds the title for the hub, which puts FireSquire's name
+ * in front by itself, and the key of a level the check left. */
 function fs_event($report, $last, $lang, $server) {
   $verdict = is_array($report) ? (string) ($report['verdict'] ?? '') : '';
   $L = fs_texts($lang);
+  $keyOf = array('NO-GO' => 'firesquire.check.nogo', 'CAUTION' => 'firesquire.check.caution');
   switch ($verdict) {
     case 'NO-GO':
       $kind = 'check.nogo'; $severity = 'failure'; break;
@@ -85,8 +89,10 @@ function fs_event($report, $last, $lang, $server) {
       $kind = 'check.caution'; $severity = 'warning'; break;
     case 'GO':
       if ($last !== 'NO-GO' && $last !== 'CAUTION') return null;
-      return array('kind' => 'check.go', 'severity' => 'success', 'ping' => 'success',
-        'title' => fs_fill($L['n_title_go'] ?? '', array($server, $L['v_GO'] ?? 'GO')), 'body' => (string) ($L['n_body_go'] ?? ''));
+      $go = array($server, $L['v_GO'] ?? 'GO');
+      return array('kind' => 'check.go', 'severity' => 'success', 'ping' => 'success', 'key' => $keyOf[$last],
+        'title' => fs_fill($L['n_title_go'] ?? '', $go), 'body' => (string) ($L['n_body_go'] ?? ''),
+        'hub' => array('title' => fs_fill($L['n_hub_title_go'] ?? '', $go), 'resolve' => array()));
     default:
       return null;
   }
@@ -100,8 +106,11 @@ function fs_event($report, $last, $lang, $server) {
     $text = $tpl !== null ? fs_fill($tpl, $c['args'] ?? array()) : (string) ($c['message'] ?? '');
     $lines[] = '• ' . $text;
   }
-  return array('kind' => $kind, 'severity' => $severity, 'ping' => 'fail',
-    'title' => fs_fill($L['n_title'] ?? '', array($server, $L['v_' . $verdict] ?? $verdict)), 'body' => implode("\n", $lines));
+  $words = array($server, $L['v_' . $verdict] ?? $verdict);
+  $left = isset($keyOf[$last]) && $last !== $verdict ? array($keyOf[$last]) : array();
+  return array('kind' => $kind, 'severity' => $severity, 'ping' => 'fail', 'key' => $keyOf[$verdict],
+    'title' => fs_fill($L['n_title'] ?? '', $words), 'body' => implode("\n", $lines),
+    'hub' => array('title' => fs_fill($L['n_hub_title'] ?? '', $words), 'resolve' => $left));
 }
 
 function fs_test_event($lang) {

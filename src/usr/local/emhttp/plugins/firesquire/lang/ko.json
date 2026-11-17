@@ -136,6 +136,8 @@
   "crypto_copied": "복사됨",
   "n_title": "{0}의 FireSquire: {1}",
   "n_title_go": "{0}의 FireSquire: 다시 {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: 다시 {1}",
   "n_body_go": "지난 점검에서는 재부팅을 막는 것이 없습니다.",
   "n_test_title": "FireSquire 테스트",
   "n_test_body": "이 글이 보이면 FireSquire의 메시지가 잘 도착하는 것입니다.",
@@ -299,5 +301,6 @@
     "other": "컨테이너 {0}개가 실행 중입니다. Unraid는 어레이보다 먼저 각각 {1}초 안에 멈춥니다."
   },
   "stop_op_running": "패리티 작업이 실행 중입니다({0}). 어레이를 멈추면 취소됩니다.",
-  "stop_mover": "mover가 실행 중입니다. 어레이를 멈추면 중간에 끊깁니다."
+  "stop_mover": "mover가 실행 중입니다. 어레이를 멈추면 중간에 끊깁니다.",
+  "n_hub_health": "{0}: {1} 살펴보기 권장"
 }

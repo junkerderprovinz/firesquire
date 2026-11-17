@@ -6,8 +6,9 @@
  * helper on its input and nowhere else; the directory keeps only the keys
  * fortress join derives from it. */
 
-/* FireSquire asks BombVault when the flash was last backed up. */
-const FS_FORTRESS_USES = 'backup.last';
+/* FireSquire asks BombVault when the flash was last backed up, and hands
+ * its messages to TollRoll's hub. */
+const FS_FORTRESS_USES = 'backup.last,notify.deliver';
 /* A member id as the helper prints it, which no flag can pass for. */
 const FS_FORTRESS_ID = '/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/';
 /* The other apps of the fortress show FireSquire with this logo. */
@@ -19,6 +20,34 @@ const FS_FORTRESS_NAMES = array(
   'castleparcel' => 'CastleParcel', 'firesquire' => 'FireSquire', 'knightloader' => 'KnightLoader',
   'shiplog' => 'ShipLog', 'tollroll' => 'TollRoll', 'towertorch' => 'TowerTorch',
 );
+
+/* A membership kept from before TollRoll's hub learns to use it. The helper
+ * reads the actions a member uses from fortress.json, so they are added there,
+ * once. */
+function fs_fortress_uses_ensure($dir) {
+  $file = "$dir/fortress.json";
+  $m = json_decode((string) @file_get_contents($file), true);
+  if (!is_array($m)) return;
+  $uses = array_values(array_filter((array) ($m['uses'] ?? array()), 'is_string'));
+  $missing = array_diff(explode(',', FS_FORTRESS_USES), $uses);
+  if (!$missing) return;
+  $m['uses'] = array_merge($uses, array_values($missing));
+  if (@file_put_contents("$file.part", json_encode($m, JSON_UNESCAPED_SLASHES)) === false) return;
+  @chmod("$file.part", 0600);
+  @rename("$file.part", $file);
+}
+
+/* The members of `fortress status -json` that are a TollRoll taking over
+ * the notifications, which says so with the capability notify.hub. */
+function fs_fortress_hubs($status) {
+  $list = json_decode((string) $status, true);
+  $ids = array();
+  foreach (is_array($list) ? $list : array() as $m) {
+    if (!is_array($m) || ($m['app']['id'] ?? '') !== 'tollroll') continue;
+    if (in_array('notify.hub', (array) ($m['report']['capabilities'] ?? array()), true) && preg_match(FS_FORTRESS_ID, (string) ($m['id'] ?? ''))) $ids[] = $m['id'];
+  }
+  return $ids;
+}
 
 function fs_fortress_joined($dir) {
   return is_file("$dir/fortress.json");

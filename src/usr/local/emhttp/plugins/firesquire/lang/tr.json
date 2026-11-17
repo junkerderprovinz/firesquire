@@ -145,6 +145,8 @@
   "crypto_copied": "Kopyalandı",
   "n_title": "{0} üzerinde FireSquire: {1}",
   "n_title_go": "{0} üzerinde FireSquire: yeniden {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: yeniden {1}",
   "n_body_go": "Son denetimde yeniden başlatmaya engel bir şey yok.",
   "n_test_title": "FireSquire testi",
   "n_test_body": "Bunu okuyabiliyorsan, FireSquire'ın mesajları sana ulaşıyor.",
@@ -324,5 +326,6 @@
     "other": "{0} konteyner çalışıyor. Unraid onları array'den önce, her birini {1} sn içinde durdurur."
   },
   "stop_op_running": "Bir eşlik işlemi sürüyor ({0}). Array'i durdurmak onu iptal eder.",
-  "stop_mover": "Mover çalışıyor. Array'i durdurmak onu yarıda keser."
+  "stop_mover": "Mover çalışıyor. Array'i durdurmak onu yarıda keser.",
+  "n_hub_health": "{0}: {1} bir göz atmaya değer"
 }

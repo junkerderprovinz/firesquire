@@ -163,6 +163,8 @@
   "crypto_copied": "Kopiert",
   "n_title": "FireSquire på {0}: {1}",
   "n_title_go": "FireSquire på {0}: tilbake til {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: tilbake til {1}",
   "n_body_go": "Ingenting i den siste sjekken står i veien for en omstart.",
   "n_test_title": "FireSquire-test",
   "n_test_body": "Hvis du kan lese dette, når meldingene fra FireSquire fram til deg.",
@@ -360,5 +362,6 @@
     "other": "{0} containere kjører. Unraid stopper dem før arrayet, hver innen {1} s."
   },
   "stop_op_running": "En paritetsoperasjon pågår ({0}). Å stoppe arrayet avbryter den.",
-  "stop_mover": "Mover kjører. Å stoppe arrayet avbryter den før den er ferdig."
+  "stop_mover": "Mover kjører. Å stoppe arrayet avbryter den før den er ferdig.",
+  "n_hub_health": "{0}: {1} er verdt en titt"
 }

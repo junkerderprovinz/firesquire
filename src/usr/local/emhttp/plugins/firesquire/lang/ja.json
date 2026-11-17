@@ -136,6 +136,8 @@
   "crypto_copied": "コピーしました",
   "n_title": "{0} の FireSquire: {1}",
   "n_title_go": "{0} の FireSquire: {1} に戻りました",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: {1} に戻りました",
   "n_body_go": "前回のチェックでは再起動を妨げるものはありません。",
   "n_test_title": "FireSquire のテスト",
   "n_test_body": "これが読めていれば、FireSquire のメッセージは届いています。",
@@ -299,5 +301,6 @@
     "other": "{0} 個のコンテナが動作中です。Unraid はアレイより先に、それぞれ {1} 秒 以内に停止します。"
   },
   "stop_op_running": "パリティ操作を実行中です ({0})。アレイを停止すると中止されます。",
-  "stop_mover": "mover が実行中です。アレイを停止すると途中で止まります。"
+  "stop_mover": "mover が実行中です。アレイを停止すると途中で止まります。",
+  "n_hub_health": "{0}: {1} の確認をおすすめします"
 }

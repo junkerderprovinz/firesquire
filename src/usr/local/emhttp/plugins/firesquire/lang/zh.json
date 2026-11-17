@@ -136,6 +136,8 @@
   "crypto_copied": "已复制",
   "n_title": "{0} 上的 FireSquire：{1}",
   "n_title_go": "{0} 上的 FireSquire：已恢复 {1}",
+  "n_hub_title": "{0}：{1}",
+  "n_hub_title_go": "{0}：已恢复 {1}",
   "n_body_go": "上次检查中没有任何阻碍重启的问题。",
   "n_test_title": "FireSquire 测试",
   "n_test_body": "如果你能看到这条消息，说明 FireSquire 的消息能送达你。",
@@ -299,5 +301,6 @@
     "other": "有 {0} 个容器正在运行。Unraid 会在阵列之前停止它们，每个最多 {1} 秒。"
   },
   "stop_op_running": "一项校验操作正在运行（{0}）。停止阵列会取消它。",
-  "stop_mover": "mover 正在运行。停止阵列会让它中途结束。"
+  "stop_mover": "mover 正在运行。停止阵列会让它中途结束。",
+  "n_hub_health": "{0}：{1} 值得一看"
 }

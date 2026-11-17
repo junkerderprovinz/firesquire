@@ -136,6 +136,8 @@
   "crypto_copied": "Đã sao chép",
   "n_title": "FireSquire trên {0}: {1}",
   "n_title_go": "FireSquire trên {0}: đã trở lại {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: đã trở lại {1}",
   "n_body_go": "Lần kiểm tra gần nhất không có gì cản trở việc khởi động lại.",
   "n_test_title": "Thử FireSquire",
   "n_test_body": "Nếu bạn đọc được dòng này, tin nhắn của FireSquire đã đến với bạn.",
@@ -299,5 +301,6 @@
     "other": "{0} container đang chạy. Unraid dừng chúng trước array, mỗi container trong vòng {1} giây."
   },
   "stop_op_running": "Một thao tác parity đang chạy ({0}). Dừng array sẽ hủy nó.",
-  "stop_mover": "Mover đang chạy. Dừng array sẽ cắt ngang nó."
+  "stop_mover": "Mover đang chạy. Dừng array sẽ cắt ngang nó.",
+  "n_hub_health": "{0}: {1} đáng xem qua"
 }

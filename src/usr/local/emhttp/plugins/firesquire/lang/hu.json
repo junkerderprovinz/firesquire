@@ -145,6 +145,8 @@
   "crypto_copied": "Másolva",
   "n_title": "FireSquire itt: {0}: {1}",
   "n_title_go": "FireSquire itt: {0}: ismét {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: ismét {1}",
   "n_body_go": "A legutóbbi ellenőrzésben semmi sem akadályozza az újraindítást.",
   "n_test_title": "FireSquire-teszt",
   "n_test_body": "Ha ezt olvasod, a FireSquire üzenetei eljutnak hozzád.",
@@ -324,5 +326,6 @@
     "other": "{0} konténer fut. Az Unraid leállítja őket a tömb előtt, mindegyiket legfeljebb {1} mp alatt."
   },
   "stop_op_running": "Paritásművelet van folyamatban ({0}). A tömb leállítása megszakítja.",
-  "stop_mover": "A Mover fut. A tömb leállítása félbeszakítja."
+  "stop_mover": "A Mover fut. A tömb leállítása félbeszakítja.",
+  "n_hub_health": "{0}: {1} megér egy pillantást"
 }

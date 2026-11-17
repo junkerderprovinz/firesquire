@@ -166,6 +166,8 @@
   "crypto_copied": "Kopiert",
   "n_title": "FireSquire auf {0}: {1}",
   "n_title_go": "FireSquire auf {0}: wieder {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: wieder {1}",
   "n_body_go": "Nach der letzten Prüfung spricht nichts gegen einen Neustart.",
   "n_test_title": "FireSquire-Test",
   "n_test_body": "Wenn du das liest, kommen die Meldungen von FireSquire bei dir an.",
@@ -363,5 +365,6 @@
     "other": "{0} Container laufen. Unraid stoppt sie vor dem Array, jeden innerhalb von {1} s."
   },
   "stop_op_running": "Eine Paritätsoperation läuft ({0}). Wenn du das Array stoppst, bricht sie ab.",
-  "stop_mover": "Der Mover läuft. Wenn du das Array stoppst, bricht er mittendrin ab."
+  "stop_mover": "Der Mover läuft. Wenn du das Array stoppst, bricht er mittendrin ab.",
+  "n_hub_health": "{0}: {1} einen Blick wert"
 }

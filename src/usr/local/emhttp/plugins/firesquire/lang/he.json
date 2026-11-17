@@ -180,6 +180,8 @@
   "crypto_copied": "הועתק",
   "n_title": "FireSquire ב-{0}: {1}",
   "n_title_go": "FireSquire ב-{0}: שוב {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: שוב {1}",
   "n_body_go": "שום דבר בבדיקה האחרונה לא מונע אתחול.",
   "n_test_title": "בדיקת FireSquire",
   "n_test_body": "אם אתה קורא את זה, ההודעות של FireSquire מגיעות אליך.",
@@ -397,5 +399,6 @@
     "other": "{0} קונטיינרים רצים. Unraid עוצר אותם לפני המערך, כל אחד תוך {1} ש׳."
   },
   "stop_op_running": "פעולת parity רצה ({0}). עצירת המערך תבטל אותה.",
-  "stop_mover": "ה-mover רץ. עצירת המערך תקטע אותו באמצע."
+  "stop_mover": "ה-mover רץ. עצירת המערך תקטע אותו באמצע.",
+  "n_hub_health": "{0}: כדאי להציץ ב-{1}"
 }

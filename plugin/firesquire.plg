@@ -190,6 +190,8 @@
       }
       helper fortress "&fortressSHA;"
       helper notify "&notifySHA;"
+      # A membership from before TollRoll's hub learns to hand it the messages.
+      php -r "require '&emhttp;/include/fs_fortress.php'; fs_fortress_uses_ensure('&plgPath;/fortress');" 2>/dev/null
       # The fortress is asked for a new phrase every 15 minutes, clear of the
       # check's half past, and a schedule set on the settings page lives on
       # the flash next to it.

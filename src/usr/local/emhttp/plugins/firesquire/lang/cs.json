@@ -180,6 +180,8 @@
   "crypto_copied": "Zkopírováno",
   "n_title": "FireSquire na {0}: {1}",
   "n_title_go": "FireSquire na {0}: zase {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: zase {1}",
   "n_body_go": "Nic v poslední kontrole nebrání restartu.",
   "n_test_title": "Test FireSquire",
   "n_test_body": "Jestli tohle čteš, zprávy od FireSquire k tobě dorazí.",
@@ -397,5 +399,6 @@
     "other": "Běží {0} kontejnerů. Unraid je zastaví před polem, každý do {1} s."
   },
   "stop_op_running": "Běží operace parity ({0}). Zastavení pole ji zruší.",
-  "stop_mover": "Mover běží. Zastavení pole ho předčasně ukončí."
+  "stop_mover": "Mover běží. Zastavení pole ho předčasně ukončí.",
+  "n_hub_health": "{0}: mrkni na {1}"
 }

@@ -180,6 +180,8 @@
   "crypto_copied": "Copiat",
   "n_title": "FireSquire pe {0}: {1}",
   "n_title_go": "FireSquire pe {0}: din nou {1}",
+  "n_hub_title": "{0}: {1}",
+  "n_hub_title_go": "{0}: din nou {1}",
   "n_body_go": "Nimic din ultima verificare nu împiedică o repornire.",
   "n_test_title": "Test FireSquire",
   "n_test_body": "Dacă citești asta, mesajele FireSquire ajung la tine.",
@@ -397,5 +399,6 @@
     "other": "Rulează {0} de containere. Unraid le oprește înaintea array-ului, pe fiecare în cel mult {1} s."
   },
   "stop_op_running": "Rulează o operațiune de paritate ({0}). Oprirea array-ului o anulează.",
-  "stop_mover": "Mover-ul rulează. Oprirea array-ului îl întrerupe."
+  "stop_mover": "Mover-ul rulează. Oprirea array-ului îl întrerupe.",
+  "n_hub_health": "{0}: {1} merită o privire"
 }
