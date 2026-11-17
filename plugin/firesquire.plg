@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.4.0">
+<!ENTITY version   "1.4.1">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -32,6 +32,19 @@
 </ICON>
 
   <CHANGES>
+## 1.4.1
+✨ **Added**
+- **Discord on the Help card.** The card offers GitHub and the FireSquire Discord server in place of the forum.
+
+🎨 **Design**
+- **GlimStone 4.5.4.** Buttons, tabs and choices light in a soft tint of your accent when the pointer reaches them. With TowerTorch they take its hover colour and its accent ink, the same as TowerTorch's own rows and buttons.
+- **A focus ring you can see.** Keyboard focus is a solid ring in the accent's ink instead of a faint halo, 2px wide and 3px when your system asks for more contrast.
+- **Placeholders you can read.** The hint in an empty field reaches 4.5:1 on every background.
+- **Reactive buttons keep their width.** In TowerTorch's reactive mode a FireSquire button is as wide as with its glyph and words, and the words open inside it instead of the button growing under the pointer.
+
+🌐 **Translations**
+- **The Help sentence names GitHub and Discord in all 26 languages**, and French readers are addressed with tu.
+
 ## 1.4.0
 ✨ **Added**
 - **Your fortress joins the check.** FireSquire downloads its fortress helper from ParleyPort, so the Fortress card finally shows up on the settings page. Join with your phrase, and before a reboot FireSquire asks your other apps whether one of them is still busy with something a reboot would cut short.
