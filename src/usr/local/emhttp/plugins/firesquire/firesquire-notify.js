@@ -122,35 +122,39 @@
     load().then(function (d) { hub.hidden = d.hub !== true; }).catch(function () {});
   });
 
+  // The schedule's controls stand at the end of their row, as every row's do.
   var cS = card(t("n_sched"));
   cS.appendChild(el("p", "fs-prose", t("n_sched_lead")));
-  var sRow = el("div", "fs-ch-act");
+  var sRow = el("div", "fs-row"), sEnd = el("span", "fs-row-end");
   var every = select([["off", t("n_sched_off")], ["daily", t("n_sched_daily")], ["weekly", t("n_sched_weekly")]], "off");
   every.setAttribute("aria-label", t("n_sched"));
-  var hours = [];
-  for (var h = 0; h < 24; h++) hours.push([String(h), (h < 10 ? "0" : "") + h + ":30"]);
-  var hour = select(hours, "4");
-  var hourL = labelled(t("n_sched_hour"), hour);
+  var at = el("button", "fs-n-at");
+  at.type = "button";
+  var atL = labelled(t("n_sched_hour"), at);
+  window.GlimTimeField.enhance(at, { label: t("n_sched_hour") });
+  at.value = "04:30";
   var sMsg = el("span", "fs-n-msg");
   sMsg.setAttribute("role", "status");
   function schedule() {
-    post({ "do": "schedule", every: every.value, hour: hour.value }).then(function (s) {
+    var when = window.GlimTimeField.parse(at.value);
+    post({ "do": "schedule", every: every.value, hour: when.hour, minute: when.minute }).then(function (s) {
       if (s.every) tell(sMsg, t("n_sched_saved"), true);
       else tell(sMsg, fill(t("n_failed"), [s.error || "?"]));
     }).catch(function () { tell(sMsg, fill(t("n_failed"), ["network"])); });
   }
   every.addEventListener("change", schedule);
-  hour.addEventListener("change", schedule);
-  sRow.appendChild(every);
-  sRow.appendChild(hourL[0]);
-  sRow.appendChild(hour);
+  at.addEventListener("change", schedule);
+  sEnd.appendChild(every);
+  sEnd.appendChild(atL[0]);
+  sEnd.appendChild(at);
   sRow.appendChild(sMsg);
+  sRow.appendChild(sEnd);
   cS.appendChild(sRow);
 
   first.then(function (d) {
     if (d.schedule) {
       every.value = d.schedule.every;
-      hour.value = String(d.schedule.hour);
+      at.value = window.GlimTimeField.format(d.schedule.hour, d.schedule.minute == null ? 30 : d.schedule.minute);
     }
   }).catch(function () {});
 })();

@@ -54,6 +54,8 @@ ok('a weekly check runs on Sundays', php(`echo fs_cron('weekly', 23);`).includes
 ok('the schedule runs the engine', /\/bin\/bash \/usr\/local\/emhttp\/plugins\/firesquire\/firesquire-check\.sh --json/.test(php(`echo fs_cron('daily', 4);`)));
 ok('off has no line', php(`echo fs_cron('off', 4);`) === '');
 ok('a bad hour has no line', php(`echo fs_cron('daily', 24);`) === '' && php(`echo fs_cron('hourly', 4);`) === '');
+ok('a check runs at the chosen minute too', php(`echo fs_cron('daily', 4, 15);`).startsWith('15 4 * * * '));
+ok('a bad minute has no line', php(`echo fs_cron('daily', 4, 60);`) === '' && php(`echo fs_cron('daily', 4, 'x');`) === '');
 
 console.log('\nThe engine sends in the background and remembers the verdict');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'fs-notify-'));

@@ -22,7 +22,7 @@ async function page(answer, later) {
   const box = new El('div');
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const ctx = {
-    window: { csrf_token: 'tok', fireSquireI18n: en, fireSquireUI: { el, button: (cls, g, label) => el('button', cls, label), info: () => el('span') } },
+    window: { csrf_token: 'tok', fireSquireI18n: en, fireSquireUI: { el, button: (cls, g, label) => el('button', cls, label), info: () => el('span') }, GlimTimeField: { enhance: (b) => b, parse: () => ({ hour: 4, minute: 30 }), format: () => '04:30' } },
     document: { getElementById: (id) => (id === 'fs-notify' ? box : null) },
     FormData, URLSearchParams, JSON, Date, Object, String, parseInt, Promise,
     fetch: () => { const a = answer; if (later) answer = later; return Promise.resolve({ json: () => a }); },

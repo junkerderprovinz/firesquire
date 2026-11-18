@@ -29,10 +29,10 @@ function fs_helper($helper, $args, $stdin) {
 }
 
 function fs_schedule($file) {
-  if (preg_match('/^30 (\d+) \* \* (\*|0) /m', (string) @file_get_contents($file), $m)) {
-    return array('every' => $m[2] === '*' ? 'daily' : 'weekly', 'hour' => (int) $m[1]);
+  if (preg_match('/^(\d+) (\d+) \* \* (\*|0) /m', (string) @file_get_contents($file), $m)) {
+    return array('every' => $m[3] === '*' ? 'daily' : 'weekly', 'hour' => (int) $m[2], 'minute' => (int) $m[1]);
   }
-  return array('every' => 'off', 'hour' => 4);
+  return array('every' => 'off', 'hour' => 4, 'minute' => 30);
 }
 
 function fs_answer($code, $body) {
@@ -86,7 +86,7 @@ switch ($_POST['do'] ?? '') {
     fs_answer($out !== '' ? 422 : 500, $out !== '' ? $out : json_encode(array('error' => $err)));
   case 'schedule':
     $every = (string) ($_POST['every'] ?? 'off');
-    $line = fs_cron($every, $_POST['hour'] ?? '');
+    $line = fs_cron($every, $_POST['hour'] ?? '', $_POST['minute'] ?? 30);
     if ($line === '' && $every !== 'off') fs_answer(400, '{"error":"invalid"}');
     if ($line === '') {
       @unlink($fsCron);

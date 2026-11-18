@@ -182,9 +182,11 @@ function fs_test_event($lang) {
 
 /* The cron line that runs the check daily or on Sundays at half past $hour,
  * or "" for no schedule. */
-function fs_cron($every, $hour) {
-  if (!is_numeric($hour) || (int) $hour != $hour || $hour < 0 || $hour > 23) return '';
+function fs_cron($every, $hour, $minute = 30) {
+  foreach (array(array($hour, 23), array($minute, 59)) as $v) {
+    if (!is_numeric($v[0]) || (int) $v[0] != $v[0] || $v[0] < 0 || $v[0] > $v[1]) return '';
+  }
   $days = array('daily' => '*', 'weekly' => '0');
   if (!isset($days[$every])) return '';
-  return sprintf("30 %d * * %s /bin/bash %s --json >/dev/null 2>&1\n", $hour, $days[$every], FS_ENGINE);
+  return sprintf("%d %d * * %s /bin/bash %s --json >/dev/null 2>&1\n", $minute, $hour, $days[$every], FS_ENGINE);
 }

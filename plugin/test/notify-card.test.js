@@ -9,6 +9,7 @@ const vm = require('vm');
 const { DIR, read, ok, done } = require('./lib');
 
 const en = JSON.parse(read('lang/en.json'));
+const timeField = require(path.join(DIR, 'scripts', 'time-field.js'));
 const de = JSON.parse(read('lang/de.json'));
 
 class El {
@@ -32,6 +33,7 @@ async function page(answers, i18n = en) {
       csrf_token: 'tok', fireSquireI18n: i18n, fireSquireLang: 'de', GlimNotifyMarks: { marks: {}, tiles: {} },
       fireSquireUI: { el, button: (cls, g, label) => el('button', cls, label), info: () => el('span') },
       GlimNotifyCard: { mount: (place, adapter, opts) => { mounts.push({ place, adapter, opts }); return {}; } },
+      GlimTimeField: { enhance: (b, opts) => { b.timeLabel = opts.label; return b; }, parse: timeField.parse, format: timeField.format },
     },
     document: { getElementById: (id) => (id === 'fs-notify' ? box : null), addEventListener() {} },
     URLSearchParams, JSON, Object, String, Array, Promise,
@@ -85,10 +87,15 @@ const get = { helper: true, hub: false, schedule: { every: 'daily', hour: 3 }, c
   console.log('\nThe schedule and the hub');
   p = await page({ get: { ...get, hub: true }, schedule: () => ({ every: 'weekly', hour: 3 }) });
   const selects = p.box.all().filter((e) => e.tagName === 'SELECT');
-  ok('the schedule keeps its card and shows the one set', selects.length === 2 && selects[0].value === 'daily' && selects[1].value === '3');
+  const at = p.box.all().find((e) => e.className === 'fs-n-at');
+  ok('the schedule keeps its card and shows the one set', selects.length === 1 && selects[0].value === 'daily' && at.value === '03:30', at && at.value);
+  ok('its time is the house\'s time field, named for the reader', at.timeLabel === en.n_sched_hour);
   selects[0].value = 'weekly';
   selects[0].listeners.change[0]();
   ok('and saves as it changes', p.posts.some((d) => d.do === 'schedule' && d.every === 'weekly'));
+  at.value = '05:15';
+  at.listeners.change[0]();
+  ok('a time picked goes out as its hour and minute', p.posts.some((d) => d.do === 'schedule' && d.hour === '5' && d.minute === '15'), JSON.stringify(p.posts));
   ok('the hub line shows while TollRoll takes over', p.box.all().some((e) => /fs-n-hub/.test(e.className) && !e.hidden));
 
   console.log('\nThe shared files');

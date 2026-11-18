@@ -1,0 +1,76 @@
+/* GlimStone's time field for a page without a framework (time-field.js): a
+ * filled field-button with the clock and HH:MM, and the popover with its hour
+ * and minute columns. The popover lives in <body>, so it carries its own
+ * colours: Unraid's on their own, the theme plugin's under html.tt-popups-on.
+ * Nothing draws a line. */
+
+.glim-tf-field {
+  --tf-field: color-mix(in srgb, currentColor 8%, transparent);
+  --tf-field-hover: color-mix(in srgb, currentColor 14%, transparent);
+  --tf-dim: var(--alt-text-color, #8d8d8d);
+  --tf-focus: var(--link-text-color, #486dba);
+  --tf-r: 4px;
+}
+html.tt-popups-on .glim-tf-field {
+  --tf-field: var(--tt-surface-3, #2e2e2e);
+  --tf-field-hover: color-mix(in srgb, var(--tt-surface-3, #2e2e2e), currentColor 10%);
+  --tf-dim: var(--tt-text-dim, #8a8a8a);
+  --tf-focus: var(--tt-accent-ink, #FCC419);
+  --tf-r: var(--tt-radius-control, 12px);
+}
+.glim-tf-g { display: inline-flex; flex: none; line-height: 0; color: var(--tf-dim); }
+.glim-tf-g svg { width: 14px; height: 14px; display: block; }
+.glim-tf-v { font-variant-numeric: tabular-nums; }
+
+.glim-tf {
+  --tf-ground: var(--background-color, #1c1b1b);
+  --tf-ink: var(--text-color, #f2f2f2);
+  --tf-dim: var(--alt-text-color, #8d8d8d);
+  --tf-on: var(--link-text-color, #486dba);
+  --tf-on-ink: #fff;
+  --tf-r: 4px;
+  position: fixed; z-index: 1000002; transform: translateX(-50%);
+  display: flex; align-items: stretch; width: max-content; padding: 4px;
+  border-radius: var(--tf-r); background: var(--tf-ground); color: var(--tf-ink);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .45); font-size: 13px; line-height: 1.2;
+}
+html.tt-popups-on .glim-tf {
+  --tf-ground: var(--tt-surface-3, #2e2e2e);
+  --tf-ink: var(--tt-text, #e6e6e6);
+  --tf-dim: var(--tt-text-dim, #8a8a8a);
+  --tf-on: var(--tt-accent, #FCC419);
+  --tf-on-ink: var(--tt-accent-text, #161616);
+  --tf-r: var(--tt-radius-card, 20px);
+  box-shadow: var(--tt-elev-3, 0 12px 30px rgba(0, 0, 0, .6));
+}
+.glim-tf *, .glim-tf *::before, .glim-tf *::after { box-sizing: border-box; }
+.glim-tf-col { display: flex; flex-direction: column; gap: 2px; max-height: 176px; margin: 0; padding: 4px; overflow-y: auto; overscroll-behavior: contain; list-style: none; }
+.glim-tf-col li { margin: 0; }
+.glim-tf-colon { display: flex; align-items: center; padding: 0 2px; color: var(--tf-dim); }
+.glim-tf button.glim-tf-opt {
+  display: block; width: 100%; min-width: 44px; margin: 0; padding: 5px 12px; border: none; border-radius: calc(var(--tf-r) * .6);
+  box-shadow: none; background: transparent; color: var(--tf-dim);
+  font: inherit; font-variant-numeric: tabular-nums; letter-spacing: normal; text-transform: none; text-align: center; cursor: pointer;
+}
+.glim-tf button.glim-tf-opt:hover { background: color-mix(in srgb, currentColor 14%, transparent); color: var(--tf-ink); }
+.glim-tf button.glim-tf-opt[aria-selected="true"] { background: var(--tf-on); color: var(--tf-on-ink); }
+.glim-tf button.glim-tf-opt:focus-visible { outline: 2px solid var(--tf-on); outline-offset: -2px; }
+@keyframes glim-tf-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-tt-motion="off"]) .glim-tf { animation: glim-tf-in var(--tt-motion-fade-dur, 110ms) ease both; }
+}
+
+/* The theme plugin dresses every button of a page as a button with
+   !important. An important declaration in a cascade layer outranks every
+   unlayered one, so the field keeps its look here. */
+@layer glim-time-field {
+  button.glim-tf-field {
+    display: inline-flex !important; align-items: center !important; gap: 8px !important; width: auto !important; min-width: 0 !important;
+    height: 32px !important; margin: 0 !important; padding: 0 12px !important;
+    border: none !important; border-radius: var(--tf-r) !important; box-shadow: none !important; filter: none !important;
+    background-color: var(--tf-field) !important; color: inherit !important;
+    font-family: inherit !important; font-size: 13px !important; font-weight: 600 !important; letter-spacing: normal !important; text-transform: none !important; cursor: pointer !important;
+  }
+  button.glim-tf-field:is(:hover, [aria-expanded="true"]) { background-color: var(--tf-field-hover) !important; }
+  button.glim-tf-field:focus-visible { outline: 2px solid var(--tf-focus) !important; outline-offset: 2px !important; }
+}
