@@ -105,11 +105,35 @@ const own = r.sends.find((x) => x.kinds === 'unraid'), out = r.sends.find((x) =>
 ok('Unraid\'s own notification gets the link as a path, which its WebGUI opens', own && own.event.link === '/Settings/FireSquireTools', JSON.stringify(r.sends));
 ok('the channels outside get it whole, from Unraid\'s own address', out && out.event.link === 'https://tower.local:443/Settings/FireSquireTools', JSON.stringify(r.sends));
 ok('each channel hears the message once', r.sends.length === 2);
+
+console.log('\nThe way back');
+const back = event({ verdict: 'GO', checks: [] }, 'CAUTION');
+ok('the way back to All clear is marked as a recovery', back.recovery === true && back.severity === 'success');
+ok('a level that is no way back is not', !('recovery' in event(nogo, 'GO')));
+fs.writeFileSync(path.join(tmp, 'state', 'notify.json'), JSON.stringify([
+  { id: 'n', kind: 'ntfy', enabled: true, on: 'failure', url: 'https://ntfy.example/x' },
+  { id: 'm', kind: 'matrix', enabled: true, on: 'always', matrix: { homeserver: 'https://m.example', room: '!r', token: 't' } },
+]));
+const sendEvent = (e) => {
+  fs.rmSync(path.join(tmp, 'sent'), { force: true });
+  execFileSync('bash', ['-c', `set -u
+source "${HUB}"
+FORTRESS="${T}/fortress-helper"; FORTRESS_DIR="${T}/fortress"; NOTIFY="${T}/notify-helper"; FS_STATE="${T}/state"; FS_RUN="${T}/run"; HERE="${DIR.replace(/\\/g, '/')}"
+hub_send '' "$(cat)"`], { input: JSON.stringify(e), encoding: 'utf8' });
+  const sent = fs.readFileSync(path.join(tmp, 'sent'), 'utf8').split('\n').filter(Boolean);
+  return { list: JSON.parse(sent[1]), event: JSON.parse(sent[2]) };
+};
+let s = sendEvent({ ...back, hub: undefined });
+ok('a channel set to failures hears the recovery as well', s.list.find((c) => c.id === 'n').on === 'always' && s.list.find((c) => c.id === 'm').on === 'always', JSON.stringify(s.list));
+ok('the marker stays FireSquire\'s own', !('recovery' in s.event), JSON.stringify(s.event));
+ok('the copy of the channels with it is gone afterwards', !fs.existsSync(path.join(tmp, 'run')) || fs.readdirSync(path.join(tmp, 'run')).length === 0);
+s = sendEvent({ kind: 'check.caution', severity: 'warning', title: 'x', body: 'y', key: 'k' });
+ok('any other message leaves the channels as they are set', s.list.find((c) => c.id === 'n').on === 'failure');
 r = send('down,t2', 't2');
 ok('a TollRoll out of reach is skipped for the next', r.acts.some((a) => / t2 notify\.deliver \{"kind"/.test(a)) && !/ntfy/.test(r.sent), r.acts.join(' | '));
 r = send('', '');
 ok('without a hub nothing goes to the fortress', r.acts.length === 0 && /ntfy/.test(r.sent));
-fs.rmSync(tmp, { recursive: true, force: true });
+fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 5 });
 
 console.log('\nThe engine and the texts');
 const engine = read('firesquire-check.sh');

@@ -335,6 +335,7 @@
   "h_area_system": "Sistem",
   "h_area_fortress": "Kale",
   "n_health_title": "{0} üzerinde FireSquire: {1} bir göz atmaya değer",
+  "n_health_back_title": "{0} üzerinde FireSquire: {1} yeniden sağlıklı",
   "fortress_app_warning": "{1} üzerindeki {0} bir sorun bildiriyor.",
   "fortress_app_overdue": "{1} üzerindeki {0} işlerinde geride kaldı.",
   "fortress_app_failed": "{1} üzerindeki {0} bir işin başarısız olduğunu bildiriyor.",
@@ -384,5 +385,6 @@
   "stop_op_running": "Bir eşlik işlemi sürüyor ({0}). Array'i durdurmak onu iptal eder.",
   "stop_mover": "Mover çalışıyor. Array'i durdurmak onu yarıda keser.",
   "n_hub_health": "{0}: {1} bir göz atmaya değer",
+  "n_hub_health_back": "{0}: {1} yeniden sağlıklı",
   "n_hub_test_title": "Test mesajı"
 }

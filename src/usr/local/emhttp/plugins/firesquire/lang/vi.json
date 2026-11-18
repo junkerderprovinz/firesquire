@@ -314,6 +314,7 @@
   "h_area_system": "Hệ thống",
   "h_area_fortress": "Pháo đài",
   "n_health_title": "FireSquire trên {0}: {1} đáng xem qua",
+  "n_health_back_title": "FireSquire trên {0}: {1} đã ổn trở lại",
   "fortress_app_warning": "{0} trên {1} báo có sự cố.",
   "fortress_app_overdue": "{0} trên {1} đang chậm việc.",
   "fortress_app_failed": "{0} trên {1} báo bị lỗi.",
@@ -358,5 +359,6 @@
   "stop_op_running": "Một thao tác parity đang chạy ({0}). Dừng array sẽ hủy nó.",
   "stop_mover": "Mover đang chạy. Dừng array sẽ cắt ngang nó.",
   "n_hub_health": "{0}: {1} đáng xem qua",
+  "n_hub_health_back": "{0}: {1} đã ổn trở lại",
   "n_hub_test_title": "Tin nhắn thử"
 }

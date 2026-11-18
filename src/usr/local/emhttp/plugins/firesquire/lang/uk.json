@@ -431,6 +431,7 @@
   "h_area_system": "Система",
   "h_area_fortress": "Фортеця",
   "n_health_title": "FireSquire на {0}: {1} варто перевірити",
+  "n_health_back_title": "FireSquire на {0}: {1} знову в порядку",
   "fortress_app_warning": "{0} на {1} повідомляє про проблему.",
   "fortress_app_overdue": "{0} на {1} відстає з роботою.",
   "fortress_app_failed": "{0} на {1} повідомляє про збій.",
@@ -490,5 +491,6 @@
   "stop_op_running": "Триває операція парності ({0}). Зупинка масиву її скасує.",
   "stop_mover": "Mover працює. Зупинка масиву обірве його на півдорозі.",
   "n_hub_health": "{0}: {1} варто перевірити",
+  "n_hub_health_back": "{0}: {1} знову в порядку",
   "n_hub_test_title": "Тестове повідомлення"
 }

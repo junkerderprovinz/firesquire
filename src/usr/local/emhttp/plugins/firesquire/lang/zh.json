@@ -314,6 +314,7 @@
   "h_area_system": "系统",
   "h_area_fortress": "堡垒",
   "n_health_title": "{0} 上的 FireSquire：{1} 值得一看",
+  "n_health_back_title": "{0} 上的 FireSquire：{1} 已恢复正常",
   "fortress_app_warning": "{1} 上的 {0} 报告了一个问题。",
   "fortress_app_overdue": "{1} 上的 {0} 的工作落后了。",
   "fortress_app_failed": "{1} 上的 {0} 报告了一次失败。",
@@ -358,5 +359,6 @@
   "stop_op_running": "一项校验操作正在运行（{0}）。停止阵列会取消它。",
   "stop_mover": "mover 正在运行。停止阵列会让它中途结束。",
   "n_hub_health": "{0}：{1} 值得一看",
+  "n_hub_health_back": "{0}：{1} 已恢复正常",
   "n_hub_test_title": "测试消息"
 }

@@ -374,6 +374,7 @@
   "h_area_system": "System",
   "h_area_fortress": "Festung",
   "n_health_title": "FireSquire auf {0}: {1} einen Blick wert",
+  "n_health_back_title": "FireSquire auf {0}: {1} wieder gesund",
   "fortress_app_warning": "{0} auf {1} meldet ein Problem.",
   "fortress_app_overdue": "{0} auf {1} hängt mit seiner Arbeit hinterher.",
   "fortress_app_failed": "{0} auf {1} meldet einen Fehlschlag.",
@@ -423,5 +424,6 @@
   "stop_op_running": "Eine Paritätsoperation läuft ({0}). Wenn du das Array stoppst, bricht sie ab.",
   "stop_mover": "Der Mover läuft. Wenn du das Array stoppst, bricht er mittendrin ab.",
   "n_hub_health": "{0}: {1} einen Blick wert",
+  "n_hub_health_back": "{0}: {1} wieder gesund",
   "n_hub_test_title": "Testnachricht"
 }

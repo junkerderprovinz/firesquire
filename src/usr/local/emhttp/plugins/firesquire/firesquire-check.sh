@@ -176,11 +176,13 @@ finish() {
   fi
 
   # The Health tab and the fortress read how the server stands from here, and
-  # an area that got worse goes to the channels.
+  # an area that got worse or is green again goes to the channels.
   if [ "$STOP" -eq 0 ] && have php; then
     fs_ver="$(sed -n 's/.*<!ENTITY *version *"\([^"]*\)".*/\1/p' /var/log/plugins/firesquire.plg 2>/dev/null | head -n1)"
     health_event="$(printf '%s' "$REPORT" | FS_STATE="$FS_STATE" FS_RUN="$FS_RUN" php "$HERE/firesquire-history.php" "$UI_LANG" "$(hostname)" "$fs_ver")"
-    channels && send "$health_event"
+    if channels; then
+      while IFS= read -r line; do send "$line"; done <<< "$health_event"
+    fi
   fi
 
   fspush 100 p_done

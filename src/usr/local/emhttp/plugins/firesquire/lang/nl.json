@@ -377,6 +377,7 @@
   "h_area_system": "Systeem",
   "h_area_fortress": "Vesting",
   "n_health_title": "FireSquire op {0}: kijk even naar {1}",
+  "n_health_back_title": "FireSquire op {0}: {1} weer gezond",
   "fortress_app_warning": "{0} op {1} meldt een probleem.",
   "fortress_app_overdue": "{0} op {1} loopt achter met zijn werk.",
   "fortress_app_failed": "{0} op {1} meldt een fout.",
@@ -426,5 +427,6 @@
   "stop_op_running": "Er loopt een pariteitsbewerking ({0}). Als je de array stopt, wordt die afgebroken.",
   "stop_mover": "De mover draait. Als je de array stopt, wordt hij onderbroken.",
   "n_hub_health": "{0}: kijk even naar {1}",
+  "n_hub_health_back": "{0}: {1} weer gezond",
   "n_hub_test_title": "Testbericht"
 }

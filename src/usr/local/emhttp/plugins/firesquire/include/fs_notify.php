@@ -124,7 +124,8 @@ function fs_event($report, $last, $lang, $server) {
     case 'GO':
       if ($last !== 'NO-GO' && $last !== 'CAUTION') return null;
       $go = array($server, $L['v_GO'] ?? 'GO');
-      return fs_linked(array('kind' => 'check.go', 'severity' => 'success', 'ping' => 'success', 'key' => $keyOf[$last],
+      // The way back is news on a channel that only takes failures as well.
+      return fs_linked(array('kind' => 'check.go', 'severity' => 'success', 'ping' => 'success', 'key' => $keyOf[$last], 'recovery' => true,
         'title' => fs_fill($L['n_title_go'] ?? '', $go), 'body' => (string) ($L['n_body_go'] ?? ''),
         'hub' => array('title' => fs_fill($L['n_hub_title_go'] ?? '', $go), 'resolve' => array())));
     default:

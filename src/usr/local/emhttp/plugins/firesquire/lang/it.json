@@ -368,6 +368,7 @@
   "h_area_system": "Sistema",
   "h_area_fortress": "Fortezza",
   "n_health_title": "FireSquire su {0}: {1} da guardare",
+  "n_health_back_title": "FireSquire su {0}: {1} di nuovo a posto",
   "fortress_app_warning": "{0} su {1} segnala un problema.",
   "fortress_app_overdue": "{0} su {1} è indietro con il suo lavoro.",
   "fortress_app_failed": "{0} su {1} segnala un errore.",
@@ -417,5 +418,6 @@
   "stop_op_running": "È in corso un’operazione di parità ({0}). Fermare l’array la annulla.",
   "stop_mover": "Il mover è in esecuzione. Fermare l’array lo interrompe a metà.",
   "n_hub_health": "{0}: {1} da guardare",
+  "n_hub_health_back": "{0}: {1} di nuovo a posto",
   "n_hub_test_title": "Messaggio di prova"
 }

@@ -404,6 +404,7 @@
   "h_area_system": "Sistem",
   "h_area_fortress": "Fortăreață",
   "n_health_title": "FireSquire pe {0}: {1} merită o privire",
+  "n_health_back_title": "FireSquire pe {0}: {1} din nou în regulă",
   "fortress_app_warning": "{0} de pe {1} raportează o problemă.",
   "fortress_app_overdue": "{0} de pe {1} a rămas în urmă cu treaba.",
   "fortress_app_failed": "{0} de pe {1} raportează un eșec.",
@@ -458,5 +459,6 @@
   "stop_op_running": "Rulează o operațiune de paritate ({0}). Oprirea array-ului o anulează.",
   "stop_mover": "Mover-ul rulează. Oprirea array-ului îl întrerupe.",
   "n_hub_health": "{0}: {1} merită o privire",
+  "n_hub_health_back": "{0}: {1} din nou în regulă",
   "n_hub_test_title": "Mesaj de test"
 }

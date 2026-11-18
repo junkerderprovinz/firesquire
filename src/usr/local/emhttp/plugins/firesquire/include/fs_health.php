@@ -142,6 +142,27 @@ function fs_health_status($areas, $prev, $now, $lang, $app, $device) {
     'next' => array(), 'capabilities' => array('health'), 'sampledAt' => gmdate('Y-m-d\TH:i:s\Z', $now));
 }
 
+/* The notification for the areas that are green again since the check
+ * before, a recovery that also reaches a channel taking failures alone. With
+ * every area out of yellow and red it carries $key, the key of the last
+ * message about worse areas, so the hub closes that one. */
+function fs_health_back_event($areas, $before, $lang, $server, $key) {
+  $L = fs_texts($lang);
+  $back = array();
+  $bad = false;
+  foreach ($areas as $name => $a) {
+    $bad = $bad || in_array($a['light'], array('yellow', 'red'), true);
+    if ($a['light'] === 'green' && in_array($before[$name] ?? '', array('yellow', 'red'), true)) $back[] = $L["h_area_$name"] ?? $name;
+  }
+  if (!$back) return null;
+  $words = array($server, implode(', ', $back));
+  $event = array('kind' => 'health.better', 'severity' => 'success', 'recovery' => true,
+    'title' => fs_fill($L['n_health_back_title'] ?? '', $words), 'body' => '• ' . implode("\n• ", $back),
+    'hub' => array('title' => fs_fill($L['n_hub_health_back'] ?? '', $words), 'resolve' => array()));
+  if (!$bad && $key !== '') $event['key'] = $key;
+  return fs_linked($event);
+}
+
 /* The notification for the areas that got worse since the check before, or
  * null when none did. A first check after a restart compares with the
  * history's last day. Its key names the areas, for TollRoll's hub. */

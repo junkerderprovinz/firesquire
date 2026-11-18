@@ -8,12 +8,26 @@
 # FS_RUN and HERE.
 # shellcheck shell=bash
 
-# own_send sends the event to the channels of a list: Unraid's own
-# notification with the link as a path, which its WebGUI opens, every other
-# channel with the link made whole. A list that holds both is sent in two.
+# own_send sends the event to the channels of a list.
 own_send() {
-  local event="$1" channels="$2" part kind list
+  local event="$1" channels="$2" lifted=""
   [ -x "$NOTIFY" ] && [ -s "$channels" ] || return 0
+  # The helper sends a success only to channels that take everything, and the
+  # way back is news on a channel for failures as well.
+  if printf '%s' "$event" | php "$HERE/firesquire-hub.php" recovery; then
+    lifted="$FS_RUN/lifted.$$.json"
+    mkdir -p "$FS_RUN" && (umask 077 && php "$HERE/firesquire-hub.php" lift "$channels" > "$lifted") && channels="$lifted"
+  fi
+  own_split "$event" "$channels"
+  [ -n "$lifted" ] && rm -f "$lifted"
+  return 0
+}
+
+# own_split sends Unraid's own notification the link as a path, which its
+# WebGUI opens, and every other channel the link made whole. A list that holds
+# both is sent in two.
+own_split() {
+  local event="$1" channels="$2" part kind list
   list="$(php "$HERE/firesquire-hub.php" unraid "$channels")"
   if [ -z "$list" ]; then
     printf '%s' "$event" | php "$HERE/firesquire-hub.php" own whole | "$NOTIFY" send -channels "$channels" -source FireSquire >/dev/null 2>&1

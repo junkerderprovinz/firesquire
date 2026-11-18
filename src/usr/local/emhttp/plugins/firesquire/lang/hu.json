@@ -335,6 +335,7 @@
   "h_area_system": "Rendszer",
   "h_area_fortress": "Erőd",
   "n_health_title": "FireSquire ({0}): {1} megér egy pillantást",
+  "n_health_back_title": "FireSquire itt: {0}: {1} ismét rendben",
   "fortress_app_warning": "{0} ({1}) problémát jelez.",
   "fortress_app_overdue": "{0} ({1}) le van maradva a munkájával.",
   "fortress_app_failed": "{0} ({1}) azt jelzi, hogy valami nem sikerült.",
@@ -384,5 +385,6 @@
   "stop_op_running": "Paritásművelet van folyamatban ({0}). A tömb leállítása megszakítja.",
   "stop_mover": "A Mover fut. A tömb leállítása félbeszakítja.",
   "n_hub_health": "{0}: {1} megér egy pillantást",
+  "n_hub_health_back": "{0}: {1} ismét rendben",
   "n_hub_test_title": "Tesztüzenet"
 }

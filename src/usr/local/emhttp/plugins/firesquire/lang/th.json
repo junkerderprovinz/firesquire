@@ -314,6 +314,7 @@
   "h_area_system": "ระบบ",
   "h_area_fortress": "ป้อมปราการ",
   "n_health_title": "FireSquire บน {0}: {1} ควรดูสักหน่อย",
+  "n_health_back_title": "FireSquire บน {0}: {1} กลับมาปกติแล้ว",
   "fortress_app_warning": "{0} บน {1} รายงานปัญหา",
   "fortress_app_overdue": "{0} บน {1} ทำงานล่าช้า",
   "fortress_app_failed": "{0} บน {1} รายงานความล้มเหลว",
@@ -358,5 +359,6 @@
   "stop_op_running": "มีการดำเนินการ parity กำลังทำงานอยู่ ({0}) การหยุดอาเรย์จะยกเลิกการดำเนินการนี้",
   "stop_mover": "mover กำลังทำงานอยู่ การหยุดอาเรย์จะทำให้หยุดกลางคัน",
   "n_hub_health": "{0}: {1} ควรดูสักหน่อย",
+  "n_hub_health_back": "{0}: {1} กลับมาปกติแล้ว",
   "n_hub_test_title": "ข้อความทดสอบ"
 }

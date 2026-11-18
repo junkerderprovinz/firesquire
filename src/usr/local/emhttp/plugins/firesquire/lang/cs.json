@@ -404,6 +404,7 @@
   "h_area_system": "Systém",
   "h_area_fortress": "Pevnost",
   "n_health_title": "FireSquire na {0}: mrkni na {1}",
+  "n_health_back_title": "FireSquire na {0}: {1} zase v pořádku",
   "fortress_app_warning": "{0} na {1} hlásí problém.",
   "fortress_app_overdue": "{0} na {1} nestíhá svou práci.",
   "fortress_app_failed": "{0} na {1} hlásí selhání.",
@@ -458,5 +459,6 @@
   "stop_op_running": "Běží operace parity ({0}). Zastavení pole ji zruší.",
   "stop_mover": "Mover běží. Zastavení pole ho předčasně ukončí.",
   "n_hub_health": "{0}: mrkni na {1}",
+  "n_hub_health_back": "{0}: {1} zase v pořádku",
   "n_hub_test_title": "Testovací zpráva"
 }

@@ -374,6 +374,7 @@
   "h_area_system": "Järjestelmä",
   "h_area_fortress": "Linnoitus",
   "n_health_title": "FireSquire laitteessa {0}: {1} kannattaa katsoa",
+  "n_health_back_title": "FireSquire laitteessa {0}: {1} taas kunnossa",
   "fortress_app_warning": "{0} laitteessa {1} ilmoittaa ongelmasta.",
   "fortress_app_overdue": "{0} laitteessa {1} on jäljessä töistään.",
   "fortress_app_failed": "{0} laitteessa {1} ilmoittaa, että jokin epäonnistui.",
@@ -423,5 +424,6 @@
   "stop_op_running": "Pariteettioperaatio on käynnissä ({0}). Arrayn pysäyttäminen keskeyttää sen.",
   "stop_mover": "Mover on käynnissä. Arrayn pysäyttäminen katkaisee sen kesken.",
   "n_hub_health": "{0}: {1} kannattaa katsoa",
+  "n_hub_health_back": "{0}: {1} taas kunnossa",
   "n_hub_test_title": "Testiviesti"
 }

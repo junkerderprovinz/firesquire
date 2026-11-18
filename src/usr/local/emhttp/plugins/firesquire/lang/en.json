@@ -377,6 +377,7 @@
   "h_area_system": "System",
   "h_area_fortress": "Fortress",
   "n_health_title": "FireSquire on {0}: {1} worth a look",
+  "n_health_back_title": "FireSquire on {0}: {1} healthy again",
   "fortress_app_warning": "{0} on {1} reports a problem.",
   "fortress_app_overdue": "{0} on {1} is behind with its work.",
   "fortress_app_failed": "{0} on {1} reports a failure.",
@@ -426,5 +427,6 @@
   "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
   "stop_mover": "The mover is running. Stopping the array cuts it short.",
   "n_hub_health": "{0}: {1} worth a look",
+  "n_hub_health_back": "{0}: {1} healthy again",
   "n_hub_test_title": "Test message"
 }

@@ -431,6 +431,7 @@
   "h_area_system": "System",
   "h_area_fortress": "Twierdza",
   "n_health_title": "FireSquire na {0}: zerknij na {1}",
+  "n_health_back_title": "FireSquire na {0}: {1} znowu w porządku",
   "fortress_app_warning": "{0} na {1} zgłasza problem.",
   "fortress_app_overdue": "{0} na {1} zalega ze swoją pracą.",
   "fortress_app_failed": "{0} na {1} zgłasza awarię.",
@@ -490,5 +491,6 @@
   "stop_op_running": "Trwa operacja parzystości ({0}). Zatrzymanie array ją przerwie.",
   "stop_mover": "Mover jest uruchomiony. Zatrzymanie array przerwie go przed czasem.",
   "n_hub_health": "{0}: zerknij na {1}",
+  "n_hub_health_back": "{0}: {1} znowu w porządku",
   "n_hub_test_title": "Wiadomość testowa"
 }

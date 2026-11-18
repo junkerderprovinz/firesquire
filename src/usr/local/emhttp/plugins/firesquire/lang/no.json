@@ -371,6 +371,7 @@
   "h_area_system": "System",
   "h_area_fortress": "Festning",
   "n_health_title": "FireSquire på {0}: {1} er verdt en titt",
+  "n_health_back_title": "FireSquire på {0}: {1} i orden igjen",
   "fortress_app_warning": "{0} på {1} melder om et problem.",
   "fortress_app_overdue": "{0} på {1} ligger etter med arbeidet sitt.",
   "fortress_app_failed": "{0} på {1} melder at noe feilet.",
@@ -420,5 +421,6 @@
   "stop_op_running": "En paritetsoperasjon pågår ({0}). Å stoppe arrayet avbryter den.",
   "stop_mover": "Mover kjører. Å stoppe arrayet avbryter den før den er ferdig.",
   "n_hub_health": "{0}: {1} er verdt en titt",
+  "n_hub_health_back": "{0}: {1} i orden igjen",
   "n_hub_test_title": "Testmelding"
 }

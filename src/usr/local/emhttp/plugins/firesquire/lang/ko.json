@@ -314,6 +314,7 @@
   "h_area_system": "시스템",
   "h_area_fortress": "요새",
   "n_health_title": "{0}의 FireSquire: {1} 살펴보기 권장",
+  "n_health_back_title": "{0}의 FireSquire: {1} 다시 정상",
   "fortress_app_warning": "{1}의 {0}이(가) 문제를 알리고 있습니다.",
   "fortress_app_overdue": "{1}의 {0}이(가) 작업이 밀려 있습니다.",
   "fortress_app_failed": "{1}의 {0}이(가) 실패를 알리고 있습니다.",
@@ -358,5 +359,6 @@
   "stop_op_running": "패리티 작업이 실행 중입니다({0}). 어레이를 멈추면 취소됩니다.",
   "stop_mover": "mover가 실행 중입니다. 어레이를 멈추면 중간에 끊깁니다.",
   "n_hub_health": "{0}: {1} 살펴보기 권장",
+  "n_hub_health_back": "{0}: {1} 다시 정상",
   "n_hub_test_title": "테스트 메시지"
 }

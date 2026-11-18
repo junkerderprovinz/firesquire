@@ -431,6 +431,7 @@
   "h_area_system": "Система",
   "h_area_fortress": "Крепость",
   "n_health_title": "FireSquire на {0}: {1} стоит проверить",
+  "n_health_back_title": "FireSquire на {0}: {1} снова в порядке",
   "fortress_app_warning": "{0} на {1} сообщает о проблеме.",
   "fortress_app_overdue": "{0} на {1} отстаёт с работой.",
   "fortress_app_failed": "{0} на {1} сообщает о сбое.",
@@ -490,5 +491,6 @@
   "stop_op_running": "Идёт операция чётности ({0}). Остановка массива её прервёт.",
   "stop_mover": "Mover работает. Остановка массива оборвёт его на полпути.",
   "n_hub_health": "{0}: {1} стоит проверить",
+  "n_hub_health_back": "{0}: {1} снова в порядке",
   "n_hub_test_title": "Тестовое сообщение"
 }

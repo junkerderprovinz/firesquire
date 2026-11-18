@@ -404,6 +404,7 @@
   "h_area_system": "מערכת",
   "h_area_fortress": "מבצר",
   "n_health_title": "FireSquire ב-{0}: כדאי להציץ ב-{1}",
+  "n_health_back_title": "FireSquire ב-{0}: שוב תקין: {1}",
   "fortress_app_warning": "{0} ב-{1} מדווח על בעיה.",
   "fortress_app_overdue": "{0} ב-{1} מפגר בעבודה שלו.",
   "fortress_app_failed": "{0} ב-{1} מדווח על כשל.",
@@ -458,5 +459,6 @@
   "stop_op_running": "פעולת parity רצה ({0}). עצירת המערך תבטל אותה.",
   "stop_mover": "ה-mover רץ. עצירת המערך תקטע אותו באמצע.",
   "n_hub_health": "{0}: כדאי להציץ ב-{1}",
+  "n_hub_health_back": "{0}: שוב תקין: {1}",
   "n_hub_test_title": "הודעת בדיקה"
 }

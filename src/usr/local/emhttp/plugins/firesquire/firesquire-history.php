@@ -10,7 +10,9 @@
  *
  * With --refresh it writes the status again from the last check alone, which
  * cron does every hour, so TollRoll knows FireSquire is still there between
- * checks. Arguments: Unraid's language, the server's name and FireSquire's
+ * checks. It prints one notification per line: areas that got worse and
+ * areas that are green again. Arguments: Unraid's language, the server's
+ * name and FireSquire's
  * version, each found on the server when left out. */
 require __DIR__ . '/include/fs_health.php';
 
@@ -65,9 +67,15 @@ $before = is_array($last['areas'] ?? null) ? fs_lights($last['areas']) : ($days 
 $next = fs_history_add($history, date('Y-m-d', $now), $lights);
 if ($next !== $history) fs_put($historyFile, $next);
 
+$event = fs_health_event($h['areas'], $before, $lang, $server);
+$back = fs_health_back_event($h['areas'], $before, $lang, $server, (string) ($last['healthKey'] ?? ''));
+// The key of the last message about worse areas, which the way back closes.
+$healthKey = $event !== null ? $event['key'] : (string) ($last['healthKey'] ?? '');
+if ($back !== null && isset($back['key'])) $healthKey = '';
 fs_put("$run/last.json", json_encode(array('generated' => date('Y-m-d H:i:s', $now), 'at' => $now, 'verdict' => (string) ($report['verdict'] ?? ''),
-  'areas' => $h['areas'], 'config' => $h['config']), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+  'areas' => $h['areas'], 'config' => $h['config'], 'healthKey' => $healthKey), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 fs_put_status($out, $h['areas'], $now, $lang, $app, $server);
 
-$event = fs_health_event($h['areas'], $before, $lang, $server);
-if ($event !== null) echo json_encode($event, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
+foreach (array($event, $back) as $e) {
+  if ($e !== null) echo json_encode($e, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
+}

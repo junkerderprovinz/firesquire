@@ -107,7 +107,14 @@ ok('the status is written again from the last check', fs.statSync(plain).mtime.g
 ok('and still says when that check ran', again.sampledAt === st.sampledAt, again.sampledAt);
 ok('it keeps the history on the flash as it is', fs.statSync(hist).mtime.getFullYear() === 2000);
 ok('the plugin asks for it every hour', /^\s*cron="47 \* \* \* \* \/usr\/bin\/php &emhttp;\/&pkg;-history\.php --refresh /m.test(fs.readFileSync(path.join(__dirname, '..', 'firesquire.plg'), 'utf8')));
-cli({ verdict: 'GO', checks: [{ tier: 'critical', id: 'flash', status: 'pass', key: 'flash_ok', args: [] }] }, 'de');
+const backOut = cli({ verdict: 'GO', checks: [{ tier: 'critical', id: 'flash', status: 'pass', key: 'flash_ok', args: [] },
+  { tier: 'warning', id: 'smart', status: 'pass', key: 'smart_ok', args: ['3'] }, { tier: 'health', id: 'cert', status: 'pass', key: 'cert_ok', args: ['a.pem', '2034-01-01'] }] }, 'de');
+const backs = backOut.trim().split('\n').filter(Boolean).map((l) => JSON.parse(l));
+const back = backs.find((e) => e.kind === 'health.better');
+ok('areas that are healthy again go out too, as a recovery', back && back.severity === 'success' && back.recovery === true &&
+  back.title === de.n_health_back_title.replace('{0}', 'tower').replace('{1}', [de.h_area_disks, de.h_area_network].join(', ')), backOut);
+ok('an area that only went quiet is no recovery', back && !back.title.includes(de.h_area_system) && !back.title.includes(de.h_area_fortress));
+ok('the hub gets it without FireSquire\'s name, and with the link', back && back.hub.title === de.n_hub_health_back.replace('{0}', 'tower').replace('{1}', [de.h_area_disks, de.h_area_network].join(', ')) && back.link === '/Settings/FireSquireTools');
 const calm = JSON.parse(fs.readFileSync(plain, 'utf8'));
 ok('all green is ok', calm.state === 'ok' && calm.needsYou.length === 0);
 ok('the plain file speaks Unraid\'s language', JSON.parse(fs.readFileSync(path.join(out_, 'firesquire.de.json'), 'utf8')).sampledAt === calm.sampledAt);
@@ -125,7 +132,7 @@ ok('an app that is behind or failing is a health finding, never a reboot one',
 console.log('\nThe engine and the texts');
 const engine = read('firesquire-check.sh');
 ok('the engine hands every report to the history', /php "\$HERE\/firesquire-history\.php"/.test(engine));
-const keys = ['h_area_disks', 'h_area_array', 'h_area_docker', 'h_area_vms', 'h_area_flash', 'h_area_network', 'h_area_system', 'h_area_fortress', 'n_health_title',
+const keys = ['n_health_back_title', 'n_hub_health_back', 'h_area_disks', 'h_area_array', 'h_area_docker', 'h_area_vms', 'h_area_flash', 'h_area_network', 'h_area_system', 'h_area_fortress', 'n_health_title',
   'fortress_app_warning', 'fortress_app_overdue', 'fortress_app_failed'];
 const missing = keys.filter((k) => !(k in en));
 ok('every text is in en.json', missing.length === 0, missing.join(', '));

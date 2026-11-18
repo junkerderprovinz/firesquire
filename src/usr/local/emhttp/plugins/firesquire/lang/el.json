@@ -377,6 +377,7 @@
   "h_area_system": "Σύστημα",
   "h_area_fortress": "Φρούριο",
   "n_health_title": "FireSquire στο {0}: ρίξε μια ματιά σε {1}",
+  "n_health_back_title": "FireSquire στο {0}: {1} ξανά εντάξει",
   "fortress_app_warning": "Το {0} στο {1} αναφέρει ένα πρόβλημα.",
   "fortress_app_overdue": "Το {0} στο {1} έχει μείνει πίσω με τη δουλειά του.",
   "fortress_app_failed": "Το {0} στο {1} αναφέρει μια αποτυχία.",
@@ -426,5 +427,6 @@
   "stop_op_running": "Μια λειτουργία ισοτιμίας είναι σε εξέλιξη ({0}). Η διακοπή του array την ακυρώνει.",
   "stop_mover": "Το mover εκτελείται. Η διακοπή του array το κόβει στη μέση.",
   "n_hub_health": "{0}: ρίξε μια ματιά σε {1}",
+  "n_hub_health_back": "{0}: {1} ξανά εντάξει",
   "n_hub_test_title": "Δοκιμαστικό μήνυμα"
 }

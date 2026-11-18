@@ -443,6 +443,7 @@
   "h_area_system": "النظام",
   "h_area_fortress": "الحصن",
   "n_health_title": "FireSquire على {0}: يستحسن إلقاء نظرة على {1}",
+  "n_health_back_title": "FireSquire على {0}: {1} سليم مجددًا",
   "fortress_app_warning": "{0} على {1} يُبلّغ عن مشكلة.",
   "fortress_app_overdue": "{0} على {1} متأخر في عمله.",
   "fortress_app_failed": "{0} على {1} يُبلّغ عن إخفاق.",
@@ -512,5 +513,6 @@
   "stop_op_running": "عملية تكافؤ قيد التشغيل ({0}). إيقاف المصفوفة يلغيها.",
   "stop_mover": "الـ mover قيد التشغيل. إيقاف المصفوفة يقطعه قبل أن ينتهي.",
   "n_hub_health": "{0}: يستحسن إلقاء نظرة على {1}",
+  "n_hub_health_back": "{0}: {1} سليم مجددًا",
   "n_hub_test_title": "رسالة اختبار"
 }
