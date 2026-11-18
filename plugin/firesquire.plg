@@ -13,8 +13,8 @@
 <!ENTITY sha256 "a3c33e3f7b5592e0efab305f9f34c6b14dbe2e29c9956e73f3766a773aa03890">
 <!ENTITY helperVer "v1.3.0">
 <!ENTITY helperURL "https://github.com/junkerderprovinz/parleyport/releases/download/&helperVer;">
-<!ENTITY fortressSHA "TODO_FORTRESS_SHA">
-<!ENTITY notifySHA "TODO_NOTIFY_SHA">
+<!ENTITY fortressSHA "d75923336780d048ccc9f337bd03dca8b3dda5b550dab8231ddf8cedaf129464">
+<!ENTITY notifySHA "a30807fecb54371e788655a5192de55c6aa3dc1d146b99e7f04f08f8d76a3f15">
 ]>
 
 <PLUGIN name="&name;"
