@@ -92,6 +92,6 @@ console.log('\nThe report under the guard');
 const runSrc = grabFn(js, 'run');
 ok('a GO goes straight on', /guard && data && data\.verdict === 'GO'[\s\S]*?guard\.proceed\(\)/.test(runSrc));
 ok('anything else asks, even a check that could not run', /if \(guard\) ask\(guard, act, win\.close\)/.test(runSrc));
-ok('every page installs the guard', /installGuard\(window, function\(cmd, proceed\)\{ run\(null, \{ cmd: cmd, proceed: proceed \}\); \}\)/.test(js));
+ok('every page installs the guard', /installGuard\(window, function\(cmd, proceed, cancel\)\{ run\(null, \{ cmd: cmd, proceed: proceed, cancel: cancel \}\); \}\)/.test(js));
 
 done();

@@ -91,14 +91,14 @@ console.log('\nCatching the Stop button');
 const js = read('firesquire.js');
 function form(action, fields) {
   return { tagName: 'FORM', sent: 0, getAttribute: (k) => (k === 'action' ? action : null),
-    querySelectorAll: (sel) => { const n = /\[name="(\w+)"\]/.exec(sel); return n && n[1] in fields ? [{ value: fields[n[1]] }] : []; } };
+    querySelectorAll: (sel) => { const n = /\[name="(\w+)"\]/.exec(sel); return n && n[1] in fields ? [{ value: fields[n[1]], type: 'hidden', remove() { delete fields[n[1]]; } }] : []; } };
 }
 const listeners = [];
 const proto = { submit() { this.sent++; } };
 const win = { HTMLFormElement: { prototype: proto }, document: { addEventListener: (t, fn) => listeners.push({ t, fn }) } };
 const asked = [];
 const make = new Function('location', 'URL', grabFn(js, 'bootCmd') + '\n' + grabFn(js, 'installGuard') + '\nreturn installGuard;');
-make({ href: 'http://tower/Main' }, URL)(win, (cmd, proceed) => asked.push({ cmd, proceed }));
+make({ href: 'http://tower/Main' }, URL)(win, (cmd, proceed, cancel) => asked.push({ cmd, proceed, cancel }));
 const main = form('/update.htm', { cmdStop: 'Stop', startState: 'STARTED' });
 proto.submit.call(main);
 ok('Main\'s Stop waits for the check', main.sent === 0 && asked.length === 1 && asked[0].cmd === 'stop');
@@ -107,6 +107,17 @@ ok('and goes out once the check lets it', main.sent === 1);
 const start = form('/update.htm', { cmdStart: 'Start' });
 proto.submit.call(start);
 ok('Start goes out untouched', start.sent === 1 && asked.length === 1);
+const fields = { cmdStop: 'Stop', startState: 'STARTED' };
+const again = form('/update.htm', fields);
+proto.submit.call(again);
+asked[1].cancel();
+ok('cancelling takes the stop out of the form again, as Unraid\'s own Cancel does', !('cmdStop' in fields) && 'startState' in fields && again.sent === 0, JSON.stringify(fields));
+const boot = form('/webGui/include/Boot.php', {});
+boot.querySelectorAll = (sel) => (sel === '[name="cmd"]' ? [{ value: 'reboot' }] : []);
+proto.submit.call(boot);
+ok('a cancelled reboot leaves its form as it was', typeof asked[2].cancel === 'function' && (asked[2].cancel(), boot.sent === 0));
+const runSrc = grabFn(js, 'run');
+ok('closing the window without going on counts as cancel', /onClose: function\(\)\{[^}]*guard\.cancel\(\)/.test(runSrc) && /guard\.went = true/.test(runSrc));
 ok('the Dashboard\'s StopArrayNow is held the same way', /win\.StopArrayNow = held/.test(js) && /guardStop\(window\)/.test(js));
 ok('the question names the stop', /g_ask_stop/.test(js) && /g_stop/.test(js) && 'g_ask_stop' in en && 'g_stop' in en);
 

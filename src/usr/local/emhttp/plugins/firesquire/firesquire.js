@@ -531,7 +531,7 @@
     Array.prototype.forEach.call(act.querySelectorAll('.fs-ask'), function(n){ n.remove(); });
     act.insertBefore(el('span', 'fs-win-ask fs-ask', fsT(words[0])), act.firstChild);
     var go = button('fs-win-btn fs-key fs-ask', 'Forward', fsT(words[1]));
-    go.addEventListener('click', function(){ close(); guard.proceed(); });
+    go.addEventListener('click', function(){ guard.went = true; close(); guard.proceed(); });
     act.appendChild(go);
     var cancel = act.querySelector('.fs-win-btn .fs-btn-l');
     if (cancel) cancel.textContent = fsT('g_cancel');
@@ -546,7 +546,7 @@
     var abort = null, retry = null, act = null;
     var win = openWindow({
       cls: 'fs-win-report' + (guard ? ' fs-win-guard' : ''), title: fsT(stop ? 'title_stop' : 'title'), head: true, opener: opener,
-      onClose: function(){ if (abort) abort.abort(); },
+      onClose: function(){ if (abort) abort.abort(); if (guard && !guard.went && guard.cancel) guard.cancel(); },
       build: function(body, win, foot){ act = foot; start(body); }
     });
 
@@ -587,7 +587,7 @@
         if (guard) ask(guard, act, win.close);
       }
       function onResult(data){
-        if (guard && data && data.verdict === 'GO') { finished = true; win.close(); guard.proceed(); return; }
+        if (guard && data && data.verdict === 'GO') { finished = true; guard.went = true; win.close(); guard.proceed(); return; }
         finish(reportHTML(data));
       }
       function onErr(){ finish(errHTML()); }
@@ -621,10 +621,15 @@
   }
   function installGuard(win, check){
     var proto = win.HTMLFormElement.prototype, submit = proto.submit;
+    // Unraid's Stop adds its field to the form before it asks, and takes it
+    // out again on Cancel, so a later Start does not send it along.
     function hold(form){
       var cmd = bootCmd(form);
       if (!cmd) return false;
-      check(cmd, function(){ submit.call(form); });
+      check(cmd, function(){ submit.call(form); }, function(){
+        if (cmd !== 'stop') return;
+        Array.prototype.forEach.call(form.querySelectorAll('[name="cmdStop"]'), function(n){ if (n.type === 'hidden') n.remove(); });
+      });
       return true;
     }
     proto.submit = function(){ if (!hold(this)) submit.call(this); };
@@ -632,7 +637,7 @@
       if (hold(e.target)) { e.preventDefault(); e.stopImmediatePropagation(); }
     }, true);
   }
-  installGuard(window, function(cmd, proceed){ run(null, { cmd: cmd, proceed: proceed }); });
+  installGuard(window, function(cmd, proceed, cancel){ run(null, { cmd: cmd, proceed: proceed, cancel: cancel }); });
 
   // The Dashboard stops the array by a request of its own in StopArrayNow,
   // which Unraid calls once its own question is answered.
