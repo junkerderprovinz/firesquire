@@ -1,6 +1,11 @@
 4100 /mnt/user/media/film.mkv
 4100 /mnt/user/media
+4200 /mnt/user/tv/show.mkv
 5200 /mnt/disk1/backup/x.tar
 6000 /mnt/user/appdata/plex/db
 7000 /mnt/disks/usb/a
 8000 /mnt/cache/vm.img
+9100 /mnt/user/media/a.mkv
+9200 /mnt/cache/domains/share/x
+9300 /mnt/cache/shiplog/shiplog.db
+9400 /mnt/cache/system/logs/syslog.log

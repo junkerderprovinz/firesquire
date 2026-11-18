@@ -4,6 +4,8 @@
 // agent may ignore the request and be forced off, and containers and a short time-out are worth
 // knowing. The form to update.htm on Main and the Dashboard's StopArrayNow are held until the
 // check lets them through, and Unraid's files stay as they are.
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { DIR, read, ok, done, grabFn } = require('./lib');
@@ -31,24 +33,39 @@ ${body}
   });
 }
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const plugins = fs.mkdtempSync(path.join(os.tmpdir(), 'fs-plugins-'));
+fs.mkdirSync(path.join(plugins, 'shiplog', 'event'), { recursive: true });
+fs.writeFileSync(path.join(plugins, 'shiplog', 'event', 'stopping_svcs'), '#!/bin/bash\n');
+const P = plugins.replace(/\\/g, '/');
 const procs = `proc_links() { cat "${FIX}/proc-links.txt"; }
-proc_comm() { case "$1" in 4100) echo bash ;; 5200) echo rsync ;; 6000) echo Plex ;; 7000) echo cp ;; 8000) echo qemu-system-x86 ;; esac; }
+FS_PLUGINS_DIR="${P}"
+proc_name() { case "$1" in 4100|4200) echo bash ;; 5200) echo rsync-with-a-long-name ;; 6000) echo Plex ;; 7000) echo cp ;; 8000) echo qemu-system-x86_64 ;;
+  9100) echo smbd ;; 9200) echo virtiofsd ;; 9300) echo shiplog ;; 9400) echo rsyslogd ;; esac; }
+proc_exe() { case "$1" in 9300) echo "${P}/shiplog/bin/shiplog" ;; *) echo /usr/bin/x ;; esac; }
 in_container() { [ "$1" = 6000 ]; }`;
 
 console.log('\nOpen files');
 let r = stop(`${procs}\nstop_open_files`);
-ok('a process with files open on a share or a disk holds the array, by name, pid and place',
+ok('a process with files open on a share or a disk holds the array, by its full name, pids and places',
   r.length === 1 && r[0].key === 'stop_open_files' && r[0].tier === 'critical' && r[0].status === 'fail' &&
-  same(r[0].args, ['bash (4100) in /mnt/user/media, rsync (5200) in /mnt/disk1/backup', '2']), JSON.stringify(r));
+  same(r[0].args, ['bash (4100, 4200) in /mnt/user/media /mnt/user/tv, rsync-with-a-long-name (5200) in /mnt/disk1/backup', '3']), JSON.stringify(r));
 ok('containers and VMs stay out, Unraid stops them first, and so does a disk outside the array', !/Plex|qemu|cp \(/.test(r[0] && r[0].args[0]));
+ok('so does what Unraid ends itself: file sharing, the VMs\' file service, syslog and plugins with a stop script', !/smbd|virtiofsd|rsyslogd|shiplog/.test(r[0] && r[0].args[0]));
+ok('the name comes from the command line, which the kernel does not cut short', /tr '\\\\0' '\\\\n' < "\/proc\/\$1\/cmdline"|cmdline/.test(read('firesquire-stop.sh')));
+fs.rmSync(plugins, { recursive: true, force: true });
 r = stop(`proc_links() { :; }\nstop_open_files`);
 ok('nothing open passes', r.length === 1 && r[0].key === 'stop_open_ok' && r[0].status === 'pass', JSON.stringify(r));
 
 console.log('\nMounts inside the array');
 r = stop(`losetup() { cat "${FIX}/losetup-stop.txt"; }\nstop_mounts`);
 const m = r.find((f) => f.key === 'stop_mounts');
-ok('a mounted snapshot, a mount on a share and a mounted image hold it, the pool\'s own datasets do not',
+ok('a mounted snapshot, a mount on a share and a mounted image hold it, the pool\'s own datasets and Docker\'s layers do not',
   m && m.status === 'fail' && same(m.args, ['/mnt/cache/.zfs/snapshot/daily-2026-11-17, /mnt/user/cloud, /mnt/disk1/iso-mount', '3']), JSON.stringify(r));
+const many = fs.mkdtempSync(path.join(os.tmpdir(), 'fs-mounts-'));
+fs.writeFileSync(path.join(many, 'mounts'), Array.from({ length: 12 }, (_, i) => `rclone:r${i} /mnt/user/cloud${i} fuse.rclone rw 0 0`).join('\n') + '\n');
+const r2 = stop(`FS_MOUNTS="${many.replace(/\\/g, '/')}/mounts"\nlosetup() { :; }\nstop_mounts`);
+ok('a long list shows the first few and the count', r2[0].args[1] === '12' && r2[0].args[0].split(', ').length === 6 && r2[0].args[0].endsWith(', …'), JSON.stringify(r2));
+fs.rmSync(many, { recursive: true, force: true });
 ok('docker.img is Unraid\'s to detach, another image is named with its file',
   r.some((f) => f.key === 'stop_loops' && same(f.args, ['/mnt/disk1/isos/debian.iso', '1'])) && !JSON.stringify(r).includes('docker.img'), JSON.stringify(r));
 

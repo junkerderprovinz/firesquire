@@ -6,3 +6,5 @@ shfs /mnt/user fuse.shfs rw 0 0
 rclone:gdrive /mnt/user/cloud fuse.rclone rw 0 0
 /dev/sdh1 /mnt/disks/usb ext4 rw 0 0
 /dev/loop3 /mnt/disk1/iso-mount iso9660 ro 0 0
+overlay /mnt/cache/system/docker/overlay2/d3d69d4ac778/merged overlay rw,lowerdir=/x 0 0
+shm /mnt/cache/system/docker/containers/abc123/mounts/shm tmpfs rw 0 0

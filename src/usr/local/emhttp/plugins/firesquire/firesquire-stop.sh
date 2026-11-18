@@ -6,6 +6,7 @@
 
 FS_POOLS="${FS_POOLS:-/boot/config/pools}"
 FS_MDCMD="${FS_MDCMD:-/usr/local/sbin/mdcmd}"
+FS_PLUGINS_DIR="${FS_PLUGINS_DIR:-/usr/local/emhttp/plugins}"
 
 # array_root prints the mount of the array or of a pool a path lies in, such
 # as /mnt/user or /mnt/cache, and fails for anything else under /mnt.
@@ -24,26 +25,55 @@ proc_links() {
   find /proc/[0-9]*/cwd /proc/[0-9]*/fd -maxdepth 1 -lname '/mnt/*' -printf '%p %l\n' 2>/dev/null |
     sed -E 's#^/proc/([0-9]+)/[^ ]* #\1 #'
 }
-proc_comm() { cat "/proc/$1/comm" 2>/dev/null; }
+# proc_name is the program's name from its command line: the kernel's comm
+# stops at 15 characters, and smbd writes the client's address into it.
+proc_name() {
+  local a
+  a="$(tr '\0' '\n' < "/proc/$1/cmdline" 2>/dev/null | head -n1)"
+  a="${a##*/}"
+  printf '%s' "${a:-$(cat "/proc/$1/comm" 2>/dev/null)}"
+}
+proc_exe() { readlink "/proc/$1/exe" 2>/dev/null; }
 in_container() { grep -qE 'docker|containerd' "/proc/$1/cgroup" 2>/dev/null; }
 
-# stop_open_files names the processes Unraid would wait for in vain. It stops
-# the containers, the VMs and the file sharing itself before it unmounts, so
-# those stay out.
+# unraid_stops says Unraid ends the process itself before it unmounts: the
+# VMs with their file service, the file sharing, its own syslog server, and
+# a plugin's daemon when the plugin has a script for the stop.
+unraid_stops() {
+  case "$2" in qemu*|virtiofsd|smbd*|nfsd|shfs|rsyslogd) return 0 ;; esac
+  local exe plugin e
+  exe="$(proc_exe "$1")"
+  case "$exe" in "$FS_PLUGINS_DIR"/*) ;; *) return 1 ;; esac
+  plugin="${exe#"$FS_PLUGINS_DIR"/}"; plugin="${plugin%%/*}"
+  for e in stopping_svcs stopping stopping_array unmounting_disks; do
+    [ -e "$FS_PLUGINS_DIR/$plugin/event/$e" ] && return 0
+  done
+  return 1
+}
+
+# stop_open_files names the processes Unraid would wait for in vain, one line
+# per program with its pids and places. What Unraid stops before it unmounts,
+# the containers among it, stays out.
 stop_open_files() {
-  local pid p comm place list="" n=0 seen=" "
+  local pid p name place seen=" " n=0 list="" g
+  local -A pids places
+  local order=()
   while read -r pid p; do
-    case "$seen" in *" $pid "*) continue ;; esac
     array_root "$p" >/dev/null || continue
     [ "$pid" = "$$" ] && continue
     in_container "$pid" && continue
-    comm="$(proc_comm "$pid")"
-    case "$comm" in ''|qemu*|smbd|nfsd|shfs) continue ;; esac
-    seen="$seen$pid "
+    name="$(proc_name "$pid")"
+    [ -n "$name" ] || continue
+    unraid_stops "$pid" "$name" && continue
     place="$(printf '%s' "$p" | cut -d/ -f1-4)"
-    list="${list:+$list, }$comm ($pid) in $place"
-    n=$((n + 1))
+    if [ -z "${pids[$name]+x}" ]; then order+=("$name"); pids[$name]=""; places[$name]=" "; fi
+    case "$seen" in *" $pid "*) ;; *) seen="$seen$pid "; n=$((n + 1)); pids[$name]="${pids[$name]:+${pids[$name]}, }$pid" ;; esac
+    case "${places[$name]}" in *" $place "*) ;; *) places[$name]="${places[$name]}$place " ;; esac
   done < <(proc_links)
+  for g in "${order[@]}"; do
+    place="${places[$g]# }"
+    list="${list:+$list, }$g (${pids[$g]}) in ${place% }"
+  done
   if [ -n "$list" ]; then
     add critical stop_files fail stop_open_files "$list|$n" "$(plural "$n" 'This process keeps' 'These processes keep') files open in the array, so it cannot unmount: $list. Close $(plural "$n" it them) first."
   else
@@ -51,10 +81,17 @@ stop_open_files() {
   fi
 }
 
+# shown_list keeps the first five entries of a list joined by ", ", and an
+# ellipsis for the rest, so a long list does not fill the window.
+shown_list() {
+  awk -v RS=', ' 'NR <= 5 { printf "%s%s", (NR > 1 ? ", " : ""), $0 } NR == 6 { printf ", …" }' <<< "$1" | tr -d '\n'
+}
+
 # stop_mounts names what is mounted inside the array or a pool, such as a
 # mounted snapshot, a mount on a share or an image mounted from a disk. The
-# datasets of a ZFS pool are the pool's own, and Unraid detaches docker.img
-# and libvirt.img itself.
+# datasets of a ZFS pool are the pool's own, and the layers and shared memory
+# of Docker's containers go with Docker, which Unraid stops first, as it
+# detaches docker.img and libvirt.img itself.
 stop_mounts() {
   local src mp fs rest root f held="" n=0 loops="" nl=0
   while read -r src mp fs rest; do
@@ -62,9 +99,12 @@ stop_mounts() {
     root="$(array_root "$mp")" || continue
     [ "$mp" = "$root" ] && continue
     if [ "$fs" = zfs ] && [[ "$src" != *@* ]]; then continue; fi
+    case "$fs" in overlay|nsfs) continue ;; esac
+    case "$mp" in */docker/*) continue ;; esac
     held="${held:+$held, }$mp"
     n=$((n + 1))
   done < "$FS_MOUNTS"
+  held="$(shown_list "$held")"
   while IFS= read -r f; do
     array_root "$f" >/dev/null || continue
     case "${f##*/}" in docker.img|libvirt.img) continue ;; esac
