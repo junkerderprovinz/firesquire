@@ -93,7 +93,16 @@ ok('the state is written only when a value changed', fs.statSync(file).mtime.get
 ok('a disk missing from a run keeps its record', /^SER1 /m.test(fs.readFileSync(file, 'utf8')) && /^SER2 /m.test(fs.readFileSync(file, 'utf8')));
 r = health(`FS_STATE="${state}"\nFS_NOW=${T0}\nSMART_ASLEEP=2\nsmart_trend_report`);
 ok('sleeping disks are named as left alone', r.length === 1 && r[0].key === 'smart_asleep' && r[0].status === 'info' && same(r[0].args, ['2']), JSON.stringify(r));
+r = run(note('SER4', 0, '-', 31, 900, 'sdc'), 41);
+ok('a drive without a pending count is shown without one', r.length === 1 && r[0].key === 'smart_disk_short' && same(r[0].args, [SDC, '31', '900']), JSON.stringify(r));
 fs.rmSync(tmp, { recursive: true, force: true });
+
+console.log('\nThe health verdict of SMART');
+const failed = (file) => health(`smart_failed "$(cat "${FIX}/${file}")" && echo failed || echo passed`)[0].tier;
+ok('the column WHEN_FAILED of the attribute table is no failure', failed('smartctl-sdc.txt') === 'passed' && /WHEN_FAILED/.test(fs.readFileSync(path.join(__dirname, 'fixtures', 'smartctl-sdc.txt'), 'utf8')));
+ok('a self-assessment that failed is one', failed('smartctl-failed.txt') === 'failed');
+ok('and so is an attribute failing now', health(`smart_failed "  5 Reallocated_Sector_Ct 0x0033 001 001 010 Pre-fail Always FAILING_NOW 3000" && echo failed || echo passed`)[0].tier === 'failed');
+ok('the engine asks smart_failed', /smart_failed "\$A"/.test(engine) && !/grep -qiE 'FAILED\|FAILING'/.test(engine));
 
 console.log('\nThe texts');
 const keys = ['smart_disk', 'smart_realloc_rose', 'smart_pending_rose', 'smart_temp_rose', 'smart_asleep'];

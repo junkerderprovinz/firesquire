@@ -512,7 +512,7 @@ if have smartctl; then
     spun_down "$d" && { SMART_ASLEEP=$((SMART_ASLEEP+1)); continue; }
     A="$(smart_read "$dev")" || { SMART_ASLEEP=$((SMART_ASLEEP+1)); continue; }
     checked=$((checked+1))
-    if printf '%s' "$A" | grep -qiE 'FAILED|FAILING'; then
+    if smart_failed "$A"; then
       bad="$bad $dev"
     fi
     smart_crc_note "$d" "$A"

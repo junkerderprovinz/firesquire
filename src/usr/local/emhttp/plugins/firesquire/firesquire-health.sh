@@ -156,6 +156,13 @@ smart_read() {
   ! printf '%s\n' "$out" | grep -qE 'is in (STANDBY|SLEEP) mode'
 }
 
+# smart_failed reads the verdict of SMART alone: the self-assessment and an
+# attribute failing now. The attribute table names its column WHEN_FAILED,
+# which is no failure.
+smart_failed() {
+  printf '%s\n' "$1" | grep -qE 'self-assessment test result: FAILED|SMART Health Status: .*(FAIL|IMPENDING)|FAILING_NOW'
+}
+
 # smart_trend_note records the serial, the reallocated and pending sectors,
 # the temperature and the power-on hours from `smartctl -i -A`, with "-" for
 # what the disk does not tell, as NVMe drives keep no sector counts.
@@ -203,7 +210,7 @@ smart_trend_report() {
       fi
     elif num "$tp" && num "$otp" && [ "$tp" -ge $((otp + 8)) ] && [ "$tp" -ge 40 ]; then
       add health smart_trend warn smart_temp_rose "$label|$tp|$otp" "$label runs at $tp °C, well above its usual $otp °C. Check the fans and the airflow."
-    elif [ "$re" = - ]; then
+    elif [ "$re" = - ] || [ "$pe" = - ]; then
       add health smart_trend pass smart_disk_short "$label|$tp|$poh" "$label: $tp °C, $poh $(plural "$poh" hour hours) powered on."
     else
       add health smart_trend pass smart_disk "$label|$tp|$re|$pe|$poh" "$label: $tp °C, $re reallocated and $pe pending sectors, $poh $(plural "$poh" hour hours) powered on."
