@@ -73,18 +73,25 @@ function fs_fill($text, $args) {
   return $text;
 }
 
-/* FireSquire's settings page on this server, as Unraid names its own address,
- * or "" when it is not known. Messages carry it so a click leads there. */
-function fs_settings_link() {
-  $ini = @parse_ini_file(getenv('FS_NGINX_INI') ?: '/var/local/emhttp/nginx.ini');
-  $base = rtrim((string) ($ini['NGINX_DEFAULTURL'] ?? ''), '/');
-  return preg_match('#^https?://[^/\s]+$#', $base) ? "$base/Settings/FireSquireTools" : '';
+/* Messages lead to FireSquire's settings by the page's path. Unraid's own
+ * notification and TollRoll take it as it is, since an address of the server
+ * would not open from every machine or behind a proxy. */
+const FS_SETTINGS_PATH = '/Settings/FireSquireTools';
+
+function fs_linked($event) {
+  $event['link'] = FS_SETTINGS_PATH;
+  return $event;
 }
 
-/* The event with the link to the settings when there is one. */
-function fs_linked($event) {
-  $link = fs_settings_link();
-  if ($link !== '') $event['link'] = $link;
+/* The event for a channel outside the server, its link made whole with the
+ * address Unraid gives itself, or without a link when that is not known. */
+function fs_absolute($event) {
+  $link = (string) ($event['link'] ?? '');
+  if ($link === '' || $link[0] !== '/') return $event;
+  $ini = @parse_ini_file(getenv('FS_NGINX_INI') ?: '/var/local/emhttp/nginx.ini');
+  $base = rtrim((string) ($ini['NGINX_DEFAULTURL'] ?? ''), '/');
+  if (preg_match('#^https?://[^/\s]+$#', $base)) $event['link'] = $base . $link;
+  else unset($event['link']);
   return $event;
 }
 

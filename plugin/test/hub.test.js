@@ -31,8 +31,8 @@ ok('the way back to All clear is a success with the key it closes', e.severity =
 
 const linked = JSON.parse(execFileSync('php', ['-r', `require '${LIB}'; echo json_encode(fs_event(json_decode(stream_get_contents(STDIN), true), 'GO', 'en', 'tower'));`],
   { input: JSON.stringify(nogo), encoding: 'utf8', env: { ...process.env, FS_NGINX_INI: path.join(__dirname, 'fixtures', 'nginx.ini') } }));
-ok('every message links to FireSquire\'s settings on this server', linked.link === 'https://tower.local:443/Settings/FireSquireTools', linked.link);
-ok('without Unraid\'s address it carries no link', !('link' in event(nogo, 'GO')));
+ok('every message links to FireSquire\'s settings by its path, which TollRoll makes whole for the outside', linked.link === '/Settings/FireSquireTools', linked.link);
+ok('also without Unraid\'s address', event(nogo, 'GO').link === '/Settings/FireSquireTools');
 
 console.log('\nFinding TollRoll');
 const hubs = (members) => php(`require '${FLIB}'; echo implode(',', fs_fortress_hubs(stream_get_contents(STDIN)));`, JSON.stringify(members));
@@ -59,6 +59,7 @@ ok('the install adds it to a membership from before', /fs_fortress_uses_ensure\(
 console.log('\nSending');
 fs.mkdirSync(path.join(tmp, 'state'));
 fs.writeFileSync(path.join(tmp, 'state', 'notify.json'), JSON.stringify([
+  { id: 'u', kind: 'unraid', enabled: true, on: 'always' },
   { id: 'n', kind: 'ntfy', enabled: true, on: 'always', url: 'https://ntfy.example/x' },
   { id: 'h', kind: 'healthchecks', enabled: true, on: 'always', url: 'https://hc.example/ping/abc' },
 ]));
@@ -74,16 +75,21 @@ fs.writeFileSync(path.join(tmp, 'notify-helper'), `#!/bin/bash
 { echo "$*"; cat "$3"; echo; cat; } >> "${T}/sent"
 `);
 for (const h of ['fortress-helper', 'notify-helper']) fs.chmodSync(path.join(tmp, h), 0o755);
-const ev = JSON.stringify({ kind: 'check.caution', severity: 'warning', ping: 'fail', key: 'firesquire.check.caution', title: 'FireSquire on tower: Smouldering', body: '• x',
+const ev = JSON.stringify({ kind: 'check.caution', severity: 'warning', ping: 'fail', key: 'firesquire.check.caution', title: 'FireSquire on tower: Smouldering', body: '• x', link: '/Settings/FireSquireTools',
   hub: { title: 'tower: Smouldering', resolve: ['firesquire.check.nogo'] } });
 function send(hubList, okId) {
   for (const f of ['acts', 'sent']) fs.rmSync(path.join(tmp, f), { force: true });
   execFileSync('bash', ['-c', `set -u
 source "${HUB}"
 FORTRESS="${T}/fortress-helper"; FORTRESS_DIR="${T}/fortress"; NOTIFY="${T}/notify-helper"; FS_STATE="${T}/state"; FS_RUN="${T}/run"; HERE="${DIR.replace(/\\/g, '/')}"
-hub_send '${hubList}' "$(cat)"`], { input: ev, encoding: 'utf8', env: { ...process.env, FAKE_OK: okId || 'none' } });
+hub_send '${hubList}' "$(cat)"`], { input: ev, encoding: 'utf8', env: { ...process.env, FAKE_OK: okId || 'none', FS_NGINX_INI: path.join(__dirname, 'fixtures', 'nginx.ini') } });
   const rd = (f) => (fs.existsSync(path.join(tmp, f)) ? fs.readFileSync(path.join(tmp, f), 'utf8') : '');
-  return { acts: rd('acts').trim().split('\n').filter(Boolean), sent: rd('sent') };
+  // Each send is the helper's arguments, the channel list it got and the event.
+  const sends = rd('sent').split(/^(?=send -channels )/m).filter(Boolean).map((b) => {
+    const [args, list, event] = b.split('\n').filter(Boolean);
+    return { args, kinds: (JSON.parse(list || '[]')).map((c) => c.kind).join(','), event: JSON.parse(event || '{}') };
+  });
+  return { acts: rd('acts').trim().split('\n').filter(Boolean), sent: rd('sent'), sends };
 }
 let r = send('t1', 't1');
 const deliver = r.acts.find((a) => / t1 notify\.deliver \{"kind"/.test(a));
@@ -94,7 +100,11 @@ ok('the level before is closed first', r.acts.some((a) => /notify\.deliver \{"ke
 ok('the channels on the flash get only the Healthchecks ping', /healthchecks/.test(r.sent) && !/ntfy/.test(r.sent) && /"ping":"fail"/.test(r.sent), r.sent);
 ok('and the copy of that channel list is gone afterwards', !fs.existsSync(path.join(tmp, 'run')) || fs.readdirSync(path.join(tmp, 'run')).length === 0);
 r = send('t1', '');
-ok('a hub that is off leaves the message to the channels on the flash', /ntfy/.test(r.sent) && /notify\.json/.test(r.sent.split('\n')[0]) && !/"hub"/.test(r.sent), r.sent);
+ok('a hub that is off leaves the message to the channels on the flash', /ntfy/.test(r.sent) && !/"hub"/.test(r.sent), r.sent);
+const own = r.sends.find((x) => x.kinds === 'unraid'), out = r.sends.find((x) => x.kinds === 'ntfy,healthchecks');
+ok('Unraid\'s own notification gets the link as a path, which its WebGUI opens', own && own.event.link === '/Settings/FireSquireTools', JSON.stringify(r.sends));
+ok('the channels outside get it whole, from Unraid\'s own address', out && out.event.link === 'https://tower.local:443/Settings/FireSquireTools', JSON.stringify(r.sends));
+ok('each channel hears the message once', r.sends.length === 2);
 r = send('down,t2', 't2');
 ok('a TollRoll out of reach is skipped for the next', r.acts.some((a) => / t2 notify\.deliver \{"kind"/.test(a)) && !/ntfy/.test(r.sent), r.acts.join(' | '));
 r = send('', '');

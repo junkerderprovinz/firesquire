@@ -3,9 +3,13 @@
  *   hubs          the TollRolls of `fortress status -json` on stdin that take over
  *   body          the message for notify.deliver from FireSquire's event on stdin
  *   resolve       one message per line that closes a level the check left
- *   own           the event for the notify helper, without what is the hub's
- *   pings FILE    the channels of FILE that are Healthchecks, or nothing */
+ *   own [whole]   the event for the notify helper, without what is the hub's,
+ *                 with its link made whole for channels outside the server
+ *   pings FILE    the channels of FILE that are Healthchecks, or nothing
+ *   unraid FILE   the channels of FILE that are Unraid's own notification
+ *   outside FILE  the others */
 require_once __DIR__ . '/include/fs_fortress.php';
+require_once __DIR__ . '/include/fs_notify.php';
 
 $in = stream_get_contents(STDIN);
 $event = json_decode($in, true);
@@ -29,12 +33,19 @@ switch ($argv[1] ?? '') {
   case 'own':
     if (!is_array($event)) exit(1);
     unset($event['hub']);
+    if (($argv[2] ?? '') === 'whole') $event = fs_absolute($event);
     echo json_encode($event, $flags), "\n";
     break;
   case 'pings':
+  case 'unraid':
+  case 'outside':
     $list = json_decode((string) @file_get_contents($argv[2] ?? ''), true);
-    $pings = array_values(array_filter(is_array($list) ? $list : array(), function ($c) { return is_array($c) && ($c['kind'] ?? '') === 'healthchecks'; }));
-    if ($pings) echo json_encode($pings, $flags), "\n";
+    $want = $argv[1];
+    $picked = array_values(array_filter(is_array($list) ? $list : array(), function ($c) use ($want) {
+      $kind = is_array($c) ? ($c['kind'] ?? '') : '';
+      return $want === 'pings' ? $kind === 'healthchecks' : ($want === 'unraid') === ($kind === 'unraid');
+    }));
+    if ($picked) echo json_encode($picked, $flags), "\n";
     break;
   default:
     exit(2);

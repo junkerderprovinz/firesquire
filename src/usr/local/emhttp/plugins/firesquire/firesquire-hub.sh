@@ -8,6 +8,34 @@
 # FS_RUN and HERE.
 # shellcheck shell=bash
 
+# own_send sends the event to the channels of a list: Unraid's own
+# notification with the link as a path, which its WebGUI opens, every other
+# channel with the link made whole. A list that holds both is sent in two.
+own_send() {
+  local event="$1" channels="$2" part kind list
+  [ -x "$NOTIFY" ] && [ -s "$channels" ] || return 0
+  list="$(php "$HERE/firesquire-hub.php" unraid "$channels")"
+  if [ -z "$list" ]; then
+    printf '%s' "$event" | php "$HERE/firesquire-hub.php" own whole | "$NOTIFY" send -channels "$channels" -source FireSquire >/dev/null 2>&1
+    return 0
+  fi
+  if [ -z "$(php "$HERE/firesquire-hub.php" outside "$channels")" ]; then
+    printf '%s' "$event" | php "$HERE/firesquire-hub.php" own | "$NOTIFY" send -channels "$channels" -source FireSquire >/dev/null 2>&1
+    return 0
+  fi
+  mkdir -p "$FS_RUN" || return 0
+  for kind in unraid outside; do
+    part="$FS_RUN/$kind.$$.json"
+    (umask 077 && php "$HERE/firesquire-hub.php" "$kind" "$channels" > "$part") || continue
+    if [ "$kind" = unraid ]; then
+      printf '%s' "$event" | php "$HERE/firesquire-hub.php" own | "$NOTIFY" send -channels "$part" -source FireSquire >/dev/null 2>&1
+    else
+      printf '%s' "$event" | php "$HERE/firesquire-hub.php" own whole | "$NOTIFY" send -channels "$part" -source FireSquire >/dev/null 2>&1
+    fi
+    rm -f "$part"
+  done
+}
+
 # hub_send sends one event, through the first hub in the comma separated list
 # that takes it, or through the channels on the flash.
 hub_send() {
@@ -26,11 +54,10 @@ hub_send() {
       [ -n "$pings" ] || return 0
       channels="$FS_RUN/pings.$$.json"
       mkdir -p "$FS_RUN" && (umask 077 && printf '%s\n' "$pings" > "$channels") || return 0
-      printf '%s' "$event" | php "$HERE/firesquire-hub.php" own | "$NOTIFY" send -channels "$channels" -source FireSquire >/dev/null 2>&1
+      printf '%s' "$event" | php "$HERE/firesquire-hub.php" own whole | "$NOTIFY" send -channels "$channels" -source FireSquire >/dev/null 2>&1
       rm -f "$channels"
       return 0
     done
   fi
-  [ -x "$NOTIFY" ] && [ -s "$channels" ] || return 0
-  printf '%s' "$event" | php "$HERE/firesquire-hub.php" own | "$NOTIFY" send -channels "$channels" -source FireSquire >/dev/null 2>&1
+  own_send "$event" "$channels"
 }
