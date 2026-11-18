@@ -94,5 +94,8 @@ $fsNotify = is_executable("$fsWeb/notify");
 <script src="<?autov('/plugins/firesquire/firesquire-fortress.js')?>"></script>
 <?endif;?>
 <?if ($fsNotify):?>
+<link type="text/css" rel="stylesheet" href="<?autov('/plugins/firesquire/styles/notify-card.css')?>">
+<script src="<?autov('/plugins/firesquire/scripts/notify-marks.js')?>"></script>
+<script src="<?autov('/plugins/firesquire/scripts/notify-card.js')?>"></script>
 <script src="<?autov('/plugins/firesquire/firesquire-notify.js')?>"></script>
 <?endif;?>

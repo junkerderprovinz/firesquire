@@ -28,7 +28,9 @@ console.log('\nThe settings page');
 const tools = read('FireSquireTools.page');
 ok('asks whether each helper is installed', /is_executable\("\$fsWeb\/fortress"\)/.test(tools) && /is_executable\("\$fsWeb\/notify"\)/.test(tools));
 ok('loads the fortress card only with its helper', /<\?if \(\$fsFortress\):\?>\s*<link type="text\/css" rel="stylesheet" href="<\?autov\('\/plugins\/firesquire\/fortress-card\.css'\)\?>">\s*<script src="<\?autov\('\/plugins\/firesquire\/fortress-card\.js'\)\?>"><\/script>\s*<script src="<\?autov\('\/plugins\/firesquire\/firesquire-fortress\.js'\)\?>"><\/script>\s*<\?endif;\?>/.test(tools));
-ok('loads the notification cards only with their helper', /<\?if \(\$fsNotify\):\?>\s*<script src="<\?autov\('\/plugins\/firesquire\/firesquire-notify\.js'\)\?>"><\/script>\s*<\?endif;\?>/.test(tools));
+const notifyBlock = (/<\?if \(\$fsNotify\):\?>([\s\S]*?)<\?endif;\?>/.exec(tools) || ['', ''])[1];
+ok('loads the notification cards only with their helper', ['styles/notify-card.css', 'scripts/notify-marks.js', 'scripts/notify-card.js', 'firesquire-notify.js'].every((f) => notifyBlock.includes('/plugins/firesquire/' + f)) &&
+  !tools.replace(notifyBlock, '').includes('notify-card'), notifyBlock);
 
 class El {
   constructor(tag) {

@@ -94,14 +94,14 @@ fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 20, retryDelay: 250 }
 console.log('\nThe settings page');
 const page = read('firesquire-notify.js');
 const kinds = ['unraid', 'apprise', 'ntfy', 'gotify', 'matrix', 'discord', 'slack', 'smtp', 'webhook', 'healthchecks'];
-const missingKinds = kinds.filter((k) => !new RegExp(`\\b${k}: \\[`).test(page));
-ok('every service of kit/notify has its fields', missingKinds.length === 0, missingKinds.join(', '));
-ok('every channel takes every message FireSquire sends', /on = "always"/.test(page));
+const offered = JSON.parse((/var KINDS = (\[[^\]]*\]);/.exec(page) || ['', '[]'])[1]);
+ok('the card offers every service of kit/notify', kinds.every((k) => offered.includes(k)), offered.join(', '));
+ok('a new channel takes every message FireSquire sends', /var c = \{ id: id, kind: kind, enabled: true, on: 'always' \};/.test(read('scripts/notify-card.js')));
 ok('changes go out with Unraid\'s form token', /csrf_token/.test(page));
 ok('the tools page loads it', /firesquire-notify\.js/.test(read('FireSquireTools.page')));
 const asked = [...page.matchAll(/\bt\("([\w-]+)"\)/g)].map((m) => m[1]);
 const unknown = [...new Set(asked)].filter((k) => !(k in en));
-ok('every text it asks for is in en.json', asked.length > 20 && unknown.length === 0, unknown.join(', '));
+ok('every text it asks for is in en.json', asked.length > 8 && unknown.length === 0, unknown.join(', '));
 const endpoint = read('include/FireSquireNotify.php');
 ok('the endpoint keeps the channels with the other state', /\/boot\/config\/plugins\/firesquire\/notify\.json/.test(endpoint));
 ok('the endpoint passes nothing unescaped to the shell', !/shell_exec|exec\(|system\(|passthru/.test(endpoint) || /escapeshellarg/.test(endpoint));

@@ -65,7 +65,7 @@ ok('the card says when TollRoll took the test', /r\.hub/.test(page) && /n_sent_h
 const missing = ['n_hub_test_title', 'n_sent_hub'].filter((k) => !(k in en));
 ok('both texts are in en.json, the hub\'s title without FireSquire\'s name', missing.length === 0 && !/FireSquire/.test(en.n_hub_test_title) && /TollRoll/.test(en.n_sent_hub), missing.join());
 
-// The sentence follows the card's 'The test is on its way', so it refers to the test.
+// The sentence stands for a test that went well, so it refers to the test.
 ok('in German it is der Test, so ihn', /\bihn\b/.test(de.n_sent_hub) && !/\bsie\b/.test(de.n_sent_hub), de.n_sent_hub);
 
 done();

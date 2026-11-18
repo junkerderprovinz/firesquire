@@ -1,7 +1,10 @@
 /* The notification channels and the schedule on FireSquire's settings page.
- * Every channel carries the fields of its service in kit/notify's format.
- * Secrets come back from the server masked, and the server restores them when
- * they come back unchanged, so a token never reaches the browser. */
+ * The channels are the house's notification card (scripts/notify-card.js),
+ * the same file as in the other plugins, fed by an adapter over
+ * FireSquireNotify.php: the channels in kit/notify's format, saved through
+ * the notify helper. Secrets come back from the server masked, and the server
+ * restores them when they come back unchanged, so a token never reaches the
+ * browser. */
 (function () {
   var box = document.getElementById("fs-notify");
   var UI = window.fireSquireUI;
@@ -9,28 +12,11 @@
   var L = window.fireSquireI18n || {};
   var el = UI.el;
   var ENDPOINT = "/plugins/firesquire/include/FireSquireNotify.php";
+  // FireSquire sends its own Healthchecks pings, so the card offers that service too.
+  var KINDS = ["unraid", "discord", "slack", "ntfy", "gotify", "matrix", "apprise", "smtp", "webhook", "healthchecks"];
 
   function t(k) { return L[k] == null ? k : String(L[k]); }
   function fill(s, args) { return args.reduce(function (m, a, i) { return m.split("{" + i + "}").join(a); }, s); }
-
-  // The fields of each service: name, label, input type, then a placeholder
-  // or the options of a select.
-  var KINDS = {
-    unraid: [],
-    apprise: [["url", "n_f_url", "text", "http://192.168.1.10:8000/notify/firesquire"], ["urls", "n_f_urls", "lines", "tgram://bottoken/chatid"], ["tags", "n_f_tags", "text", "all"]],
-    ntfy: [["url", "n_f_url", "text", "https://ntfy.sh/your-topic"], ["token", "n_f_token", "secret"]],
-    gotify: [["url", "n_f_url", "text", "https://gotify.example.org"], ["token", "n_f_token", "secret"]],
-    matrix: [["homeserver", "n_f_homeserver", "text", "https://matrix.org"], ["room", "n_f_room", "text", "!room:matrix.org"], ["token", "n_f_token", "secret"]],
-    discord: [["url", "n_f_url", "text", "https://discord.com/api/webhooks/…"]],
-    slack: [["url", "n_f_url", "text", "https://hooks.slack.com/services/…"]],
-    smtp: [["host", "n_f_host", "text", "smtp.example.org"], ["port", "n_f_port", "number", "587"], ["tls", "n_f_tls", "select", ["starttls", "tls", "none"]],
-      ["username", "n_f_username", "text"], ["password", "n_f_password", "secret"], ["from", "n_f_from", "text", "tower@example.org"], ["to", "n_f_to", "text", "you@example.org"]],
-    webhook: [["url", "n_f_url", "text", "https://example.org/hook"], ["method", "n_f_method", "select", ["POST", "PUT", "GET"]],
-      ["headers", "n_f_headers", "headers", "Authorization: Bearer …"], ["body", "n_f_body", "area", '{"title":"%%title%%","body":"%%body%%"}']],
-    healthchecks: [["url", "n_f_url", "text", "https://hc-ping.com/…"]]
-  };
-  var NAMES = { unraid: "Unraid", apprise: "Apprise", ntfy: "ntfy", gotify: "Gotify", matrix: "Matrix", discord: "Discord",
-    slack: "Slack", smtp: t("n_email"), webhook: "Webhook", healthchecks: "Healthchecks" };
 
   var seq = 0;
   function card(title) {
@@ -68,83 +54,8 @@
     Object.keys(data).forEach(function (k) { f.append(k, data[k]); });
     return fetch(ENDPOINT, { method: "POST", body: f, credentials: "same-origin" }).then(function (r) { return r.json(); });
   }
-
-  // What the server keeps of a channel: its own settings block and nothing of
-  // a service it was switched away from. FireSquire sends only what matters,
-  // so every channel takes every message.
-  function clean(c) {
-    var out = { id: c.id, kind: c.kind, name: c.name || "", enabled: !!c.enabled };
-    out.on = "always";
-    ["attempts", "timeoutSeconds", "events"].forEach(function (k) { if (c[k] != null) out[k] = c[k]; });
-    if (c.kind !== "unraid") out[c.kind] = c[c.kind] || {};
-    return out;
-  }
-
-  function read(input, type) {
-    var v = input.value;
-    if (type === "number") return v === "" ? 0 : parseInt(v, 10) || 0;
-    if (type === "lines") return v.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
-    if (type === "headers") {
-      var h = {};
-      v.split("\n").forEach(function (line) {
-        var i = line.indexOf(":");
-        if (i > 0) h[line.slice(0, i).trim()] = line.slice(i + 1).trim();
-      });
-      return h;
-    }
-    return type === "area" ? v : v.trim();
-  }
-
-  function field(c, spec) {
-    var block = c[c.kind] || (c[c.kind] = {});
-    var name = spec[0], type = spec[2], v = block[name], input;
-    if (type === "select") {
-      input = select(spec[3].map(function (o) { return [o, o]; }), v || spec[3][0]);
-      block[name] = input.value;
-    } else if (type === "area" || type === "lines" || type === "headers") {
-      input = el("textarea", "fs-in");
-      input.value = type === "lines" ? (v || []).join("\n") :
-        type === "headers" ? Object.keys(v || {}).map(function (k) { return k + ": " + v[k]; }).join("\n") : (v || "");
-    } else {
-      input = el("input", "fs-in");
-      input.type = type === "secret" ? "password" : type === "number" ? "number" : "text";
-      input.autocomplete = type === "secret" ? "new-password" : "off";
-      input.value = v == null || v === 0 ? "" : v;
-    }
-    if (spec[3] && type !== "select") input.placeholder = spec[3];
-    var err = el("p", "fs-field-err");
-    err.id = "fs-n-err-" + (++seq);
-    err.hidden = true;
-    input.setAttribute("aria-describedby", err.id);
-    var mark = { c: c, name: name, input: input, err: err };
-    marks.push(mark);
-    input.addEventListener(type === "select" ? "change" : "input", function () {
-      block[name] = read(input, type);
-      unmark(mark);
-      changed(type === "select");
-    });
-    var pair = labelled(t(spec[1]), input), tip = window.fireSquireI18n && window.fireSquireI18n[spec[1] + "_tip"];
-    // How to fill a field in sits in the bubble beside its label, as on the rest of the page.
-    if (tip) pair[0].appendChild(UI.info(tip));
-    return pair.concat(err);
-  }
-
-  var channels = [], marks = [], list, saveMsg, sMsg;
-
-  // A value the server refuses gets a line under its field until it changes.
-  function unmark(m) {
-    m.input.removeAttribute("aria-invalid");
-    m.err.hidden = true;
-    m.err.textContent = "";
-  }
-  function markField(p) {
-    var c = channels[p.index], f = String(p.field || "").split(".").pop(), m = null;
-    marks.forEach(function (x) { if (x.c === c && x.name === f) m = x; });
-    if (!m) return false;
-    m.input.setAttribute("aria-invalid", "true");
-    m.err.textContent = problem(p);
-    m.err.hidden = false;
-    return true;
+  function load() {
+    return fetch(ENDPOINT, { credentials: "same-origin" }).then(function (r) { return r.json(); });
   }
 
   // A message under a card: a confirmation that goes away by itself, or a
@@ -155,91 +66,6 @@
     if (passing) msg.fade = setTimeout(function () { msg.textContent = ""; }, 2500);
   }
 
-  // Every change saves on its own: a choice at once, typing once it pauses.
-  // One save runs at a time, and a change during it goes out right after.
-  var typing = null, saving = false, again = false;
-  function changed(now) {
-    clearTimeout(typing);
-    if (now) save();
-    else typing = setTimeout(save, 800);
-  }
-  function save() {
-    if (saving) { again = true; return; }
-    saving = true;
-    post({ "do": "save", channels: JSON.stringify(channels.map(clean)) }).then(function (r) {
-      marks.forEach(unmark);
-      if (r.channels) tell(saveMsg, t("n_saved"), true);
-      else if (r.problems && r.problems.length) {
-        var loose = r.problems.filter(function (p) { return !markField(p); });
-        tell(saveMsg, loose.length ? problem(loose[0]) : "");
-      } else tell(saveMsg, fill(t("n_failed"), [r.error || "?"]));
-    }).catch(function () {
-      tell(saveMsg, fill(t("n_failed"), ["network"]));
-    }).then(function () {
-      saving = false;
-      if (again) { again = false; save(); }
-    });
-  }
-
-  function channelBox(c) {
-    var b = el("div", "fs-ch"), head = el("div", "fs-ch-head");
-    var kind = select(Object.keys(KINDS).map(function (k) { return [k, NAMES[k]]; }), c.kind);
-    kind.setAttribute("aria-label", t("n_service"));
-    kind.addEventListener("change", function () { c.kind = kind.value; draw(); changed(true); });
-    var name = el("input", "fs-in");
-    name.type = "text";
-    name.value = c.name || "";
-    name.placeholder = t("n_name");
-    name.setAttribute("aria-label", t("n_name"));
-    name.addEventListener("input", function () { c.name = name.value; changed(false); });
-    var on = el("input");
-    on.type = "checkbox";
-    on.checked = !!c.enabled;
-    on.addEventListener("change", function () { c.enabled = on.checked; changed(true); });
-    var onL = labelled(t("n_enabled"), on);
-    head.appendChild(kind);
-    head.appendChild(name);
-    head.appendChild(onL[1]);
-    head.appendChild(onL[0]);
-    b.appendChild(head);
-
-    var fields = el("div", "fs-ch-fields");
-    KINDS[c.kind].forEach(function (spec) { field(c, spec).forEach(function (n) { fields.appendChild(n); }); });
-    if (KINDS[c.kind].length) b.appendChild(fields);
-
-    var act = el("div", "fs-ch-act"), res = el("span", "fs-n-msg fs-ch-res");
-    res.setAttribute("role", "status");
-    var test = UI.button(null, "Forward", t("n_test"));
-    test.addEventListener("click", function () {
-      res.textContent = "…";
-      post({ "do": "test", channel: JSON.stringify(clean(c)) }).then(function (r) {
-        if (r.hub === true) { res.textContent = t("n_sent_hub"); return; }
-        res.textContent = (r.ok ? t("n_sent") : fill(t("n_failed"), [r.code || r.error || "?"])) + (r.hub === false ? " " + t("n_hub_skipped") : "");
-      }).catch(function () { res.textContent = fill(t("n_failed"), ["network"]); });
-    });
-    var remove = UI.button(null, "Close", t("n_remove"));
-    remove.addEventListener("click", function () { channels.splice(channels.indexOf(c), 1); draw(); changed(true); });
-    act.appendChild(test);
-    act.appendChild(remove);
-    act.appendChild(res);
-    b.appendChild(act);
-    return b;
-  }
-
-  function draw() {
-    list.textContent = "";
-    marks = [];
-    if (!channels.length) list.appendChild(el("p", "fs-prose", t("n_none")));
-    channels.forEach(function (c) { list.appendChild(channelBox(c)); });
-  }
-
-  // A problem names a field such as "ntfy.url"; the message names its label.
-  function problem(p) {
-    var c = channels[p.index] || {}, f = String(p.field || "").split(".").pop(), label = f;
-    (KINDS[c.kind] || []).forEach(function (spec) { if (spec[0] === f) label = t(spec[1]); });
-    return fill(t("n_problem"), [label, c.name || NAMES[c.kind] || p.channel]);
-  }
-
   var cN = card(t("n_card"));
   cN.appendChild(el("p", "fs-prose", t("n_lead")));
   var missing = el("p", "fs-prose", t("n_nohelper"));
@@ -248,20 +74,53 @@
   var hub = el("p", "fs-prose fs-n-hub", t("n_hub_on"));
   hub.hidden = true;
   cN.appendChild(hub);
-  list = el("div", "fs-ch-list");
-  cN.appendChild(list);
-  var bar = el("div", "fs-ch-act");
-  var add = UI.button(null, "Forward", t("n_add"));
-  add.addEventListener("click", function () {
-    channels.push({ id: "ch-" + Date.now().toString(36), kind: "unraid", enabled: true, on: "always" });
-    draw();
-    changed(true);
-  });
-  saveMsg = el("span", "fs-n-msg");
+  var place = el("div", "fs-n-channels");
+  cN.appendChild(place);
+  var saveMsg = el("span", "fs-n-msg");
   saveMsg.setAttribute("role", "status");
-  bar.appendChild(add);
-  bar.appendChild(saveMsg);
-  cN.appendChild(bar);
+  cN.appendChild(saveMsg);
+
+  var first = load();
+  first.then(function (d) {
+    missing.hidden = !!d.helper;
+    hub.hidden = d.hub !== true;
+  }).catch(function () {});
+
+  // The card's strings, with the word for a test that went well chosen by the
+  // way the test took: through TollRoll's hub, or to the channel because the
+  // hub did not take it.
+  var strings = Object.assign({}, L), testOk = strings.nc_test_ok;
+  if (window.GlimNotifyCard) {
+    window.GlimNotifyCard.mount(place, {
+      load: function () {
+        return first.then(function (d) {
+          if (!d || !Array.isArray(d.channels)) throw { code: (d && d.error) || "engine" };
+          return d.channels;
+        });
+      },
+      save: function (list) {
+        return post({ "do": "save", channels: JSON.stringify(list) }).then(function (r) {
+          if (!r.channels) throw { code: r.problems && r.problems.length ? "invalid" : r.error || "engine", problems: r.problems };
+          return r.channels;
+        });
+      },
+      test: function (channel) {
+        return post({ "do": "test", channel: JSON.stringify(channel) }).then(function (r) {
+          strings.nc_test_ok = r.hub === true ? t("n_sent_hub") : r.hub === false ? testOk + ". " + t("n_hub_skipped") : testOk;
+          return { ok: r.hub === true || !!r.ok, code: r.code || r.error };
+        });
+      }
+    }, {
+      t: strings, lang: window.fireSquireLang || "en", kinds: KINDS, marks: window.GlimNotifyMarks,
+      classes: { input: "fs-in", button: "fs-btn", switch: "" },
+      saved: function (ok, text) { tell(saveMsg, text, ok); }
+    });
+  }
+
+  // A check finished elsewhere on the page may have found TollRoll's hub.
+  document.addEventListener("firesquire:checked", function () {
+    load().then(function (d) { hub.hidden = d.hub !== true; }).catch(function () {});
+  });
 
   var cS = card(t("n_sched"));
   cS.appendChild(el("p", "fs-prose", t("n_sched_lead")));
@@ -272,7 +131,7 @@
   for (var h = 0; h < 24; h++) hours.push([String(h), (h < 10 ? "0" : "") + h + ":30"]);
   var hour = select(hours, "4");
   var hourL = labelled(t("n_sched_hour"), hour);
-  sMsg = el("span", "fs-n-msg");
+  var sMsg = el("span", "fs-n-msg");
   sMsg.setAttribute("role", "status");
   function schedule() {
     post({ "do": "schedule", every: every.value, hour: hour.value }).then(function (s) {
@@ -288,21 +147,10 @@
   sRow.appendChild(sMsg);
   cS.appendChild(sRow);
 
-  // A check finished elsewhere on the page may have found TollRoll's hub.
-  document.addEventListener("firesquire:checked", function () {
-    fetch(ENDPOINT, { credentials: "same-origin" }).then(function (r) { return r.json(); }).then(function (d) {
-      hub.hidden = d.hub !== true;
-    }).catch(function () {});
-  });
-
-  fetch(ENDPOINT, { credentials: "same-origin" }).then(function (r) { return r.json(); }).then(function (d) {
-    channels = d.channels || [];
-    missing.hidden = !!d.helper;
-    hub.hidden = d.hub !== true;
+  first.then(function (d) {
     if (d.schedule) {
       every.value = d.schedule.every;
       hour.value = String(d.schedule.hour);
     }
-    draw();
-  }).catch(draw);
+  }).catch(function () {});
 })();
