@@ -123,7 +123,10 @@
       unmark(mark);
       changed(type === "select");
     });
-    return labelled(t(spec[1]), input).concat(err);
+    var pair = labelled(t(spec[1]), input), tip = window.fireSquireI18n && window.fireSquireI18n[spec[1] + "_tip"];
+    // How to fill a field in sits in the bubble beside its label, as on the rest of the page.
+    if (tip) pair[0].appendChild(UI.info(tip));
+    return pair.concat(err);
   }
 
   var channels = [], marks = [], list, saveMsg, sMsg;
