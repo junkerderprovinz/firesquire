@@ -124,8 +124,8 @@
     "other": "{0} tiene {1} errores CRC. Eso suele apuntar al cable o al puerto. FireSquire recuerda la cifra y vuelve a avisar si sube."
   },
   "crc_rose": "Los errores CRC de {0} subieron de {1} a {2} desde la última comprobación. Revisa o cambia el cable de este puerto.",
-  "scrutiny_link": "Scrutiny guarda el historial SMART de tus discos. Ábrelo para ver desde cuándo suben los contadores.",
-  "scrutiny_tip": "Consejo: Scrutiny, de Community Apps, guarda un historial SMART de tus discos, así ves desde cuándo sube un contador.",
+  "scrutiny_link": "En este servidor funciona una app de historial SMART. Ábrela para ver desde cuándo suben los contadores.",
+  "scrutiny_tip": "Consejo: una app de historial SMART de Community Apps muestra desde cuándo sube un contador.",
   "smart_failing": "Estado SMART FALLANDO en:{0}. Investiga antes de reiniciar.",
   "smart_ok": {
     "one": "Estado SMART CORRECTO en {0} disco.",

@@ -121,8 +121,8 @@
   },
   "crc_found": "{0} har {1} CRC-fejl. Det peger som regel på kablet eller porten. FireSquire husker tallet og advarer igen, hvis det stiger.",
   "crc_rose": "CRC-fejlene på {0} er steget fra {1} til {2} siden sidste tjek. Tjek eller udskift kablet på denne port.",
-  "scrutiny_link": "Scrutiny gemmer SMART-historikken for dine diske. Åbn det for at se, hvornår tællerne begyndte at stige.",
-  "scrutiny_tip": "Tip: Scrutiny fra Community Apps gemmer en SMART-historik for dine diske, så du kan se, hvornår en tæller begyndte at stige.",
+  "scrutiny_link": "En app til SMART-historik kører på denne server. Åbn den for at se, hvornår tællerne begyndte at stige.",
+  "scrutiny_tip": "Tip: en app til SMART-historik fra Community Apps viser, hvornår en tæller begyndte at stige.",
   "smart_failing": "SMART-helbred FEJLER på:{0}. Undersøg før genstart.",
   "smart_ok": {
     "one": "SMART-helbred BESTÅET på {0} disk.",

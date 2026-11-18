@@ -124,8 +124,8 @@
     "other": "{0} heeft {1} CRC-fouten. Dat wijst meestal op de kabel of de poort. FireSquire onthoudt de stand en waarschuwt opnieuw als die stijgt."
   },
   "crc_rose": "De CRC-fouten op {0} zijn sinds de vorige controle gestegen van {1} naar {2}. Controleer of vervang de kabel op deze poort.",
-  "scrutiny_link": "Scrutiny houdt de SMART-geschiedenis van je schijven bij. Open het om te zien sinds wanneer de tellers stijgen.",
-  "scrutiny_tip": "Tip: Scrutiny uit Community Apps houdt een SMART-geschiedenis van je schijven bij, zodat je ziet sinds wanneer een teller stijgt.",
+  "scrutiny_link": "Op deze server draait een app voor de SMART-geschiedenis. Open die om te zien sinds wanneer de tellers stijgen.",
+  "scrutiny_tip": "Tip: een app voor de SMART-geschiedenis uit Community Apps laat zien sinds wanneer een teller stijgt.",
   "smart_failing": "SMART-status FALEND op:{0}. Onderzoek vóór het herstarten.",
   "smart_ok": {
     "one": "SMART-status GESLAAGD op {0} schijf.",

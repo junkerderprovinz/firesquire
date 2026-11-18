@@ -124,8 +124,8 @@
     "other": "{0} has {1} CRC errors. That usually points to the cable or the port. FireSquire remembers the count and warns again if it rises."
   },
   "crc_rose": "The CRC errors on {0} rose from {1} to {2} since the last check. Check or replace the cable on this port.",
-  "scrutiny_link": "Scrutiny keeps the SMART history of your disks. Open it to see when the counts started to rise.",
-  "scrutiny_tip": "Tip: Scrutiny from Community Apps keeps a SMART history of your disks, so you can see when a count started to rise.",
+  "scrutiny_link": "A SMART history app runs on this server. Open it to see when the counts started to rise.",
+  "scrutiny_tip": "Tip: a SMART history app from Community Apps shows when a count started to rise.",
   "smart_failing": "SMART health FAILING on:{0}. Investigate before rebooting.",
   "smart_ok": {
     "one": "SMART health PASSED on {0} disk.",

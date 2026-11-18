@@ -124,8 +124,8 @@
     "other": "{0} a {1} erreurs CRC. Cela vient en général du câble ou du port. FireSquire retient le compteur et te prévient à nouveau s’il augmente."
   },
   "crc_rose": "Les erreurs CRC sur {0} sont passées de {1} à {2} depuis la dernière vérification. Vérifie ou remplace le câble sur ce port.",
-  "scrutiny_link": "Scrutiny garde l’historique SMART de tes disques. Ouvre-le pour voir depuis quand les compteurs augmentent.",
-  "scrutiny_tip": "Astuce : Scrutiny, dans Community Apps, garde un historique SMART de tes disques, pour voir depuis quand un compteur augmente.",
+  "scrutiny_link": "Une appli d’historique SMART tourne sur ce serveur. Ouvre-la pour voir depuis quand les compteurs augmentent.",
+  "scrutiny_tip": "Astuce : une appli d’historique SMART des Community Apps montre depuis quand un compteur augmente.",
   "smart_failing": "État SMART DÉFAILLANT sur :{0}. À examiner avant de redémarrer.",
   "smart_ok": {
     "one": "État SMART RÉUSSI sur {0} disque.",

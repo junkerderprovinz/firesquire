@@ -134,8 +134,8 @@
     "other": "{0} má {1} chyb CRC. Obvykle za tím je kabel nebo port. FireSquire si počet pamatuje a znovu varuje, když vzroste."
   },
   "crc_rose": "Chyby CRC na {0} od poslední kontroly vzrostly z {1} na {2}. Zkontroluj nebo vyměň kabel na tomto portu.",
-  "scrutiny_link": "Scrutiny uchovává historii SMART tvých disků. Otevři ho a uvidíš, od kdy počítadla rostou.",
-  "scrutiny_tip": "Tip: Scrutiny z Community Apps uchovává historii SMART tvých disků, takže uvidíš, od kdy počítadlo roste.",
+  "scrutiny_link": "Na tomto serveru běží aplikace s historií SMART. Otevři ji a uvidíš, odkdy počty rostou.",
+  "scrutiny_tip": "Tip: aplikace s historií SMART z Community Apps ukáže, odkdy počet roste.",
   "smart_failing": "Stav SMART SELHÁVÁ na:{0}. Před restartem prověřte.",
   "smart_ok": {
     "one": "Stav SMART v pořádku na {0} disku.",

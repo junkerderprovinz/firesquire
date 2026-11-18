@@ -134,8 +134,8 @@
     "other": "{0} are {1} de erori CRC. De obicei e vorba de cablu sau de port. FireSquire reține valoarea și te avertizează din nou dacă crește."
   },
   "crc_rose": "Erorile CRC pe {0} au crescut de la {1} la {2} de la ultima verificare. Verifică sau schimbă cablul de pe acest port.",
-  "scrutiny_link": "Scrutiny păstrează istoricul SMART al discurilor tale. Deschide-l ca să vezi de când cresc contoarele.",
-  "scrutiny_tip": "Sfat: Scrutiny din Community Apps păstrează un istoric SMART al discurilor tale, ca să vezi de când crește un contor.",
+  "scrutiny_link": "Pe acest server rulează o aplicație cu istoricul SMART. Deschide-o ca să vezi de când cresc contoarele.",
+  "scrutiny_tip": "Sfat: o aplicație cu istoricul SMART din Community Apps arată de când crește un contor.",
   "smart_failing": "Starea SMART EȘUEAZĂ pe:{0}. Investigați înainte de repornire.",
   "smart_ok": {
     "one": "Starea SMART a TRECUT pe {0} disc.",

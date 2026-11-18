@@ -121,8 +121,8 @@
   },
   "crc_found": "{0} hat {1} CRC-Fehler. Das deutet meist auf das Kabel oder den Anschluss. FireSquire merkt sich den Stand und warnt wieder, wenn er steigt.",
   "crc_rose": "Die CRC-Fehler auf {0} sind seit der letzten Prüfung von {1} auf {2} gestiegen. Prüf oder tausch das Kabel an diesem Anschluss.",
-  "scrutiny_link": "Scrutiny führt den SMART-Verlauf deiner Platten. Dort siehst du, seit wann die Zähler steigen.",
-  "scrutiny_tip": "Tipp: Scrutiny aus den Community Apps führt einen SMART-Verlauf deiner Platten. Dort siehst du, seit wann ein Zähler steigt.",
+  "scrutiny_link": "Auf diesem Server läuft eine App für den SMART-Verlauf. Öffne sie, um zu sehen, seit wann die Werte steigen.",
+  "scrutiny_tip": "Tipp: Eine App für den SMART-Verlauf aus den Community Apps zeigt, seit wann ein Wert steigt.",
   "smart_failing": "SMART-Status FEHLERHAFT auf:{0}. Vor dem Neustart prüfen.",
   "smart_ok": {
     "one": "SMART-Status OK auf {0} Datenträger.",

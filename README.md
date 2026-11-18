@@ -134,7 +134,7 @@ The plugin adds a **FireSquire** button next to *Reboot* on the **Main** tab, a 
 - A UPS on battery or almost empty, when Unraid's UPS service runs
 - A flash backup older than a week, from BombVault in your fortress or from Unraid Connect
 
-Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, FireSquire links to Scrutiny if it runs on the server, or suggests it for the SMART history.
+Every disk finding names the port from `/dev/disk/by-path`, such as `sdc [pci-0000:00:17.0-ata-3]`, so you know which cable to look at. When a disk check finds something, FireSquire links to a SMART history app if one runs on the server, or suggests one from Community Apps.
 
 **Your fortress**: if FireSquire has joined a fortress, it asks the other apps there what they are doing. Work a reboot would cut short, such as a running backup or update, sets the roof on fire and names the app, the device, the task and its progress. What an app needs from you has nothing to do with a reboot, so it stays out of the report. TollRoll shows it. You join on the settings page with your phrase, the twelve words. FireSquire keeps only its own keys, never the phrase, and lists the other apps there as connected or not reachable. Without a fortress the group stays out of the report.
 

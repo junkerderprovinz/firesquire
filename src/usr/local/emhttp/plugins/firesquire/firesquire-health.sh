@@ -227,8 +227,8 @@ smart_trend_report() {
   mkdir -p "$FS_STATE" && printf '%s\n' "$next" > "$file.tmp" && mv "$file.tmp" "$file"
 }
 
-# health_hint points to Scrutiny for the history of the counts, once any disk
-# check found something: a link when it runs here, a tip otherwise.
+# health_hint points to a SMART history app once any disk check found
+# something: a link when one runs here, a tip otherwise.
 health_hint() {
   [ "$FS_DISK_TROUBLE" -eq 1 ] || return 0
   local name="" port=""
@@ -237,8 +237,8 @@ health_hint() {
   fi
   if [ -n "$name" ]; then
     port="$(docker port "$name" 8080/tcp 2>/dev/null | awk -F: 'NR == 1 { print $NF }')"
-    add info scrutiny info scrutiny_link "" "Scrutiny keeps the SMART history of your disks. Open it to see when the counts started to rise." ":${port:-8080}/web/dashboard"
+    add info scrutiny info scrutiny_link "" "A SMART history app runs on this server. Open it to see when the counts started to rise." ":${port:-8080}/web/dashboard"
   else
-    add info scrutiny info scrutiny_tip "" "Tip: Scrutiny from Community Apps keeps a SMART history of your disks, so you can see when a count started to rise."
+    add info scrutiny info scrutiny_tip "" "Tip: a SMART history app from Community Apps shows when a count started to rise."
   fi
 }

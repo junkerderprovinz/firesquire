@@ -144,8 +144,8 @@
     "other": "{0} ma {1} błędów CRC. Zwykle wskazuje to na kabel lub port. FireSquire zapamiętuje licznik i ostrzeże ponownie, jeśli wzrośnie."
   },
   "crc_rose": "Błędy CRC na {0} wzrosły od ostatniego sprawdzenia z {1} do {2}. Sprawdź lub wymień kabel na tym porcie.",
-  "scrutiny_link": "Scrutiny przechowuje historię SMART twoich dysków. Otwórz go, aby zobaczyć, od kiedy liczniki rosną.",
-  "scrutiny_tip": "Wskazówka: Scrutiny z Community Apps przechowuje historię SMART twoich dysków, więc widać, od kiedy licznik rośnie.",
+  "scrutiny_link": "Na tym serwerze działa aplikacja z historią SMART. Otwórz ją, aby zobaczyć, od kiedy liczniki rosną.",
+  "scrutiny_tip": "Wskazówka: aplikacja z historią SMART z Community Apps pokazuje, od kiedy licznik rośnie.",
   "smart_failing": "Stan SMART BŁĘDNY na:{0}. Sprawdź przed restartem.",
   "smart_ok": {
     "one": "Stan SMART PRAWIDŁOWY na {0} dysku.",

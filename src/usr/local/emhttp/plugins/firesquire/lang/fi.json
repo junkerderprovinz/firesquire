@@ -124,8 +124,8 @@
     "other": "Laitteella {0} on {1} CRC-virhettä. Syy on yleensä kaapeli tai portti. FireSquire muistaa lukeman ja varoittaa uudelleen, jos se kasvaa."
   },
   "crc_rose": "Laitteen {0} CRC-virheet ovat kasvaneet edellisestä tarkistuksesta {1}:stä {2}:een. Tarkista tai vaihda tämän portin kaapeli.",
-  "scrutiny_link": "Scrutiny tallentaa levyjesi SMART-historian. Avaa se nähdäksesi, milloin laskurit alkoivat kasvaa.",
-  "scrutiny_tip": "Vinkki: Community Appsin Scrutiny tallentaa levyjesi SMART-historian, joten näet, milloin laskuri alkoi kasvaa.",
+  "scrutiny_link": "Tällä palvelimella toimii SMART-historian sovellus. Avaa se nähdäksesi, milloin laskurit alkoivat nousta.",
+  "scrutiny_tip": "Vinkki: Community Appsin SMART-historian sovellus näyttää, milloin laskuri alkoi nousta.",
   "smart_failing": "SMART-kunto VIALLINEN:{0}. Tutki ennen uudelleenkäynnistystä.",
   "smart_ok": "SMART-kunto OK {0} levyllä.",
   "smart_none": "SMART-tarkistukseen ei löytynyt levyjä.",

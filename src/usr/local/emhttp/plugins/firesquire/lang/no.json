@@ -118,8 +118,8 @@
   "btrfs_ok": "{0} btrfs-filsystem uten enhetsfeil.",
   "crc_found": "{0} har {1} CRC-feil. Det peker som regel på kabelen eller porten. FireSquire husker tallet og varsler igjen hvis det stiger.",
   "crc_rose": "CRC-feilene på {0} har steget fra {1} til {2} siden forrige sjekk. Sjekk eller bytt kabelen på denne porten.",
-  "scrutiny_link": "Scrutiny tar vare på SMART-historikken til diskene dine. Åpne den for å se når tellerne begynte å stige.",
-  "scrutiny_tip": "Tips: Scrutiny fra Community Apps tar vare på en SMART-historikk for diskene dine, så du ser når en teller begynte å stige.",
+  "scrutiny_link": "En app for SMART-historikk kjører på denne serveren. Åpne den for å se når tellerne begynte å stige.",
+  "scrutiny_tip": "Tips: en app for SMART-historikk fra Community Apps viser når en teller begynte å stige.",
   "smart_failing": "SMART-status FEILER på:{0}. Undersøk før omstart.",
   "smart_ok": {
     "one": "SMART-status BESTÅTT på {0} disk.",

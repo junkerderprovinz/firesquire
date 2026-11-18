@@ -118,8 +118,8 @@
     "other": "{0} ha {1} errori CRC. Di solito dipende dal cavo o dalla porta. FireSquire ricorda il valore e avvisa di nuovo se sale."
   },
   "crc_rose": "Gli errori CRC su {0} sono saliti da {1} a {2} dall’ultimo controllo. Controlla o sostituisci il cavo su questa porta.",
-  "scrutiny_link": "Scrutiny tiene lo storico SMART dei tuoi dischi. Aprilo per vedere da quando i contatori salgono.",
-  "scrutiny_tip": "Suggerimento: Scrutiny, in Community Apps, tiene uno storico SMART dei tuoi dischi, così vedi da quando un contatore sale.",
+  "scrutiny_link": "Su questo server gira un’app per lo storico SMART. Aprila per vedere da quando i contatori salgono.",
+  "scrutiny_tip": "Suggerimento: un’app per lo storico SMART dalle Community Apps mostra da quando un contatore sale.",
   "smart_failing": "Stato SMART NON SUPERATO su:{0}. Verifica prima di riavviare.",
   "smart_ok": {
     "one": "Stato SMART SUPERATO su {0} disco.",
