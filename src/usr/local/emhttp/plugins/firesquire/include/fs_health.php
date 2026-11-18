@@ -134,6 +134,9 @@ function fs_health_status($areas, $prev, $now, $lang, $app, $device) {
       'since' => $since[$id] ?? gmdate('Y-m-d\TH:i:s\Z', $now), 'link' => '/Settings/FireSquireTools');
   }
   $state = array('grey' => 'off', 'green' => 'ok', 'yellow' => 'warning', 'red' => 'failed')[$worst];
+  // The tile shows FireSquire with its logo, as the report format carries it.
+  $svg = (string) @file_get_contents(dirname(__DIR__) . '/images/firesquire.svg');
+  if ($svg !== '' && strlen($svg) <= 16384) $app['icon'] = 'data:image/svg+xml;base64,' . base64_encode($svg);
   return array('contract' => 1, 'app' => $app, 'instance' => array('id' => $device, 'name' => $device),
     'state' => $state, 'counts' => array('needsYou' => count($needs), 'work' => 0), 'needsYou' => $needs, 'work' => array(),
     'next' => array(), 'capabilities' => array('health'), 'sampledAt' => gmdate('Y-m-d\TH:i:s\Z', $now));
@@ -159,7 +162,7 @@ function fs_health_event($areas, $before, $lang, $server) {
   $red = false;
   foreach ($areas as $a) $red = $red || $a['light'] === 'red';
   $words = array($server, implode(', ', $worse));
-  return array('kind' => 'health.worse', 'severity' => $red ? 'failure' : 'warning', 'key' => 'firesquire.health.' . implode('.', $ids),
+  return fs_linked(array('kind' => 'health.worse', 'severity' => $red ? 'failure' : 'warning', 'key' => 'firesquire.health.' . implode('.', $ids),
     'title' => fs_fill($L['n_health_title'] ?? '', $words), 'body' => implode("\n", $lines),
-    'hub' => array('title' => fs_fill($L['n_hub_health'] ?? '', $words), 'resolve' => array()));
+    'hub' => array('title' => fs_fill($L['n_hub_health'] ?? '', $words), 'resolve' => array())));
 }

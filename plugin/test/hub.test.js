@@ -29,6 +29,11 @@ ok('Smouldering again closes nothing', e.key === 'firesquire.check.caution' && e
 e = event({ verdict: 'GO', checks: [] }, 'NO-GO', 'de');
 ok('the way back to All clear is a success with the key it closes', e.severity === 'success' && e.key === 'firesquire.check.nogo' && e.hub.title === fill(de.n_hub_title_go, ['tower', de.v_GO]), JSON.stringify(e));
 
+const linked = JSON.parse(execFileSync('php', ['-r', `require '${LIB}'; echo json_encode(fs_event(json_decode(stream_get_contents(STDIN), true), 'GO', 'en', 'tower'));`],
+  { input: JSON.stringify(nogo), encoding: 'utf8', env: { ...process.env, FS_NGINX_INI: path.join(__dirname, 'fixtures', 'nginx.ini') } }));
+ok('every message links to FireSquire\'s settings on this server', linked.link === 'https://tower.local:443/Settings/FireSquireTools', linked.link);
+ok('without Unraid\'s address it carries no link', !('link' in event(nogo, 'GO')));
+
 console.log('\nFinding TollRoll');
 const hubs = (members) => php(`require '${FLIB}'; echo implode(',', fs_fortress_hubs(stream_get_contents(STDIN)));`, JSON.stringify(members));
 const member = (id, app, caps, report = true) => ({ id, app: { id: app }, ...(report ? { report: { capabilities: caps } } : {}) });

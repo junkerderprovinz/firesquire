@@ -85,6 +85,10 @@ const st = JSON.parse(fs.readFileSync(path.join(out_, 'firesquire.json'), 'utf8'
 ok('it waits in RAM where TollRoll reads the plugins of the server', fs.existsSync(path.join(out_, 'firesquire.json')));
 ok('it follows the report format, contract 1', st.contract === 1 && st.app.id === 'firesquire' && st.app.name === 'FireSquire' && st.app.version === '1.5.0' && st.instance.name === 'tower');
 ok('the worst light is the state', st.state === 'failed');
+const icon = st.app.icon || '';
+const svg = Buffer.from(icon.replace(/^data:image\/svg\+xml;base64,/, ''), 'base64').toString('utf8');
+ok('it carries FireSquire\'s logo as the fortress format wants it, an SVG of at most 16 KiB',
+  /^data:image\/svg\+xml;base64,[A-Za-z0-9+/]+=*$/.test(icon) && /<svg[\s>]/.test(svg) && svg.length <= 16384 && !/<script|\son\w+=/i.test(svg), icon.slice(0, 40));
 ok('every area not green is a need, red as an error', st.needsYou.map((n) => n.id + ':' + n.severity).join() === 'health.disks:warn,health.network:error,health.system:warn,health.fortress:warn', JSON.stringify(st.needsYou));
 ok('its text names the area and the finding', st.needsYou[0].text.startsWith(en.h_area_disks + ': ') && st.counts.needsYou === 4);
 ok('a need keeps the time it began', st.needsYou[0].since === new Date(T0 * 1000).toISOString().replace('.000', ''));

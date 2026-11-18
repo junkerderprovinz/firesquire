@@ -73,6 +73,21 @@ function fs_fill($text, $args) {
   return $text;
 }
 
+/* FireSquire's settings page on this server, as Unraid names its own address,
+ * or "" when it is not known. Messages carry it so a click leads there. */
+function fs_settings_link() {
+  $ini = @parse_ini_file(getenv('FS_NGINX_INI') ?: '/var/local/emhttp/nginx.ini');
+  $base = rtrim((string) ($ini['NGINX_DEFAULTURL'] ?? ''), '/');
+  return preg_match('#^https?://[^/\s]+$#', $base) ? "$base/Settings/FireSquireTools" : '';
+}
+
+/* The event with the link to the settings when there is one. */
+function fs_linked($event) {
+  $link = fs_settings_link();
+  if ($link !== '') $event['link'] = $link;
+  return $event;
+}
+
 /* The event for a finished check, or null when there is nothing to tell: a
  * CAUTION or NO-GO goes out on every run, a GO only after one of them. Its key
  * names the level, so TollRoll's hub tells a level once and the way back to GO
@@ -90,9 +105,9 @@ function fs_event($report, $last, $lang, $server) {
     case 'GO':
       if ($last !== 'NO-GO' && $last !== 'CAUTION') return null;
       $go = array($server, $L['v_GO'] ?? 'GO');
-      return array('kind' => 'check.go', 'severity' => 'success', 'ping' => 'success', 'key' => $keyOf[$last],
+      return fs_linked(array('kind' => 'check.go', 'severity' => 'success', 'ping' => 'success', 'key' => $keyOf[$last],
         'title' => fs_fill($L['n_title_go'] ?? '', $go), 'body' => (string) ($L['n_body_go'] ?? ''),
-        'hub' => array('title' => fs_fill($L['n_hub_title_go'] ?? '', $go), 'resolve' => array()));
+        'hub' => array('title' => fs_fill($L['n_hub_title_go'] ?? '', $go), 'resolve' => array())));
     default:
       return null;
   }
@@ -108,9 +123,9 @@ function fs_event($report, $last, $lang, $server) {
   }
   $words = array($server, $L['v_' . $verdict] ?? $verdict);
   $left = isset($keyOf[$last]) && $last !== $verdict ? array($keyOf[$last]) : array();
-  return array('kind' => $kind, 'severity' => $severity, 'ping' => 'fail', 'key' => $keyOf[$verdict],
+  return fs_linked(array('kind' => $kind, 'severity' => $severity, 'ping' => 'fail', 'key' => $keyOf[$verdict],
     'title' => fs_fill($L['n_title'] ?? '', $words), 'body' => implode("\n", $lines),
-    'hub' => array('title' => fs_fill($L['n_hub_title'] ?? '', $words), 'resolve' => $left));
+    'hub' => array('title' => fs_fill($L['n_hub_title'] ?? '', $words), 'resolve' => $left)));
 }
 
 function fs_test_event($lang) {
