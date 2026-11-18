@@ -11,10 +11,10 @@
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
 <!ENTITY sha256 "2e22b11e32c2626c3202cabe8f2231491f8fed1a80cada73963ff31d57dcee7b">
-<!ENTITY helperVer "v1.2.0">
+<!ENTITY helperVer "v1.2.3">
 <!ENTITY helperURL "https://github.com/junkerderprovinz/parleyport/releases/download/&helperVer;">
-<!ENTITY fortressSHA "95ca288d462395aa977c6dbf8ffaf729a94724dd7e03ba3e831645a510ba0f8e">
-<!ENTITY notifySHA "003fb7fe360cdcc7f81b79733185e6db88d941c17edf8ac23bc9e9c8ff5ddbbf">
+<!ENTITY fortressSHA "805551a6ec64ef74aab315a47a8449d1e0d869bffb7445c0061dce8e9ed27213">
+<!ENTITY notifySHA "c095ba6f4682d1993de282fba4712f1c607daa994044654a320868ea125624a2">
 ]>
 
 <PLUGIN name="&name;"
