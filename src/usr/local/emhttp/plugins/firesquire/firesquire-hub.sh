@@ -8,21 +8,6 @@
 # FS_RUN and HERE.
 # shellcheck shell=bash
 
-# own_send sends the event to the channels of a list.
-own_send() {
-  local event="$1" channels="$2" lifted=""
-  [ -x "$NOTIFY" ] && [ -s "$channels" ] || return 0
-  # The helper sends a success only to channels that take everything, and the
-  # way back is news on a channel for failures as well.
-  if printf '%s' "$event" | php "$HERE/firesquire-hub.php" recovery; then
-    lifted="$FS_RUN/lifted.$$.json"
-    mkdir -p "$FS_RUN" && (umask 077 && php "$HERE/firesquire-hub.php" lift "$channels" > "$lifted") && channels="$lifted"
-  fi
-  own_split "$event" "$channels"
-  [ -n "$lifted" ] && rm -f "$lifted"
-  return 0
-}
-
 # own_split sends Unraid's own notification the link as a path, which its
 # WebGUI opens, and every other channel the link made whole. A list that holds
 # both is sent in two.
@@ -51,7 +36,9 @@ own_split() {
 }
 
 # hub_send sends one event, through the first hub in the comma separated list
-# that takes it, or through the channels on the flash.
+# that takes it, or through the channels on the flash. A recovery tells both
+# with "recovery": true, and the helper sends it to a channel that takes
+# failures only as well.
 hub_send() {
   local hubs="$1" event="$2" body hub out pings line
   local channels="$FS_STATE/notify.json"
@@ -73,5 +60,6 @@ hub_send() {
       return 0
     done
   fi
-  own_send "$event" "$channels"
+  [ -x "$NOTIFY" ] && [ -s "$channels" ] || return 0
+  own_split "$event" "$channels"
 }

@@ -7,10 +7,7 @@
  *                 with its link made whole for channels outside the server
  *   pings FILE    the channels of FILE that are Healthchecks, or nothing
  *   unraid FILE   the channels of FILE that are Unraid's own notification
- *   outside FILE  the others
- *   recovery      exits 0 when the event on stdin is a way back
- *   lift FILE     the channels of FILE with "failures only" taking everything,
- *                 for a way back, which those channels want to hear too */
+ *   outside FILE  the others */
 require_once __DIR__ . '/include/fs_fortress.php';
 require_once __DIR__ . '/include/fs_notify.php';
 
@@ -28,6 +25,7 @@ switch ($argv[1] ?? '') {
       'title' => (string) ($event['hub']['title'] ?? '') ?: (string) ($event['title'] ?? ''), 'body' => (string) ($event['body'] ?? ''),
       'key' => (string) ($event['key'] ?? ''));
     if (!empty($event['link'])) $body['link'] = (string) $event['link'];
+    if (!empty($event['recovery'])) $body['recovery'] = true;
     echo json_encode($body, $flags), "\n";
     break;
   case 'resolve':
@@ -35,7 +33,7 @@ switch ($argv[1] ?? '') {
     break;
   case 'own':
     if (!is_array($event)) exit(1);
-    unset($event['hub'], $event['recovery']);
+    unset($event['hub']);
     if (($argv[2] ?? '') === 'whole') $event = fs_absolute($event);
     echo json_encode($event, $flags), "\n";
     break;
@@ -49,15 +47,6 @@ switch ($argv[1] ?? '') {
       return $want === 'pings' ? $kind === 'healthchecks' : ($want === 'unraid') === ($kind === 'unraid');
     }));
     if ($picked) echo json_encode($picked, $flags), "\n";
-    break;
-  case 'recovery':
-    exit(is_array($event) && !empty($event['recovery']) ? 0 : 1);
-  case 'lift':
-    $list = json_decode((string) @file_get_contents($argv[2] ?? ''), true);
-    if (!is_array($list)) exit(1);
-    foreach ($list as &$c) if (is_array($c) && ($c['on'] ?? 'failure') === 'failure' && ($c['kind'] ?? '') !== 'healthchecks') $c['on'] = 'always';
-    unset($c);
-    echo json_encode($list, $flags), "\n";
     break;
   default:
     exit(2);
