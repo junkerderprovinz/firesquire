@@ -100,6 +100,7 @@ function tab(answers) {
   const has = (sel, re) => css.some((r) => r.selector.split(',').map((x) => x.trim()).includes(sel) && re.test(r.body));
   ok('the lights take the verdict colours of every theme', has('.fs-light-green', /var\(--fs-go\)/) && has('.fs-light-yellow', /var\(--fs-caution\)/) &&
     has('.fs-light-red', /var\(--fs-nogo\)/) && has('.fs-light-grey', /var\(--fs-neutral\)/));
+  ok('the two cards keep the space between cards of every tab', has('#fs-info #fs-health', /gap: 40px/) && has('#fs-info #fs-health', /flex-direction: column/));
   const missing = ['t_health', 'h_title', 'h_lead', 'h_checked', 'h_never', 'h_check', 'h_checking', 'h_failed', 'h_light_green', 'h_light_yellow',
     'h_light_red', 'h_light_grey', 'h_days', 'h_day', 'h_config', 'h_config_lead'].filter((k) => !(k in en));
   ok('every text is in en.json', missing.length === 0, missing.join(', '));
