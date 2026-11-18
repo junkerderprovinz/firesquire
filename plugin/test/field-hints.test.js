@@ -23,7 +23,7 @@ class El {
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const ctx = {
     window: { csrf_token: 'tok', fireSquireI18n: en, fireSquireUI: { el, button: (cls, g, label) => el('button', cls, label), info: (tip) => { const s = el('span', 'fs-info'); s.tip = tip; return s; } } },
-    document: { getElementById: (id) => (id === 'fs-notify' ? box : null) },
+    document: { getElementById: (id) => (id === 'fs-notify' ? box : null), addEventListener() {} },
     FormData, URLSearchParams, JSON, Date, Object, String, parseInt, Promise,
     fetch: () => Promise.resolve({ json: () => ({ helper: true, schedule: { every: 'off', hour: 4 },
       channels: [{ id: 'a', kind: 'apprise', enabled: true, on: 'always', apprise: { url: '', urls: [] } }, { id: 'w', kind: 'webhook', enabled: true, on: 'always', webhook: {} }] }) }),

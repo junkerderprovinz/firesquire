@@ -587,6 +587,7 @@
         if (guard) ask(guard, act, win.close);
       }
       function onResult(data){
+        document.dispatchEvent(new CustomEvent('firesquire:checked'));
         if (guard && data && data.verdict === 'GO') { finished = true; guard.went = true; win.close(); guard.proceed(); return; }
         finish(reportHTML(data));
       }

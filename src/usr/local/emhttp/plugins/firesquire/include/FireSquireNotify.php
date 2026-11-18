@@ -68,17 +68,19 @@ switch ($_POST['do'] ?? '') {
       $event = fs_test_event($fsLang);
       if (($channel['kind'] ?? '') !== 'unraid') $event = fs_absolute($event);
       $in = json_encode(array('channel' => $channel, 'event' => $event));
-      list($code, $out, $err) = fs_helper($fsHelper, array('test', '-channels', $fsChannels, '-source', 'FireSquire'), $in);
-      // While the last check found TollRoll's hub, the test takes its way too.
+      // While the last check found TollRoll's hub, the test goes its way.
       $hubs = array_filter(array_map('trim', @file('/var/local/firesquire/hubs') ?: array()));
       $fortress = dirname(__DIR__) . '/fortress';
-      if ($hubs && is_executable($fortress)) {
-        $viaHub = fs_hub_test(explode(',', implode(',', $hubs)), "$fsDir/fortress", $fsLang, function ($args) use ($fortress) {
-          return fs_helper($fortress, $args, '');
-        });
-        $r = json_decode($out, true);
-        if (is_array($r)) $out = json_encode($r + array('hub' => $viaHub));
-      }
+      if (!is_executable($fortress)) $hubs = array();
+      $hubs = $hubs ? explode(',', implode(',', $hubs)) : array();
+      $out = $err = '';
+      $r = fs_test_send($hubs, function () use ($hubs, $fortress, $fsDir, $fsLang) {
+        return fs_hub_test($hubs, "$fsDir/fortress", $fsLang, function ($args) use ($fortress) { return fs_helper($fortress, $args, ''); });
+      }, function () use ($fsHelper, $fsChannels, $in, &$out, &$err) {
+        list(, $out, $err) = fs_helper($fsHelper, array('test', '-channels', $fsChannels, '-source', 'FireSquire'), $in);
+        return json_decode($out, true);
+      });
+      if (is_array($r)) fs_answer(200, json_encode($r));
       if ($out !== '') fs_answer(200, $out);
     }
     fs_answer($out !== '' ? 422 : 500, $out !== '' ? $out : json_encode(array('error' => $err)));

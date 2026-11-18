@@ -44,7 +44,7 @@ function tab(answers) {
   let pending = null;
   const ctx = {
     window: { fireSquireUI: UI },
-    document: { getElementById: (id) => (id === 'fs-health' ? root : null) },
+    document: { getElementById: (id) => (id === 'fs-health' ? root : null), dispatchEvent() {} }, CustomEvent: class { constructor(t) { this.type = t; } },
     fetch: (url) => { asked.push(url); const a = answers.shift(); return new Promise((res) => { pending = () => res({ json: () => Promise.resolve(a) }); }); },
     Object, Array, String, Promise,
   };

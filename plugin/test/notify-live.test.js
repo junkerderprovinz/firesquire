@@ -41,7 +41,7 @@ function page(answers) {
   };
   const ctx = {
     window,
-    document: { getElementById: (id) => (id === 'fs-notify' ? box : null) },
+    document: { getElementById: (id) => (id === 'fs-notify' ? box : null), addEventListener() {} },
     FormData, URLSearchParams,
     fetch: (url, o) => {
       if (!o || o.method !== 'POST') {

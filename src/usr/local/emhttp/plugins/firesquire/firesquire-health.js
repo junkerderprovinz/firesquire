@@ -89,6 +89,7 @@
       .then(function (s) {
         var ok = s && typeof s === "object" && Array.isArray(s.history);
         draw(ok ? s : null);
+        if (fresh) document.dispatchEvent(new CustomEvent("firesquire:checked"));
         if (ok && !s.last && !fresh) load(true);
       }, function () { draw(null); });
   }

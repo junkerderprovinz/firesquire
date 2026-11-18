@@ -162,6 +162,17 @@ function fs_hub_test($hubs, $dir, $lang, $run) {
   return false;
 }
 
+/* The test of a channel takes the way a real message would: through
+ * TollRoll's hub while one takes over, and to the channel only when none
+ * takes it. "hub" in the answer says which way it went. */
+function fs_test_send($hubs, $tryHub, $tryChannel) {
+  if ($hubs && $tryHub()) return array('ok' => true, 'hub' => true);
+  $r = $tryChannel();
+  if (!is_array($r)) return $r;
+  if ($hubs) $r['hub'] = false;
+  return $r;
+}
+
 function fs_test_event($lang) {
   $L = fs_texts($lang);
   return fs_linked(array('kind' => 'check.test', 'severity' => 'info',

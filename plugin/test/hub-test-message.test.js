@@ -42,9 +42,24 @@ ok('the test for the channels is linked too, in that language', test.link === '/
 const endpoint0 = read('include/FireSquireNotify.php');
 ok('the endpoint asks Unraid\'s language and makes the link whole for a channel outside', /fs_ui_lang\(\)/.test(endpoint0) && /fs_absolute\(/.test(endpoint0));
 
+console.log('\nOne way only');
+const route = (hubs, hubTakes, channel) => JSON.parse(execFileSync('php', ['-r', `require '${LIB}';
+$asked = array();
+$r = fs_test_send(${JSON.stringify(hubs)}, function () use (&$asked) { $asked[] = 'hub'; return ${hubTakes ? 'true' : 'false'}; }, function () use (&$asked) { $asked[] = 'channel'; return json_decode('${JSON.stringify(channel)}', true); });
+echo json_encode(array('r' => $r, 'asked' => $asked));`], { encoding: 'utf8' }));
+let way = route(['t1'], true, { ok: true });
+ok('while TollRoll takes over, the test goes through it alone', JSON.stringify(way.asked) === '["hub"]' && way.r.ok === true && way.r.hub === true, JSON.stringify(way));
+way = route(['t1'], false, { ok: true });
+ok('when it does not take the test, the channel gets it and the answer says so', JSON.stringify(way.asked) === '["hub","channel"]' && way.r.ok === true && way.r.hub === false, JSON.stringify(way));
+way = route([], false, { ok: false, code: 'timeout' });
+ok('without a hub the channel is tested as before', JSON.stringify(way.asked) === '["channel"]' && way.r.code === 'timeout' && !('hub' in way.r), JSON.stringify(way));
+const card = read('firesquire-notify.js');
+ok('the card names the way: TollRoll alone, or the channel because TollRoll did not take it', /r\.hub === true/.test(card) && /n_sent_hub/.test(card) && /r\.hub === false/.test(card) && /n_hub_skipped/.test(card));
+ok('the texts say so', /TollRoll/.test(en.n_sent_hub) && !/too\b/.test(en.n_sent_hub) && /TollRoll/.test(en.n_hub_skipped), en.n_sent_hub + ' | ' + en.n_hub_skipped);
+
 console.log('\nThe card and the endpoint');
 const endpoint = read('include/FireSquireNotify.php');
-ok('the endpoint asks the hubs the last check noted', /fs_hub_test\(/.test(endpoint) && /\/var\/local\/firesquire\/hubs/.test(endpoint) && /'hub'|"hub"/.test(endpoint));
+ok('the endpoint asks the hubs the last check noted', /fs_test_send\(/.test(endpoint) && /fs_hub_test\(/.test(endpoint) && /\/var\/local\/firesquire\/hubs/.test(endpoint) && /'hub'|"hub"/.test(endpoint));
 const page = read('firesquire-notify.js');
 ok('the card says when TollRoll took the test', /r\.hub/.test(page) && /n_sent_hub/.test(page));
 const missing = ['n_hub_test_title', 'n_sent_hub'].filter((k) => !(k in en));

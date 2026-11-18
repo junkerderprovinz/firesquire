@@ -18,20 +18,25 @@ class El {
   all() { return [this].concat(...this.children.map((c) => c.all())); }
 }
 
-async function page(answer) {
+async function page(answer, later) {
   const box = new El('div');
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const ctx = {
     window: { csrf_token: 'tok', fireSquireI18n: en, fireSquireUI: { el, button: (cls, g, label) => el('button', cls, label), info: () => el('span') } },
     document: { getElementById: (id) => (id === 'fs-notify' ? box : null) },
     FormData, URLSearchParams, JSON, Date, Object, String, parseInt, Promise,
-    fetch: () => Promise.resolve({ json: () => answer }),
+    fetch: () => { const a = answer; if (later) answer = later; return Promise.resolve({ json: () => a }); },
     setTimeout: () => 0, clearTimeout: () => {},
   };
+  const heard = {};
+  ctx.document.addEventListener = (type, fn) => { heard[type] = fn; };
   vm.runInNewContext(read('firesquire-notify.js'), ctx);
   await new Promise((r) => setImmediate(r));
   await new Promise((r) => setImmediate(r));
-  return box.all().find((e) => / fs-n-hub$/.test(' ' + e.className) || e.className === 'fs-prose fs-n-hub');
+  const line = box.all().find((e) => / fs-n-hub$/.test(' ' + e.className) || e.className === 'fs-prose fs-n-hub');
+  line.checked = async () => { heard['firesquire:checked'](); await new Promise((r) => setImmediate(r)); await new Promise((r) => setImmediate(r)); };
+  line.listens = !!heard['firesquire:checked'];
+  return line;
 }
 
 (async () => {
@@ -43,6 +48,13 @@ async function page(answer) {
   ok('without a hub the line stays hidden', line && line.hidden);
   line = await page({ helper: true, schedule: { every: 'off', hour: 4 }, channels: [] });
   ok('and so it does when the server does not say', line && line.hidden);
+
+  console.log('\nRight after a check');
+  line = await page({ helper: true, hub: false, schedule: { every: 'off', hour: 4 }, channels: [] }, { helper: true, hub: true, schedule: { every: 'off', hour: 4 }, channels: [] });
+  ok('the card listens for a finished check', line.listens);
+  await line.checked();
+  ok('and shows the line once the check found the hub, without a reload', !line.hidden);
+  ok('a check from the report window and from the Health tab says it finished', /firesquire:checked/.test(read('firesquire.js')) && /firesquire:checked/.test(read('firesquire-health.js')));
 
   console.log('\nWhere the page learns it');
   ok('the endpoint reports the hub from the note of the last check', /'hub'|"hub"/.test(read('include/FireSquireNotify.php')) && /\/var\/local\/firesquire\/hubs/.test(read('include/FireSquireNotify.php')));

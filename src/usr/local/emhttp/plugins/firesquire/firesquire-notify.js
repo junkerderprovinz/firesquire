@@ -213,7 +213,8 @@
     test.addEventListener("click", function () {
       res.textContent = "…";
       post({ "do": "test", channel: JSON.stringify(clean(c)) }).then(function (r) {
-        res.textContent = (r.ok ? t("n_sent") : fill(t("n_failed"), [r.code || r.error || "?"])) + (r.hub ? " " + t("n_sent_hub") : "");
+        if (r.hub === true) { res.textContent = t("n_sent_hub"); return; }
+        res.textContent = (r.ok ? t("n_sent") : fill(t("n_failed"), [r.code || r.error || "?"])) + (r.hub === false ? " " + t("n_hub_skipped") : "");
       }).catch(function () { res.textContent = fill(t("n_failed"), ["network"]); });
     });
     var remove = UI.button(null, "Close", t("n_remove"));
@@ -286,6 +287,13 @@
   sRow.appendChild(hour);
   sRow.appendChild(sMsg);
   cS.appendChild(sRow);
+
+  // A check finished elsewhere on the page may have found TollRoll's hub.
+  document.addEventListener("firesquire:checked", function () {
+    fetch(ENDPOINT, { credentials: "same-origin" }).then(function (r) { return r.json(); }).then(function (d) {
+      hub.hidden = d.hub !== true;
+    }).catch(function () {});
+  });
 
   fetch(ENDPOINT, { credentials: "same-origin" }).then(function (r) { return r.json(); }).then(function (d) {
     channels = d.channels || [];
