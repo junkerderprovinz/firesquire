@@ -44,12 +44,17 @@
 - **Every message links to FireSquire's settings,** and the test message arrives in Unraid's language.
 - **The all-clear reaches every channel.** When the trouble is over, channels that only take failures hear about it too.
 - **FireSquire's status for TollRoll,** with its logo, written after every check and refreshed every hour.
+- **Discord on the Help card.** The card offers GitHub and the FireSquire Discord server in place of the forum.
 
 🎨 **Design**
 - **Channels picked from tiles.** Add a channel in a window with a search and the services' logos, and fill in its fields right there. It is the same card as in ShipLog and TollRoll, and every change is saved at once.
 - **A real time picker for the schedule.** Pick the hour and the minute from two lists, and the check runs at exactly that time.
 - **Cleaner rows.** Fields, switches and buttons stand at the end of their row, every button shows its icon, an open list shows plain rows with a check mark, and no field has a frame.
 - **The same info bubble as everywhere else.** The (i) and its bubble look like they do in your other apps.
+- **GlimStone 4.5.5.** Buttons, tabs and choices light in a soft tint of your accent when the pointer reaches them. With TowerTorch they take its hover colour and its accent ink, the same as TowerTorch's own rows and buttons.
+- **A focus ring you can see.** Keyboard focus is a solid ring in the accent's ink instead of a faint halo, 2px wide and 3px when your system asks for more contrast.
+- **Placeholders you can read.** The hint in an empty field reaches 4.5:1 on every background.
+- **Reactive buttons keep their width.** In TowerTorch's reactive mode a FireSquire button is as wide as with its glyph and words, and the words open inside it instead of the button growing under the pointer.
 
 ⚡ **Improved**
 - **Fortress helpers 1.2.4.** FireSquire finds your other apps on a server with a single network interface too, and a member that already took a new phrase no longer counts as gone.
@@ -62,18 +67,6 @@
 
 🌐 **Translations**
 - **The Health tab, the stop check and the new channel window in all 26 languages,** with seconds written the same way in every sentence of a language.
-
-## 1.4.1
-✨ **Added**
-- **Discord on the Help card.** The card offers GitHub and the FireSquire Discord server in place of the forum.
-
-🎨 **Design**
-- **GlimStone 4.5.4.** Buttons, tabs and choices light in a soft tint of your accent when the pointer reaches them. With TowerTorch they take its hover colour and its accent ink, the same as TowerTorch's own rows and buttons.
-- **A focus ring you can see.** Keyboard focus is a solid ring in the accent's ink instead of a faint halo, 2px wide and 3px when your system asks for more contrast.
-- **Placeholders you can read.** The hint in an empty field reaches 4.5:1 on every background.
-- **Reactive buttons keep their width.** In TowerTorch's reactive mode a FireSquire button is as wide as with its glyph and words, and the words open inside it instead of the button growing under the pointer.
-
-🌐 **Translations**
 - **The Help sentence names GitHub and Discord in all 26 languages**, and French readers are addressed with tu.
 
 ## 1.4.0
