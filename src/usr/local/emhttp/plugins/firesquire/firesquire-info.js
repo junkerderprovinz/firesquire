@@ -61,7 +61,7 @@
     { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], rest: "var(--fs-coin-xrp)", networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
   ];
 
-  var GLS_VER = "4.5.4";
+  var GLS_VER = "4.5.5";
   var GLS_REPO = "https://github.com/junkerderprovinz/glimstone";
   var GLS_RELEASE_URL = GLS_REPO + "/releases/latest";
 
