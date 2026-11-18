@@ -123,6 +123,8 @@ FORTRESS="${FIRESQUIRE_FORTRESS:-$HERE/fortress}"
 FORTRESS_DIR="${FIRESQUIRE_FORTRESS_DIR:-/boot/config/plugins/firesquire/fortress}"
 fortress_apps() {
   [ -x "$FORTRESS" ] && [ -f "$FORTRESS_DIR/fortress.json" ] && have php || return 0
+  local fortress_mode=""
+  [ "$STOP" -eq 1 ] && fortress_mode=stop
   fspush 68 p_fortress
   # 3 is a fortress closed to newcomers until its phrase changes, and the
   # helper still reports the members that answered.
@@ -131,7 +133,7 @@ fortress_apps() {
   if [ "$fortress_code" -eq 0 ] || [ "$fortress_code" -eq 3 ]; then
     while IFS=$'\x1f' read -r f_tier f_status f_key f_args f_msg; do
       add "$f_tier" fortress "$f_status" "$f_key" "$f_args" "$f_msg"
-    done < <(printf '%s' "$fortress_out" | php "$HERE/firesquire-fortress.php")
+    done < <(printf '%s' "$fortress_out" | php "$HERE/firesquire-fortress.php" "$fortress_mode")
   else
     add info fortress info fortress_skip "" "FireSquire could not reach the fortress and skipped its apps."
   fi

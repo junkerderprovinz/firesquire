@@ -121,6 +121,17 @@ ok('closing the window without going on counts as cancel', /onClose: function\(\
 ok('the Dashboard\'s StopArrayNow is held the same way', /win\.StopArrayNow = held/.test(js) && /guardStop\(window\)/.test(js));
 ok('the question names the stop', /g_ask_stop/.test(js) && /g_stop/.test(js) && 'g_ask_stop' in en && 'g_stop' in en);
 
+console.log('\nThe words of a stop');
+const fortress = (mode) => execFileSync('php', [path.join(DIR, 'firesquire-fortress.php')].concat(mode ? [mode] : []), { encoding: 'utf8', input: JSON.stringify([
+  { app: { id: 'bombvault' }, device: 'tower', report: { app: { name: 'BombVault' }, state: 'ok', work: [{ title: 'Backup of photos', progress: 0.4, blocksRestart: true }, { title: 'Sync', blocksRestart: true }] } },
+]) }).split('\n').filter(Boolean).map((l) => l.split('\x1f')[2]);
+ok('before a stop, busy apps are named with the stop, not the reboot', fortress('stop').join() === 'fortress_busy_stop,fortress_busy_open_stop', fortress('stop').join());
+ok('and before a reboot as before', fortress('').join() === 'fortress_busy,fortress_busy_open');
+const calm = execFileSync('php', [path.join(DIR, 'firesquire-fortress.php'), 'stop'], { encoding: 'utf8', input: JSON.stringify([{ app: { id: 'tollroll' }, device: 'tower', report: { app: { name: 'TollRoll' }, state: 'ok', work: [] } }]) });
+ok('an idle fortress says so for the stop', /fortress_ok_stop/.test(calm));
+ok('the engine asks in the words of a stop when it checks for one', /firesquire-fortress\.php" "\$fortress_mode"/.test(read('firesquire-check.sh')));
+ok('the texts are in en.json and speak of stopping the array', ['fortress_ok_stop', 'fortress_busy_stop', 'fortress_busy_open_stop'].every((k) => k in en && /stop the array|stop of the array/.test(JSON.stringify(en[k]))));
+
 console.log('\nThe texts');
 const missing = ['stop_open_files', 'stop_open_ok', 'stop_mounts', 'stop_loops', 'stop_vm_agent', 'stop_containers', 'title_stop', 'g_ask_stop', 'g_stop'].filter((k) => !(k in en));
 ok('every text is in en.json', missing.length === 0, missing.join(', '));

@@ -39,7 +39,7 @@ const FS_COUNTED = array(
   'btrfs_ok' => 0, 'crc_found' => 1, 'smart_ok' => 0, 'share_open' => 3, 'share_writing' => 3,
   'ups_battery' => 1, 'ups_low' => 1, 'flash_backup_ok' => 0, 'flash_backup_old' => 0,
   'smart_asleep' => 0, 'smart_disk' => 4, 'smart_disk_short' => 2, 'flash_errors' => 0, 'cert_soon' => 2, 'cfg_plugin_update' => 1, 'cfg_plugin_unfit' => 1, 'vm_paused' => 1, 'stop_open_files' => 1, 'stop_mounts' => 1,
-  'stop_loops' => 1, 'stop_vm_agent' => 1, 'stop_containers' => 0,
+  'stop_loops' => 1, 'stop_vm_agent' => 1, 'stop_containers' => 0, 'fortress_ok_stop' => 0,
 );
 
 /* The CLDR plural category of a whole number in a language. */

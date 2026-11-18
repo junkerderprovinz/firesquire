@@ -2,9 +2,14 @@
 /* Reads `fortress status -json` on stdin and prints one finding per line for
  * firesquire-check.sh: tier, status, key, args and the English message,
  * separated by the unit separator, with the args joined by "|". Only work a
- * reboot would cut short counts; what an app needs from you is TollRoll's. */
+ * reboot would cut short counts; what an app needs from you is TollRoll's.
+ * With the argument stop the lines speak of stopping the array instead. */
 $members = json_decode(stream_get_contents(STDIN), true);
 if (!is_array($members)) exit(1);
+$stop = ($argv[1] ?? '') === 'stop';
+$suffix = $stop ? '_stop' : '';
+$before = $stop ? 'before you stop the array' : 'before rebooting';
+$cut = $stop ? 'a stop of the array' : 'a reboot';
 
 function flat($s) { return trim(preg_replace('/[\s\x1f|]+/u', ' ', (string) $s)); }
 
@@ -45,16 +50,16 @@ foreach ($members as $m) {
     $title = flat($w['title'] ?? '');
     if (isset($w['progress']) && is_numeric($w['progress'])) {
       $pct = round($w['progress'] * 100) . '%';
-      finding('critical', 'fail', 'fortress_busy', [$app, $device, $title, $pct], "$app on $device is still busy with $title ($pct). Let it finish before rebooting.");
+      finding('critical', 'fail', "fortress_busy$suffix", [$app, $device, $title, $pct], "$app on $device is still busy with $title ($pct). Let it finish $before.");
     } else {
-      finding('critical', 'fail', 'fortress_busy_open', [$app, $device, $title], "$app on $device is still busy with $title. Let it finish before rebooting.");
+      finding('critical', 'fail', "fortress_busy_open$suffix", [$app, $device, $title], "$app on $device is still busy with $title. Let it finish $before.");
     }
   }
 }
 if ($answered === 0 && $unanswered === 0) {
   finding('info', 'info', 'fortress_alone', [], 'No other app of your fortress is in reach right now.');
 } elseif ($answered > 0 && $busy === 0) {
-  finding('critical', 'pass', 'fortress_ok', [(string) $answered], $answered === 1
-    ? '1 app in your fortress answered. It is not busy with work a reboot would cut short.'
-    : "$answered apps in your fortress answered. None is busy with work a reboot would cut short.");
+  finding('critical', 'pass', "fortress_ok$suffix", [(string) $answered], $answered === 1
+    ? "1 app in your fortress answered. It is not busy with work $cut would cut short."
+    : "$answered apps in your fortress answered. None is busy with work $cut would cut short.");
 }
