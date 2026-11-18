@@ -154,6 +154,7 @@
   "n_test": "发送测试",
   "n_saved": "已保存。",
   "n_sent": "测试已发出。",
+  "n_sent_hub": "TollRoll 也已接收，会通过它的渠道发送。",
   "n_failed": "没有成功（{0}）。",
   "n_problem": "请检查 {1} 的 {0}。",
   "n_email": "电子邮件",
@@ -303,5 +304,6 @@
   },
   "stop_op_running": "一项校验操作正在运行（{0}）。停止阵列会取消它。",
   "stop_mover": "mover 正在运行。停止阵列会让它中途结束。",
-  "n_hub_health": "{0}：{1} 值得一看"
+  "n_hub_health": "{0}：{1} 值得一看",
+  "n_hub_test_title": "测试消息"
 }

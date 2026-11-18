@@ -198,6 +198,7 @@
   "n_test": "Trimite un test",
   "n_saved": "Salvat.",
   "n_sent": "Testul e pe drum.",
+  "n_sent_hub": "TollRoll l-a preluat și el și îl trimite prin canalele lui.",
   "n_failed": "Nu a mers ({0}).",
   "n_problem": "Verifică {0} la {1}.",
   "n_email": "E-mail",
@@ -401,5 +402,6 @@
   },
   "stop_op_running": "Rulează o operațiune de paritate ({0}). Oprirea array-ului o anulează.",
   "stop_mover": "Mover-ul rulează. Oprirea array-ului îl întrerupe.",
-  "n_hub_health": "{0}: {1} merită o privire"
+  "n_hub_health": "{0}: {1} merită o privire",
+  "n_hub_test_title": "Mesaj de test"
 }

@@ -198,6 +198,7 @@
   "n_test": "Poslat test",
   "n_saved": "Uloženo.",
   "n_sent": "Test je na cestě.",
+  "n_sent_hub": "TollRoll ji také přijal a posílá ji svými kanály.",
   "n_failed": "Nepovedlo se ({0}).",
   "n_problem": "Zkontroluj {0} u {1}.",
   "n_email": "E-mail",
@@ -401,5 +402,6 @@
   },
   "stop_op_running": "Běží operace parity ({0}). Zastavení pole ji zruší.",
   "stop_mover": "Mover běží. Zastavení pole ho předčasně ukončí.",
-  "n_hub_health": "{0}: mrkni na {1}"
+  "n_hub_health": "{0}: mrkni na {1}",
+  "n_hub_test_title": "Testovací zpráva"
 }

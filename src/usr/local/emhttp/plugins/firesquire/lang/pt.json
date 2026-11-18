@@ -187,6 +187,7 @@
   "n_test": "Enviar um teste",
   "n_saved": "Guardado.",
   "n_sent": "O teste está a caminho.",
+  "n_sent_hub": "O TollRoll também a aceitou e envia-a pelos seus canais.",
   "n_failed": "Não resultou ({0}).",
   "n_problem": "Verifica {0} em {1}.",
   "n_email": "E-mail",
@@ -370,5 +371,6 @@
   },
   "stop_op_running": "Está em curso uma operação de paridade ({0}). Parar o array cancela-a.",
   "stop_mover": "O mover está a correr. Parar o array interrompe-o a meio.",
-  "n_hub_health": "{0}: vale a pena ver {1}"
+  "n_hub_health": "{0}: vale a pena ver {1}",
+  "n_hub_test_title": "Mensagem de teste"
 }

@@ -184,6 +184,7 @@
   "n_test": "Test schicken",
   "n_saved": "Gespeichert.",
   "n_sent": "Der Test ist unterwegs.",
+  "n_sent_hub": "TollRoll hat sie auch angenommen und verschickt sie über seine Kanäle.",
   "n_failed": "Das hat nicht geklappt ({0}).",
   "n_problem": "Bitte prüf {0} bei {1}.",
   "n_email": "E-Mail",
@@ -367,5 +368,6 @@
   },
   "stop_op_running": "Eine Paritätsoperation läuft ({0}). Wenn du das Array stoppst, bricht sie ab.",
   "stop_mover": "Der Mover läuft. Wenn du das Array stoppst, bricht er mittendrin ab.",
-  "n_hub_health": "{0}: {1} einen Blick wert"
+  "n_hub_health": "{0}: {1} einen Blick wert",
+  "n_hub_test_title": "Testnachricht"
 }

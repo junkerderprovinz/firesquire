@@ -66,6 +66,16 @@ switch ($_POST['do'] ?? '') {
       if (!is_array($channel)) fs_answer(400, '{"error":"invalid"}');
       $in = json_encode(array('channel' => $channel, 'event' => fs_test_event($fsLang)));
       list($code, $out, $err) = fs_helper($fsHelper, array('test', '-channels', $fsChannels, '-source', 'FireSquire'), $in);
+      // While the last check found TollRoll's hub, the test takes its way too.
+      $hubs = array_filter(array_map('trim', @file('/var/local/firesquire/hubs') ?: array()));
+      $fortress = dirname(__DIR__) . '/fortress';
+      if ($hubs && is_executable($fortress)) {
+        $viaHub = fs_hub_test(explode(',', implode(',', $hubs)), "$fsDir/fortress", $fsLang, function ($args) use ($fortress) {
+          return fs_helper($fortress, $args, '');
+        });
+        $r = json_decode($out, true);
+        if (is_array($r)) $out = json_encode($r + array('hub' => $viaHub));
+      }
       if ($out !== '') fs_answer(200, $out);
     }
     fs_answer($out !== '' ? 422 : 500, $out !== '' ? $out : json_encode(array('error' => $err)));

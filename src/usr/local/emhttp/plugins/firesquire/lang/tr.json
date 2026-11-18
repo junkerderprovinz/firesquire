@@ -163,6 +163,7 @@
   "n_test": "Test gönder",
   "n_saved": "Kaydedildi.",
   "n_sent": "Test yolda.",
+  "n_sent_hub": "TollRoll da aldı ve kendi kanallarıyla gönderiyor.",
   "n_failed": "Olmadı ({0}).",
   "n_problem": "{1} için {0} değerini kontrol et.",
   "n_email": "E-posta",
@@ -328,5 +329,6 @@
   },
   "stop_op_running": "Bir eşlik işlemi sürüyor ({0}). Array'i durdurmak onu iptal eder.",
   "stop_mover": "Mover çalışıyor. Array'i durdurmak onu yarıda keser.",
-  "n_hub_health": "{0}: {1} bir göz atmaya değer"
+  "n_hub_health": "{0}: {1} bir göz atmaya değer",
+  "n_hub_test_title": "Test mesajı"
 }

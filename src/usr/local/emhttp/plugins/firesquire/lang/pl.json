@@ -209,6 +209,7 @@
   "n_test": "Wyślij test",
   "n_saved": "Zapisano.",
   "n_sent": "Test jest w drodze.",
+  "n_sent_hub": "TollRoll też ją przyjął i wysyła ją swoimi kanałami.",
   "n_failed": "Nie udało się ({0}).",
   "n_problem": "Sprawdź {0} w {1}.",
   "n_email": "E-mail",
@@ -432,5 +433,6 @@
   },
   "stop_op_running": "Trwa operacja parzystości ({0}). Zatrzymanie array ją przerwie.",
   "stop_mover": "Mover jest uruchomiony. Zatrzymanie array przerwie go przed czasem.",
-  "n_hub_health": "{0}: zerknij na {1}"
+  "n_hub_health": "{0}: zerknij na {1}",
+  "n_hub_test_title": "Wiadomość testowa"
 }

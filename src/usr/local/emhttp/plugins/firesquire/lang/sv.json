@@ -181,6 +181,7 @@
   "n_test": "Skicka ett test",
   "n_saved": "Sparat.",
   "n_sent": "Testet är på väg.",
+  "n_sent_hub": "TollRoll tog också emot det och skickar det via sina kanaler.",
   "n_failed": "Det gick inte ({0}).",
   "n_problem": "Kontrollera {0} för {1}.",
   "n_email": "E-post",
@@ -364,5 +365,6 @@
   },
   "stop_op_running": "En paritetsoperation pågår ({0}). Om du stoppar arrayen avbryts den.",
   "stop_mover": "Mover körs. Om du stoppar arrayen avbryts den i förtid.",
-  "n_hub_health": "{0}: ta en titt på {1}"
+  "n_hub_health": "{0}: ta en titt på {1}",
+  "n_hub_test_title": "Testmeddelande"
 }

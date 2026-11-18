@@ -181,6 +181,7 @@
   "n_test": "Invia un test",
   "n_saved": "Salvato.",
   "n_sent": "Il test è in viaggio.",
+  "n_sent_hub": "Anche TollRoll l’ha accettato e lo invia tramite i suoi canali.",
   "n_failed": "Non ha funzionato ({0}).",
   "n_problem": "Controlla {0} per {1}.",
   "n_email": "E-mail",
@@ -361,5 +362,6 @@
   },
   "stop_op_running": "È in corso un’operazione di parità ({0}). Fermare l’array la annulla.",
   "stop_mover": "Il mover è in esecuzione. Fermare l’array lo interrompe a metà.",
-  "n_hub_health": "{0}: {1} da guardare"
+  "n_hub_health": "{0}: {1} da guardare",
+  "n_hub_test_title": "Messaggio di prova"
 }

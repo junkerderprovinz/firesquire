@@ -154,6 +154,7 @@
   "n_test": "Gửi thử",
   "n_saved": "Đã lưu.",
   "n_sent": "Tin thử đang trên đường.",
+  "n_sent_hub": "TollRoll cũng đã nhận và gửi nó qua các kênh của mình.",
   "n_failed": "Không thành công ({0}).",
   "n_problem": "Hãy kiểm tra {0} của {1}.",
   "n_email": "Email",
@@ -303,5 +304,6 @@
   },
   "stop_op_running": "Một thao tác parity đang chạy ({0}). Dừng array sẽ hủy nó.",
   "stop_mover": "Mover đang chạy. Dừng array sẽ cắt ngang nó.",
-  "n_hub_health": "{0}: {1} đáng xem qua"
+  "n_hub_health": "{0}: {1} đáng xem qua",
+  "n_hub_test_title": "Tin nhắn thử"
 }

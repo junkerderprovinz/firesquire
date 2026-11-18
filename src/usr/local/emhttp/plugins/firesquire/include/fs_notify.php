@@ -128,6 +128,21 @@ function fs_event($report, $last, $lang, $server) {
     'hub' => array('title' => fs_fill($L['n_hub_title'] ?? '', $words), 'resolve' => $left)));
 }
 
+/* Hands the test message to the first of the hubs that takes it, through
+ * $run($args), which runs the fortress helper and returns its exit code and
+ * output. A key of its own every time, since the hub tells a key once. */
+function fs_hub_test($hubs, $dir, $lang, $run) {
+  $L = fs_texts($lang);
+  $body = json_encode(array('kind' => 'check.test', 'severity' => 'info', 'title' => (string) ($L['n_hub_test_title'] ?? ''),
+    'body' => (string) ($L['n_test_body'] ?? ''), 'key' => 'firesquire.test.' . time()), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  foreach ($hubs as $hub) {
+    list($code, $out) = $run(array('act', '-dir', $dir, '-wait', '8s', (string) $hub, 'notify.deliver', $body));
+    $answer = json_decode((string) $out, true);
+    if ($code === 0 && is_array($answer) && ($answer['taken'] ?? false) === true) return true;
+  }
+  return false;
+}
+
 function fs_test_event($lang) {
   $L = fs_texts($lang);
   return array('kind' => 'check.test', 'severity' => 'info',

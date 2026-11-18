@@ -187,6 +187,7 @@
   "n_test": "Enviar una prueba",
   "n_saved": "Guardado.",
   "n_sent": "La prueba va en camino.",
+  "n_sent_hub": "TollRoll también lo aceptó y lo envía por sus canales.",
   "n_failed": "No ha funcionado ({0}).",
   "n_problem": "Revisa {0} en {1}.",
   "n_email": "Correo",
@@ -370,5 +371,6 @@
   },
   "stop_op_running": "Hay una operación de paridad en curso ({0}). Parar el array la cancela.",
   "stop_mover": "El mover está en marcha. Parar el array lo corta a medias.",
-  "n_hub_health": "{0}: conviene mirar {1}"
+  "n_hub_health": "{0}: conviene mirar {1}",
+  "n_hub_test_title": "Mensaje de prueba"
 }

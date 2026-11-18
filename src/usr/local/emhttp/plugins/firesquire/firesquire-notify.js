@@ -210,7 +210,7 @@
     test.addEventListener("click", function () {
       res.textContent = "…";
       post({ "do": "test", channel: JSON.stringify(clean(c)) }).then(function (r) {
-        res.textContent = r.ok ? t("n_sent") : fill(t("n_failed"), [r.code || r.error || "?"]);
+        res.textContent = (r.ok ? t("n_sent") : fill(t("n_failed"), [r.code || r.error || "?"])) + (r.hub ? " " + t("n_sent_hub") : "");
       }).catch(function () { res.textContent = fill(t("n_failed"), ["network"]); });
     });
     var remove = UI.button(null, "Close", t("n_remove"));

@@ -187,6 +187,7 @@
   "n_test": "Send a test",
   "n_saved": "Saved.",
   "n_sent": "The test is on its way.",
+  "n_sent_hub": "TollRoll took it too and sends it through its channels.",
   "n_failed": "That did not work ({0}).",
   "n_problem": "Please check {0} for {1}.",
   "n_email": "Email",
@@ -370,5 +371,6 @@
   },
   "stop_op_running": "A parity operation is running ({0}). Stopping the array cancels it.",
   "stop_mover": "The mover is running. Stopping the array cuts it short.",
-  "n_hub_health": "{0}: {1} worth a look"
+  "n_hub_health": "{0}: {1} worth a look",
+  "n_hub_test_title": "Test message"
 }

@@ -163,6 +163,7 @@
   "n_test": "Teszt küldése",
   "n_saved": "Mentve.",
   "n_sent": "A teszt úton van.",
+  "n_sent_hub": "A TollRoll is átvette, és a saját csatornáin küldi el.",
   "n_failed": "Ez nem sikerült ({0}).",
   "n_problem": "Ellenőrizd ezt: {0} itt: {1}.",
   "n_email": "E-mail",
@@ -328,5 +329,6 @@
   },
   "stop_op_running": "Paritásművelet van folyamatban ({0}). A tömb leállítása megszakítja.",
   "stop_mover": "A Mover fut. A tömb leállítása félbeszakítja.",
-  "n_hub_health": "{0}: {1} megér egy pillantást"
+  "n_hub_health": "{0}: {1} megér egy pillantást",
+  "n_hub_test_title": "Tesztüzenet"
 }

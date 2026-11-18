@@ -181,6 +181,7 @@
   "n_test": "Send en test",
   "n_saved": "Lagret.",
   "n_sent": "Testen er på vei.",
+  "n_sent_hub": "TollRoll tok også imot den og sender den gjennom sine kanaler.",
   "n_failed": "Det gikk ikke ({0}).",
   "n_problem": "Sjekk {0} for {1}.",
   "n_email": "E-post",
@@ -364,5 +365,6 @@
   },
   "stop_op_running": "En paritetsoperasjon pågår ({0}). Å stoppe arrayet avbryter den.",
   "stop_mover": "Mover kjører. Å stoppe arrayet avbryter den før den er ferdig.",
-  "n_hub_health": "{0}: {1} er verdt en titt"
+  "n_hub_health": "{0}: {1} er verdt en titt",
+  "n_hub_test_title": "Testmelding"
 }
