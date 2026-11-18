@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.4.1">
+<!ENTITY version   "1.5.0">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -32,6 +32,37 @@
 </ICON>
 
   <CHANGES>
+## 1.5.0
+✨ **Added**
+- **A Health tab for the whole server.** Eight areas each get a light of their own: Disks, Array and pools, Docker, VMs, Flash, Network, Fortress and System. FireSquire keeps 30 days of history per area and tells you when one gets worse.
+- **SMART trends per disk.** FireSquire remembers each disk's SMART values and warns when a sector count goes up. Sleeping disks stay asleep, so a scheduled check does not spin up the array.
+- **A check before the array stops.** Stopping the array from Main or the Dashboard now waits for the same check as a reboot. It names what still holds the array: programs with open files, mounts and images inside it, VMs without a connected guest agent, running containers and a short time-out.
+- **The flash drive and the certificate.** FireSquire watches the flash drive's read errors and free space, and it tells you before Unraid's certificate expires.
+- **A time-out that fits your server.** After an unclean shutdown, FireSquire reads how long your VMs and containers took to stop last time and suggests the shutdown time-out in seconds.
+- **Advice on share and plugin settings,** in a group of its own. Health and configuration findings stay out of the reboot verdict.
+- **TollRoll can send your messages.** When your fortress has a TollRoll that collects notifications, FireSquire hands every message to it, and the Notifications card says so. Without TollRoll, or when it does not take a message, FireSquire sends through its own channels. Healthchecks pings always come from FireSquire.
+- **Every message links to FireSquire's settings,** and the test message arrives in Unraid's language.
+- **The all-clear reaches every channel.** When the trouble is over, channels that only take failures hear about it too.
+- **FireSquire's status for TollRoll,** with its logo, written after every check and refreshed every hour.
+
+🎨 **Design**
+- **Channels picked from tiles.** Add a channel in a window with a search and the services' logos, and fill in its fields right there. It is the same card as in ShipLog and TollRoll, and every change is saved at once.
+- **A real time picker for the schedule.** Pick the hour and the minute from two lists, and the check runs at exactly that time.
+- **Cleaner rows.** Fields, switches and buttons stand at the end of their row, every button shows its icon, an open list shows plain rows with a check mark, and no field has a frame.
+- **The same info bubble as everywhere else.** The (i) and its bubble look like they do in your other apps.
+
+⚡ **Improved**
+- **Fortress helpers 1.2.4.** FireSquire finds your other apps on a server with a single network interface too, and a member that already took a new phrase no longer counts as gone.
+
+🐛 **Fixed**
+- **No more false SMART failures.** The verdict reads the disk's own self-assessment, so a healthy disk that is awake no longer shows as failing.
+- **The stop check names only what really holds the array.** What Unraid ends by itself is left out, and a long list of mounts shows the first five.
+- **A cancelled stop is really cancelled.** Unraid's form goes back to how it was.
+- **A test goes one way.** While TollRoll takes over, the test goes through TollRoll and only falls back to the channel when TollRoll does not take it.
+
+🌐 **Translations**
+- **The Health tab, the stop check and the new channel window in all 26 languages,** with seconds written the same way in every sentence of a language.
+
 ## 1.4.1
 ✨ **Added**
 - **Discord on the Help card.** The card offers GitHub and the FireSquire Discord server in place of the forum.
