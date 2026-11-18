@@ -15,7 +15,7 @@ const ORDER = ['✨ **Added**', '🎨 **Design**', '⚡ **Improved**', '🐛 **F
 const DASHES = new RegExp('[' + String.fromCharCode(0x2013, 0x2014) + ']| - ');
 
 console.log('\nThe CHANGES');
-ok('newest first', versions.join(' ') === '1.5.0 1.4.0 1.3.0 1.2.0 1.1.0 1.0.0', versions.join(' '));
+ok('newest first', versions.join(' ') === '1.5.1 1.5.0 1.4.0 1.3.0 1.2.0 1.1.0 1.0.0', versions.join(' '));
 ok('the version on top is the plugin\'s', (/<!ENTITY version\s+"([^"]+)">/.exec(plg) || [])[1] === versions[0]);
 ok('no note carries the former name', !/smoke\s?signal/i.test(changes));
 ok('no note points at a release of its own', !/\bv?\d+\.\d+\.\d+\b/.test(changes.replace(/^## \d+\.\d+\.\d+$/gm, '').replace(/(GlimStone|TowerTorch|Fortress helpers) \d+\.\d+\.\d+/g, '')));
@@ -33,7 +33,7 @@ const yml = fs.readFileSync(path.join(__dirname, '..', '..', '.github', 'workflo
 const step = (/ver="\$\{\{ steps\.v\.outputs\.version \}\}"\n\s+(awk[\s\S]*?release-notes\.md)/.exec(yml) || [])[1] || '';
 const notes = step ? execFileSync('bash', ['-c', `ver=${versions[0]}; cd "${path.join(__dirname, '..', '..').replace(/\\/g, '/')}"; ${step.replace(/> release-notes\.md$/, '')}`], { encoding: 'utf8' }) : '';
 ok('takes the newest block', notes.includes('- **') && !/^## \d/m.test(notes));
-ok('and gives each category a heading', /^## ✨ Added$/m.test(notes) && !/^\S+ \*\*[A-Z][a-z]+\*\*$/m.test(notes), notes.split('\n').filter((l) => /^#|\*\*$/.test(l)).join(' / '));
+ok('and gives each category a heading', ORDER.filter((l) => blocks[0].includes(l)).every((l) => notes.includes('## ' + l.replace(/\*\*/g, ''))) && !/^\S+ \*\*[A-Z][a-z]+\*\*$/m.test(notes), notes.split('\n').filter((l) => /^#|\*\*$/.test(l)).join(' / '));
 ok('pins the version as the owner, not as a bot', /git config user\.name "junkerderprovinz"/.test(yml) && !/github-actions\[bot\]/.test(yml));
 
 done();

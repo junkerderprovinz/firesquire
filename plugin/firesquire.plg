@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.5.0">
+<!ENTITY version   "1.5.1">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -11,10 +11,10 @@
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
 <!ENTITY sha256 "a3c33e3f7b5592e0efab305f9f34c6b14dbe2e29c9956e73f3766a773aa03890">
-<!ENTITY helperVer "v1.2.4">
+<!ENTITY helperVer "v1.3.0">
 <!ENTITY helperURL "https://github.com/junkerderprovinz/parleyport/releases/download/&helperVer;">
-<!ENTITY fortressSHA "9ef6bf1ee0d81a764eb6c2fc5913ef311a1fa252f0581e6759a55b88f68a65df">
-<!ENTITY notifySHA "d7be38cfa30506bb6dff4f8e867fb34bd98515a22a3a242037a95aba34dad17e">
+<!ENTITY fortressSHA "TODO_FORTRESS_SHA">
+<!ENTITY notifySHA "TODO_NOTIFY_SHA">
 ]>
 
 <PLUGIN name="&name;"
@@ -32,6 +32,11 @@
 </ICON>
 
   <CHANGES>
+## 1.5.1
+⚡ **Improved**
+- **Fortress helpers 1.3.0.** The notify helper itself sends the all-clear to channels that only take failures.
+- **The all-clear goes straight to those channels.** FireSquire marks it as a recovery, so it no longer needs a short-lived copy of your channels set to take everything.
+
 ## 1.5.0
 ✨ **Added**
 - **A Health tab for the whole server.** Eight areas each get a light of their own: Disks, Array and pools, Docker, VMs, Flash, Network, Fortress and System. FireSquire keeps 30 days of history per area and tells you when one gets worse.
