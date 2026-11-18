@@ -6,6 +6,18 @@
 
 const FS_ENGINE = '/usr/local/emhttp/plugins/firesquire/firesquire-check.sh';
 
+/* The language Unraid shows: the session's, and where a request has none,
+ * the one set in Unraid's display settings. */
+function fs_ui_lang() {
+  $lang = (string) ($_SESSION['locale'] ?? '');
+  if ($lang === '') {
+    $cfg = @parse_ini_file(getenv('FS_DYNAMIX_CFG') ?: '/boot/config/plugins/dynamix/dynamix.cfg');
+    $lang = (string) ($cfg['locale'] ?? '');
+  }
+  $lang = strtolower(substr($lang, 0, 2));
+  return preg_match('/^[a-z]{2}$/', $lang) ? $lang : 'en';
+}
+
 /* The texts in $lang over English, so a missing key reads in English. */
 function fs_texts($lang) {
   $dir = dirname(__DIR__) . '/lang';
@@ -141,7 +153,7 @@ function fs_event($report, $last, $lang, $server) {
 function fs_hub_test($hubs, $dir, $lang, $run) {
   $L = fs_texts($lang);
   $body = json_encode(array('kind' => 'check.test', 'severity' => 'info', 'title' => (string) ($L['n_hub_test_title'] ?? ''),
-    'body' => (string) ($L['n_test_body'] ?? ''), 'key' => 'firesquire.test.' . time()), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    'body' => (string) ($L['n_test_body'] ?? ''), 'key' => 'firesquire.test.' . time(), 'link' => FS_SETTINGS_PATH), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   foreach ($hubs as $hub) {
     list($code, $out) = $run(array('act', '-dir', $dir, '-wait', '8s', (string) $hub, 'notify.deliver', $body));
     $answer = json_decode((string) $out, true);
@@ -152,8 +164,8 @@ function fs_hub_test($hubs, $dir, $lang, $run) {
 
 function fs_test_event($lang) {
   $L = fs_texts($lang);
-  return array('kind' => 'check.test', 'severity' => 'info',
-    'title' => (string) ($L['n_test_title'] ?? ''), 'body' => (string) ($L['n_test_body'] ?? ''));
+  return fs_linked(array('kind' => 'check.test', 'severity' => 'info',
+    'title' => (string) ($L['n_test_title'] ?? ''), 'body' => (string) ($L['n_test_body'] ?? '')));
 }
 
 /* The cron line that runs the check daily or on Sundays at half past $hour,

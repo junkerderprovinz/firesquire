@@ -11,7 +11,7 @@ $fsDir = '/boot/config/plugins/firesquire';
 $fsChannels = "$fsDir/notify.json";
 $fsCron = "$fsDir/firesquire.cron";
 $fsHelper = dirname(__DIR__) . '/notify';
-$fsLang = isset($_SESSION['locale']) ? (string) $_SESSION['locale'] : '';
+$fsLang = fs_ui_lang();
 
 /* Runs the helper with $args and $stdin and returns its exit code and output. */
 function fs_helper($helper, $args, $stdin) {
@@ -64,7 +64,10 @@ switch ($_POST['do'] ?? '') {
     } else {
       $channel = json_decode((string) ($_POST['channel'] ?? ''), true);
       if (!is_array($channel)) fs_answer(400, '{"error":"invalid"}');
-      $in = json_encode(array('channel' => $channel, 'event' => fs_test_event($fsLang)));
+      // Unraid's own notification opens the page by its path, any other channel needs it whole.
+      $event = fs_test_event($fsLang);
+      if (($channel['kind'] ?? '') !== 'unraid') $event = fs_absolute($event);
+      $in = json_encode(array('channel' => $channel, 'event' => $event));
       list($code, $out, $err) = fs_helper($fsHelper, array('test', '-channels', $fsChannels, '-source', 'FireSquire'), $in);
       // While the last check found TollRoll's hub, the test takes its way too.
       $hubs = array_filter(array_map('trim', @file('/var/local/firesquire/hubs') ?: array()));

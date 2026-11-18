@@ -33,6 +33,15 @@ r = hubTest(['t1'], { t1: [0, '{"error":"hub_off"}', ''] });
 ok('no hub that takes it is no hub', r.took === false);
 ok('without a hub nothing is asked', hubTest([], {}).calls.length === 0);
 
+ok('it links to FireSquire\'s settings by the page\'s path', JSON.parse(hubTest(['t1'], { t1: [0, '{"taken":true}', ''] }).calls[0][7]).link === '/Settings/FireSquireTools');
+const lang = (env) => execFileSync('php', ['-r', `require '${LIB}'; echo fs_ui_lang();`], { encoding: 'utf8', env: { ...process.env, ...env } });
+ok('the language is the one Unraid shows, from its settings when the page has no session', lang({ FS_DYNAMIX_CFG: path.join(__dirname, 'fixtures', 'dynamix.cfg') }) === 'de');
+ok('and English without them', lang({ FS_DYNAMIX_CFG: path.join(__dirname, 'fixtures', 'none.cfg') }) === 'en');
+const test = JSON.parse(execFileSync('php', ['-r', `require '${LIB}'; echo json_encode(fs_test_event('de'));`], { encoding: 'utf8' }));
+ok('the test for the channels is linked too, in that language', test.link === '/Settings/FireSquireTools' && test.title === de.n_test_title, JSON.stringify(test));
+const endpoint0 = read('include/FireSquireNotify.php');
+ok('the endpoint asks Unraid\'s language and makes the link whole for a channel outside', /fs_ui_lang\(\)/.test(endpoint0) && /fs_absolute\(/.test(endpoint0));
+
 console.log('\nThe card and the endpoint');
 const endpoint = read('include/FireSquireNotify.php');
 ok('the endpoint asks the hubs the last check noted', /fs_hub_test\(/.test(endpoint) && /\/var\/local\/firesquire\/hubs/.test(endpoint) && /'hub'|"hub"/.test(endpoint));
