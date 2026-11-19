@@ -84,4 +84,10 @@ for (const f of ['firesquire-info.js', 'firesquire-notify.js']) {
   ok(`a card in ${f}, with its title`, /\.setAttribute\("data-glim", "Card"\)/.test(read(f)) && /\.setAttribute\("data-glim-title", /.test(read(f)));
 }
 
+console.log('\nA README button keeps the descenders of its name');
+{
+  const name = rules(read('firesquire-info.css')).find((r) => r.selector === '#fs-info .fs-rbtn-name');
+  ok('the clip that ends a long name reaches past its line and gives the room back', !!name && /overflow:\s*hidden;[^}]*padding-block:\s*\.15em;\s*margin-block:\s*-\.15em;/.test(name.body), name && name.body);
+}
+
 done();

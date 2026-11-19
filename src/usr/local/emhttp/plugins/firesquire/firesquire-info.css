@@ -78,7 +78,8 @@
 #fs-info :is(.fs-rbtn-mark, .fs-rbtn-art) svg { display: block; width: 100%; height: 100%; }
 #fs-info .fs-rbtn-art { position: absolute; inset: 0; }
 #fs-info .fs-rbtn-text { position: absolute; top: 0; bottom: 0; left: 53px; right: 10px; display: flex; flex-direction: column; justify-content: center; line-height: 1.15; }
-#fs-info .fs-rbtn-name { max-width: 100%; overflow: hidden; white-space: nowrap; font-size: var(--tt-text-body, 14px); font-weight: 700; }
+/* As on the channel tiles, the name's clip reaches past its line so the descenders stay whole. */
+#fs-info .fs-rbtn-name { max-width: 100%; overflow: hidden; white-space: nowrap; padding-block: .15em; margin-block: -.15em; font-size: var(--tt-text-body, 14px); font-weight: 700; }
 #fs-info .fs-paypal-mark { color: var(--fs-brand-paypal); }
 #fs-info .fs-bitcoin-mark { color: var(--fs-brand-bitcoin); }
 #fs-info .fs-github-mark { color: #fff; }
