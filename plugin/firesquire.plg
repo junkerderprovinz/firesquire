@@ -10,7 +10,7 @@
 <!ENTITY pkgURL    "https://github.com/junkerderprovinz/firesquire/releases/download/v&version;/&pkg;-&version;.txz">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&pkg;">
 <!ENTITY plgPath   "/boot/config/plugins/&pkg;">
-<!ENTITY sha256 "d14cf844079d0da1fbe88de96b37f33b188387a7b4fcf2ab149e09502c4db690">
+<!ENTITY sha256 "f78e18625ba659d614572dc68d465199edf3592742d374acc1c8cc147ed3ca8c">
 <!ENTITY helperVer "v1.3.1">
 <!ENTITY helperURL "https://github.com/junkerderprovinz/parleyport/releases/download/&helperVer;">
 <!ENTITY fortressSHA "3feef84709a1e62c68d6c72cac50cec81f624c4944b7e471044b542c154f7b09">
