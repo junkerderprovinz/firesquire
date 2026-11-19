@@ -98,6 +98,38 @@ const get = { helper: true, hub: false, schedule: { every: 'daily', hour: 3 }, c
   ok('a time picked goes out as its hour and minute', p.posts.some((d) => d.do === 'schedule' && d.hour === '5' && d.minute === '15'), JSON.stringify(p.posts));
   ok('the hub line shows while TollRoll takes over', p.box.all().some((e) => /fs-n-hub/.test(e.className) && !e.hidden));
 
+  console.log("\nGlimStone's catalog");
+  const nc = require(path.join(DIR, 'scripts', 'notify-card.js'));
+  const { version } = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'glimstone.json'), 'utf8')).targets.find((t) => t.name === 'plugin');
+  const res = await fetch(`https://raw.githubusercontent.com/junkerderprovinz/glimstone/v${version}/packages/core/src/notifyProviders.ts`);
+  const src = res.ok ? await res.text() : '';
+  // One entry to a line in GlimStone's source, the Shoutrrr words in a list of their own.
+  const words = (list) => [...list.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  const shoutrrr = /const SHOUTRRR = \[([^\]]*)\]/.exec(src);
+  const theirs = [...src.matchAll(/^\s*\{ id: "([^"]+)".*\},?$/gm)].map(([line, id]) => {
+    const e = { id, name: /name: "([^"]+)"/.exec(line)[1], group: /group: "([^"]+)"/.exec(line)[1] };
+    const kind = /kind: "([^"]+)"/.exec(line), glyph = /glyph: "([^"]+)"/.exec(line), terms = /terms: (\[[^\]]*\]|\w+)/.exec(line);
+    if (kind) e.kind = kind[1];
+    if (terms) e.terms = terms[1].startsWith('[') ? words(terms[1]) : words(shoutrrr[1]);
+    if (glyph) e.glyph = glyph[1];
+    if (/word: true/.test(line)) e.word = true;
+    return e;
+  });
+  ok(`the card's catalog is NOTIFY_PROVIDERS of GlimStone ${version}, marks aside`, theirs.length >= 10 && require('util').isDeepStrictEqual(nc.CATALOG.entries, theirs), res.status);
+  const before = {
+    unraid: ['Unraid', 'service'], discord: ['Discord', 'service'], slack: ['Slack', 'service'], ntfy: ['ntfy', 'service'],
+    gotify: ['Gotify', 'service'], matrix: ['Matrix', 'service'], apprise: ['Apprise', 'service'], healthchecks: ['Healthchecks.io', 'service'],
+    smtp: [en.nc_smtp, 'standard'], webhook: [en.nc_webhook, 'standard']
+  };
+  const all = Object.keys(before);
+  const tiles = nc.sections(all, [], en, 'en').flatMap((s) => s.tiles.map((x) => [x.kind, x.name, s.id, x.sub]));
+  ok('every channel kind finds the entry it had before', Object.keys(nc.FIELDS).sort().join() === all.slice().sort().join() && tiles.length === all.length &&
+    tiles.every(([kind, name, group]) => before[kind][0] === name && before[kind][1] === group), JSON.stringify(tiles));
+  ok('mail carries SMTP as its second line, and only mail', tiles.every(([kind, , , sub]) => sub === (kind === 'smtp' ? 'SMTP' : '')));
+  const found = (q) => nc.sections(all, [], en, 'en', q).flatMap((s) => s.tiles.map((x) => x.kind)).join();
+  ok("the catalog's words find a tile", found('element') === 'matrix' && found('http') === 'webhook' && found('telegram') === '');
+  ok('the webhook stays last whatever its name', nc.sections(all, [], Object.assign({}, en, { nc_webhook: 'Aaa' }), 'en')[1].tiles.map((x) => x.kind).join() === 'smtp,webhook');
+
   console.log('\nThe shared files');
   const card = read('scripts/notify-card.js');
   ok('the card is the house\'s file, which serves every plugin as it is', /the same file serves every plugin/.test(card) && /root\.GlimNotifyCard = factory\(\)/.test(card));
