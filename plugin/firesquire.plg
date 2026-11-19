@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.5.1">
+<!ENTITY version   "1.5.2">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -32,6 +32,19 @@
 </ICON>
 
   <CHANGES>
+## 1.5.2
+🎨 **Design**
+- **Channels from GlimStone's catalog.** In the window that adds a channel, mail shows SMTP as its second line, the search also knows other words for a service, such as HTTP for the webhook, and the webhook comes last. Back from a channel's form marks the tile you picked before and puts the focus on it.
+- **A window that fits the form.** Once you pick a tile, the window narrows to the form's width, and a click beside it keeps what you typed. The test sits in the window's foot and shows its result next to the button.
+- **A search with its own clear button.** The search field carries a magnifier, and a small grey button empties it.
+- **GlimStone 4.6.0.** With TowerTorch, quiet buttons in the channel window hover in its accent colour, and open lists show TowerTorch's plain rows with a check on the chosen option.
+
+🐛 **Fixed**
+- **Fortress helpers 1.3.1.** Two apps that first meet while one of them restarts still find each other.
+
+🌐 **Translations**
+- **The clear button of the search in all 26 languages.**
+
 ## 1.5.1
 ⚡ **Improved**
 - **Fortress helpers 1.3.0.** The notify helper itself sends the all-clear to channels that only take failures.
