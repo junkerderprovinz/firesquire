@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.5.2">
+<!ENTITY version   "1.5.3">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -32,6 +32,10 @@
 </ICON>
 
   <CHANGES>
+## 1.5.3
+🐛 **Fixed**
+- **README buttons keep their descenders.** The bottom of the p and y on the buttons under Help and About is no longer cut off.
+
 ## 1.5.2
 🎨 **Design**
 - **Channels from GlimStone's catalog.** In the window that adds a channel, mail shows SMTP as its second line, the search also knows other words for a service, such as HTTP for the webhook, and the webhook comes last. Back from a channel's form marks the tile you picked before and puts the focus on it.
