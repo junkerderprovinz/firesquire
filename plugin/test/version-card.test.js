@@ -1,6 +1,7 @@
 // The Info tab carries GlimStone's Version and Components cards, in both looks. The Version card
 // holds FireSquire and its number and one last row with where the updates stand, as Unraid's
 // plugin manager sees them, and What's new, Check for updates and the way to the Plugins tab.
+// What's new opens a window with the notes of the running release, or of the newer one.
 // ParleyPort's helpers and GlimStone stand in Components. Every number reads as plain text that
 // opens its project's newest release, never as a badge or a button.
 const fs = require('fs');
@@ -32,7 +33,7 @@ const tick = () => new Promise((r) => setTimeout(r, 0));
 // The cards' functions, in the language given, with Unraid's answers and the page stubbed.
 function load(L, opts) {
   const o = Object.assign({ ver: '1.5.3', helpers: 'v1.3.1', answers: [] }, opts);
-  const log = { fetched: [], opened: [], went: [] };
+  const log = { fetched: [], opened: [], went: [], windows: [] };
   const fetch = (url, init) => {
     log.fetched.push({ url, method: (init && init.method) || 'GET', body: init && init.body });
     const a = o.answers.shift();
@@ -44,15 +45,21 @@ function load(L, opts) {
     lang: L === de ? 'de' : 'en', t: fill,
     info: (tip) => { const s = new N('span', 'fs-info'); s.setAttribute('data-tip', tip); return s; },
     button: (cls, glyph, label) => { const b = new N('button', 'fs-btn' + (cls ? ' ' + cls : '')); b.glyph = glyph; b.appendChild(new N('span', 'fs-btn-l', label)); return b; },
+    openWindow: (w) => {
+      const title = new N('h2', 'fs-win-title', w.title), body = new N('div', 'fs-win-body'), act = new N('div', 'fs-win-act');
+      act.appendChild(UI.button('fs-win-btn', 'Close', 'Close'));
+      const frame = { title, body, act, querySelector: (sel) => (sel === '.fs-win-title' ? title : null) };
+      log.windows.push(Object.assign({ o: w, focus: w.build(body, frame, act) }, frame));
+    },
   };
   const root = new N('div'); if (o.helpers) root.setAttribute('data-fs-helpers', o.helpers);
   const win = { csrf_token: 'tok', open: (u) => log.opened.push(u), location: { set href(v) { log.went.push(v); } } };
   class FormData { constructor() { this.f = []; } append(k, v) { this.f.push(k + '=' + v); } toString() { return this.f.join('&'); } }
-  const consts = ['REPO', 'GLS_VER', 'GLS_REPO', 'PARLEYPORT_REPO', 'UPDATE_URL'].map((n) => (new RegExp('  var ' + n + ' = [^;]+;').exec(info) || [''])[0]).join('\n');
-  const fns = ['card', 'blank', 'release', 'version', 'timeAgo', 'newer', 'versionCard', 'updateState', 'askUpdates', 'componentsCard', 'componentRow'].map((n) => grabFn(info, n)).join('\n');
-  const api = new Function('UI', 'el', 't', 'root', 'ver', 'window', 'fetch', 'FormData', 'seq', consts + '\n' + fns + '\nreturn { versionCard: versionCard, componentsCard: componentsCard, version: version, newer: newer };')(
-    UI, (t, c, x) => new N(t, c, x), (k) => L[k], root, o.ver, win, fetch, FormData, 0);
-  return Object.assign(api, { log, into: () => new N('div') });
+  const consts = ['REPO', 'RELEASES_API', 'GLS_VER', 'GLS_REPO', 'PARLEYPORT_REPO', 'UPDATE_URL'].map((n) => (new RegExp('  var ' + n + ' = [^;]+;').exec(info) || [''])[0]).join('\n');
+  const fns = ['card', 'blank', 'release', 'version', 'timeAgo', 'newer', 'versionCard', 'updateState', 'askUpdates', 'componentsCard', 'componentRow', 'notesSource', 'openNotes', 'notesInline', 'notesDom'].map((n) => grabFn(info, n)).join('\n');
+  const api = new Function('UI', 'el', 't', 'root', 'ver', 'window', 'fetch', 'FormData', 'seq', 'document', consts + '\n' + fns + '\nreturn { versionCard: versionCard, componentsCard: componentsCard, version: version, newer: newer, notesDom: notesDom, notesSource: notesSource };')(
+    UI, (t, c, x) => new N(t, c, x), (k) => L[k], root, o.ver, win, fetch, FormData, 0, { createTextNode: (x) => new N('#text', '', x) });
+  return Object.assign(api, { log, answers: o.answers, into: () => new N('div') });
 }
 const face = (c) => ({
   line: c.find('fs-ver-line').textContent,
@@ -115,8 +122,19 @@ console.log('\nEvery version reads as text and opens its newest release');
     ok('What\'s new, Check for updates, then the one action', acts.join() === 'fs-ver-news,fs-ver-check,fs-ver-go', acts.join());
     const news = c.find('fs-ver-news');
     ok('What\'s new wears the gift and the dot, Check for updates the sync glyph', news.glyph === 'WhatsNew' && news.kids[0].cls.has('fs-ver-dot') && c.find('fs-ver-check').glyph === 'Sync');
+    s.answers.push({ body: { tag_name: 'v1.5.3', body: '## ✨ Added\n- **Version card.** With **bold** and `code`.' } });
     news.click();
-    ok('What\'s new opens the running release\'s notes', s.log.opened[0] === 'https://github.com/junkerderprovinz/firesquire/releases/tag/v1.5.3');
+    const w = s.log.windows[0];
+    ok('What\'s new opens a window of the plugin, titled for the running release', w && w.o.cls === 'fs-win-notes' && w.title.textContent === 'New in 1.5.3' && w.o.opener === news);
+    ok('it shows that the notes load, then asks GitHub for that release', w.body.textContent === 'Loading the release notes …' && s.log.fetched[1].url === 'https://api.github.com/repos/junkerderprovinz/firesquire/releases/tags/v1.5.3');
+    await tick(); await tick();
+    const notes = w.body.find('fs-notes');
+    ok('the notes stand in the window, heading and list built from elements', notes.find('fs-notes-h').textContent === '✨ Added' && notes.all().some((n) => n.tagName === 'UL') && notes.all().filter((n) => n.tagName === 'STRONG').length === 2);
+    ok('the keyboard reaches the notes, which take the focus', notes.tabIndex === 0 && w.focus === notes);
+    const link = w.act.kids[0];
+    ok('the link to the release page opens the foot, Close ends it', link.cls.has('fs-win-link') && link.textContent === 'View on GitHub' && w.act.kids[1].textContent === 'Close');
+    link.click();
+    ok('and opens the release page', s.log.opened[0] === 'https://github.com/junkerderprovinz/firesquire/releases/tag/v1.5.3');
   }
   {
     const s = load(en, { answers: [{ body: { installed: '1.5.3', latest: '1.6.0', checkedAt: now } }] });
@@ -128,8 +146,11 @@ console.log('\nEvery version reads as text and opens its newest release');
     c.find('fs-ver-go').click();
     ok('to the Plugins tab', s.log.went[0] === '/Plugins');
     ok('the new number carries no link', !c.find('fs-ver-state').all().some((n) => n.tagName === 'A'));
+    s.answers.push({ status: 404, body: {} });
     c.find('fs-ver-news').click();
-    ok('What\'s new opens that version\'s notes', s.log.opened[0] === 'https://github.com/junkerderprovinz/firesquire/releases/tag/v1.6.0');
+    ok('What\'s new opens that version\'s notes', s.log.windows[0].title.textContent === 'New in 1.6.0' && s.log.fetched[1].url.endsWith('/releases/tags/v1.6.0'));
+    await tick(); await tick();
+    ok('a release GitHub does not know yet says so', s.log.windows[0].body.textContent === 'GitHub has no release notes for this version yet.');
   }
   {
     const s = load(en, { answers: [{ body: { installed: '1.5.3', latest: null, checkedAt: null } }, { body: { installed: '1.5.3', latest: '1.5.3', checkedAt: now } }] });
@@ -162,6 +183,26 @@ console.log('\nEvery version reads as text and opens its newest release');
   ok('a GET reads, a POST checks, nothing else passes', /if \(\$fsMethod !== 'GET' && \$fsMethod !== 'POST'\)/.test(update) && /http_response_code\(405\)/.test(update));
   ok('the check is Unraid\'s own, for this plugin only', /\$fsTool = '\/usr\/local\/emhttp\/plugins\/dynamix\.plugin\.manager\/scripts\/plugin';/.test(update) && /' check ' \. escapeshellarg\(\$fsPlg\)/.test(update) && /\$fsPlg = 'firesquire\.plg';/.test(update));
   ok('it reads the installed file and the one the check left', /"\/var\/log\/plugins\/\$fsPlg"/.test(update) && /\$fsLatest = "\/tmp\/plugins\/\$fsPlg";/.test(update) && /filemtime\(\$fsLatest\)/.test(update));
+
+  console.log('\nThe release notes window');
+  {
+    const s = load(de, { ver: 'dev', answers: [{ body: { installed: '1.5.3', latest: '1.5.3', checkedAt: now } }, { body: { tag_name: 'v1.5.3', body: '' } }] });
+    ok('a build without a release reads the latest notes', s.notesSource('dev').api === 'https://api.github.com/repos/junkerderprovinz/firesquire/releases/latest' && s.notesSource('dev').ver === '');
+    const into = s.into(); s.versionCard(into); await tick(); await tick();
+    into.kids[0].find('fs-ver-news').click();
+    const w = s.log.windows[0];
+    ok('its window starts as Neuigkeiten', w.title.textContent === 'Neuigkeiten');
+    await tick(); await tick();
+    ok('and takes the latest release\'s number once it is known', w.title.textContent === 'Neu in 1.5.3');
+    ok('a release without notes says so, in German', w.body.textContent === 'Zu dieser Version gibt es keine Versionshinweise.');
+    const card = new N('div');
+    s.notesDom('<script>alert(1)</script>\n\n[page](https://example.org) and [trap](javascript:alert(2))\n\n```\n<b>raw</b>\n```', card);
+    ok('markup in a release body stays text', !card.all().some((n) => /SCRIPT|^B$/.test(n.tagName)) && card.kids[0].textContent === '<script>alert(1)</script>');
+    const links = card.all().filter((n) => n.tagName === 'A');
+    ok('only an http link becomes an anchor, in a new tab', links.length === 1 && links[0].href === 'https://example.org' && links[0].target === '_blank');
+    ok('no notes function writes innerHTML', !/innerHTML/.test(['openNotes', 'notesInline', 'notesDom'].map((n) => grabFn(info, n)).join('')));
+    ok('the window is wide enough to read', /\.fs-win\.fs-win-notes \{ width: min\(760px, calc\(100vw - 32px\)\); \}/.test(read('firesquire-info.css')));
+  }
 
   console.log('\nThe Components card');
   {

@@ -63,6 +63,7 @@
 
   var GLS_VER = "4.8.2";
   var GLS_REPO = "https://github.com/junkerderprovinz/glimstone";
+  var RELEASES_API = "https://api.github.com/repos/junkerderprovinz/firesquire/releases";
   var PARLEYPORT_REPO = "https://github.com/junkerderprovinz/parleyport";
   var UPDATE_URL = "/plugins/firesquire/include/FireSquireUpdate.php";
 
@@ -148,10 +149,7 @@
     // While a new version is out, "What's new" opens that version's notes, so its number needs no link.
     var news = UI.button("fs-ver-news", "WhatsNew", t("ver_new"));
     news.insertBefore(el("span", "fs-ver-dot"), news.firstChild);
-    news.addEventListener("click", function () {
-      var rel = state.kind === "available" ? state.version : release(ver);
-      window.open(REPO + (rel ? "/releases/tag/v" + rel : "/releases"), "_blank", "noopener");
-    });
+    news.addEventListener("click", function () { openNotes(news, state.kind === "available" ? state.version : ver); });
     var chk = UI.button("fs-ver-check", "Sync", t("ver_check"));
     chk.addEventListener("click", function () { run(true); });
     var go = UI.button("fs-acc fs-ver-go", "Sync", t("ver_plugins"));
@@ -215,6 +213,84 @@
         if (!r.ok) throw new Error((d && d.error) || "HTTP " + r.status);
         return d;
       });
+    });
+  }
+  // A version's notes from GitHub's release API: the running one's, or a newer
+  // one's while it waits in the Plugins tab. A build without a release shows
+  // the latest one.
+  function notesSource(v) {
+    var rel = release(v);
+    if (rel) return { api: RELEASES_API + "/tags/v" + rel, page: REPO + "/releases/tag/v" + rel, ver: rel };
+    return { api: RELEASES_API + "/latest", page: REPO + "/releases", ver: "" };
+  }
+  function openNotes(opener, v) {
+    var src = notesSource(v);
+    UI.openWindow({
+      cls: "fs-win-notes", opener: opener, title: src.ver ? UI.t("notes_title", [src.ver]) : t("ver_new"),
+      build: function (body, win, act) {
+        var title = win.querySelector(".fs-win-title"), notes = el("div", "fs-notes");
+        // Long notes scroll, and the keyboard needs a way in.
+        notes.tabIndex = 0;
+        body.appendChild(notes);
+        var link = UI.button("fs-win-btn fs-win-link", "Forward", t("notes_github"));
+        link.addEventListener("click", function () { window.open(src.page, "_blank", "noopener"); });
+        act.insertBefore(link, act.firstChild);
+        function say(text) { notes.textContent = ""; notes.appendChild(el("p", "fs-win-text", text)); }
+        say(t("notes_loading"));
+        fetch(src.api, { headers: { Accept: "application/vnd.github+json" } })
+          .then(function (r) { if (r.status === 404) throw new Error("missing"); if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+          .then(function (j) {
+            var tag = release(j && j.tag_name);
+            if (!src.ver && tag) { title.textContent = UI.t("notes_title", [tag]); src.page = REPO + "/releases/tag/v" + tag; }
+            if (!j || !String(j.body || "").trim()) return say(t("notes_none"));
+            notes.textContent = "";
+            notesDom(j.body, notes);
+          })
+          .catch(function (e) { say(e && e.message === "missing" ? t("notes_missing") : t("notes_failed")); });
+        return notes;
+      }
+    });
+  }
+  // A release body is GitHub Markdown. It is built from elements and text nodes,
+  // so nothing in it is ever read as HTML, and a link becomes an anchor only when
+  // it leads to http or https.
+  function notesInline(text, into) {
+    var re = /\*\*(.+?)\*\*|\x60([^\x60]+)\x60|\[([^\]]+)\]\(([^)\s]+)\)|\*(\S(?:.*?\S)?)\*/g, last = 0, m;
+    while ((m = re.exec(text))) {
+      if (m.index > last) into.appendChild(document.createTextNode(text.slice(last, m.index)));
+      if (m[1] != null) { var b = el("strong"); notesInline(m[1], b); into.appendChild(b); }
+      else if (m[2] != null) into.appendChild(el("code", null, m[2]));
+      else if (m[3] != null) {
+        if (/^https?:\/\//i.test(m[4])) { var a = blank(el("a", null, m[3])); a.href = m[4]; into.appendChild(a); }
+        else into.appendChild(document.createTextNode(m[3]));
+      } else { var i = el("em"); notesInline(m[5], i); into.appendChild(i); }
+      last = re.lastIndex;
+    }
+    if (last < text.length) into.appendChild(document.createTextNode(text.slice(last)));
+  }
+  function notesDom(md, into) {
+    var blocks = [], cur = null, code = null;
+    String(md || "").replace(/\r\n?/g, "\n").split("\n").forEach(function (ln) {
+      if (code) { if (/^\s*\x60{3}/.test(ln)) code = null; else code.text += (code.text ? "\n" : "") + ln; return; }
+      var m;
+      if (/^\s*\x60{3}/.test(ln)) { code = { type: "pre", text: "" }; blocks.push(code); cur = null; }
+      else if (!ln.trim() || /^\s*([-*_])(\s*\1){2,}\s*$/.test(ln)) cur = null;
+      else if ((m = /^(#{1,6})\s+(.*?)\s*#*\s*$/.exec(ln))) { blocks.push({ type: "h", text: m[2] }); cur = null; }
+      else if ((m = /^\s*([-*+]|\d+[.)])\s+(.*)$/.exec(ln))) {
+        var kind = /\d/.test(m[1]) ? "ol" : "ul";
+        if (!cur || cur.type !== kind) { cur = { type: kind, items: [] }; blocks.push(cur); }
+        cur.items.push(m[2]);
+      } else if (cur && (cur.type === "ul" || cur.type === "ol")) cur.items[cur.items.length - 1] += " " + ln.trim();
+      else if (cur && cur.type === "p") cur.text += " " + ln.trim().replace(/^>\s?/, "");
+      else { cur = { type: "p", text: ln.trim().replace(/^>\s?/, "") }; blocks.push(cur); }
+    });
+    blocks.forEach(function (b) {
+      if (b.type === "pre") { var pre = el("pre"); pre.appendChild(el("code", null, b.text)); into.appendChild(pre); return; }
+      if (b.type === "h") { var h = el("div", "fs-notes-h"); h.setAttribute("role", "heading"); h.setAttribute("aria-level", "3"); notesInline(b.text, h); into.appendChild(h); return; }
+      if (b.type === "p") { var p = el("p"); notesInline(b.text, p); into.appendChild(p); return; }
+      var list = el(b.type);
+      b.items.forEach(function (x) { var li = el("li"); notesInline(x, li); list.appendChild(li); });
+      into.appendChild(list);
     });
   }
   /* GlimStone's Components card: every other version FireSquire brings along,

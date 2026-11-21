@@ -332,3 +332,23 @@ html.tt-popups-on #fs-info .fs-key .fs-btn-g svg { width: 1rem; height: 1rem; }
 }
 /* The cards stand in their own box, so they keep the pane's space between them. */
 #fs-info #fs-health { display: flex; flex-direction: column; gap: 40px; }
+
+/* The release notes window is wide and sets its body as reading text. Its link
+   to the release page opens the foot, Close ends it. */
+.fs-win.fs-win-notes { width: min(760px, calc(100vw - 32px)); }
+.fs-win-notes .fs-notes { overflow-wrap: anywhere; line-height: 1.55; }
+.fs-win-notes .fs-notes:focus { outline: none; }
+.fs-win-notes .fs-notes:focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus); outline-offset: 2px; }
+.fs-win-notes .fs-notes > :first-child { margin-top: 0; }
+.fs-win-notes .fs-notes-h { margin: 18px 0 6px; font-size: 16px; font-weight: 700; }
+.fs-win-notes .fs-notes p { margin: 0 0 10px; }
+.fs-win-notes .fs-notes :is(ul, ol) { margin: 0 0 10px; padding-inline-start: 20px; }
+.fs-win-notes .fs-notes li { margin: 5px 0; }
+.fs-win-notes .fs-notes code { padding: 1px 5px; border-radius: calc(var(--fs-r-ctl) / 2); background: var(--fs-chip); font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12px; }
+.fs-win-notes .fs-notes pre { margin: 0 0 10px; padding: 10px 12px; overflow-x: auto; border-radius: var(--fs-r-ctl); background: var(--fs-chip); }
+.fs-win-notes .fs-notes pre code { padding: 0; background: none; }
+.fs-win-notes .fs-notes a { color: var(--fs-link); }
+/* TowerTorch sets every button margin on a settings page with !important. */
+@layer firesquire-settings {
+  .fs-win .fs-win-act button.fs-win-link { margin-inline-end: auto !important; }
+}
