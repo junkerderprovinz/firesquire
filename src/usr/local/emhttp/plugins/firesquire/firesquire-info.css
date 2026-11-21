@@ -60,9 +60,35 @@
 .fs-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; min-height: 44px; padding: 6px 0; }
 .fs-prose { margin: 4px 0 8px; text-align: start; }
 .fs-ver { font-variant-numeric: tabular-nums lining-nums; }
-/* A version is a plain link to its release. */
-#fs-info a.fs-ver { margin: 0; color: var(--fs-link); text-decoration: none; }
-#fs-info a.fs-ver:hover { text-decoration: underline; }
+/* A version reads as plain text in the text colour and takes the link colour
+   under the pointer, with no frame, fill or underline, so it never reads as a
+   button. */
+#fs-info a.fs-ver { margin: 0; color: var(--fs-text); text-decoration: none; }
+#fs-info a.fs-ver:focus-visible { color: var(--fs-link); }
+@media (hover: hover) {
+  #fs-info a.fs-ver:hover { color: var(--fs-link); }
+}
+
+/* GlimStone's Version and Components cards. The Version card's last row holds
+   where the updates stand at its start and the buttons at its end, and the
+   buttons drop under the words on a narrow card. */
+/* the (i) in a card's title badge takes the badge's ink */
+html.tt-popups-on #fs-info .fs-h .fs-info { margin-inline-start: 6px; color: inherit; opacity: 1; }
+#fs-info .fs-ver-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-top: 8px; }
+#fs-info .fs-ver-app { min-width: 0; font-weight: 600; }
+#fs-info .fs-ver-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 16px; }
+#fs-info .fs-ver-state { display: flex; flex: 1 1 8rem; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; min-width: 0; margin: 0; text-align: start; }
+#fs-info .fs-ver-state[data-tone="ok"] .fs-ver-line { color: var(--fs-ok); }
+#fs-info .fs-ver-state[data-tone="warn"] .fs-ver-line { color: var(--fs-warn); }
+#fs-info .fs-ver-state[data-tone="fail"] .fs-ver-line { color: var(--fs-err); }
+#fs-info .fs-ver-note { color: var(--fs-dim); }
+#fs-info .fs-ver-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-inline-start: auto; }
+#fs-info .fs-ver-actions .fs-btn { margin: 0; }
+/* the dot before "What's new", grey while nothing is unseen */
+#fs-info .fs-ver-dot { display: inline-block; flex: none; vertical-align: middle; width: 8px; height: 8px; margin-inline-end: 6px; border-radius: 50%; background: var(--fs-dim); }
+#fs-info .fs-ver-rows { display: flex; flex-direction: column; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
+#fs-info .fs-ver-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+#fs-info .fs-ver-name { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 
 /* The README's buttons as TowerTorch draws them: the mark and the name at
    rest, the brand's own colour and one sheen under the pointer. */
@@ -219,13 +245,13 @@ html.tt-popups-on .fs-win input.fs-amount::placeholder { color: var(--tt-field-p
 html.tt-popups-on .fs-win .fs-copy { align-self: center; }
 
 /* The check is the first card, its groups as rows with the detail in their
-   bubbles. The page has one accent button, the one that runs it. */
+   bubbles. The tab has one accent button, the one that runs it. */
 #fs-info .fs-row-lbl { display: inline-flex; align-items: center; min-width: 0; }
 #fs-info .fs-row-end { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; margin-inline-start: auto; }
 
 /* TowerTorch's sheets reach every link and focus ring on a settings page with
    !important, and only an important rule in a layer outranks them: a tab
-   and a version keep a visible focus ring, a version keeps the link colour,
+   and a version keep a visible focus ring, a version keeps the text colour,
    and the README buttons keep their ink against the accent TowerTorch gives
    every link. */
 @layer firesquire-settings {
@@ -234,11 +260,14 @@ html.tt-popups-on .fs-win .fs-copy { align-self: center; }
   @media (hover: hover) {
     #fs-info .fs-rbtn-unit:hover a.fs-rbtn { color: var(--fs-give-ink) !important; }
   }
-  #fs-info a.fs-ver { color: var(--fs-link) !important; filter: none !important; }
-  #fs-info a.fs-ver:focus-visible { outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus) !important; outline-offset: 2px !important; }
+  #fs-info a.fs-ver { color: var(--fs-text) !important; filter: none !important; }
+  @media (hover: hover) {
+    #fs-info a.fs-ver:hover { color: var(--fs-link) !important; }
+  }
+  #fs-info a.fs-ver:focus-visible { color: var(--fs-link) !important; outline: var(--tt-focus-ring-width, 2px) solid var(--fs-focus) !important; outline-offset: 2px !important; }
   /* TowerTorch makes every button on a settings page an accent pill. Here a
      button has rounded corners, the run button keeps the accent at the size
-     of a key, and the release notes are a secondary button. */
+     of a key, and the way to the Plugins tab keeps it at the usual size. */
   html.tt-popups-on #fs-info .fs-btn {
     --fs-btn-ground: color-mix(in srgb, var(--tt-text, #e6e6e6) 18%, var(--fs-card));
     min-width: 0 !important; height: 32px !important; margin: 0 !important; padding: 0 14px !important;

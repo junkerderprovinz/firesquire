@@ -1,7 +1,7 @@
 /* FireSquire's settings page under the banner, in tabs: General with what the
  * check looks at, Health with how the server stands, the notifications, the
- * Fortress and Info with the cards in GlimStone's order, Version, Help and
- * About. The give buttons open their
+ * Fortress and Info with the cards in GlimStone's order, Version, Components,
+ * Help and About. The give buttons open their
  * windows inside the page: Buy Me a Coffee's widget, PayPal's buttons under
  * the house's own controls, and the crypto window with an address and a QR
  * code per network. Nothing from a payment provider loads before its window
@@ -61,9 +61,10 @@
     { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], rest: "var(--fs-coin-xrp)", networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
   ];
 
-  var GLS_VER = "4.7.0";
+  var GLS_VER = "4.8.2";
   var GLS_REPO = "https://github.com/junkerderprovinz/glimstone";
-  var GLS_RELEASE_URL = GLS_REPO + "/releases/latest";
+  var PARLEYPORT_REPO = "https://github.com/junkerderprovinz/parleyport";
+  var UPDATE_URL = "/plugins/firesquire/include/FireSquireUpdate.php";
 
   function t(k) { return L[k] == null ? k : String(L[k]); }
   var el = UI.el;
@@ -71,13 +72,14 @@
   var hue = UI.hue;
 
   var seq = 0;
-  function card(title, into) {
+  function card(title, into, tip) {
     var c = el("section", "fs-card"), h = el("h3", "fs-h"), s = el("span", null, title);
     s.id = "fs-h-" + (++seq);
     c.setAttribute("aria-labelledby", s.id);
     c.setAttribute("data-glim", "Card");
     c.setAttribute("data-glim-title", title);
     h.appendChild(s);
+    if (tip) h.appendChild(UI.info(tip));
     c.appendChild(h);
     into.appendChild(c);
     return c;
@@ -99,21 +101,139 @@
   // The release a version names, without its "v", or "" for a build without one.
   function release(ver) {
     var v = String(ver || "").replace(/^v/, "");
-    return /^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(v) ? v : "";
+    return /^\d+(\.\d+)+$/.test(v) ? v : "";
   }
-  // A version shows without its "v" and links to its release; a build without a release shows its name alone.
+  // A version reads as plain text without its "v" and opens the newest release
+  // of its project, so a number never leads to a tag a folded patch took away.
+  // A build without a release says so and has no link.
   function version(ver, repo) {
     var v = release(ver);
-    if (!v) return el("span", "fs-ver fs-num", String(ver || "").replace(/^v/, "") || "?");
+    if (!v) return el("span", "fs-ver fs-num", UI.t("ver_unreleased", [String(ver || "").replace(/^v/, "") || "?"]));
     var a = blank(el("a", "fs-ver fs-num", v));
-    a.href = repo + "/releases/tag/v" + v;
+    a.href = repo + "/releases/latest";
     return a;
   }
-  // GlimStone folds its patch tags into the next minor, so its number opens the newest release.
-  function glimstoneVersion(ver) {
-    var a = blank(el("a", "fs-ver fs-num", ver));
-    a.href = GLS_RELEASE_URL;
-    return a;
+  // "3 minutes ago" or "yesterday" in the page's language, the way GlimStone's timeAgo says it.
+  function timeAgo(at, now) {
+    var f = new Intl.RelativeTimeFormat(UI.lang, { numeric: "auto" }), value = Math.round((at - now) / 1000);
+    var steps = [["second", 60], ["minute", 60], ["hour", 24]];
+    for (var i = 0; i < steps.length; i++) {
+      if (Math.abs(value) < steps[i][1]) return f.format(i ? value : 0, steps[i][0]);
+      value = Math.round(value / steps[i][1]);
+    }
+    return f.format(value, "day");
+  }
+  // Positive when version a is newer than b, by the numbers alone; a build
+  // that is no release is older than any release.
+  function newer(a, b) {
+    var x = release(a).split("."), y = release(b).split(".");
+    if (!x[0]) return 0;
+    if (!y[0]) return 1;
+    for (var i = 0; i < Math.max(x.length, y.length); i++) {
+      var d = (+x[i] || 0) - (+y[i] || 0);
+      if (d) return d;
+    }
+    return 0;
+  }
+  /* GlimStone's Version card: FireSquire and its number, then one last row
+     with where the updates stand at its start and the buttons at its end. A
+     plugin has no update switch, its check asks Unraid, and its one action
+     leads to the Plugins tab, where Unraid installs the update. */
+  function versionCard(into) {
+    var c = card(t("ver_title"), into, t("ver_hint")), state = { kind: "checking" };
+    var head = el("div", "fs-ver-head"), foot = el("div", "fs-ver-foot"), line = el("p", "fs-ver-state"), acts = el("div", "fs-ver-actions");
+    head.appendChild(el("span", "fs-ver-app", "FireSquire"));
+    head.appendChild(version(ver, REPO));
+    line.setAttribute("role", "status");
+    // While a new version is out, "What's new" opens that version's notes, so its number needs no link.
+    var news = UI.button("fs-ver-news", "WhatsNew", t("ver_new"));
+    news.insertBefore(el("span", "fs-ver-dot"), news.firstChild);
+    news.addEventListener("click", function () {
+      var rel = state.kind === "available" ? state.version : release(ver);
+      window.open(REPO + (rel ? "/releases/tag/v" + rel : "/releases"), "_blank", "noopener");
+    });
+    var chk = UI.button("fs-ver-check", "Sync", t("ver_check"));
+    chk.addEventListener("click", function () { run(true); });
+    var go = UI.button("fs-acc fs-ver-go", "Sync", t("ver_plugins"));
+    go.addEventListener("click", function () { window.location.href = "/Plugins"; });
+    acts.appendChild(news);
+    acts.appendChild(chk);
+    acts.appendChild(go);
+    foot.appendChild(line);
+    foot.appendChild(acts);
+    c.appendChild(head);
+    c.appendChild(foot);
+    function paint() {
+      var face = {
+        checking: [t("ver_checking"), "neutral"],
+        current: [t("ver_current"), "ok", state.checkedAt && UI.t("ver_checked", [timeAgo(state.checkedAt, new Date())])],
+        available: [UI.t("ver_available", [state.version]), "warn"],
+        failed: [t("ver_failed"), "fail", state.reason]
+      }[state.kind];
+      line.textContent = "";
+      line.setAttribute("data-tone", face[1]);
+      line.appendChild(el("span", "fs-ver-line", face[0]));
+      if (face[2]) line.appendChild(el("span", "fs-ver-note", face[2]));
+      // Once a new version is found there is nothing left to look for.
+      chk.style.display = state.kind === "available" ? "none" : "";
+      chk.disabled = state.kind === "checking";
+      go.style.display = state.kind === "available" ? "" : "none";
+    }
+    function run(check) {
+      state = { kind: "checking" };
+      paint();
+      askUpdates(check).then(function (r) {
+        var s = updateState(r);
+        // Unraid has not looked yet on this boot, so the first visit looks once.
+        if (!s && !check) return run(true);
+        state = s || { kind: "failed" };
+        paint();
+      }).catch(function (e) {
+        state = { kind: "failed", reason: (e && e.message) || String(e) };
+        paint();
+      });
+    }
+    run(false);
+  }
+  // Where the updates stand, in GlimStone's terms. Unraid's plugin manager
+  // answers, and null means it has not checked since the server booted.
+  function updateState(r) {
+    if (!r || !r.latest) return null;
+    if (newer(r.latest, r.installed || ver) > 0) return { kind: "available", version: release(r.latest) || String(r.latest) };
+    return { kind: "current", checkedAt: r.checkedAt ? new Date(r.checkedAt * 1000) : null };
+  }
+  function askUpdates(check) {
+    var opts = { credentials: "same-origin" };
+    // A form-encoded body, since a multipart one can stall in front of emhttp's PHP.
+    if (check) {
+      opts.method = "POST";
+      opts.headers = { "Content-Type": "application/x-www-form-urlencoded" };
+      opts.body = "csrf_token=" + encodeURIComponent(window.csrf_token || "");
+    }
+    return fetch(UPDATE_URL, opts).then(function (r) {
+      return r.json().catch(function () { return null; }).then(function (d) {
+        if (!r.ok) throw new Error((d && d.error) || "HTTP " + r.status);
+        return d;
+      });
+    });
+  }
+  /* GlimStone's Components card: every other version FireSquire brings along,
+     what each is in its (i), and GlimStone's row last. ParleyPort's helpers
+     come with the plugin's own release, so there is no switch to update them. */
+  function componentsCard(into) {
+    var c = card(t("comp_title"), into, t("comp_hint")), list = el("ul", "fs-ver-rows");
+    var helpers = root.getAttribute("data-fs-helpers");
+    if (helpers) list.appendChild(componentRow("ParleyPort", t("comp_helpers"), version(helpers, PARLEYPORT_REPO)));
+    list.appendChild(componentRow("GlimStone", t("comp_design"), version(GLS_VER, GLS_REPO)));
+    c.appendChild(list);
+  }
+  function componentRow(name, hint, number) {
+    var li = el("li", "fs-ver-row"), nm = el("span", "fs-ver-name");
+    nm.appendChild(el("span", "fs-ver-part", name));
+    nm.appendChild(UI.info(hint));
+    li.appendChild(nm);
+    li.appendChild(number);
+    return li;
   }
   // A button in the shape of the README's buttons. One with a window to open
   // keeps its address, so a middle click still reaches the hosted page.
@@ -212,7 +332,7 @@
 
   /* What the check looks at. Unraid's own look keeps it as prose with a list;
      GlimStone's makes it the first card, a row per group with the detail in
-     its bubble, and the page's one accent button at the end. */
+     its bubble, and the tab's one accent button at the end. */
   function runButton(cls) {
     var b = UI.button(cls, "Check", t("tools_btn"));
     b.addEventListener("click", function (e) { window.firesquireRun(e); });
@@ -253,16 +373,8 @@
   if (withFortress) pane("fortress", t("t_fortress"), "ShieldOn").appendChild(el("div")).id = "fs-fortress";
 
   var pInfo = pane("info", t("t_info"), "Info");
-  var cVer = card(t("ver_title"), pInfo);
-  row(cVer, "FireSquire").appendChild(version(ver, REPO));
-  // The GlimStone look names the design language it is drawn in, and the notes of this release.
-  if (UI.themed()) {
-    row(cVer, "GlimStone").appendChild(glimstoneVersion(GLS_VER));
-    var notes = blank(UI.button(null, "Info", t("rel_notes"), "a"));
-    var rel = release(ver);
-    notes.href = REPO + (rel ? "/releases/tag/v" + rel : "/releases");
-    row(cVer, "").appendChild(notes);
-  }
+  versionCard(pInfo);
+  componentsCard(pInfo);
 
   var cHelp = card(t("help_title"), pInfo);
   prose(cHelp, t("help_body"));

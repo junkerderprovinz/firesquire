@@ -44,6 +44,8 @@ class El {
   }
   appendChild(c) { this.children.push(c); return c; }
   addEventListener() {}
+  insertBefore(c, ref) { const i = this.children.indexOf(ref); this.children.splice(i < 0 ? this.children.length : i, 0, c); c.parentNode = this; return c; }
+  get firstChild() { return this.children[0] || null; }
   set innerHTML(v) { this.own = String(v); this.children = []; }
   setAttribute(k, v) { this.attrs[k] = String(v); }
   removeAttribute(k) { delete this.attrs[k]; }
@@ -61,7 +63,7 @@ function settings({ themed, fortress, notify }) {
   if (fortress) root.setAttribute('data-fs-fortress', '');
   if (notify) root.setAttribute('data-fs-notify', '');
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const UI = { el, rtl: false, themed: () => themed, hue() {}, glyph: () => '', button: (cls, glyph, label) => el('button', cls, label), info: (tip) => el('span', 'fs-info', tip) };
+  const UI = { el, rtl: false, t: (k) => en[k], themed: () => themed, hue() {}, glyph: () => '', button: (cls, glyph, label) => el('button', cls, label), info: (tip) => el('span', 'fs-info', tip) };
   const html = new El('html');
   const ctx = {
     window: { fireSquireUI: UI, fireSquireI18n: en, fireSquireMarks: { brand: {}, coin: {} }, addEventListener() {}, matchMedia: () => ({ matches: false, addEventListener() {} }) },
@@ -72,6 +74,7 @@ function settings({ themed, fortress, notify }) {
       addEventListener() {},
     },
     MutationObserver: class { observe() {} },
+    fetch: () => new Promise(() => {}),
     localStorage: { getItem: () => null, setItem() {} },
     getComputedStyle: () => ({ getPropertyValue: () => '' }),
     String, Array, Object,

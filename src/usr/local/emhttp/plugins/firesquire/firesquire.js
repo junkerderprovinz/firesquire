@@ -43,7 +43,20 @@
     tools_note: 'Advisory only, apart from a write test and the CRC counts, SMART values and health lights it keeps on the flash',
     goto: 'Go to the source',
     retry: 'Check again',
-    rel_notes: 'Release notes',
+    ver_hint: 'The version of FireSquire, where its updates stand and what this version brought.',
+    ver_new: 'What\'s new',
+    ver_check: 'Check for updates',
+    ver_checking: 'Checking …',
+    ver_current: 'Up to date',
+    ver_checked: 'Last checked {0}',
+    ver_available: 'Update to {0} available',
+    ver_failed: 'Check failed',
+    ver_plugins: 'Update in the Plugins tab',
+    ver_unreleased: '{0}, not a released build',
+    comp_title: 'Components',
+    comp_hint: 'Everything FireSquire is made of or brings along, with its version.',
+    comp_design: 'Design system',
+    comp_helpers: 'The fortress and notification helpers that FireSquire brings along.',
     give_close: 'Close',
     p_array: 'Checking array & disks…',
     p_mover: 'Checking mover…',
@@ -364,7 +377,7 @@
   }
 
   window.fireSquireUI = {
-    t: fsT, el: el, rtl: FS_RTL, themed: themed, hue: hue, labelMode: labelMode, glyph: glyph,
+    t: fsT, el: el, rtl: FS_RTL, lang: FS_LANGCODE, themed: themed, hue: hue, labelMode: labelMode, glyph: glyph,
     button: button, info: info, openWindow: openWindow
   };
 
