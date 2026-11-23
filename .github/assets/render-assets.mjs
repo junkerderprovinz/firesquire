@@ -5,18 +5,19 @@
  *
  * Outputs:
  *   icon.png             : CA icon, the logo on a transparent 512 square
- *   banner.png/.svg      : white 1600x500, logo + "FireSquire" (Bree Serif) + claim (Lato)  [README light]
+ *   banner.png/.svg      : white 1600x500, logo + "FireSquire" (Bree Serif Light) + claim (Bree Light)  [README light]
  *   banner-dark.png/.svg : dark 1600x500, logo + wordmark                                   [README <picture> dark]
  *   banner-logo.png/.svg : white 1600x500, logo only, no text                               [support thread]
  *   ../../src/.../firesquire/{images,icons}/firesquire.png + firesquire.png (root):
  *                          the CA icon again                                                [Plugins tile + menu icon + modal]
  *
- * Every embed reads the master's own viewBox. Fonts (OFL) are fetched to the OS temp
- * dir at runtime, not committed. Deps (global): @resvg/resvg-js, opentype.js.
+ * Every embed reads the master's own viewBox. The fonts are the licensed house typeface,
+ * read as TTF from HOUSE_FONTS (default %LOCALAPPDATA%\halleluja-fonts) and never committed.
+ * Deps (global): @resvg/resvg-js, opentype.js.
  *
  * Run: node .github/assets/render-assets.mjs
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';
@@ -41,14 +42,11 @@ const THEMES = [
   { suffix: '-dark', bg: '#0d1117', name: '#e6edf3', claim: '#9aa4ad' },
 ];
 
-async function getFont(file, url) {
-  const p = join(tmpdir(), file);
-  if (!existsSync(p)) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`font fetch ${res.status} ${url}`);
-    writeFileSync(p, Buffer.from(await res.arrayBuffer()));
-  }
-  return opentype.parse(readFileSync(p));
+// The house typeface is licensed, so it is read from a local folder and never committed.
+const fonts = process.env.HOUSE_FONTS ?? join(process.env.LOCALAPPDATA ?? tmpdir(), 'halleluja-fonts');
+function houseFont(file) {
+  const b = readFileSync(join(fonts, file));
+  return opentype.parse(b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength));
 }
 
 // Embed a master verbatim at (x,y,w,h): drop the XML decl, reposition its <svg>,
@@ -74,11 +72,9 @@ for (const rel of ['firesquire.png', 'images/firesquire.png', 'icons/firesquire.
   writeFileSync(here(PLUGIN + rel), icon);
 }
 
-// 2) Banners (Bree Serif name + Lato claim, text rendered to paths).
-const bree = await getFont('FireSquire-BreeSerif-Regular.ttf',
-  'https://github.com/google/fonts/raw/main/ofl/breeserif/BreeSerif-Regular.ttf');
-const claimFont = await getFont('FireSquire-Lato-Regular.ttf',
-  'https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf');
+// 2) Banners (Bree Serif Light name + Bree Light claim, text rendered to paths).
+const bree = houseFont('bree-serif-light.ttf');
+const claimFont = houseFont('bree-light.ttf');
 
 const startX = 165; // left-anchored (house banner standard)
 const LX = startX, LY = (H - LH) / 2;
