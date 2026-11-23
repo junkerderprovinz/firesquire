@@ -13,6 +13,8 @@ const page = read('FireSquireTools.page');
 const update = read('include/FireSquireUpdate.php');
 const en = JSON.parse(read('lang/en.json'));
 const de = JSON.parse(read('lang/de.json'));
+// The helpers' version as the page reads it from the installed plugin file.
+const helperVer = /<!ENTITY helperVer "([^"]+)">/.exec(fs.readFileSync(path.join(__dirname, '..', 'firesquire.plg'), 'utf8'))[1];
 
 class N {
   constructor(tag, cls, txt) { this.tagName = tag.toUpperCase(); this.cls = new Set((cls || '').split(' ').filter(Boolean)); this.kids = []; this.attrs = {}; this.style = {}; this.on = {}; this._t = txt == null ? '' : String(txt); this.disabled = false; }
@@ -32,7 +34,7 @@ const tick = () => new Promise((r) => setTimeout(r, 0));
 
 // The cards' functions, in the language given, with Unraid's answers and the page stubbed.
 function load(L, opts) {
-  const o = Object.assign({ ver: '1.5.3', helpers: 'v1.3.1', answers: [] }, opts);
+  const o = Object.assign({ ver: '1.5.3', helpers: helperVer, answers: [] }, opts);
   const log = { fetched: [], opened: [], went: [], windows: [] };
   const fetch = (url, init) => {
     log.fetched.push({ url, method: (init && init.method) || 'GET', body: init && init.body });
@@ -227,7 +229,7 @@ console.log('\nEvery version reads as text and opens its newest release');
     const into = s.into(); s.componentsCard(into); const c = into.kids[0];
     const rows = c.all().filter((n) => n.cls.has('fs-ver-row'));
     ok('ParleyPort\'s helpers first, GlimStone last', rows.map((r) => r.find('fs-ver-part').textContent).join() === 'ParleyPort,GlimStone');
-    ok('the helpers show the version the plugin brings, opening ParleyPort\'s newest release', rows[0].kids[1].textContent === '1.3.1' && rows[0].kids[1].href === 'https://github.com/junkerderprovinz/parleyport/releases/latest');
+    ok('the helpers show the version the plugin brings, 1.3.2, opening ParleyPort\'s newest release', rows[0].kids[1].textContent === '1.3.2' && rows[0].kids[1].href === 'https://github.com/junkerderprovinz/parleyport/releases/latest');
     ok('GlimStone shows 4.9.0 and opens its newest release', rows[1].kids[1].textContent === '4.9.0' && rows[1].kids[1].href === 'https://github.com/junkerderprovinz/glimstone/releases/latest');
     ok('what each is stands in its (i), never under its name', rows[0].find('fs-info').getAttribute('data-tip') === en.comp_helpers && rows[1].find('fs-info').getAttribute('data-tip') === 'Design system');
     ok('the card is Components', c.find('fs-h').kids[0].textContent === 'Components');
