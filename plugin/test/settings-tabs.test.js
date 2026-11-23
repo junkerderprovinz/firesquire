@@ -25,6 +25,8 @@ class El {
     c.parentNode = this;
     return c;
   }
+  insertBefore(c, ref) { const i = this.children.indexOf(ref); this.children.splice(i < 0 ? this.children.length : i, 0, c); c.parentNode = this; return c; }
+  get firstChild() { return this.children[0] || null; }
   set innerHTML(v) { this.own = String(v); this.children = []; }
   get innerHTML() { return this.own; }
   addEventListener(type, fn) { (this.listeners[type] = this.listeners[type] || []).push(fn); }
@@ -49,7 +51,7 @@ function page({ themed = true, fortress = true, notify = true, stored = null, na
   const store = stored ? { 'firesquire.settings.tab': stored } : {};
   const el = (tag, cls, text) => { const e = new El(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const UI = {
-    el, rtl: false, themed: () => themed, hue() {}, glyph: (name) => `<svg data-glyph="${name}"></svg>`,
+    el, rtl: false, t: (k) => en[k], themed: () => themed, hue() {}, glyph: (name) => `<svg data-glyph="${name}"></svg>`,
     button: (cls, glyph, label) => el('button', cls, label), info: (tip) => el('span', 'fs-info', tip),
   };
   const ctx = {
@@ -64,6 +66,7 @@ function page({ themed = true, fortress = true, notify = true, stored = null, na
       addEventListener() {},
     },
     MutationObserver: class { observe() {} },
+    fetch: () => new Promise(() => {}),
     localStorage: { getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); } },
     getComputedStyle: () => ({ getPropertyValue: () => '' }),
     String, Array, Object,
@@ -99,7 +102,7 @@ const mount = p.pane('fortress').children[0];
 ok('the Fortress an empty place for GlimStone\'s card', p.pane('fortress').children.length === 1 && mount.id === 'fs-fortress' && mount.children.length === 0);
 ok('Health the place of the lights', p.pane('health').children.length === 1 && p.pane('health').children[0].id === 'fs-health');
 ok('Notifications the place of the notification and schedule cards', p.pane('notify').children.length === 1 && p.pane('notify').children[0].id === 'fs-notify');
-ok('Info the Version, Help and About cards', p.pane('info').querySelectorAll('.fs-card').map((c) => c.getAttribute('data-glim-title')).join() === [en.ver_title, en.help_title, en.about_title].join(),
+ok('Info the Version, Components, Help and About cards', p.pane('info').querySelectorAll('.fs-card').map((c) => c.getAttribute('data-glim-title')).join() === [en.ver_title, en.comp_title, en.help_title, en.about_title].join(),
   p.pane('info').querySelectorAll('.fs-card').map((c) => c.getAttribute('data-glim-title')).join());
 p = page({ themed: false });
 ok('in Unraid\'s look General holds the description of the check', p.pane('general').children.includes(p.tools) && p.pane('general').querySelector('.fs-card-tools') === null);
