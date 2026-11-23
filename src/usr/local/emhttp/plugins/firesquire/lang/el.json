@@ -154,6 +154,7 @@
   "notes_github": "Προβολή στο GitHub",
   "ver_check": "Αναζήτηση ενημερώσεων",
   "ver_checking": "Έλεγχος …",
+  "ver_unchecked": "Δεν έχει ελεγχθεί ακόμα",
   "ver_current": "Ενημερωμένο",
   "ver_checked": "Τελευταίος έλεγχος {0}",
   "ver_available": "Διαθέσιμη ενημέρωση στην {0}",

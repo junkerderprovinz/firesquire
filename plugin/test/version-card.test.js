@@ -81,7 +81,7 @@ console.log('\nThe Info tab runs Version, Components, Help, About');
 console.log('\nEvery version reads as text and opens its newest release');
 {
   const pins = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'glimstone.json'), 'utf8')).targets.map((t) => t.version);
-  ok('GlimStone is 4.8.2, and both pins name it', /var GLS_VER = "4\.8\.2";/.test(info) && pins.join() === '4.8.2,4.8.2', pins.join());
+  ok('GlimStone is 4.9.0, and both pins name it', /var GLS_VER = "4\.9\.0";/.test(info) && pins.join() === '4.9.0,4.9.0', pins.join());
   const { version, newer } = load(en);
   const v = version('v3.0.3', 'R');
   ok('a release is a link that shows the number alone', v.tagName === 'A' && v.textContent === '3.0.3');
@@ -97,7 +97,12 @@ console.log('\nEvery version reads as text and opens its newest release');
   ok('no version anywhere is printed with a v', !/"v" \+ v\b|'v' \+ v\b/.test(info + read('firesquire.js')));
   const css = rules(read('firesquire-info.css'));
   const num = css.filter((r) => /a\.fs-ver/.test(r.selector));
-  ok('no badge: no fill, padding, rounding or underline', !num.some((r) => /background|padding|border-radius|height|text-decoration: underline/.test(r.body)), num.map((r) => r.selector + ' { ' + r.body + ' }').join(' | '));
+  ok('no badge: no fill, rounding or underline', !num.some((r) => /background|border-radius|height|text-decoration: underline/.test(r.body)), num.map((r) => r.selector + ' { ' + r.body + ' }').join(' | '));
+  const pads = num.filter((r) => /padding/.test(r.body));
+  ok('a 24px target for a finger, given back so the line keeps its height', pads.length === 1 && /padding-block: 2px/.test(pads[0].body) && /margin-block: -2px/.test(pads[0].body) && !/padding-inline|padding:/.test(pads[0].body), pads.map((r) => r.selector + ' { ' + r.body + ' }').join(' | '));
+  const at = (sel) => css.find((r) => r.selector === sel && !r.at.length) || { body: '' };
+  ok('a long number drops under the app\'s name and stays at the end', /flex-wrap: wrap/.test(at('#fs-info .fs-ver-head').body) && /margin-inline-start: auto/.test(at('#fs-info .fs-ver-head .fs-ver').body) && /min-width: 0/.test(at('#fs-info .fs-ver-head .fs-ver').body) && /overflow-wrap: anywhere/.test(at('#fs-info .fs-ver-head .fs-ver').body));
+  ok('a component row breaks before its number, which keeps to the end', /flex-wrap: wrap/.test(at('#fs-info .fs-ver-row').body) && /margin-inline-start: auto/.test(at('#fs-info .fs-ver-row > .fs-ver').body));
   ok('in the text colour at rest', num.some((r) => r.selector === '#fs-info a.fs-ver' && /color: var\(--fs-text\)/.test(r.body) && !r.at.length));
   ok('in the link colour under the pointer', num.some((r) => r.selector === '#fs-info a.fs-ver:hover' && /color: var\(--fs-link\)/.test(r.body) && r.at.some((a) => /hover: hover/.test(a))));
   ok('past TowerTorch\'s sheets too', num.some((r) => r.selector === '#fs-info a.fs-ver' && /color: var\(--fs-text\) !important/.test(r.body) && r.at.some((a) => /@layer/.test(a))));
@@ -161,6 +166,18 @@ console.log('\nEvery version reads as text and opens its newest release');
     ok('then shows what it found', face(c).line === 'Up to date' && face(c).note === 'Last checked now', JSON.stringify(face(c)));
   }
   {
+    const s = load(en, { answers: [{ body: { installed: '1.5.3', latest: '1.5.3', checkedAt: null } }] });
+    const into = s.into(); s.versionCard(into); const c = into.kids[0];
+    await tick(); await tick();
+    const f = face(c);
+    ok('up to date without a time Unraid looked: "Not checked yet", neutral, with no note', f.line === 'Not checked yet' && f.tone === 'neutral' && f.note === '', JSON.stringify(f));
+    ok('and the check is there to look', f.check && !f.busy && !f.go);
+    const g = load(de, { answers: [{ body: { installed: '1.5.3', latest: '1.5.3', checkedAt: null } }] });
+    const into2 = g.into(); g.versionCard(into2);
+    await tick(); await tick();
+    ok('in German: "Noch nicht geprüft"', face(into2.kids[0]).line === 'Noch nicht geprüft', JSON.stringify(face(into2.kids[0])));
+  }
+  {
     const s = load(en, { answers: [{ body: { installed: '1.5.3', latest: '1.5.3', checkedAt: now } }, { status: 502, body: { error: 'Network failure' } }] });
     const into = s.into(); s.versionCard(into); const c = into.kids[0];
     await tick(); await tick();
@@ -211,7 +228,7 @@ console.log('\nEvery version reads as text and opens its newest release');
     const rows = c.all().filter((n) => n.cls.has('fs-ver-row'));
     ok('ParleyPort\'s helpers first, GlimStone last', rows.map((r) => r.find('fs-ver-part').textContent).join() === 'ParleyPort,GlimStone');
     ok('the helpers show the version the plugin brings, opening ParleyPort\'s newest release', rows[0].kids[1].textContent === '1.3.1' && rows[0].kids[1].href === 'https://github.com/junkerderprovinz/parleyport/releases/latest');
-    ok('GlimStone shows 4.8.2 and opens its newest release', rows[1].kids[1].textContent === '4.8.2' && rows[1].kids[1].href === 'https://github.com/junkerderprovinz/glimstone/releases/latest');
+    ok('GlimStone shows 4.9.0 and opens its newest release', rows[1].kids[1].textContent === '4.9.0' && rows[1].kids[1].href === 'https://github.com/junkerderprovinz/glimstone/releases/latest');
     ok('what each is stands in its (i), never under its name', rows[0].find('fs-info').getAttribute('data-tip') === en.comp_helpers && rows[1].find('fs-info').getAttribute('data-tip') === 'Design system');
     ok('the card is Components', c.find('fs-h').kids[0].textContent === 'Components');
     const bare = load(en, { helpers: null });

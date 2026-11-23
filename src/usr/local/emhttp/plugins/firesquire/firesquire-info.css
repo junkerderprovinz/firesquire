@@ -62,8 +62,9 @@
 .fs-ver { font-variant-numeric: tabular-nums lining-nums; }
 /* A version reads as plain text in the text colour and takes the link colour
    under the pointer, with no frame, fill or underline, so it never reads as a
-   button. */
-#fs-info a.fs-ver { margin: 0; color: var(--fs-text); text-decoration: none; }
+   button. Its 24px target for a finger is given back by the margin, so the
+   line keeps its height. */
+#fs-info a.fs-ver { padding-block: 2px; margin-block: -2px; margin-inline: 0; color: var(--fs-text); text-decoration: none; }
 #fs-info a.fs-ver:focus-visible { color: var(--fs-link); }
 @media (hover: hover) {
   #fs-info a.fs-ver:hover { color: var(--fs-link); }
@@ -76,6 +77,8 @@
 html.tt-popups-on #fs-info .fs-h .fs-info { margin-inline-start: 6px; color: inherit; opacity: 1; }
 #fs-info .fs-ver-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-top: 8px; }
 #fs-info .fs-ver-app { min-width: 0; font-weight: 600; }
+/* a long build number drops under the name on a phone */
+#fs-info .fs-ver-head .fs-ver { min-width: 0; margin-inline-start: auto; overflow-wrap: anywhere; }
 #fs-info .fs-ver-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 16px; }
 #fs-info .fs-ver-state { display: flex; flex: 1 1 8rem; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; min-width: 0; margin: 0; text-align: start; }
 #fs-info .fs-ver-state[data-tone="ok"] .fs-ver-line { color: var(--fs-ok); }
@@ -87,7 +90,9 @@ html.tt-popups-on #fs-info .fs-h .fs-info { margin-inline-start: 6px; color: inh
 /* the dot before "What's new", grey while nothing is unseen */
 #fs-info .fs-ver-dot { display: inline-block; flex: none; vertical-align: middle; width: 8px; height: 8px; margin-inline-end: 6px; border-radius: 50%; background: var(--fs-dim); }
 #fs-info .fs-ver-rows { display: flex; flex-direction: column; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
-#fs-info .fs-ver-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+/* on a narrow card a row breaks before its number, which keeps to the end */
+#fs-info .fs-ver-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; }
+#fs-info .fs-ver-row > .fs-ver { margin-inline-start: auto; }
 #fs-info .fs-ver-name { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 
 /* The README's buttons as TowerTorch draws them: the mark and the name at

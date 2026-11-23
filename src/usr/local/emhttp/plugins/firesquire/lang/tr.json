@@ -130,6 +130,7 @@
   "notes_github": "GitHub'da görüntüle",
   "ver_check": "Güncellemeleri ara",
   "ver_checking": "Denetleniyor …",
+  "ver_unchecked": "Henüz denetlenmedi",
   "ver_current": "Güncel",
   "ver_checked": "Son denetim {0}",
   "ver_available": "{0} sürümüne güncelleme var",

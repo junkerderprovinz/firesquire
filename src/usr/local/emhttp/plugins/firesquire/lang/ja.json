@@ -120,6 +120,7 @@
   "notes_github": "GitHub で見る",
   "ver_check": "アップデートを確認",
   "ver_checking": "確認中 …",
+  "ver_unchecked": "まだ確認していません",
   "ver_current": "最新です",
   "ver_checked": "最終確認 {0}",
   "ver_available": "{0} へのアップデートがあります",

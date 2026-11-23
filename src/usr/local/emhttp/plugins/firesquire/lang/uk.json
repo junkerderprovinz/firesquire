@@ -178,6 +178,7 @@
   "notes_github": "Відкрити на GitHub",
   "ver_check": "Шукати оновлення",
   "ver_checking": "Перевірка …",
+  "ver_unchecked": "Ще не перевірено",
   "ver_current": "Актуально",
   "ver_checked": "Остання перевірка {0}",
   "ver_available": "Доступне оновлення до {0}",

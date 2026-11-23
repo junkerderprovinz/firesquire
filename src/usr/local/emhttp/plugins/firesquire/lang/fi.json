@@ -151,6 +151,7 @@
   "notes_github": "Näytä GitHubissa",
   "ver_check": "Hae päivityksiä",
   "ver_checking": "Tarkistetaan …",
+  "ver_unchecked": "Ei vielä tarkistettu",
   "ver_current": "Ajan tasalla",
   "ver_checked": "Viimeksi tarkistettu {0}",
   "ver_available": "Päivitys versioon {0} saatavilla",

@@ -120,6 +120,7 @@
   "notes_github": "ดูบน GitHub",
   "ver_check": "ตรวจหาอัปเดต",
   "ver_checking": "กำลังตรวจ …",
+  "ver_unchecked": "ยังไม่ได้ตรวจ",
   "ver_current": "เป็นปัจจุบัน",
   "ver_checked": "ตรวจล่าสุด {0}",
   "ver_available": "มีอัปเดตเป็น {0}",

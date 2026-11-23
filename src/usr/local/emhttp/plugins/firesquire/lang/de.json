@@ -151,6 +151,7 @@
   "notes_github": "Auf GitHub ansehen",
   "ver_check": "Nach Updates suchen",
   "ver_checking": "Prüfe …",
+  "ver_unchecked": "Noch nicht geprüft",
   "ver_current": "Aktuell",
   "ver_checked": "Zuletzt geprüft {0}",
   "ver_available": "Update auf {0} verfügbar",

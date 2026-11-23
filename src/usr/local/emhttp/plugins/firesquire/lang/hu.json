@@ -130,6 +130,7 @@
   "notes_github": "Megnyitás a GitHubon",
   "ver_check": "Frissítések keresése",
   "ver_checking": "Ellenőrzés …",
+  "ver_unchecked": "Még nincs ellenőrizve",
   "ver_current": "Naprakész",
   "ver_checked": "Utolsó ellenőrzés {0}",
   "ver_available": "Elérhető frissítés: {0}",

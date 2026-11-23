@@ -61,7 +61,7 @@
     { id: "xrp", symbol: "XRP", name: "XRP", tile: ["#23292f", "#ffffff"], rest: "var(--fs-coin-xrp)", networks: [{ id: "xrpl", name: "XRP Ledger", address: XRP, note: "crypto_notag" }] }
   ];
 
-  var GLS_VER = "4.8.2";
+  var GLS_VER = "4.9.0";
   var GLS_REPO = "https://github.com/junkerderprovinz/glimstone";
   var RELEASES_API = "https://api.github.com/repos/junkerderprovinz/firesquire/releases";
   var PARLEYPORT_REPO = "https://github.com/junkerderprovinz/parleyport";
@@ -162,9 +162,10 @@
     c.appendChild(head);
     c.appendChild(foot);
     function paint() {
+      // "Up to date" is a finding, so it needs a check behind it.
       var face = {
         checking: [t("ver_checking"), "neutral"],
-        current: [t("ver_current"), "ok", state.checkedAt && UI.t("ver_checked", [timeAgo(state.checkedAt, new Date())])],
+        current: state.checkedAt ? [t("ver_current"), "ok", UI.t("ver_checked", [timeAgo(state.checkedAt, new Date())])] : [t("ver_unchecked"), "neutral"],
         available: [UI.t("ver_available", [state.version]), "warn"],
         failed: [t("ver_failed"), "fail", state.reason]
       }[state.kind];

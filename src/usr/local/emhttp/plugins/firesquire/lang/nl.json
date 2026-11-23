@@ -154,6 +154,7 @@
   "notes_github": "Bekijken op GitHub",
   "ver_check": "Zoeken naar updates",
   "ver_checking": "Controleren …",
+  "ver_unchecked": "Nog niet gecontroleerd",
   "ver_current": "Bijgewerkt",
   "ver_checked": "Laatst gecontroleerd {0}",
   "ver_available": "Update naar {0} beschikbaar",

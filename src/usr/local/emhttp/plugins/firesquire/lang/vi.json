@@ -120,6 +120,7 @@
   "notes_github": "Xem trên GitHub",
   "ver_check": "Tìm bản cập nhật",
   "ver_checking": "Đang kiểm tra …",
+  "ver_unchecked": "Chưa kiểm tra",
   "ver_current": "Đã cập nhật",
   "ver_checked": "Kiểm tra lần cuối {0}",
   "ver_available": "Có bản cập nhật lên {0}",

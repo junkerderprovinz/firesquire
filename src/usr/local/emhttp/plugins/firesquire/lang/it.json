@@ -148,6 +148,7 @@
   "notes_github": "Vedi su GitHub",
   "ver_check": "Cerca aggiornamenti",
   "ver_checking": "Controllo …",
+  "ver_unchecked": "Non ancora controllato",
   "ver_current": "Aggiornato",
   "ver_checked": "Ultimo controllo {0}",
   "ver_available": "Aggiornamento a {0} disponibile",

@@ -166,6 +166,7 @@
   "notes_github": "Vezi pe GitHub",
   "ver_check": "Caută actualizări",
   "ver_checking": "Se verifică …",
+  "ver_unchecked": "Încă neverificat",
   "ver_current": "La zi",
   "ver_checked": "Ultima verificare {0}",
   "ver_available": "Actualizare la {0} disponibilă",

@@ -148,6 +148,7 @@
   "notes_github": "Se på GitHub",
   "ver_check": "Se etter oppdateringer",
   "ver_checking": "Sjekker …",
+  "ver_unchecked": "Ikke sjekket ennå",
   "ver_current": "Oppdatert",
   "ver_checked": "Sist sjekket {0}",
   "ver_available": "Oppdatering til {0} er tilgjengelig",

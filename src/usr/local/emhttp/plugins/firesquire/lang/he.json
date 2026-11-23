@@ -166,6 +166,7 @@
   "notes_github": "הצגה ב-GitHub",
   "ver_check": "חיפוש עדכונים",
   "ver_checking": "בודק …",
+  "ver_unchecked": "עוד לא נבדק",
   "ver_current": "מעודכן",
   "ver_checked": "בדיקה אחרונה {0}",
   "ver_available": "עדכון לגרסה {0} זמין",

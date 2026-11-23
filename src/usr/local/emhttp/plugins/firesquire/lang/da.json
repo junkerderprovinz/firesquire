@@ -151,6 +151,7 @@
   "notes_github": "Se på GitHub",
   "ver_check": "Søg efter opdateringer",
   "ver_checking": "Kontrollerer …",
+  "ver_unchecked": "Ikke kontrolleret endnu",
   "ver_current": "Opdateret",
   "ver_checked": "Sidst kontrolleret {0}",
   "ver_available": "Opdatering til {0} tilgængelig",

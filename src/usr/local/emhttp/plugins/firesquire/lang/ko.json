@@ -120,6 +120,7 @@
   "notes_github": "GitHub에서 보기",
   "ver_check": "업데이트 확인",
   "ver_checking": "확인 중 …",
+  "ver_unchecked": "아직 확인하지 않음",
   "ver_current": "최신 상태",
   "ver_checked": "마지막 확인 {0}",
   "ver_available": "{0}(으)로 업데이트할 수 있음",

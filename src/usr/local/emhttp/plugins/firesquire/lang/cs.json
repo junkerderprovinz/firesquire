@@ -166,6 +166,7 @@
   "notes_github": "Zobrazit na GitHubu",
   "ver_check": "Hledat aktualizace",
   "ver_checking": "Kontroluje se …",
+  "ver_unchecked": "Zatím nezkontrolováno",
   "ver_current": "Aktuální",
   "ver_checked": "Naposledy zkontrolováno {0}",
   "ver_available": "Je dostupná aktualizace na {0}",
