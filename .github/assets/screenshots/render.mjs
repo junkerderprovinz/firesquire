@@ -83,14 +83,14 @@ const dataUrl = (buf, type) => `data:${type};base64,${buf.toString("base64")}`;
 // The house typeface is licensed, so it is read from a local folder and never committed.
 const fonts = process.env.HOUSE_FONTS ?? join(process.env.LOCALAPPDATA ?? tmpdir(), "halleluja-fonts");
 const houseFont = (file) => dataUrl(readFileSync(join(fonts, file)), "font/ttf");
-const breeSerif = houseFont("bree-serif-light.ttf");
+const breeSerif = houseFont("bree-serif-regular.ttf");
 const bree = houseFont("bree-light.ttf");
 // The drawn browser bar keeps the sans of a real one.
 const lato = dataUrl(await cached("Lato-Regular.ttf", "https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf"), "font/ttf");
 const logo = dataUrl(readFileSync(join(here, "..", "logo.svg")), "image/svg+xml");
 
 const STYLE = `
-@font-face { font-family: "Bree Serif"; font-weight: 300; src: url(${breeSerif}); }
+@font-face { font-family: "Bree Serif"; font-weight: 400; src: url(${breeSerif}); }
 @font-face { font-family: Bree; font-weight: 300; src: url(${bree}); }
 @font-face { font-family: Lato; src: url(${lato}); }
 * { box-sizing: border-box; margin: 0; }
@@ -101,7 +101,7 @@ body { position: relative; width: ${W}px; height: ${H}px; overflow: hidden; font
 .vignette { position: absolute; inset: 0; box-shadow: inset 0 0 200px rgba(0,0,0,.6); }
 .copy { position: absolute; left: 80px; top: 0; bottom: 0; width: 380px; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
 .copy img { width: 96px; }
-h1 { font: 300 52px/1.14 "Bree Serif", serif; color: #f4f4f4; text-wrap: balance; }
+h1 { font: 400 52px/1.14 "Bree Serif", serif; color: #f4f4f4; text-wrap: balance; }
 h1 em { font-style: normal; color: #FCC419; }
 .sub { font: 300 23px/1.4 Bree, sans-serif; color: #9d9481; }
 .stage { position: absolute; perspective: 2400px; }
@@ -153,7 +153,7 @@ try {
   for (const shot of SHOTS.filter((s) => !CHOSEN.length || CHOSEN.includes(s.file))) {
     const big = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 2 });
     await big.setContent(page(shot));
-    await big.evaluate(() => Promise.all(['300 1em "Bree Serif"', "300 1em Bree"].map((f) => document.fonts.load(f))));
+    await big.evaluate(() => Promise.all(['400 1em "Bree Serif"', "300 1em Bree"].map((f) => document.fonts.load(f))));
     await big.evaluate(() => document.fonts.ready);
     await big.evaluate(() => Promise.all([...document.images].map((img) => img.decode())));
     const png = await big.screenshot();

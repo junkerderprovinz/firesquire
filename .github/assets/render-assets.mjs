@@ -5,7 +5,7 @@
  *
  * Outputs:
  *   icon.png             : CA icon, the logo on a transparent 512 square
- *   banner.png/.svg      : white 1600x500, logo + "FireSquire" (Bree Serif Light) + claim (Bree Light)  [README light]
+ *   banner.png/.svg      : white 1600x500, logo + "FireSquire" (Bree Serif Regular) + claim (Bree Light)  [README light]
  *   banner-dark.png/.svg : dark 1600x500, logo + wordmark                                   [README <picture> dark]
  *   banner-logo.png/.svg : white 1600x500, logo only, no text                               [support thread]
  *   ../../src/.../firesquire/{images,icons}/firesquire.png + firesquire.png (root):
@@ -72,8 +72,8 @@ for (const rel of ['firesquire.png', 'images/firesquire.png', 'icons/firesquire.
   writeFileSync(here(PLUGIN + rel), icon);
 }
 
-// 2) Banners (Bree Serif Light name + Bree Light claim, text rendered to paths).
-const bree = houseFont('bree-serif-light.ttf');
+// 2) Banners (Bree Serif Regular name + Bree Light claim, text rendered to paths).
+const bree = houseFont('bree-serif-regular.ttf');
 const claimFont = houseFont('bree-light.ttf');
 
 const startX = 165; // left-anchored (house banner standard)
