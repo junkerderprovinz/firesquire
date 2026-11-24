@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.5.3">
+<!ENTITY version   "1.5.4">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -32,6 +32,23 @@
 </ICON>
 
   <CHANGES>
+## 1.5.4
+✨ **Added**
+- **Version in Info.** It shows FireSquire's number and where its updates stand, as Unraid's Plugins tab sees them. Check for updates runs Unraid's own check for FireSquire, and once a new version is out, Update in the Plugins tab takes you there. Until Unraid has checked, the card says Not checked yet.
+- **What's new opens in a window.** It shows the notes of the version you run, or of the new one while it waits in the Plugins tab, with a link to the release on GitHub.
+- **Components in Info.** The fortress helpers from ParleyPort and GlimStone each show their version, and the (i) beside each name says what it is.
+
+🎨 **Design**
+- **Info in four cards:** Version, Components, Help and About, in both looks.
+- **Version numbers are plain text.** A number opens its project's newest release and is easy to tap on a phone, and a long one moves under the name.
+- **GlimStone 4.9.0.**
+
+⚡ **Improved**
+- **Fortress helpers 1.3.2.** Your fortress membership, channels and settings carry over as they are.
+
+🌐 **Translations**
+- **Every new text in all 26 languages.**
+
 ## 1.5.3
 🐛 **Fixed**
 - **README buttons keep their descenders.** The bottom of the p and y on the buttons under Help and About is no longer cut off.
