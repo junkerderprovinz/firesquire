@@ -83,7 +83,7 @@ console.log('\nThe Info tab runs Version, Components, Help, About');
 console.log('\nEvery version reads as text and opens its newest release');
 {
   const pins = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'glimstone.json'), 'utf8')).targets.map((t) => t.version);
-  ok('GlimStone is 4.9.0, and both pins name it', /var GLS_VER = "4\.9\.0";/.test(info) && pins.join() === '4.9.0,4.9.0', pins.join());
+  ok('GlimStone is 4.9.2, and both pins name it', /var GLS_VER = "4\.9\.2";/.test(info) && pins.join() === '4.9.2,4.9.2', pins.join());
   const { version, newer } = load(en);
   const v = version('v3.0.3', 'R');
   ok('a release is a link that shows the number alone', v.tagName === 'A' && v.textContent === '3.0.3');
@@ -230,7 +230,7 @@ console.log('\nEvery version reads as text and opens its newest release');
     const rows = c.all().filter((n) => n.cls.has('fs-ver-row'));
     ok('ParleyPort\'s helpers first, GlimStone last', rows.map((r) => r.find('fs-ver-part').textContent).join() === 'ParleyPort,GlimStone');
     ok('the helpers show the version the plugin brings, 1.3.2, opening ParleyPort\'s newest release', rows[0].kids[1].textContent === '1.3.2' && rows[0].kids[1].href === 'https://github.com/junkerderprovinz/parleyport/releases/latest');
-    ok('GlimStone shows 4.9.0 and opens its newest release', rows[1].kids[1].textContent === '4.9.0' && rows[1].kids[1].href === 'https://github.com/junkerderprovinz/glimstone/releases/latest');
+    ok('GlimStone shows 4.9.2 and opens its newest release', rows[1].kids[1].textContent === '4.9.2' && rows[1].kids[1].href === 'https://github.com/junkerderprovinz/glimstone/releases/latest');
     ok('what each is stands in its (i), never under its name', rows[0].find('fs-info').getAttribute('data-tip') === en.comp_helpers && rows[1].find('fs-info').getAttribute('data-tip') === 'Design system');
     ok('the card is Components', c.find('fs-h').kids[0].textContent === 'Components');
     const bare = load(en, { helpers: null });
