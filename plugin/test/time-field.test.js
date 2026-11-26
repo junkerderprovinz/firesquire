@@ -57,3 +57,8 @@ test('the field shows the focus as a step up its fill, as a text field does, and
   assert.match(css, /button\.glim-tf-field:focus-visible \{ outline: none !important; \}/);
   assert.doesNotMatch(css, /glim-tf-field:focus-visible \{[^}]*outline: 2px/);
 });
+
+test("the field wears no frame of Unraid's buttons, whose gradient is a background image", () => {
+  const css = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'usr', 'local', 'emhttp', 'plugins', 'firesquire', 'styles', 'time-field.css'), 'utf8');
+  assert.match(css, /button\.glim-tf-field \{[^}]*background-image: none !important;/);
+});

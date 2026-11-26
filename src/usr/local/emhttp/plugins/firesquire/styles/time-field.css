@@ -66,7 +66,7 @@ html.tt-popups-on .glim-tf {
     display: inline-flex !important; align-items: center !important; gap: 8px !important; width: auto !important; min-width: 0 !important;
     height: 32px !important; margin: 0 !important; padding: 0 12px !important;
     border: none !important; border-radius: var(--tf-r) !important; box-shadow: none !important; filter: none !important;
-    background-color: var(--tf-field) !important; color: inherit !important;
+    background-color: var(--tf-field) !important; background-image: none !important; color: inherit !important;
     font-family: inherit !important; font-size: 13px !important; font-weight: 600 !important; letter-spacing: normal !important; text-transform: none !important; cursor: pointer !important;
   }
   /* A field shows the focus as the text field does, a step up its fill,
