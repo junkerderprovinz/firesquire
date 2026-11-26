@@ -229,7 +229,7 @@ console.log('\nEvery version reads as text and opens its newest release');
     const into = s.into(); s.componentsCard(into); const c = into.kids[0];
     const rows = c.all().filter((n) => n.cls.has('fs-ver-row'));
     ok('ParleyPort\'s helpers first, GlimStone last', rows.map((r) => r.find('fs-ver-part').textContent).join() === 'ParleyPort,GlimStone');
-    ok('the helpers show the version the plugin brings, 1.3.2, opening ParleyPort\'s newest release', rows[0].kids[1].textContent === '1.3.2' && rows[0].kids[1].href === 'https://github.com/junkerderprovinz/parleyport/releases/latest');
+    ok('the helpers show the version the plugin brings, 1.3.8, opening ParleyPort\'s newest release', rows[0].kids[1].textContent === '1.3.8' && rows[0].kids[1].href === 'https://github.com/junkerderprovinz/parleyport/releases/latest');
     ok('GlimStone shows 4.9.2 and opens its newest release', rows[1].kids[1].textContent === '4.9.2' && rows[1].kids[1].href === 'https://github.com/junkerderprovinz/glimstone/releases/latest');
     ok('what each is stands in its (i), never under its name', rows[0].find('fs-info').getAttribute('data-tip') === en.comp_helpers && rows[1].find('fs-info').getAttribute('data-tip') === 'Design system');
     ok('the card is Components', c.find('fs-h').kids[0].textContent === 'Components');
