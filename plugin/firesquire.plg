@@ -3,7 +3,7 @@
 <!ENTITY name      "firesquire">
 <!ENTITY pkg       "firesquire">
 <!ENTITY author    "Junker der Provinz">
-<!ENTITY version   "1.5.4">
+<!ENTITY version   "1.5.5">
 <!ENTITY launch    "Main">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/junkerderprovinz/firesquire/main">
 <!ENTITY pluginURL "&gitURL;/plugin/firesquire.plg">
@@ -32,6 +32,22 @@
 </ICON>
 
   <CHANGES>
+## 1.5.5
+🎨 **Design**
+- **Built on GlimStone 4.9.2,** each notification channel stands in one row with its switch, Send a test, Edit and Remove. The switch saves right away, a test shows how it went on its button and in the channel's line, and a channel without an address says so.
+- **A switch the service refuses opens the channel's form** with the reason, so you can fix the channel there.
+- **The schedule's time field shows its focus as a step in its fill** instead of a ring.
+
+⚡ **Improved**
+- **Fortress helpers 1.3.8.** A call to an app that is reconnecting goes through, an action runs once, and a renamed app shows up again at once. Your fortress membership, channels and settings carry over as they are.
+- **Send a test also works on a channel that is switched off.**
+
+🐛 **Fixed**
+- **The time field no longer wears Unraid's orange button frame** on a server without the theme plugin.
+
+🌐 **Translations**
+- **Edit, Switched off and No address yet in all 26 languages.**
+
 ## 1.5.4
 ✨ **Added**
 - **Version in Info.** It shows FireSquire's number and where its updates stand, as Unraid's Plugins tab sees them. Check for updates runs Unraid's own check for FireSquire, and once a new version is out, Update in the Plugins tab takes you there. Until Unraid has checked, the card says Not checked yet.
