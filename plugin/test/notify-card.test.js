@@ -58,7 +58,7 @@ const get = { helper: true, hub: false, schedule: { every: 'daily', hour: 3 }, c
     p.box.all().some((e) => e.getAttribute('data-glim-title') === en.n_card && e.all().includes(p.m.place)));
   ok('it offers every service of kit/notify, Healthchecks too, since FireSquire sends its own pings',
     JSON.stringify(p.m.opts.kinds) === '["unraid","discord","slack","ntfy","gotify","matrix","apprise","smtp","webhook","healthchecks"]', JSON.stringify(p.m.opts.kinds));
-  ok('in Unraid\'s language, with FireSquire\'s fields and buttons', p.m.opts.lang === 'de' && p.m.opts.t.nc_add === en.nc_add && p.m.opts.classes.input === 'fs-in' && p.m.opts.classes.button === 'fs-btn');
+  ok('in Unraid\'s language, with FireSquire\'s buttons', p.m.opts.lang === 'de' && p.m.opts.t.nc_add === en.nc_add && JSON.stringify(p.m.opts.classes) === '{"button":"fs-btn"}');
   const channels = await p.m.adapter.load();
   ok('it loads the channels FireSquire keeps', JSON.stringify(channels) === JSON.stringify(get.channels));
 

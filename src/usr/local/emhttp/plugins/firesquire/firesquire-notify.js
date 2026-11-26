@@ -112,7 +112,7 @@
       }
     }, {
       t: strings, lang: window.fireSquireLang || "en", kinds: KINDS, marks: window.GlimNotifyMarks,
-      classes: { input: "fs-in", button: "fs-btn", switch: "" },
+      classes: { button: "fs-btn" },
       saved: function (ok, text) { tell(saveMsg, text, ok); }
     });
   }
